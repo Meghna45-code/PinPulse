@@ -1,0 +1,182 @@
+[
+    {
+        "store_id": "STR_560034_001",
+        "zip_code": "560034",
+        "locality": "Koramangala, Bengaluru",
+        "store_name": "Fulki Boutique",
+        "social_signal_source": "Instagram Reel Tag",
+        "simulated_engagement": 32000,
+        "extracted_visual_trend": "y2k-crop",
+        "style_vibe_cluster": "Streetwear & Gen-Z Casual"
+    },
+    {
+        "store_id": "STR_560034_002",
+        "zip_code": "560034",
+        "locality": "Koramangala, Bengaluru",
+        "store_name": "The Budget Boutique",
+        "social_signal_source": "Instagram Post Location",
+        "simulated_engagement": 21000,
+        "extracted_visual_trend": "baggy-jeans",
+        "style_vibe_cluster": "Streetwear & Gen-Z Casual"
+    },
+    {
+        "store_id": "STR_560034_003",
+        "zip_code": "560034",
+        "locality": "Koramangala, Bengaluru",
+        "store_name": "Style Union",
+        "social_signal_source": "YouTube Shopping Haul",
+        "simulated_engagement": 45000,
+        "extracted_visual_trend": "oversized-tees",
+        "style_vibe_cluster": "Streetwear & Gen-Z Casual"
+    },
+    {
+        "store_id": "STR_560034_004",
+        "zip_code": "560034",
+        "locality": "Koramangala, Bengaluru",
+        "store_name": "Shabnam Boutique",
+        "social_signal_source": "Instagram Reel Tag",
+        "simulated_engagement": 15000,
+        "extracted_visual_trend": "cargo-pants",
+        "style_vibe_cluster": "Streetwear & Gen-Z Casual"
+    },
+    {
+        "store_id": "STR_560034_005",
+        "zip_code": "560034",
+        "locality": "Koramangala, Bengaluru",
+        "store_name": "Trends Footwear",
+        "social_signal_source": "Instagram Post Location",
+        "simulated_engagement": 18500,
+        "extracted_visual_trend": "varsity-jackets",
+        "style_vibe_cluster": "Streetwear & Gen-Z Casual"
+    },
+    {
+        "store_id": "STR_560034_006",
+        "zip_code": "560034",
+        "locality": "Koramangala, Bengaluru",
+        "store_name": "Urban Retro Studio",
+        "social_signal_source": "YouTube Shopping Haul",
+        "simulated_engagement": 27000,
+        "extracted_visual_trend": "y2k-crop",
+        "style_vibe_cluster": "Streetwear & Gen-Z Casual"
+    },
+    {
+        "store_id": "STR_110049_001",
+        "zip_code": "110049",
+        "locality": "South Ext, New Delhi",
+        "store_name": "QBIK Boutique",
+        "social_signal_source": "Instagram Reel Tag",
+        "simulated_engagement": 42000,
+        "extracted_visual_trend": "indo-western-gown",
+        "style_vibe_cluster": "Premium Fusion & Indo-Western"
+    },
+    {
+        "store_id": "STR_110049_002",
+        "zip_code": "110049",
+        "locality": "South Ext, New Delhi",
+        "store_name": "Aza Fashions",
+        "social_signal_source": "YouTube Shopping Haul",
+        "simulated_engagement": 39000,
+        "extracted_visual_trend": "pastel-lehenga",
+        "style_vibe_cluster": "Premium Fusion & Indo-Western"
+    },
+    {
+        "store_id": "STR_110049_003",
+        "zip_code": "110049",
+        "locality": "South Ext, New Delhi",
+        "store_name": "Frontier Raas",
+        "social_signal_source": "Instagram Post Location",
+        "simulated_engagement": 48000,
+        "extracted_visual_trend": "pastel-lehenga",
+        "style_vibe_cluster": "Premium Fusion & Indo-Western"
+    },
+    {
+        "store_id": "STR_110049_004",
+        "zip_code": "110049",
+        "locality": "South Ext, New Delhi",
+        "store_name": "Monika & Nidhi",
+        "social_signal_source": "Instagram Reel Tag",
+        "simulated_engagement": 29000,
+        "extracted_visual_trend": "chikankari-kurti",
+        "style_vibe_cluster": "Premium Fusion & Indo-Western"
+    },
+    {
+        "store_id": "STR_110049_005",
+        "zip_code": "110049",
+        "locality": "South Ext, New Delhi",
+        "store_name": "Ritu Kumar",
+        "social_signal_source": "YouTube Shopping Haul",
+        "simulated_engagement": 31500,
+        "extracted_visual_trend": "designer-dupatta",
+        "style_vibe_cluster": "Premium Fusion & Indo-Western"
+    },
+    {
+        "store_id": "STR_110049_006",
+        "zip_code": "110049",
+        "locality": "South Ext, New Delhi",
+        "store_name": "KALKI Fashion",
+        "social_signal_source": "Instagram Post Location",
+        "simulated_engagement": 44000,
+        "extracted_visual_trend": "indo-western-gown",
+        "style_vibe_cluster": "Premium Fusion & Indo-Western"
+    },
+    {
+        "store_id": "STR_800001_001",
+        "zip_code": "800001",
+        "locality": "Frazer Road, Patna",
+        "store_name": "Rap&Chik Designer Studio",
+        "social_signal_source": "YouTube Shopping Haul",
+        "simulated_engagement": 24000,
+        "extracted_visual_trend": "banarasi-silk",
+        "style_vibe_cluster": "Traditional Ethnic & Festive Silk"
+    },
+    {
+        "store_id": "STR_800001_002",
+        "zip_code": "800001",
+        "locality": "Frazer Road, Patna",
+        "store_name": "Vachi Boutique",
+        "social_signal_source": "Instagram Post Location",
+        "simulated_engagement": 19500,
+        "extracted_visual_trend": "tussar-saree",
+        "style_vibe_cluster": "Traditional Ethnic & Festive Silk"
+    },
+    {
+        "store_id": "STR_800001_003",
+        "zip_code": "800001",
+        "locality": "Frazer Road, Patna",
+        "store_name": "Bridal Zone",
+        "social_signal_source": "Instagram Reel Tag",
+        "simulated_engagement": 31000,
+        "extracted_visual_trend": "heavy-anarkali",
+        "style_vibe_cluster": "Traditional Ethnic & Festive Silk"
+    },
+    {
+        "store_id": "STR_800001_004",
+        "zip_code": "800001",
+        "locality": "Frazer Road, Patna",
+        "store_name": "Vandana Couture",
+        "social_signal_source": "YouTube Shopping Haul",
+        "simulated_engagement": 28000,
+        "extracted_visual_trend": "festive-kurta-set",
+        "style_vibe_cluster": "Traditional Ethnic & Festive Silk"
+    },
+    {
+        "store_id": "STR_800001_005",
+        "zip_code": "800001",
+        "locality": "Frazer Road, Patna",
+        "store_name": "Bandhan Boutique",
+        "social_signal_source": "Instagram Post Location",
+        "simulated_engagement": 22000,
+        "extracted_visual_trend": "banarasi-silk",
+        "style_vibe_cluster": "Traditional Ethnic & Festive Silk"
+    },
+    {
+        "store_id": "STR_800001_006",
+        "zip_code": "800001",
+        "locality": "Frazer Road, Patna",
+        "store_name": "Janvi\u2019s Closet",
+        "social_signal_source": "Instagram Reel Tag",
+        "simulated_engagement": 17000,
+        "extracted_visual_trend": "tussar-saree",
+        "style_vibe_cluster": "Traditional Ethnic & Festive Silk"
+    }
+]
