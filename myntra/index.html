@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinPulse — Myntra for Bharat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f7; color: #1a1a2e; }
+
+        /* Header */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 24px; background: white; border-bottom: 1px solid #e8e8e8;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-left { display: flex; align-items: baseline; gap: 10px; }
+        .logo { font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #ff3f6c, #ff7e5f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { font-size: 12px; color: #888; }
+        .header-center { display: flex; gap: 8px; }
+        .tab-btn { padding: 8px 16px; border: none; background: #f0f0f0; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .tab-btn.active { background: #ff3f6c; color: white; }
+        .velocity-tab { position: relative; animation: glow 2s infinite; }
+        @keyframes glow { 0%,100%{box-shadow:0 0 5px rgba(255,63,108,0.3)} 50%{box-shadow:0 0 15px rgba(255,63,108,0.6)} }
+        .pulse-dot { width: 8px; height: 8px; background: #ff3f6c; border-radius: 50%; display: inline-block; margin-left: 6px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .badge { font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 500; text-transform: capitalize; }
+        .state-badge { background: #e8f5e9; color: #2e7d32; }
+        .zip-badge { background: #e3f2fd; color: #1565c0; }
+        .cart-badge { background: #fff3e0; color: #e65100; }
+        .dev-toggle { padding: 8px 14px; border: 2px solid #ff3f6c; background: white; color: #ff3f6c; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; }
+        .dev-toggle:hover { background: #ff3f6c; color: white; }
+
+        /* Layout */
+        .main-content { display: flex; max-width: 1400px; margin: 0 auto; gap: 20px; padding: 20px; }
+        .feed-area { flex: 1; }
+
+        /* Product Grid */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s; position: relative; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+        .score-badge-card { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); color: #4caf50; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; z-index: 2; }
+        .product-image { width: 100%; height: 200px; overflow: hidden; cursor: pointer; position: relative; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+        .tag-overlay { position: absolute; bottom: 8px; left: 8px; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+        .tag-evergreen { background: #e8f5e9; color: #2e7d32; }
+        .tag-cf { background: #e3f2fd; color: #1565c0; }
+        .product-info { padding: 12px; }
+        .product-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; cursor: pointer; line-height: 1.3; }
+        .product-price { font-size: 16px; font-weight: 700; color: #ff3f6c; margin-bottom: 4px; }
+        .product-category { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .reason-labels { margin-top: 8px; display: flex; flex-direction: column; gap: 3px; }
+        .reason-label { font-size: 11px; color: #555; background: #f9f9f9; padding: 3px 6px; border-radius: 4px; border-left: 2px solid #ff3f6c; }
+        .score-mini { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .score-mini span { font-size: 10px; background: #f5f5f5; padding: 2px 5px; border-radius: 3px; color: #666; }
+        .product-actions { display: flex; gap: 8px; padding: 0 12px 12px; }
+        .btn-cart { flex: 1; padding: 8px; border: none; background: #ff3f6c; color: white; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .btn-cart:hover { background: #e6365f; }
+        .btn-wishlist { padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .btn-wishlist:hover { border-color: #ff3f6c; background: #fff5f7; }
+
+        /* Dev Panel */
+        .dev-panel { width: 380px; background: #1a1a2e; color: #e8e8e8; border-radius: 12px; padding: 16px; max-height: calc(100vh - 100px); overflow-y: auto; position: sticky; top: 80px; }
+        .dev-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .dev-panel-header h2 { font-size: 16px; }
+        .btn-reset { padding: 6px 12px; border: 1px solid #ff6b6b; background: transparent; color: #ff6b6b; border-radius: 6px; font-size: 11px; cursor: pointer; }
+        .dev-section { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #2a2a4a; }
+        .dev-section h3 { font-size: 13px; margin-bottom: 8px; color: #aaa; }
+        .dev-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+        .dev-btn { padding: 6px 10px; border: 1px solid #444; background: #2a2a4a; color: #ccc; border-radius: 6px; font-size: 11px; cursor: pointer; }
+        .dev-btn:hover { border-color: #ff3f6c; color: #ff3f6c; }
+        .dev-btn.active { background: #ff3f6c; color: white; border-color: #ff3f6c; }
+        .dev-btn.highlight { background: #4caf50; color: white; border-color: #4caf50; }
+        .dev-log { max-height: 200px; overflow-y: auto; background: #0d0d1a; border-radius: 8px; padding: 10px; margin-top: 8px; }
+        .log-entry { font-size: 11px; font-family: 'Courier New', monospace; padding: 3px 0; border-bottom: 1px solid #1a1a2e; color: #4caf50; }
+
+        /* PDP */
+        .pdp-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; }
+        .pdp-modal { background: white; border-radius: 16px; max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 24px; }
+        .pdp-main { display: flex; gap: 24px; margin-bottom: 24px; }
+        .pdp-img { width: 300px; height: 350px; border-radius: 8px; overflow: hidden; }
+        .pdp-img img { width: 100%; height: 100%; object-fit: cover; }
+        .pdp-info h1 { font-size: 20px; margin-bottom: 8px; }
+        .pdp-price { font-size: 22px; font-weight: 700; color: #ff3f6c; margin-bottom: 12px; }
+        .pdp-desc { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px; }
+        .pdp-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .pdp-meta span { font-size: 12px; background: #f5f5f5; padding: 4px 10px; border-radius: 4px; }
+        .btn-cart-lg { padding: 14px 32px; border: none; background: #ff3f6c; color: white; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn-close { padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 8px; font-size: 13px; cursor: pointer; margin-bottom: 16px; }
+        .also-bought h2 { font-size: 16px; margin-bottom: 12px; border-top: 1px solid #eee; padding-top: 16px; }
+        .also-bought-row { display: flex; gap: 12px; overflow-x: auto; }
+        .ab-card { min-width: 140px; background: #f9f9f9; border-radius: 8px; overflow: hidden; text-align: center; padding-bottom: 8px; }
+        .ab-card img { width: 100%; height: 100px; object-fit: cover; }
+        .ab-card p { font-size: 11px; padding: 6px 4px 2px; font-weight: 500; }
+        .ab-card .ab-price { font-weight: 700; color: #ff3f6c; }
+
+        /* Velocity Tab */
+        .velocity-content h2 { font-size: 20px; margin-bottom: 4px; }
+        .velocity-subtitle { color: #888; font-size: 13px; margin-bottom: 16px; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; z-index: 1000; animation: slideUp 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+        @keyframes slideUp { from{transform:translateX(-50%) translateY(20px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+        .toast-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .toast-trending { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+        .toast-info { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+
+        .hidden { display: none; }
+
+        @media (max-width: 768px) {
+            .main-content { flex-direction: column; }
+            .dev-panel { width: 100%; position: static; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            .pdp-main { flex-direction: column; }
+            .pdp-img { width: 100%; height: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <h1 class="logo">PinPulse</h1>
+            <span class="subtitle">Myntra for Bharat</span>
+        </div>
+        <div class="header-center" id="tabs">
+            <button class="tab-btn active" onclick="switchTab('home')">Home</button>
+        </div>
+        <div class="header-right">
+            <span class="badge state-badge" id="stateBadge">discovery</span>
+            <span class="badge zip-badge" id="zipBadge">📍 800008</span>
+            <span class="badge cart-badge" id="cartBadge">🛒 0</span>
+            <button class="dev-toggle" onclick="toggleDevPanel()">⚙️ Dev Panel</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Dev Panel -->
+        <div class="dev-panel hidden" id="devPanel">
+            <div class="dev-panel-header">
+                <h2>⚙️ Dev Panel (Judge View)</h2>
+                <button class="btn-reset" onclick="resetSession()">🔄 Reset</button>
+            </div>
+
+            <div class="dev-section">
+                <h3>🎯 State Machine</h3>
+                <div class="dev-buttons">
+                    <button class="dev-btn active" onclick="setState('discovery')">Discovery</button>
+                    <button class="dev-btn" onclick="setState('high_intent')">High Intent</button>
+                    <button class="dev-btn" onclick="setState('festive_season')">Festive</button>
+                    <button class="dev-btn" onclick="setState('hyper_local_boutique')">Boutique</button>
+                    <button class="dev-btn" onclick="setState('social_commerce')">Social</button>
+                </div>
+            </div>
+
+            <div class="dev-section">
+                <h3>📍 Location</h3>
+                <div class="dev-buttons">
+                    <button class="dev-btn active" onclick="setZip('800008')">Patna</button>
+                    <button class="dev-btn" onclick="setZip('530001')">Vizag</button>
+                    <button class="dev-btn" onclick="setZip('641001')">Coimbatore</button>
+                    <button class="dev-btn" onclick="setZip('590001')">Belgaum</button>
+                    <button class="dev-btn" onclick="setZip('110001')">Delhi</button>
+                </div>
+            </div>
+
+            <div class="dev-section">
+                <h3>🎊 Festival</h3>
+                <div class="dev-buttons">
+                    <button class="dev-btn" onclick="setFestival('chhath_puja')">Chhath Puja</button>
+                    <button class="dev-btn" onclick="setFestival('diwali')">Diwali</button>
+                    <button class="dev-btn" onclick="setFestival('pongal')">Pongal</button>
+                    <button class="dev-btn" onclick="setFestival('eid')">Eid</button>
+                    <button class="dev-btn" onclick="setFestival(null)">❌ None</button>
+                </div>
+            </div>
+
+            <div class="dev-section">
+                <h3>⏰ Time Warp (Decay Demo)</h3>
+                <div class="dev-buttons">
+                    <button class="dev-btn" onclick="timeWarp(24)">+24 Hours</button>
+                    <button class="dev-btn" onclick="timeWarp(168)">+7 Days</button>
+                    <button class="dev-btn" onclick="timeWarp(720)">+30 Days</button>
+                </div>
+            </div>
+
+            <div class="dev-section">
+                <h3>📈 Velocity Surge</h3>
+                <button class="dev-btn highlight" onclick="velocitySurge()">🚀 Simulate Local Velocity Surge</button>
+            </div>
+
+            <div class="dev-section">
+                <h3>📋 Engine Log</h3>
+                <div class="dev-log" id="devLog"></div>
+            </div>
+        </div>
+
+        <!-- Feed Area -->
+        <div class="feed-area" id="feedArea">
+            <div class="product-grid" id="productGrid">
+                <p style="text-align:center; color:#888; padding:40px;">Loading recommendations...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDP Modal -->
+    <div class="pdp-overlay hidden" id="pdpOverlay" onclick="closePDP(event)">
+        <div class="pdp-modal" id="pdpModal"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast hidden" id="toast" onclick="hideToast()"></div>
+
+    <script>
+        const API = 'http://localhost:5000/api';
+        let currentState = 'discovery';
+        let cartCount = 0;
+
+        // Fetch and render feed
+        async function fetchFeed() {
+            try {
+                const res = await fetch(`${API}/feed`);
+                const data = await res.json();
+                renderGrid(data.products);
+                currentState = data.state;
+                document.getElementById('stateBadge').textContent = data.state.replace(/_/g, ' ');
+                document.getElementById('zipBadge').textContent = '📍 ' + data.zip_code;
+            } catch(e) {
+                document.getElementById('productGrid').innerHTML = '<p style="text-align:center;color:red;padding:40px;">⚠️ Backend not running. Start it with: cd backend && python app.py</p>';
+            }
+        }
+
+        function renderGrid(products) {
+            const grid = document.getElementById('productGrid');
+            if (!products || products.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#888;padding:40px;">No products found.</p>';
+                return;
+            }
+            grid.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <div class="score-badge-card">${p.final_score?.toFixed(2) || '0.00'}</div>
+                    <div class="product-image" onclick="openPDP('${p.id}')">
+                        <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=${encodeURIComponent(p.name)}'">
+                        ${p.is_evergreen ? '<span class="tag-overlay tag-evergreen">⭐ Evergreen</span>' : ''}
+                        ${(p.cf_boost_applied || 0) > 0 ? '<span class="tag-overlay tag-cf">👥 CF Boosted</span>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name" onclick="openPDP('${p.id}')">${p.name}</h3>
+                        <p class="product-price">₹${p.price}</p>
+                        <p class="product-category">${p.category}</p>
+                        ${p.reason_labels && p.reason_labels.length > 0 ? `
+                            <div class="reason-labels">
+                                ${p.reason_labels.slice(0,2).map(l => `<span class="reason-label">${l}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                        <div class="score-mini">
+                            <span title="Aesthetic">A:${p.s_aesthetic?.toFixed(1)}</span>
+                            <span title="Fabric">F:${p.s_fabric?.toFixed(1)}</span>
+                            <span title="Festivity">Fe:${p.s_festivity?.toFixed(1)}</span>
+                            <span title="Creator">C:${p.s_creator?.toFixed(1)}</span>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-cart" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
+                        <button class="btn-wishlist" onclick="addToWishlist('${p.id}')">❤️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addToCart(itemId) {
+            const res = await fetch(`${API}/cart/add`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({item_id: itemId}) });
+            const data = await res.json();
+            cartCount = data.cart.length;
+            document.getElementById('cartBadge').textContent = '🛒 ' + cartCount;
+            document.getElementById('stateBadge').textContent = data.state.replace(/_/g, ' ');
+            showToast('🛒 Added to cart! Feed re-ranked.', 'success');
+            fetchFeed();
+        }
+
+        async function addToWishlist(itemId) {
+            await fetch(`${API}/wishlist/add`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({item_id: itemId}) });
+            showToast('❤️ Wishlisted! Score boost applied.', 'info');
+            fetchFeed();
+        }
+
+        async function openPDP(productId) {
+            const res = await fetch(`${API}/product/${productId}`);
+            const data = await res.json();
+            const {product, also_bought} = data;
+            
+            document.getElementById('pdpModal').innerHTML = `
+                <button class="btn-close" onclick="document.getElementById('pdpOverlay').classList.add('hidden')">← Back</button>
+                <div class="pdp-main">
+                    <div class="pdp-img"><img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x350?text=${encodeURIComponent(product.name)}'"></div>
+                    <div class="pdp-info">
+                        <h1>${product.name}</h1>
+                        <p class="pdp-price">₹${product.price}</p>
+                        <p class="pdp-desc">${product.description}</p>
+                        <div class="pdp-meta">
+                            <span>Category: ${product.category}</span>
+                            <span>Material: ${product.material}</span>
+                            <span>Color: ${product.color}</span>
+                            <span>Stock: ${product.stock_level} units</span>
+                        </div>
+                        <button class="btn-cart-lg" onclick="addToCart('${product.id}')">🛒 Add to Cart</button>
+                    </div>
+                </div>
+                ${also_bought && also_bought.length > 0 ? `
+                    <div class="also-bought">
+                        <h2>👥 People Also Bought This With...</h2>
+                        <div class="also-bought-row">
+                            ${also_bought.map(item => `
+                                <div class="ab-card">
+                                    <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/140x100?text=${encodeURIComponent(item.name)}'">
+                                    <p>${item.name}</p>
+                                    <p class="ab-price">₹${item.price}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            `;
+            document.getElementById('pdpOverlay').classList.remove('hidden');
+        }
+
+        function closePDP(e) { if (e.target.id === 'pdpOverlay') document.getElementById('pdpOverlay').classList.add('hidden'); }
+
+        // Dev Panel
+        function toggleDevPanel() {
+            document.getElementById('devPanel').classList.toggle('hidden');
+        }
+
+        function addLog(msg) {
+            const log = document.getElementById('devLog');
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML = `<div class="log-entry">${time} ${msg}</div>` + log.innerHTML;
+        }
+
+        async function setState(state) {
+            await fetch(`${API}/dev/set-state`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({state}) });
+            addLog(`[STATE] → ${state}`);
+            fetchFeed();
+        }
+
+        async function setZip(zip) {
+            const res = await fetch(`${API}/dev/set-zip`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({zip_code: zip}) });
+            const data = await res.json();
+            addLog(`[ZIP] → ${data.city} (${data.zip_code}). Festival: ${data.festival || 'None'}`);
+            fetchFeed();
+        }
+
+        async function setFestival(festival) {
+            await fetch(`${API}/dev/set-festival`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({festival}) });
+            addLog(`[FESTIVAL] ${festival ? festival : 'Deactivated'}`);
+            fetchFeed();
+        }
+
+        async function timeWarp(hours) {
+            const res = await fetch(`${API}/dev/time-warp`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({hours}) });
+            const data = await res.json();
+            addLog(`[TIME] ${data.message}`);
+            fetchFeed();
+        }
+
+        async function velocitySurge() {
+            const res = await fetch(`${API}/dev/velocity-surge`, { method: 'POST', headers: {'Content-Type':'application/json'} });
+            const data = await res.json();
+            addLog(data.log);
+            
+            // Add velocity tab
+            const tabs = document.getElementById('tabs');
+            if (!document.getElementById('velocityTabBtn')) {
+                const btn = document.createElement('button');
+                btn.id = 'velocityTabBtn';
+                btn.className = 'tab-btn velocity-tab';
+                btn.innerHTML = `🔥 ${data.theme.split(' ').slice(0,3).join(' ')}<span class="pulse-dot"></span>`;
+                btn.onclick = () => renderVelocityTab(data);
+                tabs.appendChild(btn);
+            }
+            showToast(`✨ Trending near you: ${data.theme}. Tap to explore.`, 'trending');
+            renderVelocityTab(data);
+        }
+
+        function renderVelocityTab(data) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            const vBtn = document.getElementById('velocityTabBtn');
+            if (vBtn) vBtn.classList.add('active');
+            
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = `
+                <div class="velocity-content" style="grid-column: 1/-1;">
+                    <h2>🔥 ${data.theme}</h2>
+                    <p class="velocity-subtitle">Trending in your locality right now</p>
+                </div>
+                ${data.products.map(p => `
+                    <div class="product-card" style="border: 2px solid #fff3e0;">
+                        <span class="tag-overlay" style="position:absolute;top:8px;left:8px;background:#fff3e0;color:#e65100;z-index:2;">📈 Trending</span>
+                        <div class="product-image" onclick="openPDP('${p.id}')">
+                            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=${encodeURIComponent(p.name)}'">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">${p.name}</h3>
+                            <p class="product-price">₹${p.price}</p>
+                            <p class="product-category">${p.category}</p>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-cart" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if (tab === 'home') {
+                document.querySelector('.tab-btn').classList.add('active');
+                fetchFeed();
+            }
+        }
+
+        async function resetSession() {
+            await fetch(`${API}/dev/reset`, { method: 'POST' });
+            cartCount = 0;
+            document.getElementById('cartBadge').textContent = '🛒 0';
+            document.getElementById('devLog').innerHTML = '';
+            const vBtn = document.getElementById('velocityTabBtn');
+            if (vBtn) vBtn.remove();
+            addLog('[SYSTEM] Reset complete');
+            fetchFeed();
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast toast-${type}`;
+            setTimeout(() => t.classList.add('hidden'), 4000);
+        }
+        function hideToast() { document.getElementById('toast').classList.add('hidden'); }
+
+        // Init
+        fetchFeed();
+    </script>
+</body>
+</html>
