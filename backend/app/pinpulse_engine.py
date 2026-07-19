@@ -21,6 +21,9 @@ from scoring_engine import (
     calculate_velocity_score,
     apply_category_stratification,
     apply_exploration_split,
+    estimate_user_age,
+    calculate_age_appropriateness_score,
+    calculate_price_affinity_score,
 )
 from intent_decay import IntentDecayEngine
 from collaborative_filtering import CollaborativeFilteringEngine
@@ -190,6 +193,27 @@ class PinPulseEngine:
             self.cf_lookup,
         )
 
+        # === Infer user's demographic age from cart + wishlist products ===
+        # Resolve full product objects for cart items
+        cart_product_objects = [
+            p for p in self.product_catalog
+            if str(p.get("id")) in [str(c) for c in session_cart]
+        ]
+        # Resolve wishlist items (interactions of type 'wishlist')
+        wishlist_ids = [
+            str(i.get("product_id")) for i in interactions
+            if i.get("action_type") == "wishlist"
+        ]
+        wishlist_product_objects = [
+            p for p in self.product_catalog
+            if str(p.get("id")) in wishlist_ids
+        ]
+        inferred_age_group = estimate_user_age(
+            cart_product_objects,
+            wishlist_product_objects,
+            default_age_group=user_age_group or "millennial",
+        )
+
         # Score each product across all pillars
         scored_products = []
         for product in catalog_with_intent:
@@ -311,6 +335,20 @@ class PinPulseEngine:
             if product.get("stock_level", 50) < LOW_STOCK_THRESHOLD:
                 final_score *= LOW_STOCK_PENALTY
 
+            # === PILLAR A: Age Appropriateness Multiplier ===
+            # Use the *inferred* age from cart/wishlist, NOT the user-declared one.
+            # This self-corrects as the user shops.
+            product_age = product.get("age_group", product.get("age_range", "millennial"))
+            s_age = calculate_age_appropriateness_score(product_age, inferred_age_group)
+            final_score *= s_age
+
+            # === PILLAR B: ZIP Code AOV Price-Affinity Multiplier ===
+            # Products priced way above the ZIP AOV are penalised;
+            # products within budget get a clean 1.0× pass.
+            product_price = product.get("price")
+            s_price = calculate_price_affinity_score(product_price, zip_aov)
+            final_score *= s_price
+
             # Build the scored item
             scored_item = product.copy()
             scored_item.update({
@@ -322,6 +360,9 @@ class PinPulseEngine:
                 "s_velocity": round(s_velocity, 3),
                 "s_intent": round(s_intent, 3),
                 "s_cf": round(s_cf, 3),
+                "s_age": round(s_age, 3),
+                "s_price": round(s_price, 3),
+                "inferred_age_group": inferred_age_group,
                 "final_score": round(final_score, 3),
                 "state": state,
             })

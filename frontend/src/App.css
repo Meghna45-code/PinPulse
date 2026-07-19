@@ -1353,3 +1353,447 @@ body {
   background: rgba(198,159,213,0.12);
   color: var(--text-main);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   PRODUCT DETAIL MODAL (PDP Pop-up)
+═══════════════════════════════════════════════════════════════ */
+
+/* Card purchasing animation — slide out and fade */
+@keyframes cardPurchasing {
+  0%   { opacity: 1; transform: scale(1) translateY(0); }
+  40%  { opacity: 0.5; transform: scale(0.96) translateY(-6px); filter: brightness(1.4); }
+  100% { opacity: 0; transform: scale(0.9) translateY(-20px); pointer-events: none; }
+}
+.card-purchasing {
+  animation: cardPurchasing 0.45s ease forwards;
+}
+
+/* Modal Overlay */
+.pdp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 6, 18, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Modal Container */
+.pdp-modal {
+  position: relative;
+  background: linear-gradient(160deg, #1e1428 0%, #150f1f 60%, #0e0a14 100%);
+  border: 1px solid rgba(198,159,213,0.22);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(253,253,201,0.06) inset;
+  width: min(900px, 95vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px 28px 20px;
+  animation: modalSlideUp 0.28s cubic-bezier(0.16,1,0.3,1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198,159,213,0.25) transparent;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* Close Button */
+.pdp-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(198,159,213,0.2);
+  color: #e2d5f0;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+  z-index: 2;
+}
+.pdp-modal-close:hover {
+  background: rgba(198,159,213,0.18);
+  transform: scale(1.12);
+}
+
+/* Top Section Layout */
+.pdp-modal-top {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  margin-bottom: 24px;
+}
+@media (max-width: 600px) {
+  .pdp-modal-top { grid-template-columns: 1fr; }
+}
+
+/* Image Wrap */
+.pdp-modal-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.pdp-modal-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(198,159,213,0.15);
+  display: block;
+}
+.pdp-modal-rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(14,10,20,0.85);
+  color: var(--wisteria);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(198,159,213,0.25);
+  backdrop-filter: blur(4px);
+}
+.pdp-modal-score {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  text-align: center;
+  background: rgba(253,253,201,0.12);
+  color: var(--lemon);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(253,253,201,0.2);
+  backdrop-filter: blur(4px);
+}
+
+/* Details Panel */
+.pdp-modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  max-height: 480px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198,159,213,0.2) transparent;
+}
+
+.pdp-category-pill {
+  background: rgba(198,159,213,0.12);
+  color: var(--wisteria);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(198,159,213,0.22);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* AOV Budget Badge */
+.pdp-aov-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.pdp-aov-badge.within-budget {
+  background: rgba(34,197,94,0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,0.25);
+}
+.pdp-aov-badge.premium-item {
+  background: rgba(253,253,201,0.1);
+  color: var(--lemon);
+  border: 1px solid rgba(253,253,201,0.22);
+}
+
+.pdp-modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: #f0e8fa;
+  line-height: 1.28;
+  margin: 4px 0 2px;
+}
+.pdp-modal-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #BA9476;
+  margin: 0 0 6px;
+}
+
+/* Tag Pills */
+.pdp-tag-pill {
+  background: rgba(198,159,213,0.08);
+  color: var(--wisteria-light, #d8b9e8);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(198,159,213,0.16);
+}
+.pdp-tag-pill.trending-tag {
+  background: rgba(253,253,201,0.1);
+  color: var(--lemon);
+  border-color: rgba(253,253,201,0.25);
+}
+
+/* Description */
+.pdp-description {
+  font-size: 0.8rem;
+  color: #9e8fac;
+  line-height: 1.5;
+  margin: 6px 0 10px;
+  font-style: italic;
+}
+
+/* 8-Pillar Score Grid */
+.pdp-score-grid {
+  background: rgba(14,10,20,0.5);
+  border: 1px solid rgba(198,159,213,0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 6px 0 12px;
+}
+.pdp-score-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--wisteria);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 8px;
+}
+.pdp-score-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.pdp-score-label {
+  font-size: 0.68rem;
+  color: #8b7d99;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pdp-score-bar-bg {
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pdp-score-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c69fd5, #fdfdc9);
+  border-radius: 10px;
+  transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+  min-width: 2px;
+}
+.pdp-score-pct {
+  font-size: 0.65rem;
+  color: var(--lemon);
+  font-weight: 700;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Action Buttons */
+.pdp-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pdp-btn-buy {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #824265, #5C283C);
+  color: #fdfdc9;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+  font-family: 'Outfit', sans-serif;
+}
+.pdp-btn-buy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(130,66,101,0.5);
+  filter: brightness(1.12);
+}
+.pdp-btn-cart {
+  padding: 10px 14px;
+  background: rgba(198,159,213,0.1);
+  color: var(--wisteria);
+  border: 1px solid rgba(198,159,213,0.28);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+  font-family: 'Outfit', sans-serif;
+}
+.pdp-btn-cart:hover {
+  background: rgba(198,159,213,0.2);
+  transform: translateY(-1px);
+}
+.pdp-btn-wish {
+  padding: 10px 14px;
+  background: transparent;
+  color: #e2d5f0;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+  font-family: 'Outfit', sans-serif;
+}
+.pdp-btn-wish:hover { background: rgba(255,255,255,0.06); }
+
+/* Complete the Look */
+.pdp-look-section {
+  background: rgba(253,253,201,0.04);
+  border: 1px solid rgba(253,253,201,0.1);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+}
+.pdp-look-item {
+  text-align: center;
+  width: 70px;
+}
+.pdp-look-img {
+  width: 70px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(198,159,213,0.18);
+  display: block;
+  margin: 0 auto 4px;
+}
+.pdp-look-name {
+  font-size: 0.6rem;
+  color: #9e8fac;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Section Label */
+.pdp-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--wisteria);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pdp-copurchase-count {
+  background: rgba(198,159,213,0.15);
+  color: var(--wisteria);
+  font-size: 0.62rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+/* Co-Purchase Section */
+.pdp-copurchase-section {
+  border-top: 1px solid rgba(198,159,213,0.12);
+  padding-top: 18px;
+}
+
+/* Horizontal shelf */
+.pdp-copurchase-shelf {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198,159,213,0.2) transparent;
+}
+
+.pdp-copurchase-card {
+  flex-shrink: 0;
+  width: 120px;
+  background: rgba(30,20,40,0.7);
+  border: 1px solid rgba(198,159,213,0.14);
+  border-radius: 12px;
+  padding: 8px 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.pdp-copurchase-card:hover {
+  border-color: rgba(198,159,213,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.pdp-copurchase-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+.pdp-copurchase-name {
+  font-size: 0.62rem;
+  color: #c8b8d8;
+  line-height: 1.3;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pdp-copurchase-price {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #BA9476;
+}
+.pdp-copurchase-btn {
+  width: 100%;
+  padding: 4px 0;
+  background: rgba(198,159,213,0.12);
+  color: var(--wisteria);
+  border: 1px solid rgba(198,159,213,0.22);
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.pdp-copurchase-btn:hover {
+  background: rgba(198,159,213,0.25);
+}

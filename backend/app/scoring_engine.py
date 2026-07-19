@@ -278,3 +278,80 @@ def get_boosted_score(product_vector, trend_vector, alpha=RELEVANCE_ALPHA):
     if similarity < alpha:
         return 0.0
     return similarity
+
+def estimate_user_age(cart_products, wishlist_products, default_age_group):
+    """
+    Estimate the user's age demographic group based on products in cart and wishlist.
+    - 'gen-z' (approx 20)
+    - 'millennial' (approx 32)
+    - 'mid-age' (approx 50)
+    """
+    total_age = 0
+    count = 0
+    
+    # Merge both item lists
+    all_items = cart_products + wishlist_products
+    if not all_items:
+        return default_age_group.lower().strip()
+        
+    for item in all_items:
+        age_str = item.get("age_group", "").lower().strip()
+        if "gen-z" in age_str or "gen z" in age_str:
+            total_age += 20
+            count += 1
+        elif "millennial" in age_str:
+            total_age += 32
+            count += 1
+        elif "mid-age" in age_str or "senior" in age_str or "mid age" in age_str:
+            total_age += 50
+            count += 1
+            
+    if count == 0:
+        return default_age_group.lower().strip()
+        
+    avg_age = total_age / count
+    if avg_age < 26:
+        return "gen-z"
+    elif avg_age < 40:
+        return "millennial"
+    else:
+        return "mid-age"
+
+def calculate_age_appropriateness_score(product_age_group, user_age_group):
+    """
+    Age Appropriateness Score:
+    Match = 1.0, Adjacent = 0.5, Mismatch = 0.1
+    """
+    p_age = product_age_group.lower().strip().replace(" ", "-")
+    u_age = user_age_group.lower().strip().replace(" ", "-")
+    
+    if p_age == u_age:
+        return 1.0
+    
+    # Adjacent check
+    if (p_age == "gen-z" and u_age == "millennial") or (p_age == "millennial" and u_age == "gen-z"):
+        return 0.5
+    if (p_age == "millennial" and u_age == "mid-age") or (p_age == "mid-age" and u_age == "millennial"):
+        return 0.5
+        
+    # Heavy mismatch
+    return 0.1
+
+def calculate_price_affinity_score(product_price, zip_aov):
+    """
+    ZIP Code AOV Price-Affinity Scoring:
+    - Product Price <= AOV * 1.2: Score = 1.0 (affordable)
+    - Product Price between AOV * 1.2 and AOV * 2.0: Linear decay from 1.0 to 0.2
+    - Product Price > AOV * 2.0: Score = 0.2 (heavy penalty)
+    """
+    price = float(product_price) if product_price is not None else 1099.0
+    aov = float(zip_aov) if zip_aov is not None else 2500.0
+    
+    if price <= aov * 1.2:
+        return 1.0
+    elif price <= aov * 2.0:
+        # Linear decay formula
+        fraction = (price - aov * 1.2) / (aov * 0.8)
+        return round(1.0 - fraction * 0.8, 3)
+    else:
+        return 0.2

@@ -3,6 +3,7 @@ import sys
 import json
 import time
 import logging
+import requests
 from datetime import datetime
 import numpy as np
 import holidays
@@ -35,8 +36,15 @@ ZIP_MAPPING = {
     "752001": {"subdiv": "OD", "city": "Puri", "state": "Odisha"}
 }
 
-# Baseline Weather averages for each location (1-12 months)
-WEATHER_BASELINES = {
+# City coordinates for Open-Meteo API
+CITY_COORDS = {
+    "800008": {"name": "Patna",  "lat": 25.5941, "lon": 85.1376},
+    "682001": {"name": "Kochi",  "lat": 9.9312,  "lon": 76.2673},
+    "752001": {"name": "Puri",   "lat": 19.8135, "lon": 85.8312},
+}
+
+# Kept as a fallback if Open-Meteo API is unreachable
+WEATHER_FALLBACK = {
     "800008": { # Patna
         1: {"desc": "Cold & Foggy ❄️", "temp": "10°C–22°C", "cold_wave": True, "hot_wave": False, "rainy": False, "weather_conditions": "cold"},
         2: {"desc": "Cool & Sunny 🌤️", "temp": "12°C–26°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "cold"},
@@ -80,6 +88,100 @@ WEATHER_BASELINES = {
         12: {"desc": "Mild Winter ❄️", "temp": "17°C–26°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"}
     }
 }
+
+
+def fetch_monthly_weather_baselines():
+    """
+    Fetch actual historical monthly climate averages from Open-Meteo Archive API
+    (free, no API key required).
+    Uses full-year 2024 daily data aggregated to monthly averages.
+    Falls back to WEATHER_FALLBACK per-city if the API is unreachable.
+    """
+    baselines = {}
+
+    for zip_code, city_info in CITY_COORDS.items():
+        city = city_info["name"]
+        lat  = city_info["lat"]
+        lon  = city_info["lon"]
+        logger.info(f"Fetching Open-Meteo climate data for {city} ({zip_code})...")
+
+        try:
+            r = requests.get(
+                "https://archive-api.open-meteo.com/v1/archive",
+                params={
+                    "latitude":   lat,
+                    "longitude":  lon,
+                    "start_date": "2024-01-01",
+                    "end_date":   "2024-12-31",
+                    "daily":      "temperature_2m_max,temperature_2m_min,precipitation_sum",
+                    "timezone":   "Asia/Kolkata",
+                },
+                timeout=15,
+            )
+            r.raise_for_status()
+            daily = r.json().get("daily", {})
+
+            dates  = daily.get("time", [])
+            t_max  = daily.get("temperature_2m_max", [])
+            t_min  = daily.get("temperature_2m_min", [])
+            precip = daily.get("precipitation_sum", [])
+
+            # Aggregate by month
+            monthly = {m: {"t_max": [], "t_min": [], "precip": []} for m in range(1, 13)}
+            for i, d in enumerate(dates):
+                m = int(d[5:7])
+                if t_max[i]  is not None: monthly[m]["t_max"].append(t_max[i])
+                if t_min[i]  is not None: monthly[m]["t_min"].append(t_min[i])
+                if precip[i] is not None: monthly[m]["precip"].append(precip[i])
+
+            baselines[zip_code] = {}
+            for m in range(1, 13):
+                md = monthly[m]
+                avg_high    = round(sum(md["t_max"]) / len(md["t_max"]), 1) if md["t_max"] else 30.0
+                avg_low     = round(sum(md["t_min"]) / len(md["t_min"]), 1) if md["t_min"] else 20.0
+                total_rain  = round(sum(md["precip"]), 1) if md["precip"] else 0.0
+
+                cold_wave = avg_high < 22
+                hot_wave  = avg_high >= 34
+                rainy     = total_rain >= 40   # mm/month threshold
+
+                if cold_wave:
+                    condition = "cold"
+                elif avg_high < 30:
+                    condition = "warm_moderate"
+                elif rainy:
+                    condition = "hot_humid"
+                else:
+                    condition = "hot_dry"
+
+                # Build a human-readable description
+                if cold_wave:
+                    desc = f"Cold {'& Rainy' if rainy else '& Foggy'} ❄️"
+                elif hot_wave and rainy:
+                    desc = "Hot & Monsoon 🌧️"
+                elif hot_wave:
+                    desc = "Very Hot 🔥"
+                elif rainy:
+                    desc = "Warm & Rainy 🌧️"
+                else:
+                    desc = "Pleasant & Sunny ☀️"
+
+                baselines[zip_code][m] = {
+                    "desc":               desc,
+                    "temp":               f"{int(avg_low)}°C–{int(avg_high)}°C",
+                    "cold_wave":          cold_wave,
+                    "hot_wave":           hot_wave,
+                    "rainy":              rainy,
+                    "weather_conditions": condition,
+                }
+
+            logger.info(f"  ✅ 12-month Open-Meteo baseline loaded for {city}")
+
+        except Exception as e:
+            logger.error(f"  ❌ Open-Meteo fetch failed for {city}: {e}. Using hardcoded fallback.")
+            baselines[zip_code] = WEATHER_FALLBACK.get(zip_code, {})
+
+    return baselines
 
 # Core curated events (always seed if not already present)
 CORE_PRESETS = [
@@ -270,10 +372,13 @@ def main():
         logger.error(f"Error writing calendar file: {e}")
 
     # --- Process and Enrich Weather presets ---
-    logger.info("Processing weather matrix enrichment...")
+    logger.info("Fetching live monthly weather baselines from Open-Meteo...")
+    weather_baselines = fetch_monthly_weather_baselines()
+
+    logger.info("Processing weather matrix enrichment with Gemini...")
     enriched_weather = {}
 
-    for zip_code, months in WEATHER_BASELINES.items():
+    for zip_code, months in weather_baselines.items():
         city = ZIP_MAPPING[zip_code]["city"]
         enriched_weather[zip_code] = {}
         
