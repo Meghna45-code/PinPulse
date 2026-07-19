@@ -59,12 +59,12 @@ class PinPulseEngine:
         wishlist_items = sum(1 for x in interactions if x.get("action_type") == "wishlist")
 
         # Calculate blend factors (0.0 to 1.0)
-        # 3 creator video clicks shifts you fully to social_commerce weights
-        t_creator = min(1.0, creator_clicks * 0.33)
-        # 3 boutique views shifts you fully to hyper_local_boutique weights
-        t_boutique = min(1.0, boutique_clicks * 0.33)
-        # 3 cart additions shifts you fully to high_intent weights
-        t_intent = min(1.0, len(cart) * 0.33)
+        # ~8 creator video clicks shifts you fully to social_commerce weights
+        t_creator = min(1.0, creator_clicks * 0.13)
+        # ~8 boutique views shifts you fully to hyper_local_boutique weights
+        t_boutique = min(1.0, boutique_clicks * 0.13)
+        # ~8 cart additions shifts you fully to high_intent weights
+        t_intent = min(1.0, len(cart) * 0.13)
         # Wishlisted items apply a subtle nudge towards high_intent (10% per item, max 1.0)
         t_wishlist = min(1.0, wishlist_items * 0.10)
         # Festive is binary: holiday active = fully in festive_season mode
