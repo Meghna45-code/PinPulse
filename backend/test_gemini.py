@@ -10,8 +10,8 @@ print("GEMINI_API_KEY exists in env:", gemini_key is not None)
 if gemini_key:
     genai.configure(api_key=gemini_key)
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        response = model.generate_content("Hello! What model are you?")
+        model = genai.GenerativeModel('gemini-flash-latest')
+        response = model.generate_content("Hello! Explain yourself in one sentence.")
         print("Success:", response.text)
     except Exception as e:
         print("Error calling Gemini API:", e)

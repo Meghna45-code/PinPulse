@@ -10,8 +10,8 @@ REGIONAL_CALENDAR = {
     ("800008", "2026-12-10"): {"event_name": "Patna Wedding Day (Pheras)", "event_type": "wedding_day", "attire_tags": ["heavy_silk", "traditional_embroidery", "ceremonial", "silk", "saree", "sherwani", "crimson", "gold", "maroon"], "is_festive": True},
     # Kochi
     ("682001", "2026-08-27"): {"event_name": "Onam Festival (Thiruvonam)", "event_type": "festival", "attire_tags": ["saree", "mundu", "kasavu_weave", "white", "cream", "gold"], "is_festive": True},
-    # Shillong
-    ("793003", "2026-12-20"): {"event_name": "Shillong Wedding Day (Traditional)", "event_type": "wedding_day", "attire_tags": ["handwoven_silk", "tribal_heritage", "jainsem", "jymphong", "earth-tones"], "is_festive": True}
+    # Odisha
+    ("752001", "2026-07-16"): {"event_name": "Puri Rath Yatra Chariot Festival", "event_type": "festival", "attire_tags": ["sambalpuri", "cotton", "traditional", "yellow", "saffron", "saree", "kurta"], "is_festive": True}
 }
 
 def get_vibe_vector(vibe_name: str):
@@ -63,7 +63,7 @@ def rank_products(zip_code: str, date_str: str, vibe: str):
     is_wedding_day = (event_type == "wedding_day")
     
     month = int(date_str.split("-")[1])
-    is_cold_wave = (month in [12, 1]) and (zip_code in ["800008", "793003"])
+    is_cold_wave = (month in [12, 1]) and (zip_code in ["800008"])
     
     trending_tags = target_event_tags # For testing, trend overlap equals event tags
     user_vector = get_vibe_vector(vibe)
@@ -104,8 +104,8 @@ def rank_products(zip_code: str, date_str: str, vibe: str):
             if "kasavu_weave" in p_tags:
                 final_score += 0.50
                 
-        if zip_code == "793003" and is_wedding_day:
-            if "handwoven_silk" in p_tags or "tribal_heritage" in p_tags:
+        if zip_code == "752001" and active_event and active_event.get("event_name") == "Puri Rath Yatra Chariot Festival":
+            if "sambalpuri" in p_tags or "cotton" in p_tags:
                 final_score += 0.50
                 
         ranked.append({
@@ -150,16 +150,16 @@ def run_tests():
     print("[PASS] Scenario 2 Assertion Passed: Traditional Kasavu wear dominates on Onam.")
     print("---------------------------------------------")
 
-    # Scenario 3: Shillong (793003) Traditional Khasi Wedding (Dec 20)
-    print("Scenario 3: Shillong (793003) Khasi Wedding Day (Dec 20)")
-    shillong_ranks = rank_products("793003", "2026-12-20", "festive")
-    top_shillong = shillong_ranks[:3]
-    for idx, item in enumerate(top_shillong, 1):
+    # Scenario 3: Odisha (752001) Puri Rath Yatra Chariot Festival (July 16)
+    print("Scenario 3: Odisha (752001) Puri Rath Yatra Chariot Festival (July 16)")
+    odisha_ranks = rank_products("752001", "2026-07-16", "festive")
+    top_odisha = odisha_ranks[:3]
+    for idx, item in enumerate(top_odisha, 1):
         print(f"  {idx}. {item['name']} - Score: {item['final_score']:.4f} - Tags: {item['tags']}")
         
-    # Assert Jainsem/Jymphong handwoven is ranked #1
-    assert "handwoven_silk" in top_shillong[0]["tags"], "Assertion Failed: Top item does not contain handwoven_silk tag!"
-    print("[PASS] Scenario 3 Assertion Passed: Handwoven Jainsem/Jymphong dominates Shillong wedding days.")
+    # Assert Sambalpuri or Cotton is ranked #1
+    assert "sambalpuri" in top_odisha[0]["tags"] or "cotton" in top_odisha[0]["tags"], "Assertion Failed: Top item does not contain sambalpuri or cotton tag!"
+    print("[PASS] Scenario 3 Assertion Passed: Traditional cotton and Sambalpuri handlooms dominate Odisha Rath Yatra.")
     print("---------------------------------------------")
     
     print("[SUCCESS] ALL REGIONAL SCENARIO VERIFICATIONS PASSED SUCCESSFULLY!")

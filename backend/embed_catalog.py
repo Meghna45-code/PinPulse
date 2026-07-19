@@ -20,7 +20,7 @@ CATALOG_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "fro
 LOCAL_CATALOG_FILE = os.path.join(os.path.dirname(__file__), "local_catalog.json")
 
 # Define the 60 product catalog items mapped with Zip Codes & Wedding/Event tags
-# zip_codes: empty list [] means globally available, ['793003'] means local to Shillong (micro-creators)
+# zip_codes: empty list [] means globally available, ['752001'] means local to Odisha (micro-creators)
 PRODUCTS_SOURCE = [
     # === REGIONAL WEDDING & CEREMONIAL ===
     
@@ -298,142 +298,142 @@ PRODUCTS_SOURCE = [
         "base_color": (0, 0, 139), "accent_color": (255, 255, 255)
     },
 
-    # --- Shillong Wedding & Local Boutique Micro-Creators (15 Items) ---
-    # locked strictly to zip code 793003 (Shillong) to demonstrate micro-creator support
+    # --- Odisha Festival & Local Boutique Handlooms (15 Items) ---
+    # locked strictly to zip code 752001 (Odisha) to demonstrate local handloom support
     {
         "id": 31,
-        "name": "[Khasi Weaves] Silk Jainsem",
-        "description": "Hand-woven mulberry silk Jainsem in deep amethyst, crafted by Laitumkhrah weavers.",
+        "name": "[Sambalpuri Weaves] Silk Saree",
+        "description": "Premium hand-woven Sambalpuri silk saree with traditional ikat border and shell work, ideal for Rath Yatra.",
         "category": "festive",
-        "tags": ["ethnic", "festive", "traditional", "jainsem", "silk", "handwoven_silk", "tribal_heritage", "micro_creator", "earth-tones"],
-        "zip_codes": ["793003"],
-        "base_color": (150, 50, 150), "accent_color": (255, 255, 255)
+        "tags": ["ethnic", "festive", "traditional", "silk", "saree", "sambalpuri", "ikat", "handloom"],
+        "zip_codes": ["752001"],
+        "base_color": (139, 0, 0), "accent_color": (218, 165, 32)
     },
     {
         "id": 32,
-        "name": "[Boutique Jymphong] Maroon Vest",
-        "description": "Authentic hand-woven wool Jymphong (traditional vest) detailed with local tribal patterns.",
+        "name": "[Boutique Katki] Ikat Kurta",
+        "description": "Authentic hand-woven cotton Ikat kurta for men, comfortable for festive temple walks.",
         "category": "festive",
-        "tags": ["ethnic", "festive", "traditional", "jymphong", "handwoven_silk", "tribal_heritage", "micro_creator", "earth-tones", "men"],
-        "zip_codes": ["793003"],
-        "base_color": (128, 0, 0), "accent_color": (255, 223, 0)
+        "tags": ["ethnic", "festive", "traditional", "kurta", "cotton", "ikat", "handloom", "men"],
+        "zip_codes": ["752001"],
+        "base_color": (0, 100, 80), "accent_color": (255, 255, 255)
     },
     {
         "id": 33,
-        "name": "[Hillcrest] Designer Jainsem",
-        "description": "Premium emerald green Khasi Jainsem from a local Laitumkhrah designer boutique.",
+        "name": "[Puri Handlooms] Tussar Silk Saree",
+        "description": "Elegant traditional Tussar silk saree in golden beige, crafted by Gopalpur weavers.",
         "category": "festive",
-        "tags": ["ethnic", "festive", "traditional", "jainsem", "silk", "handwoven_silk", "tribal_heritage", "micro_creator"],
-        "zip_codes": ["793003"],
-        "base_color": (0, 100, 50), "accent_color": (218, 165, 32)
+        "tags": ["ethnic", "festive", "traditional", "silk", "saree", "tussar_silk", "handloom"],
+        "zip_codes": ["752001"],
+        "base_color": (245, 222, 179), "accent_color": (139, 69, 19)
     },
     {
         "id": 34,
-        "name": "Pynhiar Synjat Elegant Gown",
-        "description": "Soft pastel silver fusion gown with Khasi handloom trim for modern engagements.",
+        "name": "Sambalpuri Crimson Bridal Lehenga",
+        "description": "Exquisite designer lehenga set featuring rich red Sambalpuri handloom patterns for weddings.",
         "category": "festive",
-        "tags": ["ethnic", "festive", "fusion", "western_formal", "silver", "white", "pastel"],
-        "zip_codes": ["793003"],
-        "base_color": (192, 192, 192), "accent_color": (255, 255, 255)
+        "tags": ["ethnic", "festive", "lehenga", "sambalpuri", "silk", "ceremonial", "crimson"],
+        "zip_codes": ["752001"],
+        "base_color": (178, 34, 34), "accent_color": (218, 165, 32)
     },
     {
         "id": 35,
-        "name": "Shillong Winter Party Tuxedo",
-        "description": "Premium burgundy velvet formal tuxedo suit with satin lapels for winter wedding receptions.",
-        "category": "streetwear",
-        "tags": ["streetwear", "western_formal", "navy", "burgundy", "black", "metallic", "men"],
-        "zip_codes": ["793003"],
-        "base_color": (70, 0, 20), "accent_color": (0, 0, 0)
+        "name": "Puri Beach Breeze Linen Shirt",
+        "description": "Ultra-lightweight white linen shirt, designed for maximum comfort in coastal Odisha weather.",
+        "category": "casual",
+        "tags": ["casual", "summer", "linen", "breathable", "shirt", "white"],
+        "zip_codes": ["752001"],
+        "base_color": (255, 255, 255), "accent_color": (192, 192, 192)
     },
     {
         "id": 36,
-        "name": "Cherry Blossom Suede Jacket",
-        "description": "Stylish tan brown suede leather jacket with plush lining, perfect for cherry blossom evenings.",
-        "category": "streetwear",
-        "tags": ["streetwear", "winter", "jacket", "coat", "boots"],
-        "zip_codes": ["793003"],
-        "base_color": (139, 69, 19), "accent_color": (0, 0, 0)
+        "name": "Sambalpuri Cotton Daily Kurti",
+        "description": "Vibrant blue printed cotton dailywear kurti, light and breezy for summer.",
+        "category": "casual",
+        "tags": ["casual", "summer", "cotton", "breathable", "kurti", "sambalpuri", "dailywear"],
+        "zip_codes": ["752001"],
+        "base_color": (70, 130, 180), "accent_color": (255, 255, 255)
     },
     {
         "id": 37,
-        "name": "Velvet Christmas Maxi Dress",
-        "description": "Deep crimson velvet winter gown with long sleeves, cozy and polished for Christmas church services.",
+        "name": "Pipli Work Applique Dupatta",
+        "description": "Stunning black cotton dupatta adorned with traditional Pipli applique embroidery.",
         "category": "festive",
-        "tags": ["ethnic", "festive", "velvet", "woolen", "dress", "formal", "winter"],
-        "zip_codes": ["793003"],
-        "base_color": (128, 0, 32), "accent_color": (255, 255, 255)
+        "tags": ["ethnic", "festive", "traditional", "dupatta", "cotton", "applique", "black"],
+        "zip_codes": ["752001"],
+        "base_color": (20, 20, 20), "accent_color": (255, 69, 0)
     },
     {
         "id": 38,
-        "name": "Wangala Tribal Beaded Vest",
-        "description": "Traditional cotton vest detailed with native Garo shells and multi-color glass beads.",
-        "category": "festive",
-        "tags": ["ethnic", "festive", "traditional", "tribal_heritage", "accessories"],
-        "zip_codes": ["793003"],
-        "base_color": (255, 69, 0), "accent_color": (255, 255, 0)
-    },
-    {
-        "id": 39,
-        "name": "Shad Suk Ryndia Shawl",
-        "description": "Traditional cream hand-woven Ryndia silk shawl with tassels, organic tribal heritage.",
-        "category": "festive",
-        "tags": ["ethnic", "festive", "traditional", "silk", "tribal_heritage", "micro_creator"],
-        "zip_codes": ["793003"],
-        "base_color": (245, 245, 220), "accent_color": (139, 69, 19)
-    },
-    {
-        "id": 40,
-        "name": "Avant-Garde Denim Trench",
-        "description": "Student-designed denim patchwork trench coat, streetwear favorite in Laitumkhrah.",
-        "category": "streetwear",
-        "tags": ["streetwear", "indie", "fusion", "denim-fusion"],
-        "zip_codes": ["793003"],
-        "base_color": (70, 130, 180), "accent_color": (0, 0, 0)
-    },
-    {
-        "id": 41,
-        "name": "Woolen Cable Knit Cardigan",
-        "description": "Thick charcoal grey knitted woolen wrap cardigan for Shillong winter weather.",
-        "category": "winter",
-        "tags": ["winter", "cardigan", "woolen", "warm"],
-        "zip_codes": ["793003"],
-        "base_color": (60, 60, 60), "accent_color": (255, 255, 255)
-    },
-    {
-        "id": 42,
-        "name": "Behdiengkhlam Traditional Wrap",
-        "description": "Simple ethnic cotton wrap with Khasi geometric patterns, used during annual festivals.",
-        "category": "festive",
-        "tags": ["ethnic", "traditional", "cotton"],
-        "zip_codes": ["793003"],
-        "base_color": (255, 255, 255), "accent_color": (0, 0, 0)
-    },
-    {
-        "id": 43,
-        "name": "Pastel Pink Woolen Jainsem",
-        "description": "Cozy wool-silk blend Jainsem in baby pink, perfect for winter church services.",
-        "category": "winter",
-        "tags": ["winter", "traditional", "jainsem", "micro_creator"],
-        "zip_codes": ["793003"],
+        "name": "Katki Cotton Traditional Saree",
+        "description": "Breathable hand-woven cotton saree in pastel pink, perfect for casual ethnic occasions.",
+        "category": "casual",
+        "tags": ["casual", "summer", "cotton", "saree", "traditional", "handloom", "pastel"],
+        "zip_codes": ["752001"],
         "base_color": (255, 192, 203), "accent_color": (255, 255, 255)
     },
     {
-        "id": 44,
-        "name": "Indie Streetwear Fleece Hoodie",
-        "description": "Oversized polar fleece hoodie in neon green, favored by Shillong college musicians.",
+        "id": 39,
+        "name": "Odisha Silk Nehru Waistcoat",
+        "description": "Premium handloom silk Nehru jacket in metallic gold, smart formal attire for wedding guests.",
+        "category": "festive",
+        "tags": ["ethnic", "festive", "formal", "waistcoat", "silk", "handloom", "men"],
+        "zip_codes": ["752001"],
+        "base_color": (218, 165, 32), "accent_color": (0, 0, 0)
+    },
+    {
+        "id": 40,
+        "name": "Pipli Applique Winter Shawl",
+        "description": "Warm black woolen shawl with bright Pipli applique patches, cozy for coastal winter nights.",
+        "category": "winter",
+        "tags": ["winter", "warm", "shawl", "woolen", "applique"],
+        "zip_codes": ["752001"],
+        "base_color": (30, 30, 30), "accent_color": (220, 20, 60)
+    },
+    {
+        "id": 41,
+        "name": "Sambalpuri Ikat Winter Bomber",
+        "description": "Trendy hybrid bomber jacket with Sambalpuri Ikat panels and warm fleece lining.",
         "category": "streetwear",
-        "tags": ["streetwear", "indie", "fusion", "winter"],
-        "zip_codes": ["793003"],
-        "base_color": (50, 205, 50), "accent_color": (0, 0, 0)
+        "tags": ["streetwear", "modern", "jacket", "fusion", "winter", "sambalpuri"],
+        "zip_codes": ["752001"],
+        "base_color": (80, 20, 20), "accent_color": (0, 0, 0)
+    },
+    {
+        "id": 42,
+        "name": "Puri Temple Motif Kurta Set",
+        "description": "Pure cotton yellow kurta paired with white pajama, featuring local temple border patterns.",
+        "category": "festive",
+        "tags": ["ethnic", "festive", "traditional", "kurta", "cotton", "yellow"],
+        "zip_codes": ["752001"],
+        "base_color": (255, 215, 0), "accent_color": (255, 255, 255)
+    },
+    {
+        "id": 43,
+        "name": "Ikat Patchwork Denim Jacket",
+        "description": "Heavy denim jacket with traditional Ikat patchwork details, college-fest favorite.",
+        "category": "streetwear",
+        "tags": ["streetwear", "denim", "jacket", "fusion", "modern"],
+        "zip_codes": ["752001"],
+        "base_color": (70, 130, 180), "accent_color": (255, 255, 255)
+    },
+    {
+        "id": 44,
+        "name": "Konark Sun Motif Graphic Tee",
+        "description": "Breathable black cotton tee featuring a stylized print of the Konark Sun Temple wheel.",
+        "category": "streetwear",
+        "tags": ["streetwear", "casual", "cotton", "breathable", "tee"],
+        "zip_codes": ["752001"],
+        "base_color": (10, 10, 10), "accent_color": (255, 255, 255)
     },
     {
         "id": 45,
-        "name": "Polished Winter Formal Coat",
-        "description": "Men's double-breasted formal winter overcoat in navy wool, smart wedding attire.",
-        "category": "streetwear",
-        "tags": ["streetwear", "western_formal", "navy", "winter"],
-        "zip_codes": ["793003"],
-        "base_color": (10, 20, 60), "accent_color": (255, 255, 255)
+        "name": "Bomkai Silk Royal Blue Sherwani",
+        "description": "Luxurious groom sherwani in hand-woven royal blue Bomkai silk with gold zari work.",
+        "category": "festive",
+        "tags": ["ethnic", "festive", "traditional", "sherwani", "silk", "handloom", "ceremonial", "blue", "men"],
+        "zip_codes": ["752001"],
+        "base_color": (0, 0, 139), "accent_color": (218, 165, 32)
     },
 
     # === GLOBAL APPAREL (15 Items) ===
