@@ -576,31 +576,93 @@ PRODUCTS_SOURCE = [
 ]
 
 # Style dimension mapping to compute deterministic vector vibes
-def get_vibe_vector(category_or_tags):
+def get_vibe_vector(category_or_tags, category_str="", aesthetic_str=""):
+    """
+    Build a 512-dim deterministic vibe vector from tags + category + aesthetic/nature.
+    
+    Vector layout (512 dims):
+      0-99   : Ethnic / Traditional / Festive
+      100-149: Casual / Summer / Breathable
+      150-199: Winter / Warm / Heavy-weight
+      200-249: Streetwear / Modern / Fusion / Party
+      250-299: Luxury / Premium / Designer / Bridal
+      300-349: Minimalist / Clean / Subtle / Neutral
+      350-399: Boho / Earthy / Artisanal / Handloom
+      400-449: Maximalist / Bold / Embellished / Printed
+      450-474: Workwear / Formal / Office
+      475-499: Athleisure / Sporty / Active
+      500-511: Category + Aesthetic fingerprint noise
+    """
     vec = np.zeros(512)
     tags = set(category_or_tags)
-    
-    if any(t in tags for t in ["ethnic", "festive", "saree", "lehenga", "traditional", "jainsem", "jymphong", "mundu", "sherwani"]):
+
+    # === STYLE ZONE 1: Ethnic / Traditional / Festive (0-99) ===
+    if any(t in tags for t in ["ethnic", "festive", "saree", "lehenga", "traditional",
+                                "jainsem", "jymphong", "mundu", "sherwani", "kurta",
+                                "ceremonial", "zari", "banarasi", "bhagalpuri-silk"]):
         vec[0:100] = 1.0
-    if any(t in tags for t in ["casual", "summer", "linen", "cotton", "breathable"]):
-        vec[100:200] = 1.0
-    if any(t in tags for t in ["winter", "heavy-weight", "velvet", "shawl", "warm", "jacket", "cardigan", "woolen"]):
-        vec[200:300] = 1.0
-    if any(t in tags for t in ["streetwear", "hoodie", "cargo", "modern", "denim", "fusion", "party"]):
-        vec[300:400] = 1.0
-        
-    vec[400:512] = 0.2
-    
-    hash_seed = abs(hash(" ".join(sorted(list(tags))))) % (2**32)
+
+    # === STYLE ZONE 2: Casual / Summer / Breathable (100-149) ===
+    if any(t in tags for t in ["casual", "summer", "linen", "cotton", "breathable",
+                                "light", "floral", "printed", "salwar"]):
+        vec[100:150] = 1.0
+
+    # === STYLE ZONE 3: Winter / Warm / Heavy-weight (150-199) ===
+    if any(t in tags for t in ["winter", "heavy-weight", "velvet", "shawl", "warm",
+                                "jacket", "cardigan", "woolen", "quilted", "layered"]):
+        vec[150:200] = 1.0
+
+    # === STYLE ZONE 4: Streetwear / Modern / Fusion / Party (200-249) ===
+    if any(t in tags for t in ["streetwear", "hoodie", "cargo", "modern", "denim",
+                                "fusion", "party", "contemporary", "indo-western"]):
+        vec[200:250] = 1.0
+
+    # === AESTHETIC ZONE 1: Luxury / Premium / Bridal (250-299) ===
+    if any(t in tags for t in ["luxury", "premium", "designer", "bridal", "silk",
+                                "heavy_silk", "gold", "zari", "embellished", "brocade",
+                                "ceremonial"]):
+        vec[250:300] = 1.0
+
+    # === AESTHETIC ZONE 2: Minimalist / Clean / Subtle / Neutral (300-349) ===
+    if any(t in tags for t in ["minimalist", "clean", "subtle", "neutral", "solid",
+                                "simple", "basic", "pastel", "white", "beige"]):
+        vec[300:350] = 1.0
+
+    # === AESTHETIC ZONE 3: Boho / Earthy / Artisanal / Handloom (350-399) ===
+    if any(t in tags for t in ["boho", "earthy", "artisanal", "handloom", "natural-dye",
+                                "block-print", "ikat", "khadi", "woven", "tribal",
+                                "bhagalpuri-silk", "traditional_embroidery"]):
+        vec[350:400] = 1.0
+
+    # === AESTHETIC ZONE 4: Maximalist / Bold / Embellished (400-449) ===
+    if any(t in tags for t in ["maximalist", "bold", "embellished", "printed", "sequin",
+                                "mirror-work", "heavy", "multicolor", "vibrant",
+                                "crimson", "magenta", "fuchsia"]):
+        vec[400:450] = 1.0
+
+    # === AESTHETIC ZONE 5: Workwear / Formal (450-474) ===
+    if any(t in tags for t in ["workwear", "formal", "office", "corporate", "blazer",
+                                "structured", "tailored"]):
+        vec[450:475] = 1.0
+
+    # === AESTHETIC ZONE 6: Athleisure / Sporty / Active (475-499) ===
+    if any(t in tags for t in ["athleisure", "sporty", "active", "yoga", "gym",
+                                "stretch", "moisture-wicking"]):
+        vec[475:500] = 1.0
+
+    # === FINGERPRINT: Category + Aesthetic string hashing (500-511) ===
+    fingerprint_str = category_str + " " + aesthetic_str + " " + " ".join(sorted(list(tags)))
+    hash_seed = abs(hash(fingerprint_str)) % (2**32)
     rng = np.random.default_rng(hash_seed)
     noise = rng.normal(0, 0.05, 512)
     vec += noise
-    
+
     norm = np.linalg.norm(vec)
     if norm > 0:
         vec = vec / norm
-        
+
     return vec.tolist()
+
 
 def generate_catalog_images():
     try:
@@ -695,7 +757,11 @@ def run_clip_embeddings(use_real_clip=True):
                 embedding = None
                 
         if embedding is None:
-            embedding = get_vibe_vector(item["tags"])
+            embedding = get_vibe_vector(
+                item["tags"],
+                category_str=item.get("category", ""),
+                aesthetic_str=item.get("aesthetic", "")
+            )
             
         processed_products.append({
             "id": i,
