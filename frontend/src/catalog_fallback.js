@@ -4,7 +4,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Red and yellow cotton saree",
     "description": "Red and yellow cotton saree for Chhath Puja",
     "category": "festive",
-    "image_url": "/catalog/catalog_2.jpg",
+    "image_url": "/images/1.jpg",
     "product_url": "https://www.myntra.com/sarees/mitera/mitera-red--yellow-tie--dye-sequinned-saree/19098146/buy",
     "tags": [
       "casual",
@@ -540,7 +540,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Red and yellow cotton saree",
     "description": "Red and yellow cotton saree for Chhath Puja",
     "category": "festive",
-    "image_url": "/catalog/catalog_3.jpg",
+    "image_url": "/images/2.webp",
     "product_url": "https://www.myntra.com/sarees/arhi/arhi-red--yellow-pure-cotton-saree/19878644/buy",
     "tags": [
       "casual",
@@ -1076,7 +1076,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Designer fusion gown for wedding",
     "description": "Designer fusion gown for wedding reception pastel",
     "category": "festive",
-    "image_url": "/catalog/catalog_4.jpg",
+    "image_url": "/images/3.webp",
     "product_url": "https://www.myntra.com/coats/here%26now/herenow-women-double-breasted-notched-lapel-long-regular-fit-trench-coat/37316555/buy",
     "tags": [
       "pastel",
@@ -1610,7 +1610,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Designer fusion gown for wedding",
     "description": "Designer fusion gown for wedding reception pastel",
     "category": "festive",
-    "image_url": "/catalog/catalog_5.jpg",
+    "image_url": "/images/4.jpg",
     "product_url": "https://www.myntra.com/coats/stylecast+x+revolte/stylecast-x-revolte-women-notched-lapel-single-breasted-longline-overcoat/31174169/buy",
     "tags": [
       "pastel",
@@ -2144,7 +2144,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy woollen trench coat for",
     "description": "Trendy woollen trench coat for women street style",
     "category": "winter",
-    "image_url": "/catalog/catalog_6.jpg",
+    "image_url": "/images/5.avif",
     "product_url": "https://www.myntra.com/dresses/aayu/aayu-ruffled-chiffon-a-line-maxi-dress/38066174/buy",
     "tags": [
       "warm",
@@ -2675,7 +2675,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy woollen trench coat for",
     "description": "Trendy woollen trench coat for women street style",
     "category": "winter",
-    "image_url": "/catalog/catalog_7.jpg",
+    "image_url": "/images/6.jpg",
     "product_url": "https://www.myntra.com/dresses/vaararo/vaararo-womenbodycon-maxi-dress/30807644/buy",
     "tags": [
       "warm",
@@ -3206,7 +3206,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Heavy red banarasi silk saree",
     "description": "Heavy red Banarasi silk saree for wedding ceremony",
     "category": "festive",
-    "image_url": "/catalog/catalog_8.jpg",
+    "image_url": "/images/7.webp",
     "product_url": "https://www.myntra.com/sarees/mitera/mitera-ethnic-motifs-zari-heavy-work-banarasi-silk-saree/41888590/buy",
     "tags": [
       "festive",
@@ -3737,7 +3737,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Heavy red banarasi silk saree",
     "description": "Heavy red Banarasi silk saree for wedding ceremony",
     "category": "festive",
-    "image_url": "/catalog/catalog_9.jpg",
+    "image_url": "/images/8.jpg",
     "product_url": "https://www.myntra.com/sarees/here%26now/herenow-banarasi-art-silk-sarees/41039905/buy",
     "tags": [
       "festive",
@@ -4268,7 +4268,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "White and gold kasavu saree",
     "description": "White and gold Kasavu saree for Kerala wedding",
     "category": "festive",
-    "image_url": "/catalog/catalog_10.jpg",
+    "image_url": "/images/9.jpg",
     "product_url": "https://www.myntra.com/sarees/soch/soch-off-white--gold-woven-design-embroidered-tissue-kasavu-saree/23561810/buy",
     "tags": [
       "festive",
@@ -4800,7 +4800,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "White and gold kasavu saree",
     "description": "White and gold Kasavu saree for Kerala wedding",
     "category": "festive",
-    "image_url": "/catalog/catalog_11.jpg",
+    "image_url": "/images/10.jpg",
     "product_url": "https://www.myntra.com/sarees/silk+land/silk-land-onam-special-floral-printed-kasavu-silk-saree/30922906/buy",
     "tags": [
       "festive",
@@ -5332,7 +5332,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s dark maroon velvet nehru",
     "description": "Men\u2019s dark maroon velvet Nehru jacket for wedding sangeet\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_12.jpg",
+    "image_url": "/images/11.jpg",
     "product_url": "https://www.myntra.com/nehru-jackets/vastraa+fusion/vastraa-fusion-men-black-textured-nehru-jacket/10830512/buy",
     "tags": [
       "festive",
@@ -5864,7 +5864,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s dark maroon velvet nehru",
     "description": "Men\u2019s dark maroon velvet Nehru jacket for wedding sangeet\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_13.jpg",
+    "image_url": "/images/12.jpg",
     "product_url": "https://www.myntra.com/nehru-jackets/wintage/wintage-embroidered-banarasi-cotton-black-nehru-jacket/32701878/buy",
     "tags": [
       "festive",
@@ -6396,7 +6396,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Indo-western linen co-ord set for",
     "description": "Indo-western linen co-ord set for women bohemian style",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_14.jpg",
+    "image_url": "/images/13.jpg",
     "product_url": "https://www.myntra.com/co-ords/minimul/minimul-linen-coord-set/32069775/buy",
     "tags": [
       "casual",
@@ -6928,7 +6928,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Indo-western linen co-ord set for",
     "description": "indo-western linen co-ord set for women bohemian style",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_15.jpg",
+    "image_url": "/images/14.avif",
     "product_url": "https://www.myntra.com/co-ords/nayam+by+lakshita/nayam-by-lakshita-women-solid-embroidered-tunic-and-palazzo-co-ord-set/29059440/buy",
     "tags": [
       "casual",
@@ -7460,7 +7460,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Premium black velvet evening gown",
     "description": "Premium black velvet evening gown for women",
     "category": "winter",
-    "image_url": "/catalog/catalog_16.jpg",
+    "image_url": "/images/15.jpg",
     "product_url": "https://www.myntra.com/dresses/athena/athena-black-halter-neck-velvet-gown/15980672/buy",
     "tags": [
       "party",
@@ -7992,7 +7992,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Premium black velvet evening gown",
     "description": "Premium black velvet evening gown for women",
     "category": "winter",
-    "image_url": "/catalog/catalog_17.jpg",
+    "image_url": "/images/16.jpg",
     "product_url": "https://www.myntra.com/dresses/miss+chase/miss-chase-women-sequined-puff-sleeve-velvet-gown-maxi-dress/36676226/buy",
     "tags": [
       "party",
@@ -8524,7 +8524,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s bright yellow cotton kurta",
     "description": "Men\u2019s bright yellow cotton kurta pyjama set",
     "category": "casual",
-    "image_url": "/catalog/catalog_18.jpg",
+    "image_url": "/images/17.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/anouk/anouk-lemon-ethnic-motifs-printed-mandarin-collar-straight-kurta-with-pyjamas/32646700/buy",
     "tags": [
       "casual",
@@ -9054,7 +9054,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s bright yellow cotton kurta",
     "description": "Men\u2019s bright yellow cotton kurta pyjama set",
     "category": "casual",
-    "image_url": "/catalog/catalog_19.jpg",
+    "image_url": "/images/18.webp",
     "product_url": "https://www.myntra.com/kurta-sets/jompers/jompers-floral-embroidered-mandarin-collar-regular-pure-cotton-straight-kurta-with-pyjama/31447896/buy",
     "tags": [
       "casual",
@@ -9584,7 +9584,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s navy blue designer tuxedo",
     "description": "Men\u2019s navy blue designer tuxedo for formal reception\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_20.jpg",
+    "image_url": "/images/19.jpg",
     "product_url": "https://www.myntra.com/blazers/integration/integration-shawl-collar-fully-lined-ultra-slim-fit-party-blazer/36983470/buy",
     "tags": [
       "party",
@@ -10114,7 +10114,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s navy blue designer tuxedo",
     "description": "Men\u2019s navy blue designer tuxedo for formal reception\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_21.jpg",
+    "image_url": "/images/20.jpg",
     "product_url": "https://www.myntra.com/blazers/jb+studio/jb-studio-self-design-notched-lapel-single-breasted-blazer/37318263/buy",
     "tags": [
       "party",
@@ -10644,7 +10644,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"royal velvet designer lehenga for",
     "description": "\"Royal velvet designer lehenga for women heavy embroidery\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_22.jpg",
+    "image_url": "/images/21.jpg",
     "product_url": "https://www.myntra.com/lehenga-choli/design+elements/design-elements-embellished-sequinned-velvet-semi-stitched-lehenga--blouse-with-dupatta/37562158/buy",
     "tags": [
       "festive",
@@ -11177,7 +11177,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"royal velvet designer lehenga for",
     "description": "\"Royal velvet designer lehenga for women heavy embroidery\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_23.jpg",
+    "image_url": "/images/22.webp",
     "product_url": "https://www.myntra.com/lehenga-choli/shae+by+sassafras/shae-by-sassafras-embellished-sequinned-ready-to-wear-velvet-lehenga--blouse/36815658/buy",
     "tags": [
       "festive",
@@ -11710,7 +11710,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Ustainable linen saree for contemporary",
     "description": "ustainable linen saree for contemporary women casual chic",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_24.jpg",
+    "image_url": "/images/23.webp",
     "product_url": "https://www.myntra.com/sarees/stava+creation/stava-creation-embroidered-pure-linen-saree/42958300/buy",
     "tags": [
       "casual",
@@ -12242,7 +12242,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Ustainable linen saree for contemporary",
     "description": "ustainable linen saree for contemporary women casual chic",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_25.jpg",
+    "image_url": "/images/24.webp",
     "product_url": "https://www.myntra.com/sarees/samantha/samantha-pure-linen-saree/40116971/buy",
     "tags": [
       "casual",
@@ -12774,7 +12774,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Oversized pastel woollen sweater for",
     "description": "Oversized pastel woollen sweater for Gen-Z winter look",
     "category": "winter",
-    "image_url": "/catalog/catalog_26.jpg",
+    "image_url": "/images/25.jpg",
     "product_url": "https://www.myntra.com/sweaters/miss+mosa+by+akanksha/miss-mosa-by-akanksha-koala-strawbery-oversized-sweater-in-cream/37802401/buy",
     "tags": [
       "pastel",
@@ -13307,7 +13307,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Oversized pastel woollen sweater for",
     "description": "Oversized pastel woollen sweater for Gen-Z winter look",
     "category": "winter",
-    "image_url": "/catalog/catalog_27.jpg",
+    "image_url": "/images/26.jpg",
     "product_url": "https://www.myntra.com/sweaters/miss+mosa+by+akanksha/miss-mosa-by-akanksha-emily-oversized-statement-pullover/38746978/buy",
     "tags": [
       "pastel",
@@ -13840,7 +13840,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s ethnic silk kurta with",
     "description": "Men\u2019s ethnic silk kurta with Nehru jacket set\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_28.jpg",
+    "image_url": "/images/27.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/kraft+india/kraft-india-men-regular-kurta--churidar-with-embroidered-nehru-jacket-set/23344372/buy",
     "tags": [
       "festive",
@@ -14372,7 +14372,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s ethnic silk kurta with",
     "description": "Men\u2019s ethnic silk kurta with Nehru jacket set\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_29.jpg",
+    "image_url": "/images/28.avif",
     "product_url": "https://www.myntra.com/kurta-sets/kraft+india/kraft-india-men-regular-kurta-sets-with-nehru-jacket/34024703/buy",
     "tags": [
       "festive",
@@ -14904,7 +14904,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Designer fusion dress with traditional",
     "description": "Designer fusion dress with traditional Kerala border detail",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_30.jpg",
+    "image_url": "/images/29.webp",
     "product_url": "https://www.myntra.com/sarees/revika/revika-woven-design-zari-art-silk-designer-kanjeevaram-saree/43320774/buy",
     "tags": [
       "streetwear",
@@ -15434,7 +15434,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Designer fusion dress with traditional",
     "description": "Designer fusion dress with traditional Kerala border detail",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_31.jpg",
+    "image_url": "/images/30.webp",
     "product_url": "https://www.myntra.com/kurta-sets/vredevogel/vredevogel-ethnic-motifs-woven-design-thread-work-chanderi-silk-kurta--trouser--dupatta/31114231/buy",
     "tags": [
       "streetwear",
@@ -15964,7 +15964,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s bright yellow cotton kurta",
     "description": "Men\u2019s bright yellow cotton kurta for pre-wedding haldi function",
     "category": "festive",
-    "image_url": "/catalog/catalog_32.jpg",
+    "image_url": "/images/31.webp",
     "product_url": "https://www.myntra.com/kurtas/edin/edin-men-yellow-cotton-kurtas/35734621/buy",
     "tags": [
       "casual",
@@ -16496,7 +16496,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s bright yellow cotton kurta",
     "description": "Men\u2019s bright yellow cotton kurta for pre-wedding haldi function",
     "category": "festive",
-    "image_url": "/catalog/catalog_33.jpg",
+    "image_url": "/images/32.webp",
     "product_url": "https://www.myntra.com/kurtas/dincharya/dincharya-men-ethnic-motifs-printed-sequinned-kurta/41035603/buy",
     "tags": [
       "casual",
@@ -17028,7 +17028,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Traditional kerala set mundu for",
     "description": "Traditional Kerala set mundu for men festi",
     "category": "festive",
-    "image_url": "/catalog/catalog_34.jpg",
+    "image_url": "/images/33.webp",
     "product_url": "https://www.myntra.com/kurta-sets/vastramay/vastramay-men-ethnic-motifs-embroidered-regular-sequinned-kurta/32317347/buy",
     "tags": [
       "gold",
@@ -17558,7 +17558,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Traditional kerala set mundu for",
     "description": "Traditional Kerala set mundu for men festi",
     "category": "festive",
-    "image_url": "/catalog/catalog_35.jpg",
+    "image_url": "/images/34.webp",
     "product_url": "https://www.myntra.com/kurta-sets/vastramay/vastramay-men-embroidered-regular-sequinned-kurta/32317352/buy",
     "tags": [
       "gold",
@@ -18088,7 +18088,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Women\u2019s stylish velvet blazer for",
     "description": "Women\u2019s stylish velvet blazer for winter formal event\"",
     "category": "winter",
-    "image_url": "/catalog/catalog_36.jpg",
+    "image_url": "/images/35.jpg",
     "product_url": "https://www.myntra.com/blazers/tboj/tboj-notch-lapel-collared-blazers/37585111/buy",
     "tags": [
       "western_formal",
@@ -18618,7 +18618,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Women\u2019s stylish velvet blazer for",
     "description": "Women\u2019s stylish velvet blazer for winter formal event\"",
     "category": "winter",
-    "image_url": "/catalog/catalog_37.jpg",
+    "image_url": "/images/36.jpg",
     "product_url": "https://www.myntra.com/blazers/tboj/tboj-notch-lapel-collared-blazers/37585113/buy",
     "tags": [
       "western_formal",
@@ -19148,7 +19148,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Wedding ceremony: \"men\u2019s heavy maroon",
     "description": "Wedding Ceremony: \"Men\u2019s heavy maroon sherwani with embroidery\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_38.jpg",
+    "image_url": "/images/37.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/ahlan+apparels/ahlan-apparels-men-ethnic-motifs-printed-regular-kurta-with-pyjamas/39771464/buy",
     "tags": [
       "traditional",
@@ -19677,7 +19677,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Wedding ceremony: \"men\u2019s heavy maroon",
     "description": "Wedding Ceremony: \"Men\u2019s heavy maroon sherwani with embroidery\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_39.jpg",
+    "image_url": "/images/38.webp",
     "product_url": "https://www.myntra.com/kurta-sets/ahlan+apparels/ahlan-apparels-men-ethnic-motifs-printed-regular-kurta-with-pyjamas/39771463/buy",
     "tags": [
       "traditional",
@@ -20206,7 +20206,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Omen\u2019s contemporary fusion kurti with",
     "description": "omen\u2019s contemporary fusion kurti with asymmetrical hem\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_40.jpg",
+    "image_url": "/images/39.webp",
     "product_url": "https://www.myntra.com/kurtis/anouk+rustic/anouk-rustic-floral-print-curved-hem-kurti/35549858/buy",
     "tags": [
       "streetwear",
@@ -20736,7 +20736,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Omen\u2019s contemporary fusion kurti with",
     "description": "omen\u2019s contemporary fusion kurti with asymmetrical hem\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_41.jpg",
+    "image_url": "/images/40.webp",
     "product_url": "https://www.myntra.com/kurtis/anouk+rustic/anouk-rustic-ethnic-motifs-print-curved-hem-kurti/35549502/buy",
     "tags": [
       "streetwear",
@@ -21266,7 +21266,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"white cotton kurta for holi\"",
     "description": "\"White cotton kurta for Holi\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_42.jpg",
+    "image_url": "/images/41.jpg",
     "product_url": "https://www.myntra.com/kurtas/fabindia/fabindia-band-collar-straight-kurta/40024157/buy",
     "tags": [
       "casual",
@@ -21797,7 +21797,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"white cotton kurta for holi\"",
     "description": "\"White cotton kurta for Holi\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_43.jpg",
+    "image_url": "/images/42.webp",
     "product_url": "https://www.myntra.com/kurtas/here%26now/herenow-men-kurta/39580273/buy",
     "tags": [
       "casual",
@@ -22328,7 +22328,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Tricolour ethnic outfit for independence",
     "description": "Tricolour ethnic outfit for Independence Day",
     "category": "festive",
-    "image_url": "/catalog/catalog_44.jpg",
+    "image_url": "/images/43.avif",
     "product_url": "https://www.myntra.com/kurta-sets/see+designs/see-designs-men-ethnic-motifs-printed-pure-cotton-kurta-with-pyjamas/21504974/buy",
     "tags": [
       "traditional",
@@ -22856,7 +22856,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Tricolour ethnic outfit for independence",
     "description": "Tricolour ethnic outfit for Independence Day",
     "category": "festive",
-    "image_url": "/catalog/catalog_45.jpg",
+    "image_url": "/images/44.webp",
     "product_url": "https://www.myntra.com/ethnic-dresses/laado+-+pamper+yourself/laado---pamper-yourself-cream-coloured--green-floral-ethnic-maxi-dress-with-dupatta/15502484/buy",
     "tags": [
       "traditional",
@@ -23384,7 +23384,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"warm velvet lehenga for diwali\"",
     "description": "\"Warm velvet lehenga for Diwali\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_46.jpg",
+    "image_url": "/images/45.webp",
     "product_url": "https://www.myntra.com/lehenga-choli/ragavi/ragavi-embroidered-velvet-mirror-work-ready-to-wear-lehenga--blouse-with-dupatta/30486518/buy",
     "tags": [
       "festive",
@@ -23917,7 +23917,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"warm velvet lehenga for diwali\"",
     "description": "\"Warm velvet lehenga for Diwali\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_47.jpg",
+    "image_url": "/images/46.webp",
     "product_url": "https://www.myntra.com/lehenga-choli/suppar+sleave/suppar-sleave-embroidered-semi-stitched-lehenga--unstitched-blouse-with-dupatta/40769063/buy",
     "tags": [
       "festive",
@@ -24450,7 +24450,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Minimalist ethnic wear for office",
     "description": "Minimalist ethnic wear for office",
     "category": "casual",
-    "image_url": "/catalog/catalog_48.jpg",
+    "image_url": "/images/47.jpg",
     "product_url": "https://www.myntra.com/kurtas/navibhu/navibhu-printed-cotton-office-wear-ethnic-motifs-printed-kurta/41433762/buy",
     "tags": [
       "traditional",
@@ -24979,7 +24979,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Minimalist ethnic wear for office",
     "description": "Minimalist ethnic wear for office",
     "category": "casual",
-    "image_url": "/catalog/catalog_49.jpg",
+    "image_url": "/images/48.webp",
     "product_url": "https://www.myntra.com/kurtas/navibhu/navibhu-printed-cotton-office-wear-ethnic-motifs-printed-kurta/41433771/buy",
     "tags": [
       "traditional",
@@ -25508,7 +25508,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Black formal suit for college",
     "description": "Black formal suit for college farewell",
     "category": "casual",
-    "image_url": "/catalog/catalog_50.jpg",
+    "image_url": "/images/49.avif",
     "product_url": "https://www.myntra.com/suits/tasva/tasva-self-designed-3-pcs-single-breasted-party-suit/29125102/buy",
     "tags": [
       "traditional",
@@ -26037,7 +26037,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Black formal suit for college",
     "description": "Black formal suit for college farewell",
     "category": "casual",
-    "image_url": "/catalog/catalog_51.jpg",
+    "image_url": "/images/50.jpg",
     "product_url": "https://www.myntra.com/suits/t+tryon+ultimate/t-tryon-ultimate-women-single-breasted-notched-lapel-two-piece-formal-suit/37965183/buy",
     "tags": [
       "traditional",
@@ -26566,7 +26566,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Pastel cotton dress for summer",
     "description": "Pastel cotton dress for summer farewell\"",
     "category": "casual",
-    "image_url": "/catalog/catalog_52.jpg",
+    "image_url": "/images/51.avif",
     "product_url": "https://www.myntra.com/dresses/pearls+and+pastels/pearls-and-pastels-floral-embroidered-peter-pan-collar-puff-sleeve-a-line-dress/42827100/buy",
     "tags": [
       "casual",
@@ -27096,7 +27096,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Pastel cotton dress for summer",
     "description": "Pastel cotton dress for summer farewell\"",
     "category": "casual",
-    "image_url": "/catalog/catalog_53.jpg",
+    "image_url": "/images/52.webp",
     "product_url": "https://www.myntra.com/dresses/pearls+and+pastels/pearls-and-pastels-peter-pan-collar-applique-a-line-dress/42773349/buy",
     "tags": [
       "casual",
@@ -27626,7 +27626,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"trendy leather jacket for winter",
     "description": "\"Trendy leather jacket for winter party\"",
     "category": "winter",
-    "image_url": "/catalog/catalog_54.jpg",
+    "image_url": "/images/53.jpg",
     "product_url": "https://www.myntra.com/boots/tryme/tryme-women-round-toe-winter-boots/35526687/buy",
     "tags": [
       "party",
@@ -28159,7 +28159,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"trendy leather jacket for winter",
     "description": "\"Trendy leather jacket for winter party\"",
     "category": "winter",
-    "image_url": "/catalog/catalog_55.jpg",
+    "image_url": "/images/54.jpg",
     "product_url": "https://www.myntra.com/boots/bxxy/bxxy-woman-round-toe-winter-boots/35685522/buy",
     "tags": [
       "party",
@@ -28692,7 +28692,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Bright ethnic kurta for eid\"",
     "description": "Bright ethnic kurta for Eid\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_56.jpg",
+    "image_url": "/images/55.avif",
     "product_url": "https://www.myntra.com/kurtas/anouk/anouk-men-embroidered-thread-work-kurta/43968962/buy",
     "tags": [
       "traditional",
@@ -29220,7 +29220,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Bright ethnic kurta for eid\"",
     "description": "Bright ethnic kurta for Eid\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_57.jpg",
+    "image_url": "/images/56.jpg",
     "product_url": "https://www.myntra.com/kurtas/anouk/anouk-ethnic-motifs-printed-mandarin-collar-straight-kurta/27851490/buy",
     "tags": [
       "traditional",
@@ -29748,7 +29748,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"full sleeve wool coat for",
     "description": "\"Full sleeve wool coat for Christmas\"",
     "category": "winter",
-    "image_url": "/catalog/catalog_58.jpg",
+    "image_url": "/images/57.avif",
     "product_url": "https://www.myntra.com/coats/chkokko/chkokko-double-breasted-wool-winter-overcoat/24730330/buy",
     "tags": [
       "warm",
@@ -30277,7 +30277,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"full sleeve wool coat for",
     "description": "\"Full sleeve wool coat for Christmas\"",
     "category": "winter",
-    "image_url": "/catalog/catalog_59.jpg",
+    "image_url": "/images/58.jpg",
     "product_url": "https://www.myntra.com/coats/montrex/montrex-women-self-design-single-breasted-winter-overcoat/31355568/buy",
     "tags": [
       "warm",
@@ -30806,7 +30806,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Lightweight breathable saree for wedding",
     "description": "Lightweight breathable saree for wedding",
     "category": "festive",
-    "image_url": "/catalog/catalog_60.jpg",
+    "image_url": "/images/59.jpg",
     "product_url": "https://www.myntra.com/sarees/suha/suha-letter-print-lightweight-saree/35505533/buy",
     "tags": [
       "casual",
@@ -31338,7 +31338,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Lightweight breathable saree for wedding",
     "description": "Lightweight breathable saree for wedding",
     "category": "festive",
-    "image_url": "/catalog/catalog_1.jpg",
+    "image_url": "/images/60.jpg",
     "product_url": "https://www.myntra.com/sarees/navibhu/navibhu-striped-silk-blend-lightweight-work-saree/39033952/buy",
     "tags": [
       "casual",
@@ -31870,7 +31870,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Stylish denim fusion outfit\"",
     "description": "Stylish denim fusion outfit\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_2.jpg",
+    "image_url": "/images/61.webp",
     "product_url": "https://www.myntra.com/dresses/fusion+by+glitchez/fusion-by-glitchez-shirt-collar-denim-a-line-dress/34927983/buy",
     "tags": [
       "fusion",
@@ -32398,7 +32398,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Stylish denim fusion outfit\"",
     "description": "Stylish denim fusion outfit\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_3.jpg",
+    "image_url": "/images/62.webp",
     "product_url": "https://www.myntra.com/dresses/fusion+by+glitchez/fusion-by-glitchez-shirt-collar-denim-a-line-dress/34927886/buy",
     "tags": [
       "fusion",
@@ -32926,7 +32926,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"heavy embroidery ethnic set\"",
     "description": "\"Heavy embroidery ethnic set\"",
     "category": "casual",
-    "image_url": "/catalog/catalog_4.jpg",
+    "image_url": "/images/63.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/maroosh/maroosh-women-heavy-roman-silk-black-embroidery-stitched-top-with-bottom--dupatta-set/30816590/buy",
     "tags": [
       "traditional",
@@ -33453,7 +33453,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"heavy embroidery ethnic set\"",
     "description": "\"Heavy embroidery ethnic set\"",
     "category": "casual",
-    "image_url": "/catalog/catalog_5.jpg",
+    "image_url": "/images/64.avif",
     "product_url": "https://www.myntra.com/kurta-sets/kalini/kalini-women-ethnic-motifs-embroidered-panelled-thread-work-kurta-with-trousers--with-dupatta/38887546/buy",
     "tags": [
       "traditional",
@@ -33980,7 +33980,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Comfortable cotton festive wear",
     "description": "Comfortable cotton festive wear",
     "category": "casual",
-    "image_url": "/catalog/catalog_6.jpg",
+    "image_url": "/images/65.webp",
     "product_url": "https://www.myntra.com/kurta-sets/jahida+comfort+with+style/jahida-comfort-with-style-printed-round-neck-pure-cotton-kurta-with-trousers--dupatta/37481460/buy",
     "tags": [
       "breathable",
@@ -34509,7 +34509,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Comfortable cotton festive wear",
     "description": "Comfortable cotton festive wear",
     "category": "casual",
-    "image_url": "/catalog/catalog_7.jpg",
+    "image_url": "/images/66.webp",
     "product_url": "https://www.myntra.com/kurta-sets/jahida+comfort+with+style/jahida-comfort-with-style-ethnic-motifs-printed-pure-cotton-kurta-with-palazzos--dupatta/28590074/buy",
     "tags": [
       "breathable",
@@ -35038,7 +35038,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"boho style layering outfit\"",
     "description": "\"Boho style layering outfit\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_8.jpg",
+    "image_url": "/images/67.webp",
     "product_url": "https://www.myntra.com/dresses/boho+by+athena/boho-by-athena-bohemian-floral-print-flared-sleeve-layered-a-line-tiered-dress/29712790/buy",
     "tags": [
       "casual",
@@ -35571,7 +35571,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"boho style layering outfit\"",
     "description": "\"Boho style layering outfit\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_9.jpg",
+    "image_url": "/images/68.webp",
     "product_url": "https://www.myntra.com/dresses/styli/styli-women-floral-printed-layered-fit-and-flare-maxi-dress/35154038/buy",
     "tags": [
       "casual",
@@ -36104,7 +36104,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Elegant evening party wear\"",
     "description": "Elegant evening party wear\"",
     "category": "casual",
-    "image_url": "/catalog/catalog_10.jpg",
+    "image_url": "/images/69.webp",
     "product_url": "https://www.myntra.com/sarees/bafna+mens+wear/bafna-mens-wear-woven-design-zari-art-silk-heavy-work-banarasi-saree/37597932/buy",
     "tags": [
       "formal",
@@ -36631,7 +36631,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Elegant evening party wear\"",
     "description": "Elegant evening party wear\"",
     "category": "casual",
-    "image_url": "/catalog/catalog_11.jpg",
+    "image_url": "/images/70.jpg",
     "product_url": "https://www.myntra.com/dresses/adv+fashion+wear/adv-fashion-wear-bodycon-dress/33204342/buy",
     "tags": [
       "formal",
@@ -37158,7 +37158,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy fusion wear for college",
     "description": "Trendy fusion wear for college",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_12.jpg",
+    "image_url": "/images/71.webp",
     "product_url": "https://www.myntra.com/kurta-sets/bamsom+wear/bamsom-wear-women-embroidered-regular-sequinned-kurta-with-salwar/38360237/buy",
     "tags": [
       "fusion",
@@ -37686,7 +37686,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy fusion wear for college",
     "description": "Trendy fusion wear for college",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_13.jpg",
+    "image_url": "/images/72.webp",
     "product_url": "https://www.myntra.com/kurta-sets/big+hello+-+the+plus+life/big-hello---the-plus-life-women-ethnic-lounge-wear/37420500/buy",
     "tags": [
       "fusion",
@@ -38214,7 +38214,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Layered winter ethnic look",
     "description": "Layered winter ethnic look",
     "category": "winter",
-    "image_url": "/catalog/catalog_14.jpg",
+    "image_url": "/images/73.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/be+indi/be-indi-women-ethnic-motifs-embroidered-winter-kurta-with-trouser--dupatta-set/22140986/buy",
     "tags": [
       "winter",
@@ -38744,7 +38744,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Layered winter ethnic look",
     "description": "Layered winter ethnic look",
     "category": "winter",
-    "image_url": "/catalog/catalog_15.jpg",
+    "image_url": "/images/74.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/hemkunt+fabric/hemkunt-fabric-women-ethnic-motifs-embroidered-regular-thread-work-kurta-with-trousers--with-dupatta/38072991/buy",
     "tags": [
       "winter",
@@ -39274,7 +39274,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Festive red and gold outfit",
     "description": "Festive red and gold outfit",
     "category": "casual",
-    "image_url": "/catalog/catalog_16.jpg",
+    "image_url": "/images/75.avif",
     "product_url": "https://www.myntra.com/kurta-sets/sangria/sangria-red-floral-yoke-design-sequinned-a-line-kurta-with-palazzo/30235097/buy",
     "tags": [
       "festive"
@@ -39800,7 +39800,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Festive red and gold outfit",
     "description": "Festive red and gold outfit",
     "category": "casual",
-    "image_url": "/catalog/catalog_17.jpg",
+    "image_url": "/images/76.webp",
     "product_url": "https://www.myntra.com/kurta-sets/prisachi/prisachi-women-red-floral-embroidered-women-straight-kurta-set-with-dupatta-and-pants/36418054/buy",
     "tags": [
       "festive"
@@ -40326,7 +40326,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Minimalist ethnic wear for onam",
     "description": "Minimalist ethnic wear for Onam in Fort Kochi",
     "category": "festive",
-    "image_url": "/catalog/catalog_18.jpg",
+    "image_url": "/images/77.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/kisah/kisah-men-peach-beige-silk-blend-mid-kurta-minimalist-kurta-with-slim-fit-trouser-set/37216027/buy",
     "tags": [
       "traditional",
@@ -40854,7 +40854,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Modern streetwear layers for christmas",
     "description": "Modern streetwear layers for Christmas in Shillong\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_19.jpg",
+    "image_url": "/images/78.jpg",
     "product_url": "https://www.myntra.com/sarees/silkwear/silkwear-ethnic-motifs-linen-blend-handloom-saree/38646470/buy",
     "tags": [
       "fusion",
@@ -41383,7 +41383,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Modern streetwear layers for christmas",
     "description": "Modern streetwear layers for Christmas in Shillong\"",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_20.jpg",
+    "image_url": "/images/79.webp",
     "product_url": "https://www.myntra.com/sarees/silkwear/silkwear-floral-pure-chiffon-saree/41413097/buy",
     "tags": [
       "fusion",
@@ -41912,7 +41912,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"white cotton kurta for holi",
     "description": "\"White cotton kurta for Holi in Patna\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_21.jpg",
+    "image_url": "/images/80.jpg",
     "product_url": "https://www.myntra.com/kurtas/v-mart/v-mart-women-thread-work-anarkali-kurta/33857949/buy",
     "tags": [
       "casual",
@@ -42443,7 +42443,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "\"white cotton kurta for holi",
     "description": "\"White cotton kurta for Holi in Patna\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_22.jpg",
+    "image_url": "/images/81.webp",
     "product_url": "https://www.myntra.com/kurtas/kalini/kalini-women-printed-flared-sleeves-floral-kurta/39632295/buy",
     "tags": [
       "casual",
@@ -42974,7 +42974,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Warm velvet lehenga for diwali",
     "description": "Warm velvet lehenga for Diwali in Patna\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_23.jpg",
+    "image_url": "/images/82.avif",
     "product_url": "https://www.myntra.com/lehenga-choli/shae+by+sassafras/shae-by-sassafras-embroidered-sequinned-ready-to-wear-velvet-lehenga--blouse/36815631/buy",
     "tags": [
       "festive",
@@ -43507,7 +43507,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Warm velvet lehenga for diwali",
     "description": "Warm velvet lehenga for Diwali in Patna\"",
     "category": "festive",
-    "image_url": "/catalog/catalog_24.jpg",
+    "image_url": "/images/83.webp",
     "product_url": "https://www.myntra.com/lehenga-choli/shae+by+sassafras/shae-by-sassafras-embellished-sequinned-velvet-ready-to-wear-lehenga--blouse/36815652/buy",
     "tags": [
       "festive",
@@ -44040,7 +44040,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy coat and boots",
     "description": "Trendy coat and boots",
     "category": "winter",
-    "image_url": "/catalog/catalog_25.jpg",
+    "image_url": "/images/84.avif",
     "product_url": "https://www.myntra.com/boots/bxxy/bxxy-women-ankle-boots-and-block-heel/32802543/buy",
     "tags": [
       "warm",
@@ -44571,7 +44571,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy coat and boots",
     "description": "Trendy coat and boots",
     "category": "winter",
-    "image_url": "/catalog/catalog_26.jpg",
+    "image_url": "/images/85.webp",
     "product_url": "https://www.myntra.com/coats/monte+carlo/monte-carlo-women-spread-collar-single-breasted-woollen-overcoat/31455602/buy",
     "tags": [
       "warm",
@@ -45102,7 +45102,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Light linen shirt for a",
     "description": "Light linen shirt for a casual summer day",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_27.jpg",
+    "image_url": "/images/86.webp",
     "product_url": "https://www.myntra.com/shirts/rookies/rookies-men-casual-shirt/43124001/buy",
     "tags": [
       "casual",
@@ -45632,7 +45632,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Light linen shirt for a",
     "description": "Light linen shirt for a casual summer day",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_28.jpg",
+    "image_url": "/images/87.webp",
     "product_url": "https://www.myntra.com/shirts/linen+club/linen-club-men-spread-collar-vertical-striped-pure-linen-casual-shirt/33183947/buy",
     "tags": [
       "casual",
@@ -46162,7 +46162,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Eavy wool coat for a",
     "description": "eavy wool coat for a winter wedding",
     "category": "festive",
-    "image_url": "/catalog/catalog_29.jpg",
+    "image_url": "/images/88.jpg",
     "product_url": "https://www.myntra.com/coats/miss+mosa+by+akanksha/miss-mosa-by-akanksha-darcie-winter-coat-with-belt/38739612/buy",
     "tags": [
       "festive",
@@ -46692,7 +46692,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Eavy wool coat for a",
     "description": "eavy wool coat for a winter wedding",
     "category": "festive",
-    "image_url": "/catalog/catalog_30.jpg",
+    "image_url": "/images/89.jpg",
     "product_url": "https://www.myntra.com/coats/roadster/roadster-women-winter-lapel-collar-solid-coat/37101557/buy",
     "tags": [
       "festive",
@@ -47222,7 +47222,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Boho-fusion outfit for the autumn",
     "description": "Boho-fusion outfit for the Autumn Festival",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_31.jpg",
+    "image_url": "/images/90.webp",
     "product_url": "https://www.myntra.com/ethnic-dresses/aramya/aramya-floral-printed-gathered-or-pleated-anarkali-cotton-ethnic-dress/33478705/buy",
     "tags": [
       "casual",
@@ -47754,7 +47754,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Boho-fusion outfit for the autumn",
     "description": "Boho-fusion outfit for the Autumn Festival",
     "category": "streetwear",
-    "image_url": "/catalog/catalog_32.jpg",
+    "image_url": "/images/91.jpg",
     "product_url": "https://www.myntra.com/ethnic-dresses/globus/globus-women-v-neck-bishop-sleeves-embroidered-waist-tie-ups-a-line-midi-fusion-dress/37475517/buy",
     "tags": [
       "casual",
@@ -48286,7 +48286,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Traditional kasavu outfit for vishu",
     "description": "Traditional Kasavu outfit for Vishu",
     "category": "festive",
-    "image_url": "/catalog/catalog_33.jpg",
+    "image_url": "/images/92.webp",
     "product_url": "https://www.myntra.com/sarees/haradhi/haradhi-floral-embroidered-tissue-handloom-kasavu-saree/39753051/buy",
     "tags": [
       "festive",
@@ -48817,7 +48817,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Traditional kasavu outfit for vishu",
     "description": "Traditional Kasavu outfit for Vishu",
     "category": "festive",
-    "image_url": "/catalog/catalog_34.jpg",
+    "image_url": "/images/93.webp",
     "product_url": "https://www.myntra.com/sarees/rst+r+selvamani+tex/rst-r-selvamani-tex-woven-design-zari-pure-cotton-kasavu-saree-and-blouse-piece/31035416/buy",
     "tags": [
       "festive",
@@ -49348,7 +49348,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Bright festive ethnic wear for",
     "description": "Bright festive ethnic wear for Bihar Diwas",
     "category": "festive",
-    "image_url": "/catalog/catalog_35.jpg",
+    "image_url": "/images/94.jpg",
     "product_url": "https://www.myntra.com/kurta-sets/muhuratam/muhuratam-girls-ethnic-wear-red-colour-sequin-embroidery-silk-kurti-pant-set/36957589/buy",
     "tags": [
       "traditional",
@@ -49876,7 +49876,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Bright festive ethnic wear for",
     "description": "Bright festive ethnic wear for Bihar Diwas",
     "category": "festive",
-    "image_url": "/catalog/catalog_36.jpg",
+    "image_url": "/images/95.webp",
     "product_url": "https://www.myntra.com/kurta-sets/sydney+heights/sydney-heights-ethnic-motifs-woven-design-mandarin-collar-kurta-with-dhoti-pants/24780874/buy",
     "tags": [
       "traditional",
@@ -50404,7 +50404,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Chic party dress for christmas",
     "description": "Chic party dress for Christmas",
     "category": "casual",
-    "image_url": "/catalog/catalog_37.jpg",
+    "image_url": "/images/96.webp",
     "product_url": "https://www.myntra.com/dresses/iki+chic/iki-chic-sequin-embellished-net-sheath-mini-dress/20593324/buy",
     "tags": [
       "formal",
@@ -50932,7 +50932,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Chic party dress for christmas",
     "description": "Chic party dress for Christmas",
     "category": "casual",
-    "image_url": "/catalog/catalog_38.jpg",
+    "image_url": "/images/97.avif",
     "product_url": "https://www.myntra.com/dresses/iki+chic/iki-chic-maroon-lace-slip-midi-dress/16040402/buy",
     "tags": [
       "formal",
@@ -51460,7 +51460,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Sophisticated formal suit for a",
     "description": "Sophisticated formal suit for a college farewell",
     "category": "casual",
-    "image_url": "/catalog/catalog_39.jpg",
+    "image_url": "/images/98.webp",
     "product_url": "https://www.myntra.com/suits/wintage/wintage-men-magenta-solid-single-breasted-regular-fit-party-suit/10605742/buy",
     "tags": [
       "traditional",
@@ -51989,7 +51989,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Sophisticated formal suit for a",
     "description": "Sophisticated formal suit for a college farewell",
     "category": "casual",
-    "image_url": "/catalog/catalog_40.jpg",
+    "image_url": "/images/99.jpg",
     "product_url": "https://www.myntra.com/suits/klotthe/klotthe-blue-solid-embroidery-single-breasted-two-piece-party-suit/36322115/buy",
     "tags": [
       "traditional",
@@ -52518,7 +52518,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Sophisticated formal suit for a",
     "description": "Sophisticated formal suit for a college farewell",
     "category": "casual",
-    "image_url": "/catalog/catalog_41.jpg",
+    "image_url": "/images/100.webp",
     "product_url": "https://www.myntra.com/suits/manq/manq-men-slim-fit-bandhgala-suit/31677286/buy",
     "tags": [
       "traditional",
@@ -53047,7 +53047,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Red banarasi silk saree for",
     "description": "Red Banarasi silk saree for Chhath Puja",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/101.webp",
     "product_url": "https://www.myntra.com/sarees/dipdiya/dipdiya-floral-zari-handloom-taant-saree/42356459",
     "tags": [
       "festive",
@@ -53575,7 +53575,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s mustard yellow kurta for",
     "description": "Men\u2019s mustard yellow kurta for Saraswati Puja",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/103.webp",
     "product_url": "https://www.myntra.com/kurtas/sojanya/sojanya-men-mustard-yellow--golden-ethnic-motifs-jacquard-kurta/13799296",
     "tags": [
       "festive",
@@ -54102,7 +54102,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Heavily embroidered red lehenga for",
     "description": "Heavily embroidered red lehenga for wedding ceremony",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/105.png",
     "product_url": "https://www.myntra.com/lehenga-choli/pink+bindi/pink-bindi-embroidered-unstitched-lehenga--blouse-with-dupatta/42923065/buy",
     "tags": [
       "lehenga",
@@ -54629,7 +54629,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Gold jewellery set for traditional",
     "description": "Gold jewellery set for traditional wedding",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/107.png",
     "product_url": "https://www.myntra.com/jewellery-set/yellow+chimes/yellow-chimes-gold-plated-traditional-temple-beads-drop-bridal-choker-necklace-set/19224632/buy",
     "tags": [
       "festive",
@@ -55156,7 +55156,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s maroon sherwani for wedding",
     "description": "Men\u2019s maroon sherwani for wedding Jaimala",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1621896338426-302484437a37?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/109.png",
     "product_url": "https://www.myntra.com/sherwani/jompers/jompers-embroidered-mandarin-collar-sherwani/42050724/buy",
     "tags": [
       "ceremonial",
@@ -55683,7 +55683,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Traditional bihari cotton saree for",
     "description": "Traditional Bihari cotton saree for daily wear",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/111.png",
     "product_url": "https://www.myntra.com/sarees/vibhagyaa/vibhagyaa-pure-cotton-ikat-printed-blouse-piece-floral-geometric-design-casual-wear-sarees/41039510/buy",
     "tags": [
       "festive",
@@ -56212,7 +56212,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Bright yellow kurta pyjama set",
     "description": "Bright yellow kurta pyjama set for Haldi",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/113.png",
     "product_url": "https://www.myntra.com/kurta-sets/kujee/kujee-men-yellow-cotton-dobby-texture-kurta-/40578637/buy",
     "tags": [
       "kurta"
@@ -56738,7 +56738,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Heavy silk dupatta with gold",
     "description": "Heavy silk dupatta with gold border",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/115.png",
     "product_url": "https://www.myntra.com/dupatta/moeza/moeza-embroidered-organza-dupatta-with-gotta-patti/39718915/buy",
     "tags": [
       "dupatta",
@@ -57265,7 +57265,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Pink and gold designer saree",
     "description": "Pink and gold designer saree for post-wedding",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/117.png",
     "product_url": "https://www.myntra.com/sarees/moda+rapido/moda-rapido-pink-embellished-silk-blend-banarasi-sarees/36339935/buy",
     "tags": [
       "saree",
@@ -57792,7 +57792,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s cream dhoti kurta for",
     "description": "Men\u2019s cream dhoti kurta for puja",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1621896338426-302484437a37?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/119.png",
     "product_url": "https://www.myntra.com/kurta-sets/sojanya/sojanya-men-cream-coloured-kurta-with-churidar/20830608/buy",
     "tags": [
       "festive",
@@ -58320,7 +58320,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Floral printed cotton suit for",
     "description": "Floral printed cotton suit for pre-wedding",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/121.png",
     "product_url": "https://www.myntra.com/kurta-sets/libas/libas-pink-floral-printed-straight-suit-set/42356934/buy",
     "tags": [
       "cotton",
@@ -58848,7 +58848,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Red and white traditional bridal",
     "description": "Red and white traditional bridal saree",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/123.png",
     "product_url": "https://www.myntra.com/red-and-white-traditional-bridal-saree?rawQuery=Red%20and%20white%20traditional%20bridal%20saree",
     "tags": [
       "festive",
@@ -59376,7 +59376,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s velvet nehru jacket for",
     "description": "Men\u2019s velvet Nehru jacket for Sangeet",
     "category": "winter",
-    "image_url": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/125.png",
     "product_url": "https://www.myntra.com/nehru-jackets/ekyaa/ekyaa-printed-woven-nehru-jacket/42863652/buy",
     "tags": [
       "velvet",
@@ -59903,7 +59903,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Heavy kundan necklace set",
     "description": "Heavy kundan necklace set",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/127.png",
     "product_url": "https://www.myntra.com/jewellery-set/zaveri+pearls/zaveri-pearls-gold-plated--white-kundan-studded--beaded-jadau-jewellery-set/15079856/buy",
     "tags": [],
     "zip_codes": [],
@@ -60427,7 +60427,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Magenta silk lehenga for reception",
     "description": "Magenta silk lehenga for reception",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/129.png",
     "product_url": "https://www.myntra.com/lehenga-choli/purvaja/purvaja-magenta--purple-zardozi-semi-stitched-lehenga--unstitched-blouse-with-dupatta/18309018/buy",
     "tags": [
       "lehenga",
@@ -60955,7 +60955,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Simple white kurta for civic",
     "description": "Simple white kurta for civic event",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1621896338426-302484437a37?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/131.png",
     "product_url": "https://www.myntra.com/kurtas/jompers/jompers-floral-embroidered-mirror-work-mandarin-collar-cotton-silk-straight-republic-day-republic-day-kurta/29102934/buy",
     "tags": [
       "kurta"
@@ -61481,7 +61481,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Traditional silver anklets",
     "description": "Traditional silver anklets",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/133.png",
     "product_url": "https://www.myntra.com/anklet/iga+collection/iga-collection-trendy-traditional--silver-anklet/35196588/buy",
     "tags": [
       "festive"
@@ -62007,7 +62007,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Orange ethnic salwar suit",
     "description": "Orange ethnic salwar suit",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/135.png",
     "product_url": "https://www.myntra.com/kurta-sets/anouk+rustic/anouk-rustic-women-ethnic-motifs-embroidered-v-neck-sequinned-kurta-with-salwar--dupatta/36824893/buy",
     "tags": [
       "festive",
@@ -62534,7 +62534,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Off-white and gold kasavu saree",
     "description": "Off-white and gold Kasavu saree for Kerala wedding",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/137.png",
     "product_url": "https://www.myntra.com/sarees/soch/soch-off-white--gold-toned-zari-tissue-kasavu-saree/23561848/buy",
     "tags": [
       "festive",
@@ -63062,7 +63062,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s kasavu mundu with formal",
     "description": "Men\u2019s Kasavu mundu with formal shirt",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/139.png",
     "product_url": "https://www.myntra.com/clothing-set/ramraj/ramraj-men-tissue-shirt-and-dhoti-set/21733542/buy",
     "tags": [
       "festive",
@@ -63589,7 +63589,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Bohemian style linen co-ord set",
     "description": "Bohemian style linen co-ord set for women",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/143.png",
     "product_url": "https://www.myntra.com/co-ords/stylet/stylet-bohemian-linen-embroidered-tunic-with-palazzos/43588128/buy",
     "tags": [
       "linen"
@@ -64115,7 +64115,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s navy blue designer tuxedo",
     "description": "Men\u2019s navy blue designer tuxedo",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/146.png",
     "product_url": "https://www.myntra.com/suits/neumen/neumen-men-self-design-single-breasted-5-piece-formal-suits/31537114/buy",
     "tags": [],
     "zip_codes": [],
@@ -64639,7 +64639,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Modern bohemian maxi dress for",
     "description": "Modern bohemian maxi dress for Cochin Carnival",
     "category": "streetwear",
-    "image_url": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/147.png",
     "product_url": "https://www.myntra.com/ethnic-dresses/vishudh/vishudh-women-navy-blue-empire-dress/10074611/buy",
     "tags": [
       "streetwear"
@@ -65165,7 +65165,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Yellow and gold pattu pavada",
     "description": "Yellow and gold pattu pavada for Vishu",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/149.png",
     "product_url": "https://www.myntra.com/sarees/vishnu+weaves/vishnu-weaves-woven-design-zari-paithani-saree/29662238/buy",
     "tags": [],
     "zip_codes": [],
@@ -65689,7 +65689,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Minimalist gold earring set",
     "description": "Minimalist gold earring set",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/151.png",
     "product_url": "https://www.myntra.com/earrings/el+regalo/el-regalo-floral-studs-earrings/43252586/buy",
     "tags": [],
     "zip_codes": [],
@@ -66213,7 +66213,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "White breathable cotton kurti for",
     "description": "White breathable cotton kurti for coastal weather",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/153.png",
     "product_url": "https://www.myntra.com/kurtis/sangria/sangria-embroidered-pure-cotton-straight-kurti/42217738/buy",
     "tags": [
       "cotton",
@@ -66740,7 +66740,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s casual printed shirt for",
     "description": "Men\u2019s casual printed shirt for boat race",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/155.png",
     "product_url": "https://www.myntra.com/shirts/cahoot/cahoot-men-striped-casual-shirt/42002829/buy",
     "tags": [
       "casual",
@@ -67267,7 +67267,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Lavender designer suit for engagement",
     "description": "Lavender designer suit for engagement",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/157.png",
     "product_url": "https://www.myntra.com/kurta-sets/sanisa/sanisa-women-lavender-cotton-blend-kurta-sets/36125140/buy",
     "tags": [
       "ceremonial",
@@ -67794,7 +67794,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Stylish sunglasses for coastal day",
     "description": "Stylish sunglasses for coastal day wear",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/159.png",
     "product_url": "https://www.myntra.com/sunglasses/vincent+chase/vincent-chase-by-lenskart-unisex-grey-lens--black-sunglasses-with-polarised-and-uv-protected-lens/19061996/buy",
     "tags": [],
     "zip_codes": [],
@@ -68318,7 +68318,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Indo-western linen shirt for men",
     "description": "Indo-western linen shirt for men",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/161.png",
     "product_url": "https://www.myntra.com/shirts/ramraj/ramraj-men-regular-fit-solid-spread-collar-casual-shirt/28814770/buy",
     "tags": [
       "linen",
@@ -68845,7 +68845,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Soft pastel salwar suit for",
     "description": "Soft pastel salwar suit for festive",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/163.png",
     "product_url": "https://www.myntra.com/kurta-sets/house+of+vaani/house-of-vaani-women-regular-kurta-with-patiala--with-dupatta/43351065/buy",
     "tags": [
       "festive",
@@ -69372,7 +69372,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Boho-chic tote bag for biennale",
     "description": "Boho-chic tote bag for Biennale",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/165.png",
     "product_url": "https://www.myntra.com/handbags/anekaant/anekaant-boho-women-trellis-embellished-jacquard-tote-bag/37695204/buy",
     "tags": [],
     "zip_codes": [],
@@ -69896,7 +69896,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Silver statement neckpiece for party",
     "description": "Silver statement neckpiece for party",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/167.png",
     "product_url": "https://www.myntra.com/necklace-and-chains/niska/niska-silver-plated-necklace/43272290/buy",
     "tags": [],
     "zip_codes": [],
@@ -70420,7 +70420,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Casual beachwear shorts and shirt",
     "description": "Casual beachwear shorts and shirt",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/169.png",
     "product_url": "https://www.myntra.com/co-ords/rahi+trendz/rahi-trendz-tropical-self-design-shirt-with-shorts/41717483/buy",
     "tags": [
       "shorts",
@@ -70948,7 +70948,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Mint green fusion lehenga",
     "description": "Mint green fusion lehenga",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/171.png",
     "product_url": "https://www.myntra.com/lehenga-choli/fusionic/fusionic-embroidered-net-semi-stitched-lehenga--unstitched-blouse-with-dupatta/30444326/buy",
     "tags": [
       "lehenga"
@@ -71474,7 +71474,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s stylish leather jacket for",
     "description": "Men\u2019s stylish leather jacket for winter",
     "category": "winter",
-    "image_url": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/177.png",
     "product_url": "https://www.myntra.com/jackets/cahoot/campus-sutra-windcheater-mock-collar-cotton-leather-jacket/25041034/buy",
     "tags": [
       "winter",
@@ -72002,7 +72002,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Casual winter scarf and beanie",
     "description": "Casual winter scarf and beanie set",
     "category": "winter",
-    "image_url": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/179.png",
     "product_url": "https://www.myntra.com/caps/navkar+crafts/navkar-crafts-unisex-woollen-winter-beanie-scarf-set-with-gloves/37215554/buy",
     "tags": [
       "casual",
@@ -72529,7 +72529,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Modern ankle boots for women",
     "description": "Modern ankle boots for women",
     "category": "streetwear",
-    "image_url": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/181.png",
     "product_url": "https://www.myntra.com/boots/roadster/roadster-women-chelsea-boots/31204292/buy",
     "tags": [
       "streetwear"
@@ -73055,7 +73055,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Khasi hand-woven silk jainsem",
     "description": "Khasi hand-woven silk Jainsem",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/183.png",
     "product_url": "https://www.myntra.com/sarees/yashika/yashika-cream-coloured--gold-toned-striped-silk-cotton-ilkal-saree/18085336/buy",
     "tags": [
       "jainsem",
@@ -73582,7 +73582,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s traditional jymphong formal waistcoat",
     "description": "Men\u2019s traditional Jymphong formal waistcoat",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/186.png",
     "product_url": "https://www.myntra.com/waistcoat/s%26n+by+shantnu+nikhil/sn-by-shantnu-nikhil-embroidered-mandarin-collar-woven-formal-waistcoat/39925057/buy",
     "tags": [
       "festive",
@@ -74111,7 +74111,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Trendy denim jacket with fleece",
     "description": "Trendy denim jacket with fleece lining",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/187.png",
     "product_url": "https://www.myntra.com/jackets/tandul/tandul-women-fleece-lightweight-denim-jacket-with-patchwork/37829439/buy",
     "tags": [
       "jacket",
@@ -74638,7 +74638,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Burgundy evening party dress",
     "description": "Burgundy evening party dress",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/189.png",
     "product_url": "https://www.myntra.com/dresses/glitchez/glitchez-ruched-bodycon-mini-dress/40202323/buy",
     "tags": [],
     "zip_codes": [],
@@ -75162,7 +75162,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Men\u2019s navy blue tailored wool",
     "description": "Men\u2019s navy blue tailored wool coat",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/191.png",
     "product_url": "https://www.myntra.com/coats/javinishka/javinishka-men-notched-lapel-single-breasted-trench-coat/37648085/buy",
     "tags": [
       "coat"
@@ -75688,7 +75688,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Artsy printed sweater for cherry",
     "description": "Artsy printed sweater for Cherry Blossom Fest",
     "category": "casual",
-    "image_url": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/193.png",
     "product_url": "https://www.myntra.com/sweaters/the+souled+store/the-souled-store-cherry-blossom-women-colourblock-acrylic-oversized-sweaters/31621360/buy",
     "tags": [
       "sweater"
@@ -76214,7 +76214,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Sophisticated silver engagement ring",
     "description": "Sophisticated silver engagement ring",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/195.png",
     "product_url": "https://www.myntra.com/ring/giva/giva-rhodium-plated-sterling-silver-finger-ring/26138158/buy",
     "tags": [
       "ceremonial"
@@ -76740,7 +76740,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Stylish oversized hoodie for casual",
     "description": "Stylish oversized hoodie for casual street wear",
     "category": "streetwear",
-    "image_url": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/197.png",
     "product_url": "https://www.myntra.com/sweatshirts/perch/perch-men-hooded-sweatshirt/37764224/buy",
     "tags": [
       "streetwear",
@@ -77268,7 +77268,7 @@ export const FALLBACK_PRODUCTS = [
     "name": "Warm pashmina shawl for winter",
     "description": "Warm Pashmina shawl for winter festive",
     "category": "festive",
-    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
+    "image_url": "/images/199.png",
     "product_url": "https://www.myntra.com/shawl/sangria/winter-shalimar-women-floral-woven-design-woollen-shawl/38095013/buy",
     "tags": [
       "festive",
