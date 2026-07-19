@@ -531,7 +531,14 @@
             0.02057639096895171,
             0.018448003292707682,
             0.019333065424699973
-        ]
+        ],
+        "price": 22,
+        "inventory": 28,
+        "material": "Silk",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 2,
@@ -1065,7 +1072,14 @@
             0.015893130142179322,
             0.01832369644192881,
             0.0245722401465055
-        ]
+        ],
+        "price": 5,
+        "inventory": 1,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 3,
@@ -1596,7 +1610,14 @@
             0.018209361175158003,
             0.01359558353053369,
             0.016218523145366016
-        ]
+        ],
+        "price": 30,
+        "inventory": 22,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 4,
@@ -2126,7 +2147,14 @@
             0.016500527580497356,
             0.02045150325542968,
             0.014970584801777998
-        ]
+        ],
+        "price": 28,
+        "inventory": 23,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 5,
@@ -2655,7 +2683,14 @@
             0.020803057037130323,
             0.013036044180472587,
             0.018195611259284445
-        ]
+        ],
+        "price": 4,
+        "inventory": 5,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 6,
@@ -3185,7 +3220,14 @@
             0.015955519230853574,
             0.02246139067211964,
             0.026921067219915794
-        ]
+        ],
+        "price": 32,
+        "inventory": 19,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 7,
@@ -3717,7 +3759,14 @@
             0.0274318638169032,
             0.015761333139457833,
             0.01520633970037363
-        ]
+        ],
+        "price": 43,
+        "inventory": 4,
+        "material": "Cotton",
+        "color": "Saffron",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 8,
@@ -4247,7 +4296,14 @@
             0.013918733488522638,
             0.020622901048270505,
             0.014696847431929025
-        ]
+        ],
+        "price": 22,
+        "inventory": 20,
+        "material": "Silk",
+        "color": "White",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 9,
@@ -4775,7 +4831,14 @@
             0.022804949312662973,
             0.0168195219440557,
             0.014373544457540487
-        ]
+        ],
+        "price": 47,
+        "inventory": 42,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "casual",
+        "age_range": "Gen Z",
+        "category": "casual"
     },
     {
         "id": 10,
@@ -5302,7 +5365,14 @@
             0.02281349226189848,
             0.019731406898820938,
             0.02046110134344314
-        ]
+        ],
+        "price": 20,
+        "inventory": 31,
+        "material": "Cotton",
+        "color": "Saffron",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 11,
@@ -5834,7 +5904,14 @@
             0.019465509989228864,
             0.00857235822250062,
             0.02437445125431874
-        ]
+        ],
+        "price": 13,
+        "inventory": 8,
+        "material": "Silk",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 12,
@@ -6364,7 +6441,14 @@
             0.00993397950926156,
             0.013006830012130911,
             0.013219036154747238
-        ]
+        ],
+        "price": 12,
+        "inventory": 41,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 13,
@@ -6893,7 +6977,14 @@
             0.02514718328633209,
             0.023622818454475305,
             0.010879965291234492
-        ]
+        ],
+        "price": 27,
+        "inventory": 35,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 14,
@@ -7421,7 +7512,14 @@
             0.017828277690338488,
             0.01993490104255115,
             0.017589782897816205
-        ]
+        ],
+        "price": 6,
+        "inventory": 42,
+        "material": "Cotton",
+        "color": "Charcoal",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 15,
@@ -7950,7 +8048,14 @@
             0.019291839463143258,
             0.015951126775813076,
             0.025561062490506395
-        ]
+        ],
+        "price": 45,
+        "inventory": 3,
+        "material": "Gold",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 16,
@@ -8481,7 +8586,14 @@
             0.015297392443175201,
             0.019811668334121343,
             0.02455147819819805
-        ]
+        ],
+        "price": 50,
+        "inventory": 35,
+        "material": "Cotton",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 17,
@@ -9013,7 +9125,14 @@
             0.024836040088497584,
             0.010994311979138083,
             0.0250283028010333
-        ]
+        ],
+        "price": 27,
+        "inventory": 37,
+        "material": "Silk",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 18,
@@ -9543,7 +9662,14 @@
             0.019373156090039086,
             0.014882524780823818,
             0.010844791283728455
-        ]
+        ],
+        "price": 29,
+        "inventory": 12,
+        "material": "Silver",
+        "color": "Silver",
+        "nature": "festive",
+        "age_range": "Gen Z",
+        "category": "casual"
     },
     {
         "id": 19,
@@ -10073,7 +10199,14 @@
             0.018829346625498487,
             0.022391385195396803,
             0.01898356947405875
-        ]
+        ],
+        "price": 3,
+        "inventory": 35,
+        "material": "Cotton",
+        "color": "Blue",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 20,
@@ -10604,7 +10737,14 @@
             0.014915696030006304,
             0.020032542548726044,
             0.012680662249319978
-        ]
+        ],
+        "price": 27,
+        "inventory": 31,
+        "material": "Linen",
+        "color": "Beige",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 21,
@@ -11133,7 +11273,14 @@
             0.025233971341326277,
             0.025457613648857094,
             0.018083221291811148
-        ]
+        ],
+        "price": 44,
+        "inventory": 6,
+        "material": "Cotton",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 22,
@@ -11662,7 +11809,14 @@
             0.02086361051586807,
             0.011708079317694723,
             0.011305606393004305
-        ]
+        ],
+        "price": 23,
+        "inventory": 44,
+        "material": "Cotton",
+        "color": "Green",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 23,
@@ -12190,7 +12344,14 @@
             0.021429028105428044,
             0.015275781713364316,
             0.01397065736401154
-        ]
+        ],
+        "price": 27,
+        "inventory": 13,
+        "material": "Cotton",
+        "color": "Blue",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 24,
@@ -12719,7 +12880,14 @@
             0.011377815576286943,
             0.015486241913258059,
             0.01421283536655252
-        ]
+        ],
+        "price": 43,
+        "inventory": 29,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 25,
@@ -13248,7 +13416,14 @@
             0.02136952493121023,
             0.011651703923928055,
             0.025453800273908256
-        ]
+        ],
+        "price": 47,
+        "inventory": 1,
+        "material": "Cotton",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 26,
@@ -13777,7 +13952,14 @@
             0.021388402906901787,
             0.016523093215451538,
             0.022793236884461752
-        ]
+        ],
+        "price": 32,
+        "inventory": 48,
+        "material": "Cotton",
+        "color": "Blue",
+        "nature": "formal",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 27,
@@ -14306,7 +14488,14 @@
             0.023475462665958815,
             0.01713354122120887,
             0.02004096609904872
-        ]
+        ],
+        "price": 45,
+        "inventory": 6,
+        "material": "Linen",
+        "color": "White",
+        "nature": "formal",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 28,
@@ -14833,7 +15022,14 @@
             0.021711760914360934,
             0.021400632253318615,
             0.020153301733608932
-        ]
+        ],
+        "price": 17,
+        "inventory": 11,
+        "material": "Cotton",
+        "color": "Gold",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 29,
@@ -15361,7 +15557,14 @@
             0.022811609338117128,
             0.02036170891299458,
             0.025355693348101952
-        ]
+        ],
+        "price": 2,
+        "inventory": 34,
+        "material": "Silver",
+        "color": "Red",
+        "nature": "formal",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 30,
@@ -15888,7 +16091,14 @@
             0.011527739248765266,
             0.024451971069543083,
             0.02208390502131342
-        ]
+        ],
+        "price": 49,
+        "inventory": 45,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 31,
@@ -16421,7 +16631,14 @@
             0.01216946966093693,
             0.012342242317879898,
             0.016842422160071816
-        ]
+        ],
+        "price": 30,
+        "inventory": 4,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 32,
@@ -16954,7 +17171,14 @@
             0.012726033925446158,
             0.009481526612215643,
             0.021787055529873995
-        ]
+        ],
+        "price": 21,
+        "inventory": 11,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 33,
@@ -17486,7 +17710,14 @@
             0.016829004853052196,
             0.021429593003186354,
             0.023722440721267692
-        ]
+        ],
+        "price": 26,
+        "inventory": 43,
+        "material": "Silk",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 34,
@@ -18018,7 +18249,14 @@
             0.022209614229038603,
             0.020552069022211874,
             0.019892083236954874
-        ]
+        ],
+        "price": 1,
+        "inventory": 12,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 35,
@@ -18549,7 +18787,14 @@
             0.02460985009425356,
             0.018029146083098795,
             0.016669690616789856
-        ]
+        ],
+        "price": 34,
+        "inventory": 20,
+        "material": "Linen",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 36,
@@ -19081,7 +19326,14 @@
             0.021236240960936174,
             0.02012693017440019,
             0.018223093912369683
-        ]
+        ],
+        "price": 17,
+        "inventory": 10,
+        "material": "Cotton",
+        "color": "Blue",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 37,
@@ -19613,7 +19865,14 @@
             0.014263906662142023,
             0.01731540757190563,
             0.012969604844187008
-        ]
+        ],
+        "price": 43,
+        "inventory": 48,
+        "material": "Cotton",
+        "color": "Black",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 38,
@@ -20145,7 +20404,14 @@
             0.011744829983555092,
             0.018206092406652094,
             0.01342987607258333
-        ]
+        ],
+        "price": 36,
+        "inventory": 30,
+        "material": "Cotton",
+        "color": "Pink",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 39,
@@ -20677,7 +20943,14 @@
             0.017898725901555668,
             0.011819289428978441,
             0.019745478349760287
-        ]
+        ],
+        "price": 37,
+        "inventory": 44,
+        "material": "Silk",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 40,
@@ -21207,7 +21480,14 @@
             0.020480203251337703,
             0.01773003670715807,
             0.021295075222853774
-        ]
+        ],
+        "price": 26,
+        "inventory": 20,
+        "material": "Wool",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 41,
@@ -21738,7 +22018,14 @@
             0.008920284070672597,
             0.021853494997812264,
             0.013952260936712273
-        ]
+        ],
+        "price": 1,
+        "inventory": 6,
+        "material": "Fleece",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z",
+        "category": "casual"
     },
     {
         "id": 42,
@@ -22269,7 +22556,14 @@
             0.017486565312104442,
             0.012998800441345241,
             0.019056884352456144
-        ]
+        ],
+        "price": 13,
+        "inventory": 39,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 43,
@@ -22799,7 +23093,14 @@
             0.013451780086439033,
             0.017376882635228855,
             0.014299285836444797
-        ]
+        ],
+        "price": 27,
+        "inventory": 4,
+        "material": "Denim",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Gen Z",
+        "category": "casual"
     },
     {
         "id": 44,
@@ -23329,7 +23630,14 @@
             0.011584354612719113,
             0.014868691578797368,
             0.013972447922510298
-        ]
+        ],
+        "price": 11,
+        "inventory": 6,
+        "material": "Cotton",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 45,
@@ -23863,7 +24171,14 @@
             0.020649884865499606,
             0.023386442931810542,
             0.02190995562499517
-        ]
+        ],
+        "price": 44,
+        "inventory": 5,
+        "material": "Silk",
+        "color": "Blue",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 46,
@@ -24392,7 +24707,14 @@
             0.020142423244389016,
             0.01996406824027719,
             0.022040046618878286
-        ]
+        ],
+        "price": 49,
+        "inventory": 16,
+        "material": "Cotton",
+        "color": "Green",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 47,
@@ -24922,7 +25244,14 @@
             0.03055059771565595,
             0.023688973434785102,
             0.015684462015862835
-        ]
+        ],
+        "price": 10,
+        "inventory": 22,
+        "material": "Linen",
+        "color": "Blue",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 48,
@@ -25451,7 +25780,14 @@
             0.013137530254836735,
             0.012380832313169266,
             0.006036562228532788
-        ]
+        ],
+        "price": 15,
+        "inventory": 4,
+        "material": "Velvet",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 49,
@@ -25980,7 +26316,14 @@
             0.012782157345349654,
             0.012680723088172937,
             0.013200099589194382
-        ]
+        ],
+        "price": 2,
+        "inventory": 9,
+        "material": "Wool",
+        "color": "Beige",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 50,
@@ -26508,7 +26851,14 @@
             0.014438508064491146,
             0.011724685711233227,
             0.014052399205970994
-        ]
+        ],
+        "price": 40,
+        "inventory": 38,
+        "material": "Cotton",
+        "color": "Grey",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 51,
@@ -27036,7 +27386,14 @@
             0.016901355976955183,
             0.012239875581228086,
             0.007913960897443416
-        ]
+        ],
+        "price": 39,
+        "inventory": 12,
+        "material": "Cotton",
+        "color": "Green",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 52,
@@ -27564,7 +27921,14 @@
             0.014071232568378758,
             0.008801765617380056,
             0.011309904734950221
-        ]
+        ],
+        "price": 40,
+        "inventory": 39,
+        "material": "Denim",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 53,
@@ -28091,7 +28455,14 @@
             0.011762412167061276,
             0.015191667904955295,
             0.01273530554585383
-        ]
+        ],
+        "price": 3,
+        "inventory": 24,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 54,
@@ -28619,7 +28990,14 @@
             0.017922591581829482,
             0.0165375444576535,
             0.013900644901831145
-        ]
+        ],
+        "price": 23,
+        "inventory": 21,
+        "material": "Denim",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 55,
@@ -29147,7 +29525,14 @@
             0.020153138174296346,
             0.022624237286433962,
             0.012408564663445448
-        ]
+        ],
+        "price": 26,
+        "inventory": 14,
+        "material": "Cotton",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 56,
@@ -29674,7 +30059,14 @@
             0.013522163006761968,
             0.026236130209461736,
             0.022943423508579516
-        ]
+        ],
+        "price": 22,
+        "inventory": 6,
+        "material": "Cotton",
+        "color": "Green",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 57,
@@ -30201,7 +30593,14 @@
             0.01561049464910265,
             0.021900166330973282,
             0.016997833407652353
-        ]
+        ],
+        "price": 45,
+        "inventory": 25,
+        "material": "Fleece",
+        "color": "Grey",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 58,
@@ -30728,7 +31127,14 @@
             0.014902706532744345,
             0.013877651057124353,
             0.01031930326265581
-        ]
+        ],
+        "price": 7,
+        "inventory": 12,
+        "material": "Fleece",
+        "color": "Green",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 59,
@@ -31255,7 +31661,14 @@
             0.014951193033181365,
             0.009670020639806404,
             0.00844146987862511
-        ]
+        ],
+        "price": 42,
+        "inventory": 28,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 60,
@@ -31784,7 +32197,14 @@
             0.012301488402888161,
             0.01619944354904455,
             0.012992111342134731
-        ]
+        ],
+        "price": 5,
+        "inventory": 39,
+        "material": "Velvet",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial",
+        "category": "casual"
     },
     {
         "id": 61,
@@ -32312,7 +32732,13 @@
             0.01714474494403092,
             0.0010138676539746775,
             0.09261363058788916
-        ]
+        ],
+        "price": 16,
+        "inventory": 44,
+        "material": "Silk",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 62,
@@ -32839,7 +33265,13 @@
             0.0558652971142164,
             -0.0037109424361910187,
             -0.03598196400216786
-        ]
+        ],
+        "price": 1,
+        "inventory": 15,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 63,
@@ -33366,7 +33798,13 @@
             0.029339420959008076,
             0.02916784321230404,
             0.06583154163997328
-        ]
+        ],
+        "price": 7,
+        "inventory": 16,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 64,
@@ -33893,7 +34331,13 @@
             0.010847093370722028,
             -0.014985981930161301,
             0.028807442479262466
-        ]
+        ],
+        "price": 23,
+        "inventory": 17,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 65,
@@ -34420,7 +34864,13 @@
             -0.026682381529957742,
             0.021551293404144925,
             -0.02267454767622804
-        ]
+        ],
+        "price": 12,
+        "inventory": 20,
+        "material": "Cotton",
+        "color": "Maroon",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 66,
@@ -34949,7 +35399,13 @@
             0.06993096501560016,
             0.046751206613418125,
             0.028141162006748495
-        ]
+        ],
+        "price": 18,
+        "inventory": 2,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 67,
@@ -35475,7 +35931,13 @@
             0.02030287559082822,
             0.015698979063259694,
             -0.09571985030666415
-        ]
+        ],
+        "price": 29,
+        "inventory": 39,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 68,
@@ -36002,7 +36464,13 @@
             -0.029175294489345846,
             0.01992671246149607,
             0.14854429602369856
-        ]
+        ],
+        "price": 37,
+        "inventory": 42,
+        "material": "Silk",
+        "color": "Gold",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 69,
@@ -36529,7 +36997,13 @@
             -0.04891014557265937,
             0.01537466886607984,
             -0.02210983887605515
-        ]
+        ],
+        "price": 23,
+        "inventory": 24,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 70,
@@ -37057,7 +37531,13 @@
             0.06326001313727316,
             -0.009819610284850996,
             -0.0894355034538258
-        ]
+        ],
+        "price": 26,
+        "inventory": 30,
+        "material": "Cotton",
+        "color": "Cream",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 71,
@@ -37585,7 +38065,13 @@
             -0.00808614294572244,
             0.01520593167916222,
             -0.03270830622988798
-        ]
+        ],
+        "price": 31,
+        "inventory": 3,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 72,
@@ -38113,7 +38599,13 @@
             -0.008026613061180046,
             0.0004827953451457028,
             0.009773678948990712
-        ]
+        ],
+        "price": 28,
+        "inventory": 40,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 73,
@@ -38640,7 +39132,13 @@
             0.02125654672277056,
             0.02455032187620106,
             -0.035779583451974996
-        ]
+        ],
+        "price": 6,
+        "inventory": 4,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 74,
@@ -39164,7 +39662,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 14,
+        "inventory": 43,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 75,
@@ -39692,7 +40196,13 @@
             0.025109472576817136,
             0.02533611708849123,
             0.13232326007998962
-        ]
+        ],
+        "price": 7,
+        "inventory": 11,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 76,
@@ -40218,7 +40728,13 @@
             0.02030287559082822,
             0.015698979063259694,
             -0.09571985030666415
-        ]
+        ],
+        "price": 24,
+        "inventory": 32,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 77,
@@ -40744,7 +41260,13 @@
             0.056584083706754135,
             -0.02126319872197107,
             0.048413011399469595
-        ]
+        ],
+        "price": 22,
+        "inventory": 18,
+        "material": "Silver",
+        "color": "Silver",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 78,
@@ -41271,7 +41793,13 @@
             0.027983824548697335,
             -0.011933758160318267,
             0.0008222559380488618
-        ]
+        ],
+        "price": 22,
+        "inventory": 15,
+        "material": "Cotton",
+        "color": "Orange",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 79,
@@ -41799,7 +42327,13 @@
             -0.008026613061180046,
             0.0004827953451457028,
             0.009773678948990712
-        ]
+        ],
+        "price": 13,
+        "inventory": 10,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 80,
@@ -42326,7 +42860,13 @@
             0.06590316547794481,
             0.049124348799315924,
             0.023322862627192017
-        ]
+        ],
+        "price": 27,
+        "inventory": 28,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 81,
@@ -42852,7 +43392,13 @@
             -0.07112635822845383,
             0.10243236082440815,
             0.0803305164018273
-        ]
+        ],
+        "price": 15,
+        "inventory": 23,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 82,
@@ -43376,7 +43922,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 17,
+        "inventory": 1,
+        "material": "Cotton",
+        "color": "Blue",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 83,
@@ -43902,7 +44454,13 @@
             -0.0026271974319574077,
             0.06627441292233452,
             -0.03453885687565568
-        ]
+        ],
+        "price": 47,
+        "inventory": 31,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 84,
@@ -44426,7 +44984,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 28,
+        "inventory": 9,
+        "material": "Gold",
+        "color": "Yellow",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 85,
@@ -44950,7 +45514,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 33,
+        "inventory": 39,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 86,
@@ -45477,7 +46047,13 @@
             0.08160189906855962,
             0.06770712290569139,
             0.022681377769448244
-        ]
+        ],
+        "price": 30,
+        "inventory": 5,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 87,
@@ -46004,7 +46580,13 @@
             0.07679265047725274,
             0.12149035946996543,
             0.0113697897569751
-        ]
+        ],
+        "price": 19,
+        "inventory": 50,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 88,
@@ -46531,7 +47113,13 @@
             -0.04477099589080821,
             0.004469168214181185,
             -0.041846067004106605
-        ]
+        ],
+        "price": 44,
+        "inventory": 12,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 89,
@@ -47055,7 +47643,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 8,
+        "inventory": 33,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 90,
@@ -47582,7 +48176,13 @@
             -0.02680371243736917,
             0.1381232668671497,
             0.046989660355538185
-        ]
+        ],
+        "price": 40,
+        "inventory": 12,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 91,
@@ -48109,7 +48709,13 @@
             0.027983824548697335,
             -0.011933758160318267,
             0.0008222559380488618
-        ]
+        ],
+        "price": 30,
+        "inventory": 12,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 92,
@@ -48633,7 +49239,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 28,
+        "inventory": 34,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 93,
@@ -49157,7 +49769,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 12,
+        "inventory": 13,
+        "material": "Silver",
+        "color": "Silver",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 94,
@@ -49685,7 +50303,13 @@
             0.057050267165701524,
             0.06388733692055343,
             -0.011665662952619017
-        ]
+        ],
+        "price": 17,
+        "inventory": 28,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 95,
@@ -50211,7 +50835,13 @@
             0.08347747567086379,
             0.04052801704288624,
             0.10287921742728977
-        ]
+        ],
+        "price": 37,
+        "inventory": 47,
+        "material": "Cotton",
+        "color": "Green",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 96,
@@ -50738,7 +51368,13 @@
             0.000557702359585301,
             0.09260378228492225,
             0.056632815399413124
-        ]
+        ],
+        "price": 10,
+        "inventory": 45,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 97,
@@ -51265,7 +51901,13 @@
             0.0247049438237899,
             -0.035530213757844,
             -0.04719806628180928
-        ]
+        ],
+        "price": 12,
+        "inventory": 20,
+        "material": "Velvet",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 98,
@@ -51793,7 +52435,13 @@
             -0.0413538377620849,
             -0.05863737773306751,
             0.009939327194076851
-        ]
+        ],
+        "price": 29,
+        "inventory": 21,
+        "material": "Leather",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 99,
@@ -52320,7 +52968,13 @@
             -0.0015509749054046,
             0.013075192655596377,
             0.015808216236726652
-        ]
+        ],
+        "price": 34,
+        "inventory": 22,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 100,
@@ -52846,7 +53500,13 @@
             -0.0026271974319574077,
             0.06627441292233452,
             -0.03453885687565568
-        ]
+        ],
+        "price": 11,
+        "inventory": 16,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 101,
@@ -53373,7 +54033,13 @@
             0.02477987090208082,
             0.027213794730867335,
             0.04098992731787082
-        ]
+        ],
+        "price": 32,
+        "inventory": 5,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 102,
@@ -53902,7 +54568,13 @@
             0.06807197578823775,
             -0.0265007767005872,
             0.11179142054720677
-        ]
+        ],
+        "price": 42,
+        "inventory": 6,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 103,
@@ -54429,7 +55101,13 @@
             -0.012085091579680591,
             -0.06857320196827751,
             -0.03950626324894686
-        ]
+        ],
+        "price": 30,
+        "inventory": 2,
+        "material": "Denim",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 104,
@@ -54953,7 +55631,13 @@
             0.0,
             0.0,
             0.0
-        ]
+        ],
+        "price": 36,
+        "inventory": 18,
+        "material": "Cotton",
+        "color": "Burgundy",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 105,
@@ -55479,7 +56163,13 @@
             0.003318876685624193,
             0.06075808976378257,
             0.11040697287213089
-        ]
+        ],
+        "price": 43,
+        "inventory": 16,
+        "material": "Wool",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 106,
@@ -56005,7 +56695,13 @@
             0.02681437205054546,
             -0.04673891209390409,
             0.03977610947562701
-        ]
+        ],
+        "price": 13,
+        "inventory": 40,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 107,
@@ -56531,7 +57227,13 @@
             -0.04078777105671167,
             0.0009077182595975845,
             -0.00908933571470526
-        ]
+        ],
+        "price": 15,
+        "inventory": 15,
+        "material": "Silver",
+        "color": "Silver",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 108,
@@ -57059,7 +57761,13 @@
             0.06030249904924612,
             0.07057130058127895,
             -0.0016273978786978728
-        ]
+        ],
+        "price": 44,
+        "inventory": 34,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 109,
@@ -57588,7 +58296,13 @@
             -0.008281865863333956,
             -0.017504190219768692,
             0.09217540642443148
-        ]
+        ],
+        "price": 11,
+        "inventory": 20,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 110,
@@ -58124,7 +58838,13 @@
             0.014521145608664241,
             0.016943943184115438,
             0.01644307853101224
-        ]
+        ],
+        "price": 3,
+        "inventory": 13,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 111,
@@ -58660,7 +59380,13 @@
             0.014521145608664241,
             0.016943943184115438,
             0.01644307853101224
-        ]
+        ],
+        "price": 17,
+        "inventory": 18,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 112,
@@ -59194,7 +59920,13 @@
             0.01151191503420316,
             0.01770233651233825,
             0.017138056919069222
-        ]
+        ],
+        "price": 48,
+        "inventory": 13,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Gen Z"
     },
     {
         "id": 113,
@@ -59725,7 +60457,13 @@
             0.0147947316972861,
             0.012775157410838482,
             0.014314490088057706
-        ]
+        ],
+        "price": 16,
+        "inventory": 22,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 114,
@@ -60256,7 +60994,13 @@
             0.0147947316972861,
             0.012775157410838482,
             0.014314490088057706
-        ]
+        ],
+        "price": 36,
+        "inventory": 31,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 115,
@@ -60787,7 +61531,13 @@
             0.018577064455685296,
             0.02005956332870066,
             0.023583418786973665
-        ]
+        ],
+        "price": 3,
+        "inventory": 47,
+        "material": "Silk",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 116,
@@ -61318,7 +62068,13 @@
             0.018577064455685296,
             0.02005956332870066,
             0.023583418786973665
-        ]
+        ],
+        "price": 49,
+        "inventory": 15,
+        "material": "Silk",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 117,
@@ -61850,7 +62606,13 @@
             0.01956662805866068,
             0.0168751070218244,
             0.01458029893259103
-        ]
+        ],
+        "price": 25,
+        "inventory": 10,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 118,
@@ -62382,7 +63144,13 @@
             0.01956662805866068,
             0.0168751070218244,
             0.01458029893259103
-        ]
+        ],
+        "price": 48,
+        "inventory": 13,
+        "material": "Gold",
+        "color": "Gold",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 119,
@@ -62914,7 +63682,13 @@
             0.014787660742180393,
             0.01697993492852051,
             0.017059691433147797
-        ]
+        ],
+        "price": 16,
+        "inventory": 23,
+        "material": "Velvet",
+        "color": "Maroon",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 120,
@@ -63446,7 +64220,13 @@
             0.014787660742180393,
             0.01697993492852051,
             0.017059691433147797
-        ]
+        ],
+        "price": 9,
+        "inventory": 8,
+        "material": "Velvet",
+        "color": "Maroon",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 121,
@@ -63978,7 +64758,13 @@
             0.013524533594455476,
             0.01341026651590369,
             0.013275091841904703
-        ]
+        ],
+        "price": 11,
+        "inventory": 22,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 122,
@@ -64510,7 +65296,13 @@
             0.013524533594455476,
             0.01341026651590369,
             0.013275091841904703
-        ]
+        ],
+        "price": 29,
+        "inventory": 22,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 123,
@@ -65042,7 +65834,13 @@
             0.007001951440380462,
             0.008699614682626543,
             0.008897344319147439
-        ]
+        ],
+        "price": 41,
+        "inventory": 41,
+        "material": "Velvet",
+        "color": "Black",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 124,
@@ -65572,7 +66370,13 @@
             0.015912499647073353,
             0.01357985862249103,
             0.01401123196460834
-        ]
+        ],
+        "price": 38,
+        "inventory": 47,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 125,
@@ -66102,7 +66906,13 @@
             0.015912499647073353,
             0.01357985862249103,
             0.01401123196460834
-        ]
+        ],
+        "price": 33,
+        "inventory": 2,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 126,
@@ -66632,7 +67442,13 @@
             0.013508792221545402,
             0.010856891854243282,
             0.020861995126124428
-        ]
+        ],
+        "price": 37,
+        "inventory": 38,
+        "material": "Cotton",
+        "color": "Blue",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 127,
@@ -67165,7 +67981,13 @@
             0.00929864287140568,
             0.011856551781874036,
             0.007832127073595326
-        ]
+        ],
+        "price": 50,
+        "inventory": 21,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 128,
@@ -67698,7 +68520,13 @@
             0.00929864287140568,
             0.011856551781874036,
             0.007832127073595326
-        ]
+        ],
+        "price": 6,
+        "inventory": 23,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 129,
@@ -68230,7 +69058,13 @@
             0.014803641445845313,
             0.009758071655149941,
             0.009766451078817077
-        ]
+        ],
+        "price": 11,
+        "inventory": 28,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 130,
@@ -68762,7 +69596,13 @@
             0.014803641445845313,
             0.009758071655149941,
             0.009766451078817077
-        ]
+        ],
+        "price": 21,
+        "inventory": 10,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 131,
@@ -69295,7 +70135,13 @@
             0.01163916948491751,
             0.018851547272253844,
             0.008724443781250988
-        ]
+        ],
+        "price": 19,
+        "inventory": 10,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 132,
@@ -69828,7 +70674,13 @@
             0.01163916948491751,
             0.018851547272253844,
             0.008724443781250988
-        ]
+        ],
+        "price": 40,
+        "inventory": 26,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 133,
@@ -70360,7 +71212,13 @@
             0.012088067919934579,
             0.009912040104671067,
             0.019465775183343137
-        ]
+        ],
+        "price": 16,
+        "inventory": 16,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 134,
@@ -70892,7 +71750,13 @@
             0.012088067919934579,
             0.009912040104671067,
             0.019465775183343137
-        ]
+        ],
+        "price": 2,
+        "inventory": 45,
+        "material": "Silk",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 135,
@@ -71422,7 +72286,13 @@
             0.01724989182573452,
             0.027542029298722025,
             0.016206089406101486
-        ]
+        ],
+        "price": 13,
+        "inventory": 6,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Gen Z"
     },
     {
         "id": 136,
@@ -71952,7 +72822,13 @@
             0.01724989182573452,
             0.027542029298722025,
             0.016206089406101486
-        ]
+        ],
+        "price": 44,
+        "inventory": 37,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Gen Z"
     },
     {
         "id": 137,
@@ -72484,7 +73360,13 @@
             0.012357080414251865,
             0.007938528522533815,
             0.011021663007925842
-        ]
+        ],
+        "price": 36,
+        "inventory": 33,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 138,
@@ -73016,7 +73898,13 @@
             0.012357080414251865,
             0.007938528522533815,
             0.011021663007925842
-        ]
+        ],
+        "price": 17,
+        "inventory": 38,
+        "material": "Cotton",
+        "color": "Yellow",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 139,
@@ -73546,7 +74434,13 @@
             0.02083362477319127,
             0.011065023523235904,
             0.020168540880588493
-        ]
+        ],
+        "price": 34,
+        "inventory": 48,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 140,
@@ -74076,7 +74970,13 @@
             0.02083362477319127,
             0.011065023523235904,
             0.020168540880588493
-        ]
+        ],
+        "price": 10,
+        "inventory": 4,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 141,
@@ -74606,7 +75506,13 @@
             0.020047080517338448,
             0.017004528445902993,
             0.018160693176340375
-        ]
+        ],
+        "price": 24,
+        "inventory": 20,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 142,
@@ -75136,7 +76042,13 @@
             0.020047080517338448,
             0.017004528445902993,
             0.018160693176340375
-        ]
+        ],
+        "price": 13,
+        "inventory": 14,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 143,
@@ -75665,7 +76577,13 @@
             0.020919648873684308,
             0.021567285235743368,
             0.027001506622902856
-        ]
+        ],
+        "price": 12,
+        "inventory": 17,
+        "material": "Cotton",
+        "color": "Maroon",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 144,
@@ -76194,7 +77112,13 @@
             0.020919648873684308,
             0.021567285235743368,
             0.027001506622902856
-        ]
+        ],
+        "price": 17,
+        "inventory": 31,
+        "material": "Cotton",
+        "color": "Maroon",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 145,
@@ -76724,7 +77648,13 @@
             0.01724989182573452,
             0.027542029298722025,
             0.016206089406101486
-        ]
+        ],
+        "price": 26,
+        "inventory": 31,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 146,
@@ -77254,7 +78184,13 @@
             0.01724989182573452,
             0.027542029298722025,
             0.016206089406101486
-        ]
+        ],
+        "price": 33,
+        "inventory": 47,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 147,
@@ -77785,7 +78721,13 @@
             0.010290417319113055,
             0.020095543681756742,
             0.018574119636369315
-        ]
+        ],
+        "price": 16,
+        "inventory": 44,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 148,
@@ -78316,7 +79258,13 @@
             0.010290417319113055,
             0.020095543681756742,
             0.018574119636369315
-        ]
+        ],
+        "price": 20,
+        "inventory": 35,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 149,
@@ -78844,7 +79792,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 13,
+        "inventory": 8,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 150,
@@ -79372,7 +80326,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 37,
+        "inventory": 3,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 151,
@@ -79905,7 +80865,13 @@
             0.00929864287140568,
             0.011856551781874036,
             0.007832127073595326
-        ]
+        ],
+        "price": 22,
+        "inventory": 17,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 152,
@@ -80438,7 +81404,13 @@
             0.00929864287140568,
             0.011856551781874036,
             0.007832127073595326
-        ]
+        ],
+        "price": 29,
+        "inventory": 28,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 153,
@@ -80967,7 +81939,13 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 3,
+        "inventory": 44,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 154,
@@ -81496,7 +82474,13 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 7,
+        "inventory": 29,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Millennial"
     },
     {
         "id": 155,
@@ -82025,7 +83009,13 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 16,
+        "inventory": 18,
+        "material": "Cotton",
+        "color": "Black",
+        "nature": "formal",
+        "age_range": "Gen Z"
     },
     {
         "id": 156,
@@ -82554,7 +83544,13 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 12,
+        "inventory": 41,
+        "material": "Cotton",
+        "color": "Black",
+        "nature": "formal",
+        "age_range": "Gen Z"
     },
     {
         "id": 157,
@@ -83084,7 +84080,13 @@
             0.014941077530823963,
             0.014383132048240972,
             0.02373745390360018
-        ]
+        ],
+        "price": 45,
+        "inventory": 46,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 158,
@@ -83614,7 +84616,13 @@
             0.014941077530823963,
             0.014383132048240972,
             0.02373745390360018
-        ]
+        ],
+        "price": 32,
+        "inventory": 13,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 159,
@@ -84147,7 +85155,13 @@
             0.012064690429746559,
             0.01945738833069122,
             0.01677707400707281
-        ]
+        ],
+        "price": 14,
+        "inventory": 2,
+        "material": "Leather",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 160,
@@ -84680,7 +85694,13 @@
             0.012064690429746559,
             0.01945738833069122,
             0.01677707400707281
-        ]
+        ],
+        "price": 41,
+        "inventory": 20,
+        "material": "Leather",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 161,
@@ -85208,7 +86228,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 27,
+        "inventory": 34,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 162,
@@ -85736,7 +86762,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 30,
+        "inventory": 41,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 163,
@@ -86265,7 +87297,13 @@
             0.011807411264685277,
             0.010353643213087647,
             0.013319536528373862
-        ]
+        ],
+        "price": 26,
+        "inventory": 36,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 164,
@@ -86794,7 +87832,13 @@
             0.011807411264685277,
             0.010353643213087647,
             0.013319536528373862
-        ]
+        ],
+        "price": 31,
+        "inventory": 2,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 165,
@@ -87326,7 +88370,13 @@
             0.012357080414251865,
             0.007938528522533815,
             0.011021663007925842
-        ]
+        ],
+        "price": 13,
+        "inventory": 20,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 166,
@@ -87858,7 +88908,13 @@
             0.012357080414251865,
             0.007938528522533815,
             0.011021663007925842
-        ]
+        ],
+        "price": 16,
+        "inventory": 43,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 167,
@@ -88386,7 +89442,13 @@
             0.020768265830963667,
             0.021792095693798894,
             0.01589249985005267
-        ]
+        ],
+        "price": 25,
+        "inventory": 8,
+        "material": "Denim",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 168,
@@ -88914,7 +89976,13 @@
             0.020768265830963667,
             0.021792095693798894,
             0.01589249985005267
-        ]
+        ],
+        "price": 47,
+        "inventory": 50,
+        "material": "Denim",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 169,
@@ -89441,7 +90509,13 @@
             0.016719458318837165,
             0.021398835855465252,
             0.02048179880770224
-        ]
+        ],
+        "price": 23,
+        "inventory": 46,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 170,
@@ -89968,7 +91042,13 @@
             0.016719458318837165,
             0.021398835855465252,
             0.02048179880770224
-        ]
+        ],
+        "price": 17,
+        "inventory": 15,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 171,
@@ -90497,7 +91577,13 @@
             0.02226880213389487,
             0.011755014984085184,
             0.01575371753185103
-        ]
+        ],
+        "price": 49,
+        "inventory": 33,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 172,
@@ -91026,7 +92112,13 @@
             0.02226880213389487,
             0.011755014984085184,
             0.01575371753185103
-        ]
+        ],
+        "price": 3,
+        "inventory": 13,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 173,
@@ -91559,7 +92651,13 @@
             0.017232665403430963,
             0.02348280145265628,
             0.011940472671904718
-        ]
+        ],
+        "price": 2,
+        "inventory": 33,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 174,
@@ -92092,7 +93190,13 @@
             0.017232665403430963,
             0.02348280145265628,
             0.011940472671904718
-        ]
+        ],
+        "price": 43,
+        "inventory": 30,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 175,
@@ -92619,7 +93723,13 @@
             0.005222774578587224,
             0.013591346053331064,
             0.02567119924113617
-        ]
+        ],
+        "price": 3,
+        "inventory": 3,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 176,
@@ -93146,7 +94256,13 @@
             0.005222774578587224,
             0.013591346053331064,
             0.02567119924113617
-        ]
+        ],
+        "price": 10,
+        "inventory": 49,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 177,
@@ -93674,7 +94790,13 @@
             0.020768265830963667,
             0.021792095693798894,
             0.01589249985005267
-        ]
+        ],
+        "price": 14,
+        "inventory": 18,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 178,
@@ -94202,7 +95324,13 @@
             0.020768265830963667,
             0.021792095693798894,
             0.01589249985005267
-        ]
+        ],
+        "price": 19,
+        "inventory": 12,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 179,
@@ -94732,7 +95860,13 @@
             0.0052326240018655944,
             0.01601525672413831,
             0.012150224851378545
-        ]
+        ],
+        "price": 3,
+        "inventory": 8,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 180,
@@ -95262,7 +96396,13 @@
             0.0052326240018655944,
             0.01601525672413831,
             0.012150224851378545
-        ]
+        ],
+        "price": 42,
+        "inventory": 30,
+        "material": "Cotton",
+        "color": "Red",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 181,
@@ -95788,7 +96928,13 @@
             0.016368471204559462,
             0.020691193574967782,
             0.010719408585673102
-        ]
+        ],
+        "price": 21,
+        "inventory": 4,
+        "material": "Gold",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 182,
@@ -96314,7 +97460,13 @@
             0.016368471204559462,
             0.020691193574967782,
             0.010719408585673102
-        ]
+        ],
+        "price": 9,
+        "inventory": 31,
+        "material": "Gold",
+        "color": "Red",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 183,
@@ -96842,7 +97994,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 40,
+        "inventory": 46,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 184,
@@ -97371,7 +98529,13 @@
             0.01324460534325258,
             0.01332449494443411,
             0.016168108819613485
-        ]
+        ],
+        "price": 31,
+        "inventory": 8,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 185,
@@ -97900,7 +99064,13 @@
             0.01324460534325258,
             0.01332449494443411,
             0.016168108819613485
-        ]
+        ],
+        "price": 42,
+        "inventory": 33,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 186,
@@ -98431,7 +99601,13 @@
             0.010290417319113055,
             0.020095543681756742,
             0.018574119636369315
-        ]
+        ],
+        "price": 43,
+        "inventory": 13,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 187,
@@ -98962,7 +100138,13 @@
             0.010290417319113055,
             0.020095543681756742,
             0.018574119636369315
-        ]
+        ],
+        "price": 1,
+        "inventory": 24,
+        "material": "Cotton",
+        "color": "White",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 188,
@@ -99495,7 +100677,13 @@
             0.00929864287140568,
             0.011856551781874036,
             0.007832127073595326
-        ]
+        ],
+        "price": 13,
+        "inventory": 50,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 189,
@@ -100028,7 +101216,13 @@
             0.00929864287140568,
             0.011856551781874036,
             0.007832127073595326
-        ]
+        ],
+        "price": 22,
+        "inventory": 25,
+        "material": "Velvet",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 190,
@@ -100559,7 +101753,13 @@
             0.0147947316972861,
             0.012775157410838482,
             0.014314490088057706
-        ]
+        ],
+        "price": 44,
+        "inventory": 33,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 191,
@@ -101090,7 +102290,13 @@
             0.0147947316972861,
             0.012775157410838482,
             0.014314490088057706
-        ]
+        ],
+        "price": 41,
+        "inventory": 20,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Gen Z"
     },
     {
         "id": 192,
@@ -101620,7 +102826,13 @@
             0.01322957913959455,
             0.010443528288433269,
             0.010272115210886064
-        ]
+        ],
+        "price": 11,
+        "inventory": 34,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 193,
@@ -102150,7 +103362,13 @@
             0.01322957913959455,
             0.010443528288433269,
             0.010272115210886064
-        ]
+        ],
+        "price": 22,
+        "inventory": 23,
+        "material": "Linen",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 194,
@@ -102680,7 +103898,13 @@
             0.017583315011184597,
             0.012965406396814656,
             0.016363966534182994
-        ]
+        ],
+        "price": 26,
+        "inventory": 33,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 195,
@@ -103210,7 +104434,13 @@
             0.017583315011184597,
             0.012965406396814656,
             0.016363966534182994
-        ]
+        ],
+        "price": 30,
+        "inventory": 9,
+        "material": "Wool",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 196,
@@ -103742,7 +104972,13 @@
             0.013524533594455476,
             0.01341026651590369,
             0.013275091841904703
-        ]
+        ],
+        "price": 19,
+        "inventory": 38,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Gen Z"
     },
     {
         "id": 197,
@@ -104274,7 +105510,13 @@
             0.013524533594455476,
             0.01341026651590369,
             0.013275091841904703
-        ]
+        ],
+        "price": 5,
+        "inventory": 36,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Gen Z"
     },
     {
         "id": 198,
@@ -104805,7 +106047,13 @@
             0.023005649503931535,
             0.021185231632368656,
             0.021814934237209444
-        ]
+        ],
+        "price": 17,
+        "inventory": 22,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 199,
@@ -105336,7 +106584,13 @@
             0.023005649503931535,
             0.021185231632368656,
             0.021814934237209444
-        ]
+        ],
+        "price": 23,
+        "inventory": 20,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 200,
@@ -105864,7 +107118,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 30,
+        "inventory": 44,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 201,
@@ -106392,7 +107652,13 @@
             0.02599428105600256,
             0.0186877312747708,
             0.026800574247667276
-        ]
+        ],
+        "price": 9,
+        "inventory": 9,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "festive",
+        "age_range": "Millennial"
     },
     {
         "id": 202,
@@ -106920,7 +108186,13 @@
             0.02006451126678647,
             0.020418293401301184,
             0.011210348397177201
-        ]
+        ],
+        "price": 11,
+        "inventory": 5,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 203,
@@ -107448,7 +108720,13 @@
             0.02006451126678647,
             0.020418293401301184,
             0.011210348397177201
-        ]
+        ],
+        "price": 17,
+        "inventory": 14,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "casual",
+        "age_range": "Millennial"
     },
     {
         "id": 204,
@@ -107977,7 +109255,13 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 27,
+        "inventory": 4,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Gen Z"
     },
     {
         "id": 205,
@@ -108506,7 +109790,13 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 30,
+        "inventory": 6,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Gen Z"
     },
     {
         "id": 206,
@@ -109035,6 +110325,12 @@
             0.017421267712829216,
             0.024043278730290513,
             0.022151932580431927
-        ]
+        ],
+        "price": 24,
+        "inventory": 8,
+        "material": "Cotton",
+        "color": "Multi",
+        "nature": "formal",
+        "age_range": "Gen Z"
     }
 ]
