@@ -243,6 +243,9 @@ function App() {
   const [currentVibe, setCurrentVibe] = useState("casual");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [coPurchaseItems, setCoPurchaseItems] = useState([]);
+  const [purchasingId, setPurchasingId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [lookCompleter, setLookCompleter] = useState({ accessory: null, footwear: null });
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [tempVibe, setTempVibe] = useState("casual");
@@ -394,6 +397,7 @@ function App() {
   useEffect(() => {
     if (!selectedProduct) {
       setLookCompleter({ accessory: null, footwear: null });
+      setCoPurchaseItems([]);
       return;
     }
 
@@ -425,7 +429,20 @@ function App() {
       }
     };
 
+    const fetchCoPurchases = async () => {
+      try {
+        const res = await fetch(`http://localhost:8000/api/product/${selectedProduct.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setCoPurchaseItems(data.also_bought || []);
+        }
+      } catch (e) {
+        setCoPurchaseItems([]);
+      }
+    };
+
     fetchLookCompleter();
+    fetchCoPurchases();
   }, [selectedProduct, activeDateProfile]);
 
   const handleZipCodeChange = async (e) => {
@@ -1036,6 +1053,41 @@ function App() {
     }
   };
 
+  const handleBuyProduct = async (pid) => {
+    logMessage(`🛍️ Processing purchase for Product ID ${pid}...`, "info");
+    setPurchasingId(pid);
+
+    // Small delay so CSS slide-out animation plays before state clears
+    setTimeout(async () => {
+      if (backendStatus === "connected") {
+        try {
+          const res = await fetch("http://localhost:8000/api/buy", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ item_id: pid })
+          });
+          if (res.ok) {
+            logMessage(`✅ Product ID ${pid} purchased! Suppression decay applied — feed reranking...`, "success");
+            setShowModal(false);
+            setSelectedProduct(null);
+            setPurchasingId(null);
+            updateRecommendations();
+          }
+        } catch (e) {
+          logMessage("Failed to execute purchase on backend.", "error");
+          setPurchasingId(null);
+        }
+      } else {
+        // Offline client-side suppression
+        setProducts(prev => prev.filter(p => p.id !== pid));
+        logMessage(`✅ Offline: Product ${pid} purchased and suppressed from feed.`, "success");
+        setShowModal(false);
+        setSelectedProduct(null);
+        setPurchasingId(null);
+      }
+    }, 450);
+  };
+
   const weights = CONTEXT_MATRICES[engineState] || CONTEXT_MATRICES["discovery"];
 
   return (
@@ -1351,10 +1403,11 @@ function App() {
                 return (
                   <div 
                     key={product.id} 
-                    className={`product-card ${selectedProduct && selectedProduct.id === product.id ? 'selected' : ''}`}
+                    className={`product-card ${selectedProduct && selectedProduct.id === product.id ? 'selected' : ''} ${purchasingId === product.id ? 'card-purchasing' : ''}`}
                     onClick={() => {
                       setSelectedProduct(product);
-                      logMessage(`Selected catalog item: ${product.name} for mathematical score dissection.`, "info");
+                      setShowModal(true);
+                      logMessage(`Opened detail modal for '${product.name}'. Fetching co-purchases & styling shelf...`, "info");
                     }}
                   >
                     <div className="rank-badge">Rank {idx + 1}</div>
@@ -1475,6 +1528,186 @@ function App() {
       </div>
 
 
+
+      {/* ===== PRODUCT DETAIL MODAL ===== */}
+      {showModal && selectedProduct && (() => {
+        const p = selectedProduct;
+        const aov = zipInsights?.average_order_value || 1800;
+        const price = p.price || 0;
+        const isInCart = sessionCart.includes(p.id);
+        const withinBudget = price <= aov * 1.2;
+        const scoreBreakdown = p.scoring_breakdown || {};
+        const rawVals = scoreBreakdown.raw_values || {};
+
+        return (
+          <div
+            className="pdp-modal-overlay"
+            onClick={() => { setShowModal(false); setSelectedProduct(null); }}
+          >
+            <div className="pdp-modal" onClick={e => e.stopPropagation()}>
+
+              {/* ── Close Button ── */}
+              <button
+                className="pdp-modal-close"
+                onClick={() => { setShowModal(false); setSelectedProduct(null); }}
+              >✕</button>
+
+              {/* ── Top Section: Image + Details ── */}
+              <div className="pdp-modal-top">
+
+                {/* Left: Product Image */}
+                <div className="pdp-modal-img-wrap">
+                  <img
+                    src={p.image_url}
+                    alt={p.name}
+                    className="pdp-modal-img"
+                    onError={e => { e.target.src = `https://placehold.co/400x500/1a1a2e/ffffff?text=${encodeURIComponent(p.name)}`; }}
+                  />
+                  <div className="pdp-modal-rank">Rank #{products.findIndex(x => x.id === p.id) + 1}</div>
+                  <div className="pdp-modal-score">{(p.final_score * 100).toFixed(1)}% Match</div>
+                </div>
+
+                {/* Right: Details Panel */}
+                <div className="pdp-modal-details">
+
+                  {/* Category + Budget Badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '6px' }}>
+                    <span className="pdp-category-pill">{p.category}</span>
+                    <span className={`pdp-aov-badge ${withinBudget ? 'within-budget' : 'premium-item'}`}>
+                      {withinBudget ? `✅ Within ZIP AOV (₹${aov.toLocaleString('en-IN')})` : `💎 Premium Item`}
+                    </span>
+                  </div>
+
+                  <h2 className="pdp-modal-title">{p.name}</h2>
+                  <p className="pdp-modal-price">₹{price.toLocaleString('en-IN')}</p>
+
+                  {/* Tags row */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '10px 0' }}>
+                    {p.material && <span className="pdp-tag-pill">🧵 {p.material}</span>}
+                    {p.color && <span className="pdp-tag-pill">🎨 {p.color}</span>}
+                    {p.nature && <span className="pdp-tag-pill">✨ {p.nature}</span>}
+                    {p.age_group && <span className="pdp-tag-pill">👤 {p.age_group}</span>}
+                    {(p.tags || []).slice(0, 4).map(t => (
+                      <span key={t} className={`pdp-tag-pill ${activeDateProfile.trendingTags.includes(t) ? 'trending-tag' : ''}`}>#{t}</span>
+                    ))}
+                  </div>
+
+                  {/* Description */}
+                  {p.description && (
+                    <p className="pdp-description">{p.description}</p>
+                  )}
+
+                  {/* 8-Pillar Score Breakdown */}
+                  <div className="pdp-score-grid">
+                    <p className="pdp-score-title">📊 8-Pillar Scoring Breakdown</p>
+                    {[
+                      { label: 'Personal Vibe', val: rawVals.personal_vibe_similarity },
+                      { label: 'Creator Trend', val: rawVals.creator_trend_match },
+                      { label: 'Local Boutique', val: rawVals.local_boutique_match },
+                      { label: 'Festivity', val: rawVals.festivity_match },
+                      { label: 'Weather Match', val: rawVals.weather_match },
+                      { label: 'Velocity', val: rawVals.checkout_velocity_score },
+                      { label: 'Session Intent', val: rawVals.intent_score },
+                      { label: 'Co-Purchase CF', val: rawVals.cf_score },
+                    ].map(({ label, val }) => (
+                      <div key={label} className="pdp-score-row">
+                        <span className="pdp-score-label">{label}</span>
+                        <div className="pdp-score-bar-bg">
+                          <div
+                            className="pdp-score-bar-fill"
+                            style={{ width: `${Math.min(100, Math.max(0, (val || 0) * 100)).toFixed(1)}%` }}
+                          />
+                        </div>
+                        <span className="pdp-score-pct">{((val || 0) * 100).toFixed(0)}%</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="pdp-actions">
+                    <button
+                      className="pdp-btn-buy"
+                      onClick={() => handleBuyProduct(p.id)}
+                    >
+                      🛍️ Buy Now
+                    </button>
+                    <button
+                      className="pdp-btn-cart"
+                      onClick={() => isInCart ? handleRemoveFromCart(p.id) : handleAddToCart(p.id)}
+                    >
+                      {isInCart ? '🛒 Remove' : '🛒 Add to Cart'}
+                    </button>
+                    <button
+                      className="pdp-btn-wish"
+                      onClick={() => handleAddToWishlist(p.id)}
+                    >
+                      ❤️ Wishlist
+                    </button>
+                  </div>
+
+                  {/* Complete the Look */}
+                  {(lookCompleter.accessory || lookCompleter.footwear) && (
+                    <div className="pdp-look-section">
+                      <p className="pdp-section-label">👗 Complete the Look</p>
+                      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                        {[lookCompleter.accessory, lookCompleter.footwear].filter(Boolean).map(item => (
+                          <div key={item.id} className="pdp-look-item">
+                            <img
+                              src={item.image_url}
+                              alt={item.name}
+                              className="pdp-look-img"
+                              onError={e => { e.target.src = `https://placehold.co/70x90/1a1a2e/c69fd5?text=Look`; }}
+                            />
+                            <p className="pdp-look-name">{item.name}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Bottom: People Also Bought ── */}
+              <div className="pdp-copurchase-section">
+                <p className="pdp-section-label">
+                  👥 People Also Bought
+                  {coPurchaseItems.length > 0 && <span className="pdp-copurchase-count">{coPurchaseItems.length} items</span>}
+                </p>
+                {coPurchaseItems.length === 0 ? (
+                  <p style={{ color: '#64748b', fontSize: '0.82rem' }}>Loading co-purchase recommendations…</p>
+                ) : (
+                  <div className="pdp-copurchase-shelf">
+                    {coPurchaseItems.slice(0, 10).map(item => (
+                      <div
+                        key={item.id}
+                        className="pdp-copurchase-card"
+                        onClick={() => {
+                          setSelectedProduct({ ...item, scoring_breakdown: {}, final_score: 0, tags: item.tags || [], price: item.price || 0 });
+                          logMessage(`Switching modal to co-purchase item: ${item.name}`, 'info');
+                        }}
+                      >
+                        <img
+                          src={item.image_url}
+                          alt={item.name}
+                          className="pdp-copurchase-img"
+                          onError={e => { e.target.src = `https://placehold.co/120x160/120917/c69fd5?text=${encodeURIComponent(item.name?.slice(0,6) || 'Item')}`; }}
+                        />
+                        <p className="pdp-copurchase-name">{item.name}</p>
+                        <p className="pdp-copurchase-price">₹{(item.price || 0).toLocaleString('en-IN')}</p>
+                        <button
+                          className="pdp-copurchase-btn"
+                          onClick={e => { e.stopPropagation(); handleAddToCart(item.id); }}
+                        >+ Cart</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ===== SLIDE-IN TRENDS PANEL ===== */}
       {trendsPanelOpen && (

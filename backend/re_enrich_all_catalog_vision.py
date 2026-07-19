@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import time
+import random
 import logging
 import requests
 from io import BytesIO
@@ -13,7 +14,9 @@ import google.generativeai as genai
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("re_enrich_all_catalog_vision")
 
-load_dotenv("backend/.env")
+# Resolve dotenv path relative to script directory
+DOTENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".env"))
+load_dotenv(DOTENV_PATH)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if GEMINI_API_KEY:
@@ -98,6 +101,7 @@ def call_gemini_vision(img, keywords):
       "color": "The primary color or 'Multi' if multi-colored",
       "nature": "The style vibe or occasion suitability: must be one of 'casual', 'formal', 'festive'",
       "age_range": "The target demographic: must be one of 'Gen Z', 'Millennial'",
+      "price": 1499, // An estimated retail price in INR (integer, e.g. 1499). Must be between 299 and 8000 based on the quality of design.
       "description": "A highly detailed, professional, contextual description of the apparel (1-2 sentences), suitable for a premium fashion website. DO NOT include hashtags. Describe EXACTLY what is shown in the image. Ensure the name and description align perfectly with the image."
     }}
     """
@@ -189,6 +193,8 @@ def main():
         p["nature"] = llm_data["nature"]
         p["age_range"] = llm_data["age_range"]
         p["category"] = llm_data["category"].lower()
+        p["price"] = int(llm_data.get("price", 1099))
+        p["inventory"] = random.randint(1, 50)
 
         # Build custom tags
         new_tags = set()
@@ -225,8 +231,8 @@ def main():
                     "tags": p["tags"],
                     "zip_codes": p.get("zip_codes", []),
                     "embedding": p["embedding"],
-                    "price": p.get("price", 1099),
-                    "inventory": p.get("inventory", 15),
+                    "price": p["price"],
+                    "inventory": p["inventory"],
                     "material": p["material"],
                     "color": p["color"],
                     "nature": p["nature"],

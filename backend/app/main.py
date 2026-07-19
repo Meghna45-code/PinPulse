@@ -493,11 +493,15 @@ engine = PinPulseEngine(
     cf_lookup=CF_LOOKUP
 )
 
-# Pydantic models for Dev Panel payloads
+
+
 class CartPayload(BaseModel):
     item_id: int
 
 class WishlistPayload(BaseModel):
+    item_id: int
+
+class BuyPayload(BaseModel):
     item_id: int
 
 class StatePayload(BaseModel):
@@ -620,42 +624,52 @@ def enrich_product(p, velocity_map):
     p_id = p.get("id")
     desc_lower = p.get("description", "").lower()
     
-    # 1. Determine material
-    material = "cotton"
-    for m in ["silk", "linen", "rayon", "velvet", "wool", "denim", "polyester", "chanderi", "georgette", "organza"]:
-        if m in p_tags or m in desc_lower:
-            material = m
-            break
+    # 1. Determine material — prefer DB value
+    material = p.get("material")
+    if not material:
+        material = "cotton"
+        for m in ["silk", "linen", "rayon", "velvet", "wool", "denim", "polyester", "chanderi", "georgette", "organza"]:
+            if m in p_tags or m in desc_lower:
+                material = m
+                break
             
-    # 2. Determine color
-    color = "multi"
-    for c in ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]:
-        if c in p_tags or c in desc_lower:
-            color = c
-            break
+    # 2. Determine color — prefer DB value
+    color = p.get("color")
+    if not color:
+        color = "multi"
+        for c in ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]:
+            if c in p_tags or c in desc_lower:
+                color = c
+                break
             
-    # 3. Determine nature
-    nature = "casual"
-    for n in ["ethnic", "festive", "casual", "streetwear", "traditional", "ceremonial"]:
-        if n in p_tags or n in desc_lower:
-            nature = n
-            break
+    # 3. Determine nature — prefer DB value
+    nature = p.get("nature")
+    if not nature:
+        nature = "casual"
+        for n in ["ethnic", "festive", "casual", "streetwear", "traditional", "ceremonial"]:
+            if n in p_tags or n in desc_lower:
+                nature = n
+                break
             
-    # 4. Determine category
-    category = "Ethnic"
-    for cat in ["Ethnic", "Western", "Accessory", "Footwear"]:
-        if cat.lower() in p_tags or cat.lower() in desc_lower:
-            category = cat
-            break
-    if category == "Ethnic" and any(x in p_tags for x in ["hoodie", "cargo", "jeans", "jacket"]):
-        category = "Western"
-    if any(x in p_tags for x in ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"]):
-        category = "Accessory"
-    if any(x in p_tags for x in ["boots", "mojari", "sandals", "footwear"]):
-        category = "Footwear"
+    # 4. Determine category — prefer DB value
+    category = p.get("category")
+    if not category:
+        category = "Ethnic"
+        for cat in ["Ethnic", "Western", "Accessory", "Footwear"]:
+            if cat.lower() in p_tags or cat.lower() in desc_lower:
+                category = cat
+                break
+        if category == "Ethnic" and any(x in p_tags for x in ["hoodie", "cargo", "jeans", "jacket"]):
+            category = "Western"
+        if any(x in p_tags for x in ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"]):
+            category = "Accessory"
+        if any(x in p_tags for x in ["boots", "mojari", "sandals", "footwear"]):
+            category = "Footwear"
 
-    # 5. Determine price
-    price = (p_id * 17) % 3000 + 499
+    # 5. Determine price — prefer DB value; only fallback if null
+    price = p.get("price")
+    if price is None:
+        price = (p_id * 17) % 3000 + 499
     
     # 6. Determine stock_level
     stock_level = (p_id * 7) % 50 + 1
@@ -674,8 +688,12 @@ def enrich_product(p, velocity_map):
     else:
         current_sales = baseline_sales + (p_id % 5)
         
-    # 10. Determine age group
-    age_group = "gen-z" if "streetwear" in p_tags or "modern" in p_tags or "gen-z" in p_tags else "millennial"
+    # 10. Determine age group — prefer DB value (age_range); normalise to lowercase
+    age_group = p.get("age_range") or p.get("age_group")
+    if not age_group:
+        age_group = "gen-z" if "streetwear" in p_tags or "modern" in p_tags or "gen-z" in p_tags else "millennial"
+    # Normalise to lowercase with hyphen (e.g. 'Gen Z' -> 'gen-z', 'Millennial' -> 'millennial')
+    age_group = str(age_group).lower().strip().replace(" ", "-")
     
     # 11. Extract vectors
     embedding = p.get("embedding", [])
@@ -1136,6 +1154,39 @@ def add_to_wishlist(payload: WishlistPayload):
         "hours_elapsed": 0
     })
     return {"status": "wishlisted", "item_id": item_id}
+
+@app.post("/api/buy")
+def buy_product(payload: BuyPayload):
+    item_id = payload.item_id
+    
+    # 1. Add "buy" interaction to session interactions
+    user_session["interactions"].append({
+        "item_id": item_id,
+        "action_type": "buy",
+        "hours_elapsed": 0,
+    })
+    
+    # 2. To dynamically increase local sales velocity, increment current_sales in DB
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("products").select("id, current_sales").eq("id", item_id).execute()
+            if res.data and len(res.data) > 0:
+                # If current_sales is null or 0, default to 5
+                curr = res.data[0].get("current_sales") or 5
+                sb.table("products").update({"current_sales": curr + 1}).eq("id", item_id).execute()
+                logger.info(f"Incremented current_sales for product ID {item_id} in Supabase.")
+        except Exception as e:
+            logger.error(f"Failed to record buy in Supabase: {e}")
+
+    # Clear cache to force recalculation
+    engine._cache = {}
+    
+    return {
+        "status": "success",
+        "message": f"Successfully purchased product {item_id}",
+        "cart": user_session["session_cart"]
+    }
 
 # Dev Panel Endpoints
 
