@@ -42,9 +42,59 @@ class PinPulseEngine:
         self._cache = {}
         self._cache_timestamp = 0
 
-    def get_context_matrix(self, state="discovery"):
-        """Get the weight matrix for the current state."""
-        return CONTEXT_MATRICES.get(state, CONTEXT_MATRICES["discovery"])
+    def get_context_matrix(self, state="discovery", user_context=None):
+        """Get the weight matrix for the current state, dynamically blending weights based on user interaction levels."""
+        if not user_context:
+            return CONTEXT_MATRICES.get(state, CONTEXT_MATRICES["discovery"])
+            
+        base_weights = CONTEXT_MATRICES["discovery"].copy()
+        
+        interactions = user_context.get("interactions", [])
+        cart = user_context.get("session_cart", [])
+        active_festival = user_context.get("active_festival")
+        
+        # Count specific action types in the interaction logs
+        creator_clicks = sum(1 for x in interactions if x.get("action_type") == "creator")
+        boutique_clicks = sum(1 for x in interactions if x.get("action_type") == "boutique")
+        
+        # Calculate blend factors (0.0 to 1.0)
+        # 3 clicks of creator videos shifts you fully to creator social commerce weights
+        t_creator = min(1.0, creator_clicks * 0.33)
+        # 3 clicks of local boutique lists shifts you fully to boutique weights
+        t_boutique = min(1.0, boutique_clicks * 0.33)
+        # Cart items shift you towards high intent
+        t_intent = min(1.0, len(cart) * 0.50)
+        # Festive is binary based on whether a holiday is currently active
+        t_festive = 1.0 if active_festival else 0.0
+        
+        # Target matrices
+        c_discovery = CONTEXT_MATRICES["discovery"]
+        c_social = CONTEXT_MATRICES["social_commerce"]
+        c_boutique = CONTEXT_MATRICES["hyper_local_boutique"]
+        c_intent = CONTEXT_MATRICES["high_intent"]
+        c_festive = CONTEXT_MATRICES["festive_season"]
+        
+        # Blend them:
+        blended = {}
+        for key in base_weights.keys():
+            mix_val = (
+                (1.0 - t_creator) * (1.0 - t_boutique) * (1.0 - t_intent) * (1.0 - t_festive) * c_discovery[key]
+                + t_creator * c_social[key]
+                + t_boutique * c_boutique[key]
+                + t_intent * c_intent[key]
+                + t_festive * c_festive[key]
+            )
+            blended[key] = mix_val
+            
+        # Re-normalize to make sure they sum to exactly 1.0
+        total = sum(blended.values())
+        if total > 0:
+            for key in blended:
+                blended[key] = round(blended[key] / total, 4)
+        else:
+            return CONTEXT_MATRICES["discovery"]
+                
+        return blended
 
     def _get_cache_key(self, zip_code, state, festival_active, aesthetic):
         return f"{zip_code}_{state}_{festival_active}_{aesthetic}"
@@ -81,7 +131,7 @@ class PinPulseEngine:
         # Upcoming festival context (next 7 days)
         upcoming_events = user_context.get("upcoming_events", [])
         active_date = user_context.get("active_date", "")
-
+ 
         # Resolve ZIP-based data
         zip_info = self.zip_data.get(zip_code, {})
         weather_condition = user_context.get("weather_condition") or zip_info.get("weather_conditions", "hot_humid")
@@ -99,8 +149,8 @@ class PinPulseEngine:
             not session_cart and not interactions):
             return self._cache[cache_key]
 
-        # Get context-specific weights
-        weights = self.get_context_matrix(state)
+        # Get context-specific weights dynamically blended based on user journey
+        weights = self.get_context_matrix(state, user_context)
 
         zip_aov = zip_info.get("aov", 2500)
 
