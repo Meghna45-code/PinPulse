@@ -56,15 +56,18 @@ class PinPulseEngine:
         # Count specific action types in the interaction logs
         creator_clicks = sum(1 for x in interactions if x.get("action_type") == "creator")
         boutique_clicks = sum(1 for x in interactions if x.get("action_type") == "boutique")
-        
+        wishlist_items = sum(1 for x in interactions if x.get("action_type") == "wishlist")
+
         # Calculate blend factors (0.0 to 1.0)
-        # 3 clicks of creator videos shifts you fully to creator social commerce weights
+        # 3 creator video clicks shifts you fully to social_commerce weights
         t_creator = min(1.0, creator_clicks * 0.33)
-        # 3 clicks of local boutique lists shifts you fully to boutique weights
+        # 3 boutique views shifts you fully to hyper_local_boutique weights
         t_boutique = min(1.0, boutique_clicks * 0.33)
-        # Cart items shift you towards high intent
-        t_intent = min(1.0, len(cart) * 0.50)
-        # Festive is binary based on whether a holiday is currently active
+        # 3 cart additions shifts you fully to high_intent weights
+        t_intent = min(1.0, len(cart) * 0.33)
+        # Wishlisted items apply a subtle nudge towards high_intent (10% per item, max 1.0)
+        t_wishlist = min(1.0, wishlist_items * 0.10)
+        # Festive is binary: holiday active = fully in festive_season mode
         t_festive = 1.0 if active_festival else 0.0
         
         # Target matrices
@@ -81,7 +84,7 @@ class PinPulseEngine:
                 (1.0 - t_creator) * (1.0 - t_boutique) * (1.0 - t_intent) * (1.0 - t_festive) * c_discovery[key]
                 + t_creator * c_social[key]
                 + t_boutique * c_boutique[key]
-                + t_intent * c_intent[key]
+                + (t_intent + t_wishlist * 0.5) * c_intent[key]
                 + t_festive * c_festive[key]
             )
             blended[key] = mix_val
