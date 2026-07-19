@@ -194,7 +194,15 @@ def import_excel(excel_filename="Fashion Apparel.xlsx"):
         df = pd.read_excel(excel_path, sheet_name=sheet, header=None)
         logger.info(f"  Sheet '{sheet}': {len(df)} rows × {df.shape[1]} cols")
 
-        if df.shape[1] == 2:
+        # Check if column 0 contains URLs to determine format type dynamically
+        first_col_is_url = False
+        for val in df[0].dropna():
+            val_str = str(val).strip()
+            if val_str.startswith("http"):
+                first_col_is_url = True
+                break
+
+        if first_col_is_url:
             # Original format: col0=URL, col1=desc
             pairs = parse_sheet1(df)
         elif df.shape[1] >= 3:
