@@ -1024,7 +1024,7 @@ def get_feed(
     for item in scored:
         clean_item = {k: v for k, v in item.items() if not k.endswith("_vector") and k != "embedding"}
         
-        weights = CONTEXT_MATRICES.get(user_session["state"], CONTEXT_MATRICES["discovery"])
+        weights = engine.get_context_matrix(user_session["state"], user_context)
         
         # Calculate overlapping active tags
         event_attire_tags = active_event.get("attire_tags", [])
