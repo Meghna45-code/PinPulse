@@ -15,7 +15,7 @@ SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
 LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "local_catalog.json"))
 FRONTEND_FALLBACK_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "src", "catalog_fallback.js"))
-EXCEL_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "Fashion Apparel2.xlsx"))
+EXCEL_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "excel_sheets", "Fashion Apparel2.xlsx"))
 
 # Import semantic image mapping function from update_real_images
 from update_real_images import find_best_semantic_image
