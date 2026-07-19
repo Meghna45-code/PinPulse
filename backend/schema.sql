@@ -325,3 +325,34 @@ CREATE TABLE IF NOT EXISTS regional_boutique_trends (
     style_vibe_cluster VARCHAR(50)
 );
 
+-- ============================================================
+-- CONTENT CREATORS TABLES (YouTube Creator & Video Network)
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS creators (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    zip_code TEXT NOT NULL,
+    subscriber_count INT NOT NULL DEFAULT 0,
+    youtube_channel_url TEXT,
+    demographic TEXT NOT NULL DEFAULT 'gen-z',
+    embedding vector(512)
+);
+
+CREATE TABLE IF NOT EXISTS creator_videos (
+    id SERIAL PRIMARY KEY,
+    creator_id INT REFERENCES creators(id) ON DELETE CASCADE,
+    video_url TEXT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT,
+    video_screenshot_url TEXT,
+    simulated_engagement INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS creator_video_products (
+    video_id INT REFERENCES creator_videos(id) ON DELETE CASCADE,
+    product_id BIGINT REFERENCES products(id) ON DELETE CASCADE,
+    confidence_score FLOAT NOT NULL DEFAULT 1.0,
+    PRIMARY KEY (video_id, product_id)
+);
+

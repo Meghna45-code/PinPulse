@@ -244,20 +244,162 @@ CF_LOOKUP = {
     }
 }
 
-# Fallback Creators
+# Fallback Creators database representation
 FALLBACK_CREATORS = {
     "800008": [
-        {"name": "Patna Ethnic Wear Vlog", "youtube_url": "https://youtube.com/patna_ethnic", "demographic": "millennial", "subscriber_weight": 1.2, "vector": generate_vector("Millennial traditional saree cotton handloom ethnic daily wear")},
-        {"name": "Traditional Vibes", "youtube_url": "https://youtube.com/trad_vibes", "demographic": "millennial", "subscriber_weight": 1.3, "vector": generate_vector("Millennial traditional saree cotton handloom ethnic daily wear")},
-        {"name": "Patna Trending Now", "youtube_url": "https://youtube.com/patna_trending", "demographic": "gen-z", "subscriber_weight": 1.0, "vector": generate_vector("Gen-Z trendy casual ethnic kurta jeans fusion affordable Patna")},
+        {
+            "id": 1,
+            "name": "Patna Ethnic Wear Vlog",
+            "youtube_url": "https://youtube.com/patna_ethnic",
+            "demographic": "millennial",
+            "subscriber_count": 150000,
+            "subscriber_weight": 1.2,
+            "vector": generate_vector("Millennial traditional saree cotton handloom ethnic daily wear"),
+            "videos": [
+                {
+                    "id": 101,
+                    "video_url": "https://youtube.com/watch?v=patna_wed_1",
+                    "title": "Top Patna Wedding Lehengas & Sherwanis 2026",
+                    "description": "Traditional pure silk Banarasi and tussar handloom sarees in festive colors.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1595777457583-95e059d581b8",
+                    "simulated_engagement": 18000,
+                    "product_ids": [1, 2]
+                },
+                {
+                    "id": 102,
+                    "video_url": "https://youtube.com/watch?v=patna_mkt_2",
+                    "title": "Affordable Kurtis at Patna Market Tour",
+                    "description": "Exploring local street shops for festive cotton and silk kurtis.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c",
+                    "simulated_engagement": 8500,
+                    "product_ids": [7, 9]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Traditional Vibes",
+            "youtube_url": "https://youtube.com/trad_vibes",
+            "demographic": "millennial",
+            "subscriber_count": 98000,
+            "subscriber_weight": 1.3,
+            "vector": generate_vector("Millennial traditional saree cotton handloom ethnic daily wear"),
+            "videos": [
+                {
+                    "id": 103,
+                    "video_url": "https://youtube.com/watch?v=trad_vibes_1",
+                    "title": "Saraswati Puja Yellow Saree Styling Guide",
+                    "description": "Styling bright yellow georgette sarees with traditional matching anklets and light makeup.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c",
+                    "simulated_engagement": 12000,
+                    "product_ids": [9]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Patna Trending Now",
+            "youtube_url": "https://youtube.com/patna_trending",
+            "demographic": "gen-z",
+            "subscriber_count": 75000,
+            "subscriber_weight": 1.0,
+            "vector": generate_vector("Gen-Z trendy casual ethnic kurta jeans fusion affordable Patna"),
+            "videos": [
+                {
+                    "id": 104,
+                    "video_url": "https://youtube.com/watch?v=patna_trend_1",
+                    "title": "Gen-Z Fusion Kurta Styling Tips",
+                    "description": "Styling short kurtis with relaxed fit denim and sneakers for everyday comfort.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
+                    "simulated_engagement": 7500,
+                    "product_ids": [9]
+                }
+            ]
+        }
     ],
     "682001": [
-        {"name": "Kochi Couture", "youtube_url": "https://youtube.com/kochi_couture", "demographic": "millennial", "subscriber_weight": 1.3, "vector": generate_vector("Millennial traditional South Indian silk saree white gold cream Mundu")},
-        {"name": "Fort Kochi Style", "youtube_url": "https://youtube.com/fort_kochi", "demographic": "gen-z", "subscriber_weight": 1.5, "vector": generate_vector("Gen-Z linen cotton summer coastal fashion modern artsy")},
+        {
+            "id": 4,
+            "name": "Kochi Couture",
+            "youtube_url": "https://youtube.com/kochi_couture",
+            "demographic": "millennial",
+            "subscriber_count": 320000,
+            "subscriber_weight": 1.3,
+            "vector": generate_vector("Millennial traditional South Indian silk saree white gold cream Mundu"),
+            "videos": [
+                {
+                    "id": 105,
+                    "video_url": "https://youtube.com/watch?v=kochi_kasavu_1",
+                    "title": "Classic Kerala Kasavu Saree Draping Tutorial",
+                    "description": "Step by step kasavu saree draping with matching gold jewelry.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c",
+                    "simulated_engagement": 41600,
+                    "product_ids": [16, 28]
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Fort Kochi Style",
+            "youtube_url": "https://youtube.com/fort_kochi",
+            "demographic": "gen-z",
+            "subscriber_count": 500000,
+            "subscriber_weight": 1.5,
+            "vector": generate_vector("Gen-Z linen cotton summer coastal fashion modern artsy"),
+            "videos": [
+                {
+                    "id": 106,
+                    "video_url": "https://youtube.com/watch?v=kochi_linen_1",
+                    "title": "Sustainable Linen Fits for Hot Kochi Summers",
+                    "description": "Lookbook for Fort Kochi biennale showing off breezy sustainable linen.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b",
+                    "simulated_engagement": 75000,
+                    "product_ids": [92]
+                }
+            ]
+        }
     ],
     "752001": [
-        {"name": "Odisha Handloom Vlog", "youtube_url": "https://youtube.com/odisha_handloom", "demographic": "millennial", "subscriber_weight": 1.2, "vector": generate_vector("Millennial traditional cotton saree Sambalpuri Ikat handloom ethnic Odisha")},
-        {"name": "Puri Style Hub", "youtube_url": "https://youtube.com/puri_style", "demographic": "gen-z", "subscriber_weight": 1.4, "vector": generate_vector("Gen-Z trendy casual cotton ethnic fusion affordable Odisha temple town")},
+        {
+            "id": 6,
+            "name": "Odisha Handloom Vlog",
+            "youtube_url": "https://youtube.com/odisha_handloom",
+            "demographic": "millennial",
+            "subscriber_count": 95000,
+            "subscriber_weight": 1.2,
+            "vector": generate_vector("Millennial traditional cotton saree Sambalpuri Ikat handloom ethnic Odisha"),
+            "videos": [
+                {
+                    "id": 107,
+                    "video_url": "https://youtube.com/watch?v=puri_ikat_1",
+                    "title": "Gorgeous Sambalpuri Ikat Sarees Collection",
+                    "description": "Traditional Odia handloom silk and cotton sarees direct from local weavers.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b",
+                    "simulated_engagement": 11400,
+                    "product_ids": [31, 37]
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Puri Style Hub",
+            "youtube_url": "https://youtube.com/puri_style",
+            "demographic": "gen-z",
+            "subscriber_count": 120000,
+            "subscriber_weight": 1.4,
+            "vector": generate_vector("Gen-Z trendy casual cotton ethnic fusion affordable Odisha temple town"),
+            "videos": [
+                {
+                    "id": 108,
+                    "video_url": "https://youtube.com/watch?v=puri_fusion_1",
+                    "title": "Odisha Temple Town Fusion Wear Styling",
+                    "description": "Styling traditional block-prints and Pipli work applique in casual modern ways.",
+                    "video_screenshot_url": "https://images.unsplash.com/photo-1617137968427-85924c800a22",
+                    "simulated_engagement": 16800,
+                    "product_ids": [37]
+                }
+            ]
+        }
     ]
 }
 
@@ -388,7 +530,30 @@ def get_creators_data(zip_code):
         try:
             res = sb.table("creators").select("*").eq("zip_code", zip_code).execute()
             if res.data:
-                return res.data
+                creators = []
+                for row in res.data:
+                    creator = dict(row)
+                    # Resolve vector/embedding field names to match expectation
+                    if "embedding" in creator and creator["embedding"]:
+                        creator["vector"] = creator["embedding"]
+                    # Fetch videos for this creator
+                    try:
+                        v_res = sb.table("creator_videos").select("*").eq("creator_id", creator["id"]).execute()
+                        creator["videos"] = []
+                        if v_res.data:
+                            for v_row in v_res.data:
+                                video = dict(v_row)
+                                # Fetch mapped product IDs for this video
+                                try:
+                                    p_res = sb.table("creator_video_products").select("product_id").eq("video_id", video["id"]).execute()
+                                    video["product_ids"] = [p["product_id"] for p in p_res.data] if p_res.data else []
+                                except Exception:
+                                    video["product_ids"] = []
+                                creator["videos"].append(video)
+                    except Exception:
+                        creator["videos"] = []
+                    creators.append(creator)
+                return creators
         except Exception as e:
             logger.error(f"Supabase creators query failed: {e}")
     return FALLBACK_CREATORS.get(zip_code, [])
