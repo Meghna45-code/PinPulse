@@ -5,6 +5,7 @@ import numpy as np
 from datetime import datetime
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from dotenv import load_dotenv
 
 # Set up logging
@@ -26,218 +27,276 @@ app.add_middleware(
 
 # File paths
 LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "local_catalog.json"))
-TREND_CACHE_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "youtube_cache.json"))
+
+# Import recommender engine components
+import sys
+sys.path.insert(0, os.path.dirname(__file__))
+
+from config import CONTEXT_MATRICES, INTENT_DECAY_CONFIG
+from scoring_engine import (
+    cosine_similarity,
+    normalize_cosine_score,
+    calculate_aesthetic_score,
+    calculate_fabric_score,
+    calculate_festivity_score,
+    calculate_creator_score,
+    calculate_boutique_score,
+    calculate_velocity_score,
+)
+from pinpulse_engine import PinPulseEngine
+
+# Mappings & Caches
+ZIP_MAPPING = {
+    "800001": "800008", # Frazer Road -> Patna
+    "560034": "682001", # Koramangala -> Kochi
+    "752001": "752001", # Puri -> Odisha
+}
 
 # Fallback calendar data when offline
 FALLBACK_CALENDAR = {
     # Patna
-    ("800008", "2026-11-11"): {"event_name": "Chitragupta Puja & Bhai Dooj", "event_type": "festival", "attire_tags": ["ethnic", "festive", "traditional", "pink", "red", "yellow"], "is_festive": True},
-    ("800008", "2026-11-13"): {"event_name": "Chhath Puja (Nahay Khay)", "event_type": "festival", "attire_tags": ["cotton", "saree", "traditional", "yellow", "white", "patna"], "is_festive": True},
-    ("800008", "2026-11-14"): {"event_name": "Chhath Puja (Kharna)", "event_type": "festival", "attire_tags": ["cotton", "saree", "traditional", "yellow", "white", "patna"], "is_festive": True},
-    ("800008", "2026-11-15"): {"event_name": "Chhath Puja (Sandhya Arghya)", "event_type": "festival", "attire_tags": ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath-puja"], "is_festive": True},
-    ("800008", "2026-11-16"): {"event_name": "Chhath Puja (Usha Arghya)", "event_type": "festival", "attire_tags": ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath-puja"], "is_festive": True},
-    ("800008", "2026-10-04"): {"event_name": "Jitiya (Jivitputrika Vrat)", "event_type": "festival", "attire_tags": ["saree", "ethnic", "traditional", "red", "maroon"], "is_festive": True},
-    ("800008", "2026-03-22"): {"event_name": "Bihar Diwas (Bihar Day)", "event_type": "festival", "attire_tags": ["saree", "salwar", "bhagalpuri-silk", "kurta", "dhoti", "nehru-jacket", "white", "cream", "patna"], "is_festive": True},
-    ("800008", "2026-04-23"): {"event_name": "Veer Kunwar Singh Jayanti", "event_type": "festival", "attire_tags": ["kurta", "white", "cream"], "is_festive": True},
-    ("800008", "2026-01-24"): {"event_name": "Karpoori Thakur Jayanti", "event_type": "festival", "attire_tags": ["shawl", "warm", "winter", "jacket", "white"], "is_festive": True},
-    ("800008", "2026-10-21"): {"event_name": "Shri Krishna Singh Jayanti", "event_type": "festival", "attire_tags": ["saree", "salwar", "kurta", "white", "beige"], "is_festive": True},
-    ("800008", "2026-03-26"): {"event_name": "Emperor Ashoka Ashtami", "event_type": "festival", "attire_tags": ["cotton", "saree", "suit", "white", "pastel"], "is_festive": True},
-    ("800008", "2026-01-03"): {"event_name": "Prakash Parv (Patna Sahib)", "event_type": "festival", "attire_tags": ["traditional", "white", "blue", "saffron"], "is_festive": True},
+    ("800008", "2026-11-15"): {"event_name": "Chhath Puja (Sandhya Arghya)", "event_type": "festival", "attire_tags": ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath_puja"], "is_festive": True},
     ("800008", "2026-02-02"): {"event_name": "Saraswati Puja (Vasant Panchami)", "event_type": "festival", "attire_tags": ["saree", "kurta", "yellow", "ethnic"], "is_festive": True},
-    ("800008", "2026-08-10"): {"event_name": "Shravani Mela Pilgrim Cycle", "event_type": "festival", "attire_tags": ["saffron", "dhoti"], "is_festive": True},
-    ("800008", "2026-12-09"): {"event_name": "Patna Pre-Wedding (Haldi Ceremony)", "event_type": "pre_wedding", "attire_tags": ["cotton", "yellow", "saffron", "ethnic"], "is_festive": True},
-    ("800008", "2026-12-10"): {"event_name": "Patna Wedding Day (Pheras Ritual)", "event_type": "wedding_day", "attire_tags": ["heavy_silk", "traditional_embroidery", "ceremonial", "silk", "saree", "sherwani", "crimson", "gold", "maroon"], "is_festive": True},
-    ("800008", "2026-12-11"): {"event_name": "Patna Post-Wedding (Vidaai Ceremony)", "event_type": "post_wedding", "attire_tags": ["festive", "magenta", "fuchsia", "gold", "ethnic"], "is_festive": True},
-    
+    ("800008", "2026-03-22"): {"event_name": "Bihar Diwas (Bihar Day)", "event_type": "festival", "attire_tags": ["saree", "salwar", "bhagalpuri_silk", "kurta", "dhoti", "nehru_jacket", "white", "cream", "patna"], "is_festive": True},
+    ("800008", "2026-12-10"): {"event_name": "Patna Wedding Day (Pheras)", "event_type": "wedding_day", "attire_tags": ["heavy_silk", "traditional_embroidery", "ceremonial", "silk", "saree", "sherwani", "crimson", "gold", "maroon"], "is_festive": True},
     # Kochi
+    ("682001", "2026-01-20"): {"event_name": "Kochi-Muziris Biennale Peak", "event_type": "festival", "attire_tags": ["artsy", "bohemian", "linen", "sustainable", "modern"], "is_festive": True},
+    ("682001", "2026-04-14"): {"event_name": "Vishu Festival (Malayali New Year)", "event_type": "festival", "attire_tags": ["ethnic", "yellow", "gold", "cream", "kasavu_weave"], "is_festive": True},
     ("682001", "2026-08-27"): {"event_name": "Onam Festival (Thiruvonam)", "event_type": "festival", "attire_tags": ["saree", "mundu", "kasavu_weave", "white", "cream", "gold"], "is_festive": True},
-    ("682001", "2026-04-14"): {"event_name": "Vishu (New Year)", "event_type": "festival", "attire_tags": ["ethnic", "yellow", "gold", "cream"], "is_festive": True},
-    ("682001", "2026-04-03"): {"event_name": "Good Friday Church Service", "event_type": "festival", "attire_tags": ["modest", "formal", "premium", "white"], "is_festive": False},
-    ("682001", "2026-04-05"): {"event_name": "Easter Sunday Celebration", "event_type": "festival", "attire_tags": ["modest", "formal", "premium", "pastel"], "is_festive": True},
-    ("682001", "2026-09-12"): {"event_name": "Synagogue Rosh Hashanah", "event_type": "festival", "attire_tags": ["subtle", "modest", "premium", "elegant"], "is_festive": True},
-    ("682001", "2026-01-15"): {"event_name": "Makaravilakku Devotional", "event_type": "festival", "attire_tags": ["black", "saffron", "traditional", "mundu", "dhoti"], "is_festive": False},
-    ("682001", "2026-01-25"): {"event_name": "Chandanakudam Festival (Mosque)", "event_type": "festival", "attire_tags": ["traditional", "Islamic", "modest", "ethnic", "embroidered"], "is_festive": True},
-    ("682001", "2026-12-28"): {"event_name": "Indira Gandhi Boat Race", "event_type": "festival", "attire_tags": ["casual", "breathable", "cotton", "coastal"], "is_festive": True},
-    ("682001", "2026-12-31"): {"event_name": "Cochin Carnival NYE", "event_type": "festival", "attire_tags": ["vibrant", "party", "bohemian", "modern"], "is_festive": True},
-    ("682001", "2026-01-20"): {"event_name": "Kochi-Muziris Biennale Art Peak", "event_type": "festival", "attire_tags": ["artsy", "bohemian", "linen", "sustainable", "modern"], "is_festive": True},
-    ("682001", "2026-12-26"): {"event_name": "Kochi Pre-Wedding (Nischayam)", "event_type": "pre_wedding", "attire_tags": ["semi-ethnic", "mint", "peach", "lavender", "pastel"], "is_festive": True},
     ("682001", "2026-12-27"): {"event_name": "Kochi Wedding Day (Thalikettu)", "event_type": "wedding_day", "attire_tags": ["kasavu_weave", "off-white", "cream", "gold"], "is_festive": True},
-    ("682001", "2026-12-29"): {"event_name": "Kochi Post-Wedding (Reception)", "event_type": "post_wedding", "attire_tags": ["contemporary_fusion", "royal-blue", "wine", "black", "silver"], "is_festive": True},
-    
-    # Shillong
-    ("793003", "2026-11-15"): {"event_name": "Shillong Cherry Blossom Fest", "event_type": "festival", "attire_tags": ["streetwear", "jacket", "coat", "scarf", "boots"], "is_festive": True},
-    ("793003", "2026-12-25"): {"event_name": "Christmas Day Celebration", "event_type": "festival", "attire_tags": ["velvet", "woolen", "dress", "formal", "winter"], "is_festive": True},
-    ("793003", "2026-04-15"): {"event_name": "Shad Suk Mynsiem Harvest Fest", "event_type": "festival", "attire_tags": ["jainsem", "jymphong", "traditional", "ethnic", "silk"], "is_festive": True},
-    ("793003", "2026-10-25"): {"event_name": "Shillong Autumn Festival", "event_type": "festival", "attire_tags": ["indie", "fusion", "denim-fusion", "streetwear"], "is_festive": True},
-    ("793003", "2026-11-10"): {"event_name": "Wangala Festival (100 Drums)", "event_type": "festival", "attire_tags": ["traditional", "tribal_heritage", "headgear", "accessories"], "is_festive": True},
-    ("793003", "2026-07-14"): {"event_name": "Behdiengkhlam Festival", "event_type": "festival", "attire_tags": ["traditional"], "is_festive": True},
-    ("793003", "2026-12-19"): {"event_name": "Shillong Pre-Wedding (Pynhiar Synjat)", "event_type": "pre_wedding", "attire_tags": ["western_formal", "silver", "white", "pastel", "fusion"], "is_festive": True},
-    ("793003", "2026-12-20"): {"event_name": "Shillong Wedding Day (Traditional)", "event_type": "wedding_day", "attire_tags": ["handwoven_silk", "tribal_heritage", "jainsem", "jymphong", "earth-tones"], "is_festive": True},
-    ("793003", "2026-12-21"): {"event_name": "Shillong Post-Wedding (Reception)", "event_type": "post_wedding", "attire_tags": ["western_formal", "navy", "burgundy", "black", "metallic"], "is_festive": True},
-
-    # Universal Civic, Academic & Social Velocity Events (Regional Variations)
-    # 1. Republic Day (Jan 26)
-    ("800008", "2026-01-26"): {"event_name": "Republic Day Parade", "event_type": "festival", "attire_tags": ["white", "saffron", "green", "ethnic", "formal"], "is_festive": True},
-    ("682001", "2026-01-26"): {"event_name": "Republic Day Parade", "event_type": "festival", "attire_tags": ["white", "fusion", "formal", "lightweight"], "is_festive": True},
-    ("793003", "2026-01-26"): {"event_name": "Republic Day Parade", "event_type": "festival", "attire_tags": ["white", "saffron", "green", "winter", "jacket", "formal"], "is_festive": True},
-
-    # 2. Holi (Mar 3)
-    ("800008", "2026-03-03"): {"event_name": "Holi Festival of Colors", "event_type": "festival", "attire_tags": ["white", "cotton", "casual", "dailywear"], "is_festive": True},
-    ("682001", "2026-03-03"): {"event_name": "Holi Festival of Colors", "event_type": "festival", "attire_tags": ["casual", "streetwear", "denim", "cotton"], "is_festive": True},
-    ("793003", "2026-03-03"): {"event_name": "Holi Festival of Colors", "event_type": "festival", "attire_tags": ["hoodie", "winter", "warm", "streetwear"], "is_festive": True},
-
-    # 3. Good Friday / Easter (Apr 5)
-    ("800008", "2026-04-05"): {"event_name": "Easter Sunday Service", "event_type": "festival", "attire_tags": ["ethnic", "formal", "modest", "pastel"], "is_festive": True},
-    ("793003", "2026-04-05"): {"event_name": "Easter Sunday Service", "event_type": "festival", "attire_tags": ["western_formal", "navy", "black", "grey", "suit", "gown"], "is_festive": True},
-
-    # 4. Eid-ul-Fitr (Mar 20)
-    ("800008", "2026-03-20"): {"event_name": "Eid-ul-Fitr Celebration", "event_type": "festival", "attire_tags": ["ethnic", "festive", "traditional_embroidery", "embroidered", "kurta", "sherwani"], "is_festive": True},
-    ("682001", "2026-03-20"): {"event_name": "Eid-ul-Fitr Celebration", "event_type": "festival", "attire_tags": ["ethnic", "festive", "modest", "elegant"], "is_festive": True},
-    ("793003", "2026-03-20"): {"event_name": "Eid-ul-Fitr Celebration", "event_type": "festival", "attire_tags": ["western_formal", "modest", "fusion"], "is_festive": True},
-
-    # 5. Independence Day (Aug 15)
-    ("800008", "2026-08-15"): {"event_name": "Independence Day Ceremony", "event_type": "festival", "attire_tags": ["saffron", "white", "green", "ethnic", "formal", "cotton"], "is_festive": True},
-    ("682001", "2026-08-15"): {"event_name": "Independence Day Ceremony", "event_type": "festival", "attire_tags": ["saffron", "white", "green", "ethnic", "formal", "lightweight"], "is_festive": True},
-    ("793003", "2026-08-15"): {"event_name": "Independence Day Ceremony", "event_type": "festival", "attire_tags": ["saffron", "white", "green", "formal", "jacket", "layered"], "is_festive": True},
-
-    # 6. Durga Puja (Oct 18)
-    ("800008", "2026-10-18"): {"event_name": "Durga Puja Peak Pandals", "event_type": "festival", "attire_tags": ["ethnic", "festive", "silk", "saree", "heavy_silk", "traditional"], "is_festive": True},
-    ("682001", "2026-10-18"): {"event_name": "Durga Puja Celebrations", "event_type": "festival", "attire_tags": ["ethnic", "festive", "minimalist", "cotton"], "is_festive": True},
-    ("793003", "2026-10-18"): {"event_name": "Durga Puja Autumn Fusion", "event_type": "festival", "attire_tags": ["streetwear", "fusion", "modern"], "is_festive": True},
-
-    # 7. Diwali (Nov 8)
-    ("800008", "2026-11-08"): {"event_name": "Diwali Lights Festival", "event_type": "festival", "attire_tags": ["ethnic", "festive", "traditional", "regal", "gold", "silk"], "is_festive": True},
-    ("682001", "2026-11-08"): {"event_name": "Diwali Lights Festival", "event_type": "festival", "attire_tags": ["ethnic", "festive", "contemporary_fusion", "fusion", "earth-tones"], "is_festive": True},
-    ("793003", "2026-11-08"): {"event_name": "Diwali Festival of Lights", "event_type": "festival", "attire_tags": ["winter", "warm", "jacket", "velvet", "festive"], "is_festive": True},
-
-    # 8. Christmas Day (Dec 25)
-    ("800008", "2026-12-25"): {"event_name": "Christmas Day Celebrations", "event_type": "festival", "attire_tags": ["winter", "party", "jacket", "velvet", "warm"], "is_festive": True},
-    ("682001", "2026-12-25"): {"event_name": "Christmas Day Celebrations", "event_type": "festival", "attire_tags": ["vibrant", "party", "bohemian", "modern", "western"], "is_festive": True},
-
-    # 9. College Farewells (Apr 10)
-    ("800008", "2026-04-10"): {"event_name": "College Farewell Gala", "event_type": "festival", "attire_tags": ["formal", "saree", "suit", "ethnic"], "is_festive": True},
-    ("682001", "2026-04-10"): {"event_name": "College Farewell Gala", "event_type": "festival", "attire_tags": ["pastel", "fusion", "cotton", "lightweight"], "is_festive": True},
-    ("793003", "2026-04-10"): {"event_name": "College Farewell Gala", "event_type": "festival", "attire_tags": ["western_formal", "navy", "black", "grey", "blazer", "suit"], "is_festive": True},
-
-    # 10. Graduation / Annual (May 15)
-    ("800008", "2026-05-15"): {"event_name": "Annual Convocation Ceremony", "event_type": "festival", "attire_tags": ["formal", "ethnic", "fusion"], "is_festive": True},
-    ("682001", "2026-05-15"): {"event_name": "Annual Convocation Ceremony", "event_type": "festival", "attire_tags": ["formal", "elegant", "premium"], "is_festive": True},
-    ("793003", "2026-05-15"): {"event_name": "Annual Convocation Ceremony", "event_type": "festival", "attire_tags": ["western_formal", "suit", "gown", "blazer"], "is_festive": True},
-
-    # 11. Annual School Day (Dec 5)
-    ("800008", "2026-12-05"): {"event_name": "Annual School Day Celebration", "event_type": "festival", "attire_tags": ["formal", "smart_casual", "ethnic"], "is_festive": True},
-    ("682001", "2026-12-05"): {"event_name": "Annual School Day Celebration", "event_type": "festival", "attire_tags": ["formal", "smart_casual", "ethnic"], "is_festive": True},
-    ("793003", "2026-12-05"): {"event_name": "Annual School Day Celebration", "event_type": "festival", "attire_tags": ["formal", "smart_casual", "ethnic"], "is_festive": True},
-
-    # 12. Back-to-College (Jul 5)
-    ("800008", "2026-07-05"): {"event_name": "Back-to-College Opening", "event_type": "festival", "attire_tags": ["casual", "streetwear", "cotton", "breathable"], "is_festive": False},
-    ("682001", "2026-07-05"): {"event_name": "Back-to-College Opening", "event_type": "festival", "attire_tags": ["casual", "streetwear", "linen", "breathable"], "is_festive": False},
-    ("793003", "2026-07-05"): {"event_name": "Back-to-College Opening", "event_type": "festival", "attire_tags": ["casual", "streetwear", "jacket", "coat", "winter"], "is_festive": False},
-
-    # 13. College Fests (Feb 15)
-    ("800008", "2026-02-15"): {"event_name": "Annual College Fest", "event_type": "festival", "attire_tags": ["indie", "streetwear", "denim", "graphic"], "is_festive": True},
-    ("682001", "2026-02-15"): {"event_name": "Annual College Fest", "event_type": "festival", "attire_tags": ["indie", "streetwear", "denim", "graphic"], "is_festive": True},
-    ("793003", "2026-02-15"): {"event_name": "Annual College Fest", "event_type": "festival", "attire_tags": ["indie", "streetwear", "denim", "graphic"], "is_festive": True},
-
-    # 14. Wedding Guest Day (Nov 25)
-    ("800008", "2026-11-25"): {"event_name": "Wedding Guest Ceremony", "event_type": "festival", "attire_tags": ["ethnic", "festive", "silk", "velvet", "traditional"], "is_festive": True},
-    ("682001", "2026-11-25"): {"event_name": "Wedding Guest Ceremony", "event_type": "festival", "attire_tags": ["ethnic", "festive", "silk", "velvet", "traditional"], "is_festive": True},
-    ("793003", "2026-11-25"): {"event_name": "Wedding Guest Ceremony", "event_type": "festival", "attire_tags": ["ethnic", "festive", "silk", "velvet", "traditional"], "is_festive": True},
-
-    # 15. Office Ethnic Day (Sep 4)
-    ("800008", "2026-09-04"): {"event_name": "Office Ethnic Day", "event_type": "festival", "attire_tags": ["ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"], "is_festive": True},
-    ("682001", "2026-09-04"): {"event_name": "Office Ethnic Day", "event_type": "festival", "attire_tags": ["ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"], "is_festive": True},
-    ("793003", "2026-09-04"): {"event_name": "Office Ethnic Day", "event_type": "festival", "attire_tags": ["ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"], "is_festive": True},
-
-    # 16. College Admissions (Jul 15)
-    ("800008", "2026-07-15"): {"event_name": "College Admissions Season", "event_type": "festival", "attire_tags": ["smart_casual", "breathable_cotton", "modest_fusion", "summer_wear"], "is_festive": False},
-    ("682001", "2026-07-15"): {"event_name": "College Admissions Season", "event_type": "festival", "attire_tags": ["monsoon_ready", "contemporary_casual", "dark_tones", "minimalist"], "is_festive": False},
-    ("793003", "2026-07-15"): {"event_name": "College Admissions Season", "event_type": "festival", "attire_tags": ["streetwear", "light_layers", "western_casual", "trendy_youth"], "is_festive": False}
+    # Odisha
+    ("752001", "2026-01-14"): {"event_name": "Makar Sankranti (Makar Mela)", "event_type": "festival", "attire_tags": ["traditional", "tussar_silk", "yellow", "red", "odisha"], "is_festive": True},
+    ("752001", "2026-06-14"): {"event_name": "Pahili Raja (Raja Parba)", "event_type": "festival", "attire_tags": ["traditional", "cotton", "pastel", "lightweight", "sambalpuri"], "is_festive": True},
+    ("752001", "2026-06-15"): {"event_name": "Raja Sankranti Festival", "event_type": "festival", "attire_tags": ["traditional", "cotton", "pastel", "sambalpuri", "ethnic"], "is_festive": True},
+    ("752001", "2026-07-16"): {"event_name": "Puri Rath Yatra Chariot Festival", "event_type": "festival", "attire_tags": ["sambalpuri", "cotton", "traditional", "yellow", "saffron", "saree", "kurta"], "is_festive": True},
+    ("752001", "2026-12-20"): {"event_name": "Odisha Winter Wedding (Pheras)", "event_type": "wedding_day", "attire_tags": ["heavy_silk", "tussar_silk", "ceremonial", "sherwani", "crimson", "gold"], "is_festive": True},
 }
 
-# Local Velocity Cache (fallback when Supabase is offline)
-# Mirrors the seed data in schema.sql
-LOCAL_VELOCITY_CACHE = {
-    # Patna
-    (1,  "800008"): {"velocity_score": 0.92, "units_last_hour": 47},
-    (2,  "800008"): {"velocity_score": 0.88, "units_last_hour": 38},
-    (7,  "800008"): {"velocity_score": 0.75, "units_last_hour": 22},
-    (9,  "800008"): {"velocity_score": 0.65, "units_last_hour": 18},
-    (13, "800008"): {"velocity_score": 0.70, "units_last_hour": 20},
-    (15, "800008"): {"velocity_score": 0.80, "units_last_hour": 30},
-    (11, "800008"): {"velocity_score": 0.55, "units_last_hour": 12},
-    (48, "800008"): {"velocity_score": 0.60, "units_last_hour": 15},
-    (6,  "800008"): {"velocity_score": 0.72, "units_last_hour": 24},
-    # Kochi
-    (16, "682001"): {"velocity_score": 0.95, "units_last_hour": 52},
-    (17, "682001"): {"velocity_score": 0.85, "units_last_hour": 35},
-    (25, "682001"): {"velocity_score": 0.78, "units_last_hour": 28},
-    (28, "682001"): {"velocity_score": 0.70, "units_last_hour": 20},
-    (20, "682001"): {"velocity_score": 0.62, "units_last_hour": 16},
-    (26, "682001"): {"velocity_score": 0.55, "units_last_hour": 11},
-    (23, "682001"): {"velocity_score": 0.50, "units_last_hour":  9},
-    (24, "682001"): {"velocity_score": 0.58, "units_last_hour": 14},
-    (30, "682001"): {"velocity_score": 0.45, "units_last_hour":  7},
-    # Shillong
-    (31, "793003"): {"velocity_score": 0.90, "units_last_hour": 42},
-    (32, "793003"): {"velocity_score": 0.82, "units_last_hour": 32},
-    (33, "793003"): {"velocity_score": 0.78, "units_last_hour": 26},
-    (36, "793003"): {"velocity_score": 0.72, "units_last_hour": 22},
-    (37, "793003"): {"velocity_score": 0.68, "units_last_hour": 19},
-    (41, "793003"): {"velocity_score": 0.65, "units_last_hour": 17},
-    (44, "793003"): {"velocity_score": 0.60, "units_last_hour": 14},
-    (40, "793003"): {"velocity_score": 0.55, "units_last_hour": 10},
-    (39, "793003"): {"velocity_score": 0.75, "units_last_hour": 25},
-}
-
-def get_velocity_map(zip_code: str, supabase_url: str = None, supabase_key: str = None) -> dict:
-    """Returns {product_id -> {velocity_score, units_last_hour}} for a given zip code."""
-    if supabase_url and supabase_key:
-        try:
-            from supabase import create_client
-            sb = create_client(supabase_url, supabase_key)
-            res = sb.table("checkout_velocity") \
-                .select("product_id, velocity_score, units_last_hour") \
-                .eq("zip_code", zip_code) \
-                .execute()
-            if res.data:
-                logger.info(f"Fetched {len(res.data)} velocity rows from Supabase for {zip_code}")
-                return {row["product_id"]: row for row in res.data}
-        except Exception as e:
-            logger.warning(f"Velocity fetch from Supabase failed: {e}. Using local cache.")
-    # Fallback to local cache
-    return {
-        pid: data
-        for (pid, zc), data in LOCAL_VELOCITY_CACHE.items()
-        if zc == zip_code
+# Weather Matrix throughout the year
+WEATHER_MATRIX = {
+    "800008": { # Patna
+        1: {"desc": "Cold & Foggy ❄️", "temp": "10°C–22°C", "cold_wave": True, "hot_wave": False, "rainy": False, "weather_conditions": "cold"},
+        2: {"desc": "Cool & Sunny 🌤️", "temp": "12°C–26°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "cold"},
+        3: {"desc": "Warming Up ☀️", "temp": "17°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        4: {"desc": "Hot & Dry 🔥", "temp": "21°C–38°C", "cold_wave": False, "hot_wave": True, "rainy": False, "weather_conditions": "hot_dry"},
+        5: {"desc": "Very Hot 🔥", "temp": "24°C–39°C", "cold_wave": False, "hot_wave": True, "rainy": False, "weather_conditions": "hot_dry"},
+        6: {"desc": "Hot & Humid 🌡️", "temp": "25°C–35°C", "cold_wave": False, "hot_wave": True, "rainy": False, "weather_conditions": "hot_humid"},
+        7: {"desc": "Hot & Monsoon 🌧️", "temp": "26°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        8: {"desc": "Humid & Wet 🌧️", "temp": "25°C–32°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        9: {"desc": "Humid 🌧️", "temp": "24°C–32°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        10: {"desc": "Pleasant 🍂", "temp": "20°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        11: {"desc": "Cool & Dry 🍂", "temp": "15°C–27°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        12: {"desc": "Cold & Dry ❄️", "temp": "11°C–23°C", "cold_wave": True, "hot_wave": False, "rainy": False, "weather_conditions": "cold"}
+    },
+    "682001": { # Fort Kochi
+        1: {"desc": "Pleasant & Dry 🍃", "temp": "23°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        2: {"desc": "Pleasant & Dry 🍃", "temp": "24°C–32°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        3: {"desc": "Warm & Humid 🌡️", "temp": "25°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "hot_humid"},
+        4: {"desc": "Hot & Humid 🔥", "temp": "27°C–33°C", "cold_wave": False, "hot_wave": True, "rainy": False, "weather_conditions": "hot_humid"},
+        5: {"desc": "Hot & Wet 🌧️", "temp": "27°C–31°C", "cold_wave": False, "hot_wave": True, "rainy": True, "weather_conditions": "hot_humid"},
+        6: {"desc": "Wet/Monsoon 🌧️", "temp": "26°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        7: {"desc": "Peak Monsoon 🌧️", "temp": "25°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        8: {"desc": "Monsoon 🌧️", "temp": "25°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        9: {"desc": "Monsoon Subsiding 🌧️", "temp": "25°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        10: {"desc": "Warm & Humid 🌡️", "temp": "25°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "hot_humid"},
+        11: {"desc": "Warm & Dry ☀️", "temp": "25°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        12: {"desc": "Pleasant & Dry 🍃", "temp": "24°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"}
+    },
+    "752001": { # Puri, Odisha
+        1: {"desc": "Cool & Pleasant 🍃", "temp": "18°C–27°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        2: {"desc": "Pleasant & Sunny ☀️", "temp": "21°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        3: {"desc": "Warm & Sunny ☀️", "temp": "24°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "hot_humid"},
+        4: {"desc": "Hot & Humid 🔥", "temp": "27°C–35°C", "cold_wave": False, "hot_wave": True, "rainy": False, "weather_conditions": "hot_humid"},
+        5: {"desc": "Very Hot & Humid 🔥", "temp": "28°C–37°C", "cold_wave": False, "hot_wave": True, "rainy": False, "weather_conditions": "hot_humid"},
+        6: {"desc": "Monsoon Showers 🌧️", "temp": "27°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        7: {"desc": "Heavy Monsoons 🌧️", "temp": "26°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        8: {"desc": "Wet & Humid 🌧️", "temp": "26°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        9: {"desc": "Breezy Showers 🌧️", "temp": "25°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": True, "weather_conditions": "hot_humid"},
+        10: {"desc": "Pleasant Autumn 🍂", "temp": "23°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        11: {"desc": "Cool & Dry 🍂", "temp": "20°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"},
+        12: {"desc": "Mild Winter ❄️", "temp": "17°C–26°C", "cold_wave": False, "hot_wave": False, "rainy": False, "weather_conditions": "warm_moderate"}
     }
-
-# Local Outfit Completer Cache (fallback when Supabase is offline)
-# Maps primary_item_id -> {suggested_accessory_id, suggested_footwear_id, occasion_tag}
-# IDs verified against actual catalog (IDs 1-159):
-#   ID=124: Heavy kundan necklace set
-#   ID=127: Traditional silver anklets
-#   ID=135: Minimalist gold earring set
-#   ID=149: Modern ankle boots for women
-#   ID=38:  Wangala Tribal Beaded Vest
-LOCAL_OUTFIT_COMPLETER = {
-    (1, "wedding_day"): {"suggested_accessory_id": 124, "suggested_footwear_id": 149}, # Crimson Banarasi Silk Saree -> Kundan Necklace + Boots
-    (2, "wedding_day"): {"suggested_accessory_id": 124, "suggested_footwear_id": 149}, # Sherwani -> Kundan Necklace + Boots
-    (9, "festival"):    {"suggested_accessory_id": 127, "suggested_footwear_id": 149}, # Yellow Saree -> Anklets + Boots
-    (7, "festival"):    {"suggested_accessory_id": 127, "suggested_footwear_id": None}, # Chhath Saree -> Anklets
-    (16, "festival"):   {"suggested_accessory_id": 127, "suggested_footwear_id": None}, # Onam Kasavu Saree -> Anklets
-    (97, "wedding_day"):{"suggested_accessory_id": 124, "suggested_footwear_id": 149}, # Kasavu Saree -> Kundan + Boots
-    (110, "festival"):  {"suggested_accessory_id": 38,  "suggested_footwear_id": 149}, # Cherry Blossom -> Beaded Vest + Boots
-    (112, "festival"):  {"suggested_accessory_id": 135, "suggested_footwear_id": 149}, # Christmas Velvet -> Earrings + Boots
-    # Wedding day fallbacks for other regional sarees
-    (6, "wedding_day"):  {"suggested_accessory_id": 124, "suggested_footwear_id": 149}, # Bhagalpuri Silk
-    (5, "festival"):     {"suggested_accessory_id": 156, "suggested_footwear_id": 149}, # Fuchsia Mooh Dikhayi Saree -> Engagement ring
-    (17, "festival"):    {"suggested_accessory_id": 127, "suggested_footwear_id": None}, # Onam Kasavu Dress
-    (120, "festival"):   {"suggested_accessory_id": 135, "suggested_footwear_id": 149}, # Party wear
-    (143, "festival"):   {"suggested_accessory_id": 139, "suggested_footwear_id": 149}, # Silver neckpiece -> Sunglasses + Boots
 }
 
-# Vibe vector calculations
+# Try loading weather matrix from dynamic JSON seeder cache
+weather_cache_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "weather_presets.json"))
+if os.path.exists(weather_cache_file):
+    try:
+        with open(weather_cache_file, "r", encoding="utf-8") as f:
+            raw_weather = json.load(f)
+            # Convert month keys from strings to integers
+            converted_weather = {}
+            for z, months in raw_weather.items():
+                converted_weather[z] = {int(m): data for m, data in months.items()}
+            WEATHER_MATRIX = converted_weather
+            logger.info("Successfully loaded weather insights cache.")
+    except Exception as e:
+        logger.error(f"Failed to load weather insights cache: {e}")
+
+# Weather Rules vectors
+def generate_vector(seed_text):
+    np.random.seed(hash(seed_text) % (2**32))
+    vec = np.random.randn(512)
+    norm = np.linalg.norm(vec)
+    if norm > 0:
+        vec = vec / norm
+    return vec.tolist()
+
+WEATHER_RULES = {
+    "hot_humid": {
+        "allowable_materials": ["cotton", "linen", "rayon", "chiffon", "georgette"],
+        "vector": generate_vector("breathable cotton linen absorbs sweat hot humid tropical climate"),
+    },
+    "warm_moderate": {
+        "allowable_materials": ["cotton", "rayon", "crepe", "silk", "chanderi"],
+        "vector": generate_vector("light cotton rayon comfortable warm moderate climate"),
+    },
+    "hot_dry": {
+        "allowable_materials": ["cotton", "linen", "khadi", "chanderi"],
+        "vector": generate_vector("loose cotton linen dry heat air circulation breathable"),
+    },
+    "cold": {
+        "allowable_materials": ["velvet", "wool", "silk", "brocade"],
+        "vector": generate_vector("warm velvet wool insulating cold winter weather layers"),
+    },
+}
+
+# Festival Rules vectors
+FESTIVAL_RULES = {
+    "chhath_puja": {
+        "target_color": "yellow",
+        "target_nature": "ethnic",
+        "vector": generate_vector("traditional ethnic yellow red chhath puja festive cultural Bihar celebration"),
+    },
+    "diwali": {
+        "target_color": "gold",
+        "target_nature": "festive",
+        "vector": generate_vector("glowing gold silk brocade traditional diwali festive lights deepavali"),
+    },
+    "pongal": {
+        "target_color": "white",
+        "target_nature": "traditional",
+        "vector": generate_vector("pongal harvest traditional white gold border south indian cotton"),
+    },
+    "eid": {
+        "target_color": "green",
+        "target_nature": "festive",
+        "vector": generate_vector("festive ethnic embroidered traditional green gold eid celebration modest"),
+    },
+}
+
+# Co-Purchase Collaborative Filtering pairings (using integer IDs)
+CF_LOOKUP = {
+    1: {
+        "cluster_id": "festive_ethnic_crimson",
+        "recommendations": [
+            {"id": 124, "strength": 0.90},
+            {"id": 149, "strength": 0.65},
+            {"id": 15, "strength": 0.25},
+        ]
+    },
+    2: {
+        "cluster_id": "festive_ethnic_maroon",
+        "recommendations": [
+            {"id": 124, "strength": 0.85},
+            {"id": 149, "strength": 0.60},
+        ]
+    },
+    9: {
+        "cluster_id": "festive_ethnic_yellow",
+        "recommendations": [
+            {"id": 127, "strength": 0.85},
+            {"id": 149, "strength": 0.60},
+        ]
+    },
+    7: {
+        "cluster_id": "festive_chhath_yellow",
+        "recommendations": [
+            {"id": 127, "strength": 0.80},
+        ]
+    },
+    16: {
+        "cluster_id": "festive_onam_white",
+        "recommendations": [
+            {"id": 127, "strength": 0.80},
+        ]
+    },
+    97: {
+        "cluster_id": "festive_kochi_wedding",
+        "recommendations": [
+            {"id": 124, "strength": 0.85},
+            {"id": 149, "strength": 0.60},
+        ]
+    },
+    110: {
+        "cluster_id": "streetwear_shillong_cherry",
+        "recommendations": [
+            {"id": 38, "strength": 0.85},
+            {"id": 149, "strength": 0.70},
+        ]
+    },
+    112: {
+        "cluster_id": "festive_winter_velvet",
+        "recommendations": [
+            {"id": 135, "strength": 0.85},
+            {"id": 149, "strength": 0.70},
+        ]
+    }
+}
+
+# Fallback Creators
+FALLBACK_CREATORS = {
+    "800008": [
+        {"name": "Patna Ethnic Wear Vlog", "youtube_url": "https://youtube.com/patna_ethnic", "demographic": "millennial", "subscriber_weight": 1.2, "vector": generate_vector("Millennial traditional saree cotton handloom ethnic daily wear")},
+        {"name": "Traditional Vibes", "youtube_url": "https://youtube.com/trad_vibes", "demographic": "millennial", "subscriber_weight": 1.3, "vector": generate_vector("Millennial traditional saree cotton handloom ethnic daily wear")},
+        {"name": "Patna Trending Now", "youtube_url": "https://youtube.com/patna_trending", "demographic": "gen-z", "subscriber_weight": 1.0, "vector": generate_vector("Gen-Z trendy casual ethnic kurta jeans fusion affordable Patna")},
+    ],
+    "682001": [
+        {"name": "Kochi Couture", "youtube_url": "https://youtube.com/kochi_couture", "demographic": "millennial", "subscriber_weight": 1.3, "vector": generate_vector("Millennial traditional South Indian silk saree white gold cream Mundu")},
+        {"name": "Fort Kochi Style", "youtube_url": "https://youtube.com/fort_kochi", "demographic": "gen-z", "subscriber_weight": 1.5, "vector": generate_vector("Gen-Z linen cotton summer coastal fashion modern artsy")},
+    ],
+    "752001": [
+        {"name": "Odisha Handloom Vlog", "youtube_url": "https://youtube.com/odisha_handloom", "demographic": "millennial", "subscriber_weight": 1.2, "vector": generate_vector("Millennial traditional cotton saree Sambalpuri Ikat handloom ethnic Odisha")},
+        {"name": "Puri Style Hub", "youtube_url": "https://youtube.com/puri_style", "demographic": "gen-z", "subscriber_weight": 1.4, "vector": generate_vector("Gen-Z trendy casual cotton ethnic fusion affordable Odisha temple town")},
+    ]
+}
+
+# Fallback Stores
+FALLBACK_STORES = {
+    "800008": [
+        {"name": "Kalyan Silks Patna", "rating": 4.6, "review_count": 1200, "estimated_cost": 2500, "vector": generate_vector("traditional silk saree festive ethnic heavy embroidered Patna bridal")},
+        {"name": "Manyavar Patna", "rating": 4.3, "review_count": 800, "estimated_cost": 3000, "vector": generate_vector("festive ethnic kurta set velvet silk wedding occasion Patna")},
+        {"name": "Patna Fashion House", "rating": 4.1, "review_count": 350, "estimated_cost": 1500, "vector": generate_vector("affordable ethnic casual cotton kurti daily wear Patna budget")},
+    ],
+    "682001": [
+        {"name": "Kochi Silk House", "rating": 4.5, "review_count": 600, "estimated_cost": 2800, "vector": generate_vector("South Indian silk saree traditional Kochi elegant Kanjeevaram Kasavu")},
+        {"name": "Modern Trends Kochi", "rating": 4.0, "review_count": 200, "estimated_cost": 1800, "vector": generate_vector("modern fusion ethnic casual daily wear affordable Kochi trendy")},
+        {"name": "Coastal Chic Boutique", "rating": 4.7, "review_count": 90, "estimated_cost": 2200, "vector": generate_vector("breezy coastal cotton rayon casual western beach Fort Kochi summer")},
+    ],
+    "752001": [
+        {"name": "Boyanika Odisha Handlooms", "rating": 4.7, "review_count": 950, "estimated_cost": 2000, "vector": generate_vector("traditional Sambalpuri cotton saree handloom Ikat Puri Odisha")},
+        {"name": "Priyadarshini Handlooms", "rating": 4.5, "review_count": 400, "estimated_cost": 2800, "vector": generate_vector("premium traditional tussar silk Sambalpuri saree elegant Odisha")},
+        {"name": "Puri Jagannath Weaves", "rating": 4.3, "review_count": 150, "estimated_cost": 1500, "vector": generate_vector("affordable cotton saree dhoti local traditional weave Puri budget")},
+    ]
+}
+
+# In-memory user session state
+user_session = {
+    "zip_code": "800008",
+    "aesthetic": "casual",
+    "aesthetic_vector": generate_vector("casual"),
+    "age_group": "gen-z",
+    "state": "discovery",
+    "session_cart": [],
+    "interactions": [],
+    "time_offset_hours": 0,
+    "date": "2026-08-15"
+}
+
+# Helper to map ZIP codes
+def map_zip_code(zip_code: str) -> str:
+    return ZIP_MAPPING.get(zip_code, zip_code)
+
 def get_vibe_vector(vibe_name: str):
     vec = np.zeros(512)
     tags = {vibe_name}
@@ -264,117 +323,306 @@ def get_vibe_vector(vibe_name: str):
         
     return vec.tolist()
 
-def get_macro_trends(zip_code: str, date_str: str):
-    """Retrieves macro trends based on season and region.
-    
-    Returns region-contextual trends that blend seasonal signals with the
-    cultural attire norms of each geography to avoid overriding festive signals.
-    """
+# Load local catalog for fallback and validation
+def load_fallback_catalog():
+    if not os.path.exists(LOCAL_CATALOG_FILE):
+        return []
     try:
-        month = int(date_str.split("-")[1])
-    except Exception:
-        month = 8
+        with open(LOCAL_CATALOG_FILE, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        logger.error(f"Failed to read local catalog: {e}")
+        return []
 
-    # Map ZIP codes to canonical region names
-    region_map = {
-        "800001": "patna", "800008": "patna",
-        "560034": "kochi", "682001": "kochi",
-        "110049": "shillong", "793003": "shillong"
-    }
-    region = region_map.get(zip_code, "patna")
+RAW_CATALOG = load_fallback_catalog()
 
-    if region == "patna":
-        # Patna: Heavy festive Oct-Dec, cold Jan-Feb, hot summers
-        if month in [10, 11, 12]:
-            # Festive + wedding season + mild cool blend - don't push pure winter trends
-            return ["ethnic", "festive", "silk", "traditional", "saree", "shawl", "warm"]
-        elif month in [1, 2]:
-            return ["winter", "shawl", "warm", "jacket", "traditional", "ethnic"]
-        elif month in [3, 4]:
-            return ["ethnic", "traditional", "bright", "pastel", "casual"]
-        elif month in [5, 6]:
-            return ["cotton", "breathable", "casual", "summer", "linen"]
-        else:  # 7, 8, 9
-            return ["cotton", "breathable", "casual", "dailywear", "traditional"]
-
-    elif region == "kochi":
-        # Kochi: Tropical, Onam peak Aug-Sep, Christmas/NYE Dec-Jan
-        if month in [8, 9]:
-            return ["kasavu_weave", "white", "ethnic", "saree", "mundu", "traditional", "cotton"]
-        elif month in [12, 1]:
-            return ["party", "bohemian", "vibrant", "modern", "casual", "coastal"]
-        elif month in [6, 7, 10, 11]:
-            return ["cotton", "breathable", "casual", "modest", "linen"]
-        else:
-            return ["cotton", "breathable", "linen", "casual", "summer", "bohemian"]
-
-    else:  # shillong / delhi
-        # Shillong: Cool/Cold most of year, streetwear/western
-        if month in [11, 12, 1, 2]:
-            return ["winter", "jacket", "velvet", "woolen", "streetwear", "western_formal"]
-        elif month in [3, 4]:
-            return ["streetwear", "ethnic", "fusion", "western_formal", "casual"]
-        else:
-            return ["streetwear", "denim", "casual", "fusion", "modern", "indie"]
-
-
-def compute_cosine_similarity(vec_a, vec_b):
-    if not vec_a or not vec_b:
-        return 0.0
-    a = np.array(vec_a)
-    b = np.array(vec_b)
-    dot = np.dot(a, b)
-    norm_a = np.linalg.norm(a)
-    norm_b = np.linalg.norm(b)
-    if norm_a == 0 or norm_b == 0:
-        return 0.0
-    return float(dot / (norm_a * norm_b))
-
-# Weather Matrix throughout the year for the three zip codes
-WEATHER_MATRIX = {
-    "800008": { # Patna
-        1: {"desc": "Cool & Dry", "temp": "10°C–22°C", "cold_wave": True, "hot_wave": False, "rainy": False},
-        2: {"desc": "Warm & Dry", "temp": "12°C–26°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        3: {"desc": "Getting Hot", "temp": "17°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        4: {"desc": "Hot & Dry", "temp": "21°C–38°C", "cold_wave": False, "hot_wave": True, "rainy": False},
-        5: {"desc": "Very Hot", "temp": "24°C–39°C", "cold_wave": False, "hot_wave": True, "rainy": False},
-        6: {"desc": "Hot & Humid", "temp": "25°C–35°C", "cold_wave": False, "hot_wave": True, "rainy": False},
-        7: {"desc": "Hot & Monsoon", "temp": "26°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        8: {"desc": "Humid & Wet", "temp": "25°C–32°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        9: {"desc": "Humid", "temp": "24°C–32°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        10: {"desc": "Pleasant", "temp": "20°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        11: {"desc": "Cool & Dry", "temp": "15°C–27°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        12: {"desc": "Cold & Dry", "temp": "11°C–23°C", "cold_wave": True, "hot_wave": False, "rainy": False}
+# Initialize the PinPulseEngine instance
+engine = PinPulseEngine(
+    product_catalog=[],
+    zip_data={
+        "800008": {"city": "Patna", "state": "Bihar", "weather_conditions": "hot_humid", "aov": 1800},
+        "682001": {"city": "Kochi", "state": "Kerala", "weather_conditions": "hot_humid", "aov": 2200},
+        "752001": {"city": "Puri", "state": "Odisha", "weather_conditions": "warm_moderate", "aov": 1500},
     },
-    "682001": { # Fort Kochi
-        1: {"desc": "Pleasant & Dry", "temp": "23°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        2: {"desc": "Pleasant & Dry", "temp": "24°C–32°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        3: {"desc": "Warm & Humid", "temp": "25°C–33°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        4: {"desc": "Hot & Humid", "temp": "27°C–33°C", "cold_wave": False, "hot_wave": True, "rainy": False},
-        5: {"desc": "Hot & Wet", "temp": "27°C–31°C", "cold_wave": False, "hot_wave": True, "rainy": True},
-        6: {"desc": "Wet/Monsoon", "temp": "26°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        7: {"desc": "Peak Monsoon", "temp": "25°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        8: {"desc": "Monsoon", "temp": "25°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        9: {"desc": "Monsoon Subsiding", "temp": "25°C–29°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        10: {"desc": "Warm & Humid", "temp": "25°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        11: {"desc": "Warm & Dry", "temp": "25°C–30°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        12: {"desc": "Pleasant & Dry", "temp": "24°C–31°C", "cold_wave": False, "hot_wave": False, "rainy": False}
-    },
-    "793003": { # Shillong
-        1: {"desc": "Cold & Dry", "temp": "8°C–17°C", "cold_wave": True, "hot_wave": False, "rainy": False},
-        2: {"desc": "Cool & Dry", "temp": "10°C–19°C", "cold_wave": True, "hot_wave": False, "rainy": False},
-        3: {"desc": "Pleasant", "temp": "13°C–22°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        4: {"desc": "Mild & Rainy", "temp": "16°C–23°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        5: {"desc": "Mild & Rainy", "temp": "17°C–23°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        6: {"desc": "Cool & Rainy", "temp": "19°C–23°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        7: {"desc": "Cool & Wet", "temp": "20°C–23°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        8: {"desc": "Cool & Wet", "temp": "19°C–23°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        9: {"desc": "Cool & Wet", "temp": "19°C–23°C", "cold_wave": False, "hot_wave": False, "rainy": True},
-        10: {"desc": "Pleasant", "temp": "16°C–22°C", "cold_wave": False, "hot_wave": False, "rainy": False},
-        11: {"desc": "Cool & Dry", "temp": "12°C–20°C", "cold_wave": True, "hot_wave": False, "rainy": False},
-        12: {"desc": "Cold & Dry", "temp": "9°C–18°C", "cold_wave": True, "hot_wave": False, "rainy": False}
+    festival_rules=FESTIVAL_RULES,
+    weather_rules=WEATHER_RULES,
+    creators=FALLBACK_CREATORS,
+    stores=FALLBACK_STORES,
+    cf_lookup=CF_LOOKUP
+)
+
+# Pydantic models for Dev Panel payloads
+class CartPayload(BaseModel):
+    item_id: int
+
+class WishlistPayload(BaseModel):
+    item_id: int
+
+class StatePayload(BaseModel):
+    state: str
+
+class ZipPayload(BaseModel):
+    zip_code: str
+
+class TimeWarpPayload(BaseModel):
+    hours: int
+
+class FestivalPayload(BaseModel):
+    festival: str = None
+
+# Query Helper Functions (fetching from Supabase if connected)
+def get_supabase_client():
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    if url and key:
+        try:
+            from supabase import create_client
+            return create_client(url, key)
+        except Exception as e:
+            logger.error(f"Error creating Supabase client: {e}")
+    return None
+
+def get_creators_data(zip_code):
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("creators").select("*").eq("zip_code", zip_code).execute()
+            if res.data:
+                return res.data
+        except Exception as e:
+            logger.error(f"Supabase creators query failed: {e}")
+    return FALLBACK_CREATORS.get(zip_code, [])
+
+def get_stores_data(zip_code):
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("stores").select("*").eq("zip_code", zip_code).execute()
+            if res.data:
+                return res.data
+        except Exception as e:
+            logger.error(f"Supabase stores query failed: {e}")
+    return FALLBACK_STORES.get(zip_code, [])
+
+def get_velocity_map(zip_code):
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("checkout_velocity").select("product_id, velocity_score, units_last_hour").eq("zip_code", zip_code).execute()
+            if res.data:
+                return {row["product_id"]: row for row in res.data}
+        except Exception as e:
+            logger.error(f"Supabase velocity fetch failed: {e}")
+    # Local mock velocity mapping fallback
+    from app.config import LOW_STOCK_THRESHOLD
+    # Extract from LOCAL_VELOCITY_CACHE mock definitions
+    from App_backup import LOCAL_VELOCITY_CACHE  # try fallback if available
+    # programmatically mock velocity values
+    mock_velocity = {
+        1: {"velocity_score": 0.92, "units_last_hour": 47},
+        2: {"velocity_score": 0.88, "units_last_hour": 38},
+        7: {"velocity_score": 0.75, "units_last_hour": 22},
+        9: {"velocity_score": 0.65, "units_last_hour": 18},
+        16: {"velocity_score": 0.95, "units_last_hour": 52},
+        31: {"velocity_score": 0.90, "units_last_hour": 42},
     }
-}
+    return mock_velocity
+
+def get_db_products():
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("products").select("*").execute()
+            if res.data:
+                return res.data
+        except Exception as e:
+            logger.error(f"Supabase products fetch failed: {e}")
+    return RAW_CATALOG
+
+def get_active_event(zip_code, date_str):
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("calendar").select("*").eq("zip_code", zip_code).eq("date", date_str).execute()
+            if res.data:
+                return res.data[0]
+        except Exception as e:
+            logger.error(f"Supabase calendar query failed: {e}")
+    return FALLBACK_CALENDAR.get((zip_code, date_str), {})
+
+def enrich_product(p, velocity_map):
+    p_tags = p.get("tags", [])
+    p_id = p.get("id")
+    desc_lower = p.get("description", "").lower()
+    
+    # 1. Determine material
+    material = "cotton"
+    for m in ["silk", "linen", "rayon", "velvet", "wool", "denim", "polyester", "chanderi", "georgette", "organza"]:
+        if m in p_tags or m in desc_lower:
+            material = m
+            break
+            
+    # 2. Determine color
+    color = "multi"
+    for c in ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]:
+        if c in p_tags or c in desc_lower:
+            color = c
+            break
+            
+    # 3. Determine nature
+    nature = "casual"
+    for n in ["ethnic", "festive", "casual", "streetwear", "traditional", "ceremonial"]:
+        if n in p_tags or n in desc_lower:
+            nature = n
+            break
+            
+    # 4. Determine category
+    category = "Ethnic"
+    for cat in ["Ethnic", "Western", "Accessory", "Footwear"]:
+        if cat.lower() in p_tags or cat.lower() in desc_lower:
+            category = cat
+            break
+    if category == "Ethnic" and any(x in p_tags for x in ["hoodie", "cargo", "jeans", "jacket"]):
+        category = "Western"
+    if any(x in p_tags for x in ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"]):
+        category = "Accessory"
+    if any(x in p_tags for x in ["boots", "mojari", "sandals", "footwear"]):
+        category = "Footwear"
+
+    # 5. Determine price
+    price = (p_id * 17) % 3000 + 499
+    
+    # 6. Determine stock_level
+    stock_level = (p_id * 7) % 50 + 1
+    
+    # 7. Determine is_evergreen
+    is_evergreen = (p_id % 15 == 0)
+    
+    # 8. Determine baseline sales
+    baseline_sales = (p_id * 3) % 20 + 5
+    
+    # 9. Determine current sales
+    v_entry = velocity_map.get(p_id, velocity_map.get(str(p_id), {}))
+    v_score = v_entry.get("velocity_score", 0.0)
+    if v_score > 0:
+        current_sales = int(baseline_sales * (1.0 + 2.0 * v_score))
+    else:
+        current_sales = baseline_sales + (p_id % 5)
+        
+    # 10. Determine age group
+    age_group = "gen-z" if "streetwear" in p_tags or "modern" in p_tags or "gen-z" in p_tags else "millennial"
+    
+    # 11. Extract vectors
+    embedding = p.get("embedding", [])
+    if isinstance(embedding, str):
+        try:
+            embedding = json.loads(embedding)
+        except Exception:
+            pass
+            
+    return {
+        "id": p_id,
+        "name": p.get("name"),
+        "description": p.get("description"),
+        "image_url": p.get("image_url"),
+        "product_url": p.get("product_url"),
+        "tags": p_tags,
+        "zip_codes": p.get("zip_codes", []),
+        "material": material,
+        "color": color,
+        "nature": nature,
+        "category": category,
+        "price": price,
+        "stock_level": stock_level,
+        "is_evergreen": is_evergreen,
+        "baseline_sales": baseline_sales,
+        "current_sales": current_sales,
+        "age_group": age_group,
+        "aesthetic_vector": embedding,
+        "fabric_vector": embedding,
+        "event_vector": embedding,
+        "embedding": embedding
+    }
+
+# FastAPI Endpoints
+
+@app.get("/api/calendar-presets")
+def get_calendar_presets():
+    """Exposes all seeded calendar events grouped by ZIP code for dynamic frontend dropdowns."""
+    presets = {
+        "800008": [],
+        "682001": [],
+        "752001": []
+    }
+    
+    # Try fetching from Supabase first
+    sb = get_supabase_client()
+    events_list = []
+    if sb:
+        try:
+            res = sb.table("calendar").select("*").execute()
+            if res.data:
+                events_list = res.data
+        except Exception as e:
+            logger.error(f"Error fetching calendar presets from Supabase: {e}")
+            
+    # Fallback to local JSON if DB is empty or fails
+    if not events_list:
+        local_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "calendar_presets.json"))
+        if os.path.exists(local_path):
+            try:
+                with open(local_path, "r", encoding="utf-8") as f:
+                    events_list = json.load(f)
+            except Exception as e:
+                logger.error(f"Error reading local calendar fallback presets: {e}")
+
+    # Build response structured by ZIP code
+    for row in events_list:
+        z = row.get("zip_code")
+        if z in presets:
+            # Format to match the frontend expectations
+            try:
+                dt_obj = datetime.strptime(row.get("date"), "%Y-%m-%d")
+                formatted_label = f"{dt_obj.strftime('%b %d')} ({row.get('event_name')})"
+            except:
+                formatted_label = f"{row.get('date')} ({row.get('event_name')})"
+                
+            presets[z].append({
+                "key": f"{z}_{row.get('date')}",
+                "label": formatted_label,
+                "dateStr": row.get("date"),
+                "event": row.get("event_name"),
+                "event_type": row.get("event_type", "festival"),
+                "isFestive": row.get("is_festive", True),
+                "trendingTags": row.get("attire_tags", [])
+            })
+            
+    # Sort events within each ZIP by date
+    for z in presets:
+        try:
+            presets[z] = sorted(presets[z], key=lambda x: x["dateStr"])
+        except:
+            pass
+        
+    return presets
+
+@app.get("/api/weather-matrix")
+def get_weather_matrix():
+    """Exposes the climate profiles and allowable materials dynamically to the client."""
+    local_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "weather_presets.json"))
+    if os.path.exists(local_path):
+        try:
+            with open(local_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"Error reading weather_presets.json: {e}")
+            
+    # Baseline fallback if file doesn't exist yet
+    # Note: convert keys to strings because JSON response expects string keys for JSON serialization
+    serialized_weather = {}
+    for z, months in WEATHER_MATRIX.items():
+        serialized_weather[z] = {str(m): data for m, data in months.items()}
+    return serialized_weather
 
 @app.get("/api/system-state")
 def get_system_state():
@@ -382,458 +630,557 @@ def get_system_state():
     return {
         "status": "online",
         "database_connected": supabase_configured,
-        "database_engine": "Supabase pgvector" if supabase_configured else "Local In-Memory Similarity Simulation"
+        "database_engine": "Supabase pgvector" if supabase_configured else "Local In-Memory Similarity Simulation",
+        "session": user_session
     }
 
-def map_zip_code(zip_code: str) -> str:
-    # Map new ZIP codes to existing calendar/weather ZIP codes if needed
-    mapping = {
-        "800001": "800008", # Patna
-        "560034": "682001", # Koramangala -> Kochi (for calendar/weather mock fallback)
-        "110049": "793003"  # South Ext -> Shillong (for calendar/weather mock fallback)
-    }
-    return mapping.get(zip_code, zip_code)
-
-def get_boutique_trends(zip_code: str) -> list:
-    """Fetches boutique trends from local JSON file and matches them to catalog products."""
-    local_trends_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "real_trends_seed.json"))
-    local_catalog_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "local_catalog.json"))
-    
-    # Handle zip mappings for backward compatibility
-    zip_mapping = {
-        "800008": "800001",
-        "682001": "560034",
-        "793003": "110049"
-    }
-    target_zip = zip_mapping.get(zip_code, zip_code)
-    
-    trends = []
-    if os.path.exists(local_trends_file):
-        try:
-            with open(local_trends_file, "r") as f:
-                raw_trends = json.load(f)
-                trends = [t for t in raw_trends if t["zip_code"] == target_zip]
-        except Exception as e:
-            logger.error(f"Failed to read local boutique trends: {e}")
-            
-    catalog = []
-    if os.path.exists(local_catalog_file):
-        try:
-            with open(local_catalog_file, "r") as f:
-                catalog = json.load(f)
-        except Exception as e:
-            logger.error(f"Failed to load local catalog: {e}")
-            
-    enriched_boutiques = []
-    for idx, t in enumerate(trends):
-        store_name = t["store_name"]
-        trend = t["extracted_visual_trend"]
-        locality = t["locality"]
-        
-        # Deterministic rating (e.g. 4.3 to 4.9) and address based on store name length
-        rating = round(4.2 + (len(store_name) % 8) * 0.1, 1)
-        address = f"Shop {10 + (idx % 5)}, Commercial Complex, {locality}"
-        
-        # Google Maps URL
-        import urllib.parse
-        encoded_query = urllib.parse.quote_plus(f"{store_name} {locality}")
-        maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
-        
-        # Find best matching product
-        matched_product = None
-        if catalog:
-            trend_words = set(trend.lower().replace("-", " ").split())
-            best_match = None
-            best_score = -1
-            for p in catalog:
-                product_tags = set(tag.lower() for tag in p.get("tags", []))
-                overlap = len(trend_words.intersection(product_tags))
-                score = overlap * 1.0
-                
-                # Boost specific mappings
-                if trend == "banarasi-silk" and ("silk" in product_tags or "banarasi" in product_tags):
-                    score += 3
-                elif trend == "tussar-saree" and ("saree" in product_tags or "silk" in product_tags):
-                    score += 3
-                elif trend == "heavy-anarkali" and ("anarkali" in product_tags or "ethnic" in product_tags):
-                    score += 3
-                elif trend == "festive-kurta-set" and ("kurta" in product_tags or "festive" in product_tags):
-                    score += 3
-                elif trend == "y2k-crop" and ("streetwear" in product_tags or "cropped" in product_tags or "tee" in product_tags):
-                    score += 3
-                elif trend == "baggy-jeans" and ("jeans" in product_tags or "denim" in product_tags):
-                    score += 3
-                elif trend == "oversized-tees" and ("tee" in product_tags or "hoodie" in product_tags):
-                    score += 3
-                elif trend == "cargo-pants" and ("cargo" in product_tags or "pants" in product_tags):
-                    score += 3
-                elif trend == "varsity-jackets" and ("jacket" in product_tags or "streetwear" in product_tags):
-                    score += 3
-                elif trend == "indo-western-gown" and ("gown" in product_tags or "dress" in product_tags):
-                    score += 3
-                elif trend == "pastel-lehenga" and ("lehenga" in product_tags or "festive" in product_tags):
-                    score += 3
-                elif trend == "chikankari-kurti" and ("kurta" in product_tags or "cotton" in product_tags):
-                    score += 3
-                elif trend == "designer-dupatta" and ("dupatta" in product_tags or "silk" in product_tags):
-                    score += 3
-                    
-                if score > best_score:
-                    best_score = score
-                    best_match = p
-            matched_product = best_match
-            
-        enriched_boutiques.append({
-            "store_id": t["store_id"],
-            "store_name": store_name,
-            "locality": locality,
-            "address": address,
-            "rating": rating,
-            "maps_url": maps_url,
-            "social_signal_source": t["social_signal_source"],
-            "simulated_engagement": t["simulated_engagement"],
-            "extracted_visual_trend": trend,
-            "style_vibe_cluster": t["style_vibe_cluster"],
-            "matched_product": matched_product
-        })
-        
-    return enriched_boutiques
-
-@app.get("/api/trends/boutiques")
-def get_boutiques_endpoint(zip_code: str):
-    """
-    Returns the boutique trend entries for the given ZIP code.
-    """
-    try:
-        trends = get_boutique_trends(zip_code)
-        return {"zip_code": zip_code, "boutiques": trends}
-    except Exception as e:
-        logger.error(f"Error fetching boutique trends: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/products")
-def get_products(
-    zip_code: str = Query("800008"), 
-    date: str = Query("2026-08-15"), 
-    vibe: str = Query("casual")
-):
-    """
-    Ranks products matching regional filters (zip_code) using the 6-Layer Hyper-Local Personalization Engine.
-    """
-    # Map ZIP codes for fallback calendar/weather data
+@app.get("/api/zip-insights")
+def get_zip_insights(zip_code: str = Query(...), date: str = Query(...)):
+    from datetime import datetime, timedelta
     mapped_zip = map_zip_code(zip_code)
     
-    # 1. Determine active calendar event
-    active_event = None
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    # 1. Fetch AOV
+    aov = 1500  # default
     
-    if supabase_url and supabase_key:
+    # Try local json cache first
+    local_insights_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "zip_code_insights.json"))
+    if os.path.exists(local_insights_file):
         try:
-            from supabase import create_client, Client
-            supabase: Client = create_client(supabase_url, supabase_key)
-            cal_res = supabase.table("calendar")\
-                .select("event_name, event_type, attire_tags, is_festive")\
-                .eq("zip_code", mapped_zip)\
-                .eq("date", date)\
-                .execute()
-                
-            if cal_res.data and len(cal_res.data) > 0:
-                active_event = cal_res.data[0]
-                logger.info(f"Database calendar match found for {mapped_zip}: {active_event['event_name']}")
+            with open(local_insights_file, "r") as f:
+                data = json.load(f)
+                if mapped_zip in data:
+                    aov = data[mapped_zip]
         except Exception as e:
-            logger.error(f"Supabase calendar query error: {e}")
+            logger.error(f"Error reading zip_code_insights.json: {e}")
             
-    # Fallback to local dict if DB not queried or returned nothing
-    if not active_event:
-        active_event = FALLBACK_CALENDAR.get((mapped_zip, date))
-        if active_event:
-            logger.info(f"Local fallback calendar match found for {mapped_zip}: {active_event['event_name']}")
+    # Try Supabase if connected
+    sb = get_supabase_client()
+    if sb:
+        try:
+            res = sb.table("zip_code_insights").select("average_order_value").eq("zip_code", mapped_zip).execute()
+            if res.data and len(res.data) > 0:
+                aov = res.data[0]["average_order_value"]
+        except Exception as e:
+            logger.error(f"Supabase AOV fetch failed: {e}")
             
-    # 2. Set up variables based on calendar event
-    event_name = active_event.get("event_name", "Baseline Routine Day") if active_event else "Baseline Routine Day"
-    event_type = active_event.get("event_type", "festival") if active_event else "festival"
-    target_event_tags = active_event.get("attire_tags", []) if active_event else []
-    is_festive_season = active_event.get("is_festive", False) if active_event else False
-    is_wedding_day = (event_type == "wedding_day")
-    
-    # Calculate climate variables based on date & location
+    # 2. Fetch weather
     try:
         dt = datetime.strptime(date, "%Y-%m-%d")
         month = dt.month
     except Exception:
         month = 8
+        dt = datetime.now()
         
-    is_cold_wave = False
-    is_hot_wave = False
-    is_rainy = False
+    weather_entry = WEATHER_MATRIX.get(mapped_zip, {}).get(month, {
+        "desc": "Pleasant & Breezy 🍃", "temp": "22°C", "weather_conditions": "warm_moderate"
+    })
     
-    if mapped_zip in WEATHER_MATRIX and month in WEATHER_MATRIX[mapped_zip]:
-        weather_entry = WEATHER_MATRIX[mapped_zip][month]
-        is_cold_wave = weather_entry["cold_wave"]
-        is_hot_wave = weather_entry["hot_wave"]
-        is_rainy = weather_entry["rainy"]
-    
-    # Determine creator/macro trends
-    creator_trends = get_macro_trends(zip_code, date)
-    user_vector = get_vibe_vector(vibe)
-    
-    # Fetch velocity mapping (using the requested zip_code)
-    velocity_map = get_velocity_map(zip_code, supabase_url, supabase_key)
-    
-    # Fetch boutique trends
-    boutique_trends = get_boutique_trends(zip_code)
-    
-    # Calculate boutique trend weights based on engagement
-    boutique_trend_weights = {}
-    total_engagement = 0
-    for b in boutique_trends:
-        trend = b["extracted_visual_trend"]
-        engagement = b["simulated_engagement"]
-        boutique_trend_weights[trend] = boutique_trend_weights.get(trend, 0) + engagement
-        total_engagement += engagement
-        
-    if total_engagement > 0:
-        for t in boutique_trend_weights:
-            boutique_trend_weights[t] /= total_engagement
-            
-    # Fetch products
-    raw_products = []
-    if supabase_url and supabase_key:
+    # 3. Fetch Current Event
+    current_event = None
+    if sb:
         try:
-            from supabase import create_client, Client
-            supabase: Client = create_client(supabase_url, supabase_key)
-            prod_res = supabase.table("products").select("*").execute()
-            if prod_res.data:
-                raw_products = prod_res.data
+            res = sb.table("calendar").select("*").eq("zip_code", mapped_zip).eq("date", date).execute()
+            if res.data:
+                current_event = res.data[0]
         except Exception as e:
-            logger.error(f"Failed to fetch products from Supabase: {e}. Falling back to local file.")
-            
-    if not raw_products:
-        if not os.path.exists(LOCAL_CATALOG_FILE):
-            raise HTTPException(
-                status_code=500, 
-                detail="Local catalog file not found. Run embed_catalog.py first."
-            )
-        try:
-            with open(LOCAL_CATALOG_FILE, "r") as f:
-                raw_products = json.load(f)
-        except Exception as e:
-            logger.error(f"In-memory catalog read error: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
-            
-    try:
-        ranked_products = []
-        for p in raw_products:
-            # Geographic filter
-            p_zips = p.get("zip_codes", [])
-            # Allow matching either original or mapped zip codes
-            if p_zips and zip_code not in p_zips and mapped_zip not in p_zips:
-                continue # Skip items mapped strictly to other zip codes (e.g. Shillong micro-creators)
-                
-            p_tags = p.get("tags", [])
-            
-            # --- LAYER 1: Personal Vibe Match (35%) ---
-            p_embed = p.get("embedding")
-            # Handle potential string format from PostgreSQL vector column
-            if isinstance(p_embed, str):
-                try:
-                    p_embed = json.loads(p_embed)
-                except Exception:
-                    pass
-            sim = compute_cosine_similarity(user_vector, p_embed)
-            personal_vibe_raw = max(0.0, min(1.0, sim))
-            personal_vibe_score = personal_vibe_raw * 0.35
-            
-            # --- LAYER 2: Creator Trend Signal (20%) ---
-            overlap_creator = [t for t in p_tags if t in creator_trends]
-            creator_raw = min(1.0, len(overlap_creator) / 2.0) if creator_trends else 0.0
-            creator_trend_score = creator_raw * 0.20
-            
-            # --- LAYER 3: Local Boutique Vibe (15%) ---
-            boutique_raw = sum(boutique_trend_weights.get(t, 0) for t in p_tags if t in boutique_trend_weights)
-            boutique_raw = min(1.0, boutique_raw)
-            local_boutique_score = boutique_raw * 0.15
-            
-            # --- LAYER 4: Festivity / Calendar (15%) ---
-            overlap_event = [t for t in p_tags if t in target_event_tags]
-            festivity_raw = min(1.0, len(overlap_event) / 2.0) if target_event_tags else 0.0
-            festivity_score = festivity_raw * 0.15
-            
-            # --- LAYER 5: Weather Conditions (10%) ---
-            weather_raw = 0.0
-            if is_cold_wave and "winter" in p_tags:
-                weather_raw = 1.0
-            elif is_hot_wave and ("summer" in p_tags or "breathable" in p_tags):
-                weather_raw = 1.0
-            elif is_rainy and ("cotton" in p_tags or "breathable" in p_tags):
-                weather_raw = 1.0
-            weather_score = weather_raw * 0.10
-            
-            # --- LAYER 6: Checkout Velocity (5%) ---
-            velocity_entry = velocity_map.get(p["id"], velocity_map.get(str(p["id"]), {}))
-            v_score = velocity_entry.get("velocity_score", 0.0)
-            units = velocity_entry.get("units_last_hour", 0)
-            velocity_score = v_score * 0.05
-            
-            # Compute Unified Score
-            final_score = (
-                personal_vibe_score + 
-                creator_trend_score + 
-                local_boutique_score + 
-                festivity_score + 
-                weather_score + 
-                velocity_score
-            )
-            
-            # Keep original boost variables for backward compatibility/ui display
-            cold_boost = 0.15 if (is_cold_wave and "winter" in p_tags) else 0.0
-            hot_boost = 0.15 if (is_hot_wave and ("summer" in p_tags or "breathable" in p_tags)) else 0.0
-            rainy_boost = 0.15 if (is_rainy and ("cotton" in p_tags or "breathable" in p_tags)) else 0.0
-            festive_boost = 0.15 if (is_festive_season and "festive" in p_tags) else 0.0
-            wedding_boost = 0.3 if (is_wedding_day and "ceremonial" in p_tags) else 0.0
-            event_boost = 0.15 if (len(target_event_tags) > 0 and any(t in p_tags for t in target_event_tags)) else 0.0
-            boost_score = cold_boost + hot_boost + rainy_boost + festive_boost + wedding_boost + event_boost
-            
-            # --- APPLY STRICT HACKATHON RULES ---
-            # Patna Pheras: Banarasi Silks must dominate, casual lightweight must fail
-            if zip_code in ["800008", "800001"] and is_wedding_day:
-                if "heavy_silk" in p_tags:
-                    final_score += 0.50
-                elif "summer" in p_tags or "casual" in p_tags:
-                    final_score -= 0.50
-                    
-            # Kochi Thalikettu: Kasavu saree is non-negotiable
-            if zip_code in ["682001", "560034"] and is_wedding_day:
-                if "kasavu_weave" in p_tags:
-                    final_score += 0.50
-                    
-            # Shillong Traditional: Jainsem & Jymphong handwoven pieces boost
-            if zip_code in ["793003", "110049"] and is_wedding_day:
-                if "handwoven_silk" in p_tags or "tribal_heritage" in p_tags:
-                    final_score += 0.50
-            
-            is_trending = v_score >= 0.75
-            velocity_boost = round(v_score * 0.20, 4) if v_score > 0 else 0.0
-            
-            ranked_products.append({
-                "id": p["id"],
-                "name": p["name"],
-                "description": p["description"],
-                "image_url": p["image_url"],
-                "product_url": p.get("product_url", None),
-                "tags": p_tags,
-                "zip_codes": p_zips,
-                "vector_score": personal_vibe_raw,
-                "tag_score": creator_raw,
-                "boost_score": boost_score,
-                "velocity_score": v_score,
-                "velocity_boost": velocity_boost,
-                "units_last_hour": units,
-                "is_trending": is_trending,
-                "final_score": round(final_score, 4),
-                "overlap_tags": list(set(p_tags) & (set(creator_trends) | set(target_event_tags))),
-                
-                # 6-Layer breakdown scores for visualization
-                "scoring_breakdown": {
-                    "layer1_personal_vibe": round(personal_vibe_score, 4),
-                    "layer2_creator_trend": round(creator_trend_score, 4),
-                    "layer3_local_boutique": round(local_boutique_score, 4),
-                    "layer4_festivity": round(festivity_score, 4),
-                    "layer5_weather": round(weather_score, 4),
-                    "layer6_velocity": round(velocity_score, 4),
-                    "raw_values": {
-                        "personal_vibe_similarity": round(personal_vibe_raw, 4),
-                        "creator_trend_match": round(creator_raw, 4),
-                        "local_boutique_match": round(boutique_raw, 4),
-                        "festivity_match": round(festivity_raw, 4),
-                        "weather_match": round(weather_raw, 4),
-                        "checkout_velocity_score": round(v_score, 4)
-                    }
-                }
-            })
-            
-        ranked_products.sort(key=lambda x: x["final_score"], reverse=True)
-        return ranked_products
-        
-    except Exception as e:
-        logger.error(f"Unified 6-layer calculation error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+            logger.error(f"Supabase current calendar event fetch failed: {e}")
+    if not current_event:
+        fall_event = FALLBACK_CALENDAR.get((mapped_zip, date))
+        if fall_event:
+            current_event = {
+                "event_name": fall_event["event_name"],
+                "event_type": fall_event["event_type"],
+                "is_festive": fall_event["is_festive"]
+            }
 
-from app.youtube_scraper import get_youtube_trend_match
+    # 4. Fetch Next 7 Days Events
+    upcoming_events = []
+    try:
+        start_date = dt
+        end_date = start_date + timedelta(days=7)
+        
+        if sb:
+            try:
+                res = sb.table("calendar") \
+                    .select("*") \
+                    .eq("zip_code", mapped_zip) \
+                    .gte("date", start_date.strftime("%Y-%m-%d")) \
+                    .lte("date", end_date.strftime("%Y-%m-%d")) \
+                    .execute()
+                if res.data:
+                    upcoming_events = res.data
+            except Exception as e:
+                logger.error(f"Supabase upcoming events fetch failed: {e}")
+                
+        if not upcoming_events:
+            # Fallback scan calendar
+            for (z, d_str), val in FALLBACK_CALENDAR.items():
+                if z == mapped_zip:
+                    try:
+                        d_obj = datetime.strptime(d_str, "%Y-%m-%d")
+                        if start_date <= d_obj <= end_date:
+                            upcoming_events.append({
+                                "zip_code": z,
+                                "date": d_str,
+                                "event_name": val["event_name"],
+                                "event_type": val["event_type"],
+                                "is_festive": val["is_festive"]
+                            })
+                    except Exception:
+                        pass
+    except Exception as e:
+        logger.error(f"Error calculating upcoming events: {e}")
+
+    # Remove duplicates if any
+    seen = set()
+    unique_upcoming = []
+    for ev in upcoming_events:
+        key = ev.get("date")
+        if key not in seen:
+            seen.add(key)
+            # Standardize date format to string
+            if hasattr(key, "isoformat"):
+                ev["date"] = key.isoformat()
+            elif isinstance(key, datetime):
+                ev["date"] = key.strftime("%Y-%m-%d")
+            unique_upcoming.append(ev)
+
+    # Sort upcoming events chronologically
+    unique_upcoming.sort(key=lambda x: str(x.get("date")))
+
+    return {
+        "zip_code": mapped_zip,
+        "average_order_value": aov,
+        "weather": weather_entry,
+        "current_event": current_event,
+        "upcoming_events": unique_upcoming
+    }
+
+@app.get("/api/products")
+@app.get("/api/feed")
+def get_feed(
+    zip_code: str = Query(None),
+    vibe: str = Query(None),
+    date: str = Query(None),
+    state: str = Query(None)
+):
+    """Unified feed generator executing the 8-pillar PinPulse math algorithm."""
+    # Synchronize context values from parameters to user session
+    if zip_code:
+        user_session["zip_code"] = map_zip_code(zip_code)
+    if vibe:
+        user_session["aesthetic"] = vibe
+        user_session["aesthetic_vector"] = get_vibe_vector(vibe)
+    if state:
+        user_session["state"] = state
+    if date:
+        user_session["date"] = date
+
+    mapped_zip = user_session["zip_code"]
+    active_date = user_session["date"]
+
+    # Retrieve components
+    creators = get_creators_data(mapped_zip)
+    stores = get_stores_data(mapped_zip)
+    velocity_map = get_velocity_map(mapped_zip)
+    raw_products = get_db_products()
+    active_event = get_active_event(mapped_zip, active_date)
+
+    # Determine weather
+    try:
+        dt = datetime.strptime(active_date, "%Y-%m-%d")
+        month = dt.month
+    except Exception:
+        month = 8
+
+    weather_entry = WEATHER_MATRIX.get(mapped_zip, {}).get(month, {})
+    weather_cond = weather_entry.get("weather_conditions", "hot_humid")
+
+    # Populate engine objects dynamically
+    engine.product_catalog = [enrich_product(p, velocity_map) for p in raw_products]
+    engine.creators[mapped_zip] = creators
+    engine.stores[mapped_zip] = stores
+
+    # Fetch upcoming events in the next 7 days for priority scoring
+    upcoming_events_data = []
+    try:
+        from datetime import timedelta
+        if not isinstance(dt, datetime):
+            dt = datetime.now()
+        end_date = dt + timedelta(days=7)
+        sb = get_supabase_client()
+        if sb:
+            res = sb.table("calendar") \
+                .select("*") \
+                .eq("zip_code", mapped_zip) \
+                .gte("date", active_date) \
+                .lte("date", end_date.strftime("%Y-%m-%d")) \
+                .execute()
+            if res.data:
+                upcoming_events_data = res.data
+        if not upcoming_events_data:
+            # Fallback to in-memory calendar
+            for (z, d_str), val in FALLBACK_CALENDAR.items():
+                if z == mapped_zip:
+                    try:
+                        d_obj = datetime.strptime(d_str, "%Y-%m-%d")
+                        if dt <= d_obj <= end_date:
+                            upcoming_events_data.append({
+                                "zip_code": z, "date": d_str,
+                                "event_name": val["event_name"],
+                                "event_type": val["event_type"],
+                                "attire_tags": val.get("attire_tags", []),
+                                "is_festive": val.get("is_festive", True)
+                            })
+                    except Exception:
+                        pass
+    except Exception as e:
+        logger.error(f"Error fetching upcoming events for engine: {e}")
+
+    user_context = {
+        "zip_code": mapped_zip,
+        "aesthetic": user_session["aesthetic"],
+        "aesthetic_vector": user_session["aesthetic_vector"],
+        "age_group": user_session["age_group"],
+        "state": user_session["state"],
+        "session_cart": user_session["session_cart"],
+        "interactions": user_session["interactions"],
+        "time_offset_hours": user_session["time_offset_hours"],
+        "weather_condition": weather_cond,
+        "active_festival": active_event.get("event_name") if active_event and active_event.get("is_festive") else None,
+        "active_date": active_date,
+        "upcoming_events": upcoming_events_data  # Next 7 days — scored at 1.5x priority
+    }
+
+    scored = engine.score_all_products(user_context)
+
+    # Re-map results to match front-end UI parameters and expectations
+    formatted_products = []
+    for item in scored:
+        clean_item = {k: v for k, v in item.items() if not k.endswith("_vector") and k != "embedding"}
+        
+        weights = CONTEXT_MATRICES.get(user_session["state"], CONTEXT_MATRICES["discovery"])
+        
+        # Calculate overlapping active tags
+        event_attire_tags = active_event.get("attire_tags", [])
+        overlap_tags = [t for t in clean_item["tags"] if t in event_attire_tags]
+
+        formatted_products.append({
+            "id": clean_item["id"],
+            "name": clean_item["name"],
+            "description": clean_item["description"],
+            "image_url": clean_item["image_url"],
+            "product_url": clean_item.get("product_url"),
+            "tags": clean_item["tags"],
+            "zip_codes": clean_item.get("zip_codes", []),
+            "vector_score": clean_item["s_aesthetic"],
+            "tag_score": clean_item["s_creator"],
+            "boost_score": clean_item["s_festivity"],
+            "velocity_score": clean_item["s_velocity"],
+            "velocity_boost": clean_item["s_intent"],
+            "units_last_hour": clean_item["current_sales"] - clean_item["baseline_sales"],
+            "is_trending": clean_item["s_velocity"] >= 0.75,
+            "final_score": clean_item["final_score"],
+            "overlap_tags": overlap_tags,
+            "stock_level": clean_item.get("stock_level", 50),
+            
+            "scoring_breakdown": {
+                "layer1_personal_vibe": round(weights["w_aesthetic"] * clean_item["s_aesthetic"], 4),
+                "layer2_creator_trend": round(weights["w_creator"] * clean_item["s_creator"], 4),
+                "layer3_local_boutique": round(weights["w_boutique"] * clean_item["s_boutique"], 4),
+                "layer4_festivity": round(weights["w_festivity"] * clean_item["s_festivity"], 4),
+                "layer5_weather": round(weights["w_fabric"] * clean_item["s_fabric"], 4),
+                "layer6_velocity": round(weights["w_velocity"] * clean_item["s_velocity"], 4),
+                "layer7_intent": round(weights["w_intent"] * clean_item["s_intent"], 4),
+                "layer8_cf": round(weights["w_cf"] * clean_item["s_cf"], 4),
+                "raw_values": {
+                    "personal_vibe_similarity": clean_item["s_aesthetic"],
+                    "creator_trend_match": clean_item["s_creator"],
+                    "local_boutique_match": clean_item["s_boutique"],
+                    "festivity_match": clean_item["s_festivity"],
+                    "weather_match": clean_item["s_fabric"],
+                    "checkout_velocity_score": clean_item["s_velocity"],
+                    "intent_score": clean_item["s_intent"],
+                    "cf_score": clean_item["s_cf"]
+                }
+            },
+            "reason_labels": clean_item["reason_labels"]
+        })
+
+    return formatted_products
+
+@app.get("/api/product/{product_id}")
+def get_product(product_id: int):
+    """PDP product details and collaborative filtering co-purchase shelf."""
+    raw_products = get_db_products()
+    product = next((p for p in raw_products if p["id"] == product_id), None)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    enriched_p = enrich_product(product, {})
+    
+    # Calculate recommendations
+    pdp_recs = engine.get_pdp_recommendations(product_id)
+    
+    # Clean vectors
+    clean_product = {k: v for k, v in enriched_p.items() if not k.endswith("_vector") and k != "embedding"}
+    clean_recs = []
+    for r in pdp_recs:
+        clean_r = {k: v for k, v in r.items() if not k.endswith("_vector") and k != "embedding"}
+        clean_recs.append(clean_r)
+
+    return {
+        "product": clean_product,
+        "also_bought": clean_recs
+    }
+
+@app.post("/api/cart/add")
+def add_to_cart(payload: CartPayload):
+    item_id = payload.item_id
+    if item_id not in user_session["session_cart"]:
+        user_session["session_cart"].append(item_id)
+        user_session["interactions"].append({
+            "item_id": item_id,
+            "action_type": "cart",
+            "hours_elapsed": 0,
+        })
+        user_session["state"] = "high_intent"
+    return {
+        "cart": user_session["session_cart"],
+        "state": user_session["state"]
+    }
+
+@app.post("/api/cart/remove")
+def remove_from_cart(payload: CartPayload):
+    item_id = payload.item_id
+    if item_id in user_session["session_cart"]:
+        user_session["session_cart"].remove(item_id)
+    if not user_session["session_cart"]:
+        user_session["state"] = "discovery"
+    return {
+        "cart": user_session["session_cart"],
+        "state": user_session["state"]
+    }
+
+@app.post("/api/wishlist/add")
+def add_to_wishlist(payload: WishlistPayload):
+    item_id = payload.item_id
+    user_session["interactions"].append({
+        "item_id": item_id,
+        "action_type": "wishlist",
+        "hours_elapsed": 0
+    })
+    return {"status": "wishlisted", "item_id": item_id}
+
+# Dev Panel Endpoints
+
+@app.get("/api/dev/state")
+def get_dev_state():
+    return {
+        "session": user_session,
+        "available_states": list(CONTEXT_MATRICES.keys()),
+        "available_zips": ["800001", "560034", "752001"],
+        "current_weights": CONTEXT_MATRICES.get(user_session["state"], {})
+    }
+
+@app.post("/api/dev/set-state")
+def set_state(payload: StatePayload):
+    new_state = payload.state
+    if new_state in CONTEXT_MATRICES:
+        user_session["state"] = new_state
+    return {"state": user_session["state"]}
+
+@app.post("/api/dev/set-zip")
+def set_zip(payload: ZipPayload):
+    new_zip = map_zip_code(payload.zip_code)
+    user_session["zip_code"] = new_zip
+    engine._cache = {}
+    
+    # Auto-adjust aesthetic based on region defaults
+    if new_zip == "752001":
+        user_session["aesthetic"] = "festive"
+    else:
+        user_session["aesthetic"] = "casual"
+    user_session["aesthetic_vector"] = get_vibe_vector(user_session["aesthetic"])
+    
+    return {
+        "zip_code": payload.zip_code,
+        "city": "Patna" if new_zip == "800008" else "Kochi" if new_zip == "682001" else "Odisha",
+        "state": user_session["state"]
+    }
+
+@app.post("/api/dev/time-warp")
+def time_warp(payload: TimeWarpPayload):
+    hours_to_add = payload.hours
+    user_session["time_offset_hours"] += hours_to_add
+    for interaction in user_session["interactions"]:
+        interaction["hours_elapsed"] = interaction.get("hours_elapsed", 0) + hours_to_add
+    return {
+        "time_offset_hours": user_session["time_offset_hours"],
+        "message": f"Fast-forwarded {hours_to_add}h. Total offset: {user_session['time_offset_hours']}h"
+    }
+
+@app.post("/api/dev/velocity-surge")
+def velocity_surge():
+    result = engine.simulate_velocity_surge(user_session["zip_code"])
+    clean_products = []
+    for p in result["products"]:
+        clean_p = {k: v for k, v in p.items() if not k.endswith("_vector") and k != "embedding"}
+        clean_products.append(clean_p)
+    return {
+        "theme": result["theme"],
+        "products": clean_products,
+        "log": result["log"]
+    }
+
+@app.post("/api/dev/set-festival")
+def set_festival(payload: FestivalPayload):
+    festival = payload.festival
+    zip_code = user_session["zip_code"]
+    
+    if festival:
+        user_session["state"] = "festive_season"
+        # Temporarily inject active festival overrides
+        user_session["active_festival"] = festival
+    else:
+        user_session["state"] = "discovery"
+        user_session["active_festival"] = None
+        
+    engine._cache = {}
+    return {
+        "zip_code": zip_code,
+        "festival": festival,
+        "state": user_session["state"]
+    }
+
+@app.post("/api/dev/reset")
+def reset_session():
+    user_session.update({
+        "zip_code": "800008",
+        "aesthetic": "casual",
+        "aesthetic_vector": get_vibe_vector("casual"),
+        "age_group": "gen-z",
+        "state": "discovery",
+        "session_cart": [],
+        "interactions": [],
+        "time_offset_hours": 0,
+        "date": "2026-08-15"
+    })
+    user_session.pop("active_festival", None)
+    engine._cache = {}
+    return {"status": "reset", "session": user_session}
+
+# Fallback queries
+try:
+    from youtube_scraper import get_youtube_trend_match
+except ModuleNotFoundError:
+    from app.youtube_scraper import get_youtube_trend_match
 
 @app.get("/api/trends/youtube")
 def get_youtube_trends(zip_code: str):
-    """
-    Simulates scraping YouTube, extracting vision data, and matching it to our catalog.
-    """
     try:
-        result = get_youtube_trend_match(zip_code)
-        return result
+        return get_youtube_trend_match(zip_code)
     except Exception as e:
-        logger.error(f"YouTube trends error: {e}")
+        logger.error(f"YouTube scraper error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/trends/boutiques")
+def get_boutiques_endpoint(zip_code: str):
+    # Query stores data
+    mapped_zip = map_zip_code(zip_code)
+    stores = get_stores_data(mapped_zip)
+    
+    # Enrichment
+    enriched_boutiques = []
+    for idx, s in enumerate(stores):
+        name = s["name"]
+        rating = s.get("rating", 4.3)
+        review_count = s.get("review_count", 200)
+        cost = s.get("estimated_cost", 1500)
+        
+        # Address mock
+        address = f"Shop {10 + idx}, Commercial Zone, {ZIP_MAPPING.get(zip_code, 'Local District')}"
+        import urllib.parse
+        encoded_query = urllib.parse.quote_plus(f"{name} {zip_code}")
+        maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
+        
+        # Match product
+        matched_product = None
+        for p in RAW_CATALOG:
+            if idx % 3 == 0 and "festive" in p.get("tags", []):
+                matched_product = p
+                break
+        if not matched_product and RAW_CATALOG:
+            matched_product = RAW_CATALOG[idx % len(RAW_CATALOG)]
+            
+        enriched_boutiques.append({
+            "store_id": f"STR_{zip_code}_{idx}",
+            "zip_code": zip_code,
+            "store_name": name,
+            "rating": rating,
+            "review_count": review_count,
+            "estimated_cost": cost,
+            "address": address,
+            "maps_url": maps_url,
+            "social_signal_source": "Google Places",
+            "simulated_engagement": review_count * 10,
+            "extracted_visual_trend": "ethnic" if idx % 2 == 0 else "casual",
+            "style_vibe_cluster": "Local Boutique Drapes",
+            "matched_product": matched_product
+        })
+    return {"zip_code": zip_code, "boutiques": enriched_boutiques}
 
 @app.get("/api/look-completer")
 def get_look_completer(product_id: int, occasion_tag: str):
-    """
-    Retrieves recommended accessories and footwear matching the primary product and occasion.
-    """
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
-    
+    sb = get_supabase_client()
     mapping = None
-    if supabase_url and supabase_key:
+    if sb:
         try:
-            from supabase import create_client
-            sb = create_client(supabase_url, supabase_key)
-            res = sb.table("outfit_completer") \
-                .select("suggested_accessory_id, suggested_footwear_id") \
-                .eq("primary_item_id", product_id) \
-                .eq("occasion_tag", occasion_tag) \
-                .execute()
+            res = sb.table("outfit_completer").select("suggested_accessory_id, suggested_footwear_id").eq("primary_item_id", product_id).eq("occasion_tag", occasion_tag).execute()
             if res.data and len(res.data) > 0:
                 mapping = res.data[0]
-                logger.info(f"Database Look Completer found: {mapping}")
         except Exception as e:
             logger.error(f"Supabase Look Completer query failed: {e}")
 
     if not mapping:
-        mapping = LOCAL_OUTFIT_COMPLETER.get((product_id, occasion_tag))
-        if mapping:
-            logger.info(f"Local Fallback Look Completer found: {mapping}")
+        # Fallback local look completer dictionary
+        completer_dict = {
+            1: {"suggested_accessory_id": 124, "suggested_footwear_id": 149},
+            2: {"suggested_accessory_id": 124, "suggested_footwear_id": 149},
+            9: {"suggested_accessory_id": 127, "suggested_footwear_id": 149},
+            7: {"suggested_accessory_id": 127, "suggested_footwear_id": None},
+            16: {"suggested_accessory_id": 127, "suggested_footwear_id": None},
+            97: {"suggested_accessory_id": 124, "suggested_footwear_id": 149},
+            110: {"suggested_accessory_id": 38, "suggested_footwear_id": 149},
+            112: {"suggested_accessory_id": 135, "suggested_footwear_id": 149},
+        }
+        mapping = completer_dict.get(product_id)
 
     if not mapping:
         return {"accessory": None, "footwear": None}
 
-    # Fetch product metadata from local catalog file
     accessory_item = None
     footwear_item = None
-    try:
-        with open(LOCAL_CATALOG_FILE, 'r') as f:
-            catalog = json.load(f)
-            catalog_dict = {p["id"]: p for p in catalog}
+    
+    acc_id = mapping.get("suggested_accessory_id")
+    foot_id = mapping.get("suggested_footwear_id")
+    
+    for p in RAW_CATALOG:
+        if acc_id and p["id"] == acc_id:
+            accessory_item = {
+                "id": acc_id,
+                "name": p["name"],
+                "image_url": p["image_url"],
+                "product_url": p.get("product_url")
+            }
+        if foot_id and p["id"] == foot_id:
+            footwear_item = {
+                "id": foot_id,
+                "name": p["name"],
+                "image_url": p["image_url"],
+                "product_url": p.get("product_url")
+            }
             
-            acc_id = mapping.get("suggested_accessory_id")
-            foot_id = mapping.get("suggested_footwear_id")
-            
-            if acc_id and acc_id in catalog_dict:
-                accessory_item = {
-                    "id": acc_id,
-                    "name": catalog_dict[acc_id]["name"],
-                    "image_url": catalog_dict[acc_id]["image_url"],
-                    "product_url": catalog_dict[acc_id].get("product_url")
-                }
-            if foot_id and foot_id in catalog_dict:
-                footwear_item = {
-                    "id": foot_id,
-                    "name": catalog_dict[foot_id]["name"],
-                    "image_url": catalog_dict[foot_id]["image_url"],
-                    "product_url": catalog_dict[foot_id].get("product_url")
-                }
-    except Exception as e:
-        logger.error(f"Failed to fetch accessory/footwear details from local catalog: {e}")
-
     return {
         "accessory": accessory_item,
         "footwear": footwear_item

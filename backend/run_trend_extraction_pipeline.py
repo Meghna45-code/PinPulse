@@ -17,7 +17,7 @@ sb = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 REGIONS = {
     "800008": {"name": "Patna", "locality": "Frazer Road, Patna, Bihar", "query_theme": "traditional ethnic festive wear saree kurtas bihar"},
     "682001": {"name": "Kochi", "locality": "M G Road, Kochi, Kerala", "query_theme": "kasavu traditional handloom cotton white gold kerala"},
-    "793003": {"name": "Shillong", "locality": "Police Bazar, Shillong, Meghalaya", "query_theme": "streetwear winter jacket boots tribal jainsem traditional"}
+    "752001": {"name": "Odisha", "locality": "Puri Jagannath Temple Area, Puri, Odisha", "query_theme": "sambalpuri cotton saree traditional handloom ikat odisha"}
 }
 
 def load_catalog():
@@ -108,7 +108,7 @@ def match_product_by_tags(inferred_tags, catalog, zip_code):
             score += 2
         elif zip_code in ["682001", "560034"] and "kasavu_weave" in p_tags:
             score += 2
-        elif zip_code in ["793003", "110049"] and ("handwoven_silk" in p_tags or "tribal_heritage" in p_tags):
+        elif zip_code in ["752001"] and ("sambalpuri" in p_tags or "cotton" in p_tags):
             score += 2
             
         if score > best_score:

@@ -1,11 +1,11 @@
-/* Global Reset and Box Model Configuration */
+/* Global Reset — Ice Cream Palette Base */
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #0f1015;
+  background-color: #120917;
   box-sizing: border-box;
 }
 

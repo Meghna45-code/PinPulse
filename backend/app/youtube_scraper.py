@@ -299,7 +299,7 @@ def get_youtube_trend_match(zip_code: str) -> List[Dict[str, Any]]:
     zip_mapping = {
         "800008": "800001", # Patna
         "682001": "560034", # Kochi -> Bengaluru Koramangala
-        "793003": "110049"  # Shillong -> Delhi South Ext
+        "752001": "110049"  # Odisha -> Delhi South Ext
     }
     target_zip = zip_mapping.get(zip_code, zip_code)
     

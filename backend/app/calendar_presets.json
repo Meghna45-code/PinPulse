@@ -1,0 +1,1033 @@
+[
+  {
+    "zip_code": "800008",
+    "date": "2026-11-15",
+    "event_name": "Chhath Puja (Sandhya Arghya)",
+    "event_type": "festival",
+    "attire_tags": [
+      "saree",
+      "cotton",
+      "traditional",
+      "dhoti",
+      "saffron",
+      "yellow",
+      "white",
+      "patna",
+      "chhath_puja"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-02-02",
+    "event_name": "Saraswati Puja (Vasant Panchami)",
+    "event_type": "festival",
+    "attire_tags": [
+      "saree",
+      "kurta",
+      "yellow",
+      "ethnic"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-03-22",
+    "event_name": "Bihar Diwas (Bihar Day)",
+    "event_type": "festival",
+    "attire_tags": [
+      "saree",
+      "salwar",
+      "bhagalpuri_silk",
+      "kurta",
+      "dhoti",
+      "nehru_jacket",
+      "white",
+      "cream",
+      "patna"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-12-10",
+    "event_name": "Patna Wedding Day (Pheras)",
+    "event_type": "wedding_day",
+    "attire_tags": [
+      "heavy_silk",
+      "traditional_embroidery",
+      "ceremonial",
+      "silk",
+      "saree",
+      "sherwani",
+      "crimson",
+      "gold",
+      "maroon"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-01-20",
+    "event_name": "Kochi-Muziris Biennale Peak",
+    "event_type": "festival",
+    "attire_tags": [
+      "artsy",
+      "bohemian",
+      "linen",
+      "sustainable",
+      "modern"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-04-14",
+    "event_name": "Vishu Festival (Malayali New Year)",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "yellow",
+      "gold",
+      "cream",
+      "kasavu_weave"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-08-27",
+    "event_name": "Onam Festival (Thiruvonam)",
+    "event_type": "festival",
+    "attire_tags": [
+      "saree",
+      "mundu",
+      "kasavu_weave",
+      "white",
+      "cream",
+      "gold"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-12-27",
+    "event_name": "Kochi Wedding Day (Thalikettu)",
+    "event_type": "wedding_day",
+    "attire_tags": [
+      "kasavu_weave",
+      "off-white",
+      "cream",
+      "gold"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-01-14",
+    "event_name": "Makar Sankranti (Makar Mela)",
+    "event_type": "festival",
+    "attire_tags": [
+      "traditional",
+      "tussar_silk",
+      "yellow",
+      "red",
+      "odisha"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-06-14",
+    "event_name": "Pahili Raja (Raja Parba)",
+    "event_type": "festival",
+    "attire_tags": [
+      "traditional",
+      "cotton",
+      "pastel",
+      "lightweight",
+      "sambalpuri"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-06-15",
+    "event_name": "Raja Sankranti Festival",
+    "event_type": "festival",
+    "attire_tags": [
+      "traditional",
+      "cotton",
+      "pastel",
+      "sambalpuri",
+      "ethnic"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-07-16",
+    "event_name": "Puri Rath Yatra Chariot Festival",
+    "event_type": "festival",
+    "attire_tags": [
+      "sambalpuri",
+      "cotton",
+      "traditional",
+      "yellow",
+      "saffron",
+      "saree",
+      "kurta"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-12-20",
+    "event_name": "Odisha Winter Wedding (Pheras)",
+    "event_type": "wedding_day",
+    "attire_tags": [
+      "heavy_silk",
+      "tussar_silk",
+      "ceremonial",
+      "sherwani",
+      "crimson",
+      "gold"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-01-26",
+    "event_name": "Republic Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "ethnic",
+      "saffron",
+      "white",
+      "kurta",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-04-14",
+    "event_name": "Dr. B. R. Ambedkar's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "white",
+      "kurta",
+      "formal",
+      "ethnic",
+      "cotton"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-08-15",
+    "event_name": "Independence Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "cotton",
+      "saffron",
+      "white",
+      "kurta",
+      "ethnic"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-10-02",
+    "event_name": "Mahatma Gandhi's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "cotton",
+      "white",
+      "kurta",
+      "ethnic",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-03-04",
+    "event_name": "Holi",
+    "event_type": "festival",
+    "attire_tags": [
+      "white",
+      "cotton",
+      "kurta",
+      "ethnic",
+      "comfortable",
+      "breathable"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-03-26",
+    "event_name": "Ram Navami",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "silk",
+      "saffron",
+      "kurta",
+      "traditional",
+      "comfort"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-03-31",
+    "event_name": "Mahavir Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "white",
+      "cotton",
+      "kurta",
+      "sober",
+      "minimalist"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-05-01",
+    "event_name": "Buddha Purnima",
+    "event_type": "festival",
+    "attire_tags": [
+      "cotton",
+      "white",
+      "ethnic",
+      "kurta",
+      "linen",
+      "modest"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-09-04",
+    "event_name": "Janmashtami (Vaishnava)",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "formal",
+      "casual"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-10-20",
+    "event_name": "Dussehra",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "ethnic",
+      "bright",
+      "saree",
+      "kurta",
+      "traditional"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-11-08",
+    "event_name": "Diwali (Deepavali)",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "ethnic",
+      "bright",
+      "festive",
+      "traditional",
+      "embroidery"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-11-24",
+    "event_name": "Guru Nanak's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "kurta",
+      "pastel",
+      "silk",
+      "modest",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-06-26",
+    "event_name": "Muharram",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "black",
+      "kurta",
+      "cotton",
+      "modest",
+      "sober"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-08-26",
+    "event_name": "Milad-un-Nabi",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "kurta",
+      "pastel",
+      "cotton",
+      "formal",
+      "shervani"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-03-21",
+    "event_name": "Id-ul-Fitr",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "silk",
+      "kurta",
+      "pastel",
+      "brocade",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-05-27",
+    "event_name": "Id-ul-Zuha (Bakrid)",
+    "event_type": "festival",
+    "attire_tags": [
+      "kurta",
+      "silk",
+      "ethnic",
+      "pastel",
+      "formal",
+      "sharara"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-04-03",
+    "event_name": "Good Friday",
+    "event_type": "festival",
+    "attire_tags": [
+      "cotton",
+      "pastel",
+      "kurta",
+      "sober",
+      "ethnic",
+      "comfortable"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
+    "date": "2026-12-25",
+    "event_name": "Christmas",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "red",
+      "ethnic",
+      "formal",
+      "velvet",
+      "warm"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-01-26",
+    "event_name": "Republic Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "white",
+      "cotton",
+      "ethnic",
+      "kasavu",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-08-15",
+    "event_name": "Independence Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "cotton",
+      "white",
+      "saffron",
+      "ethnic",
+      "minimalist"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-10-02",
+    "event_name": "Mahatma Gandhi's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "cotton",
+      "white",
+      "ethnic",
+      "minimalist"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-03-04",
+    "event_name": "Holi",
+    "event_type": "festival",
+    "attire_tags": [
+      "white",
+      "cotton",
+      "kurta",
+      "breathable",
+      "ethnic",
+      "relaxed"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-03-26",
+    "event_name": "Ram Navami",
+    "event_type": "festival",
+    "attire_tags": [
+      "kasavu",
+      "ethnic",
+      "cotton",
+      "gold",
+      "kurta",
+      "traditional"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-03-31",
+    "event_name": "Mahavir Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "white",
+      "cotton",
+      "modest",
+      "kurta",
+      "pastel"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-05-01",
+    "event_name": "Buddha Purnima",
+    "event_type": "festival",
+    "attire_tags": [
+      "white",
+      "cotton",
+      "kerala-kasavu",
+      "ethnic",
+      "minimalist",
+      "comfort"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-09-04",
+    "event_name": "Janmashtami (Vaishnava)",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "kasavu",
+      "kurta",
+      "cotton",
+      "gold",
+      "traditional"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-10-20",
+    "event_name": "Dussehra",
+    "event_type": "festival",
+    "attire_tags": [
+      "kasavu",
+      "silk",
+      "ethnic",
+      "gold",
+      "traditional",
+      "set-mundu"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-11-08",
+    "event_name": "Diwali (Deepavali)",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "kasavu",
+      "ethnic",
+      "kurta",
+      "saree",
+      "gold"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-11-24",
+    "event_name": "Guru Nanak's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "kurta",
+      "cotton",
+      "pastel",
+      "modest",
+      "linen"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-06-26",
+    "event_name": "Muharram",
+    "event_type": "festival",
+    "attire_tags": [
+      "modest",
+      "kurta",
+      "cotton",
+      "solid",
+      "ethnic",
+      "breathable"
+    ],
+    "is_festive": false
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-08-26",
+    "event_name": "Milad-un-Nabi; Onam",
+    "event_type": "festival",
+    "attire_tags": [
+      "kasavu",
+      "silk",
+      "ethnic",
+      "traditional",
+      "white",
+      "gold"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-03-21",
+    "event_name": "Id-ul-Fitr",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "silk",
+      "pastel",
+      "kurta",
+      "kasavu",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-05-27",
+    "event_name": "Id-ul-Zuha (Bakrid)",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "silk",
+      "kurta",
+      "pastel",
+      "formal",
+      "breathable"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-04-03",
+    "event_name": "Good Friday",
+    "event_type": "festival",
+    "attire_tags": [
+      "linen",
+      "pastel",
+      "modest",
+      "cotton",
+      "minimalist",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-12-25",
+    "event_name": "Christmas",
+    "event_type": "festival",
+    "attire_tags": [
+      "linen",
+      "pastel",
+      "kurta",
+      "mundu",
+      "silk",
+      "ethnic"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "682001",
+    "date": "2026-11-01",
+    "event_name": "Kerala Foundation Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "kasavu",
+      "kerala-saree",
+      "white",
+      "gold",
+      "ethnic",
+      "handloom"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-01-26",
+    "event_name": "Republic Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "handloom",
+      "ethnic",
+      "tri-color",
+      "cotton",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-04-14",
+    "event_name": "Dr. B. R. Ambedkar's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "white",
+      "kurta",
+      "cotton",
+      "ethnic",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-08-15",
+    "event_name": "Independence Day",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "cotton",
+      "saffron",
+      "white",
+      "ethnic",
+      "handloom"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-10-02",
+    "event_name": "Mahatma Gandhi's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "khadi",
+      "cotton",
+      "white",
+      "kurta",
+      "minimalist",
+      "ethnic"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-03-04",
+    "event_name": "Holi",
+    "event_type": "festival",
+    "attire_tags": [
+      "white",
+      "cotton",
+      "kurta",
+      "comfortable",
+      "ethnic",
+      "breathable"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-03-26",
+    "event_name": "Ram Navami",
+    "event_type": "festival",
+    "attire_tags": [
+      "handloom",
+      "sambalpuri",
+      "saree",
+      "kurta",
+      "ethnic",
+      "cotton"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-03-31",
+    "event_name": "Mahavir Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "white",
+      "cotton",
+      "khadi",
+      "ethnic",
+      "minimalist",
+      "sober"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-05-01",
+    "event_name": "Buddha Purnima",
+    "event_type": "festival",
+    "attire_tags": [
+      "handloom",
+      "cotton",
+      "white",
+      "saree",
+      "kurta",
+      "ethnic"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-09-04",
+    "event_name": "Janmashtami (Vaishnava)",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "sambalpuri",
+      "cotton",
+      "traditional",
+      "handloom",
+      "bright"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-10-20",
+    "event_name": "Dussehra",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "sambalpuri",
+      "ethnic",
+      "traditional",
+      "bright",
+      "handloom"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-11-08",
+    "event_name": "Diwali (Deepavali)",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "handloom",
+      "ethnic",
+      "sambalpuri",
+      "bright",
+      "traditional"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-11-24",
+    "event_name": "Guru Nanak's Jayanti",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "kurta",
+      "cotton",
+      "sober",
+      "pastel",
+      "handloom"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-06-26",
+    "event_name": "Muharram",
+    "event_type": "festival",
+    "attire_tags": [
+      "modest",
+      "black",
+      "kurta",
+      "cotton",
+      "sober",
+      "ethnic"
+    ],
+    "is_festive": false
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-08-26",
+    "event_name": "Milad-un-Nabi",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "kurta",
+      "cotton",
+      "white",
+      "pastel",
+      "formal"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-03-21",
+    "event_name": "Id-ul-Fitr",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "silk",
+      "kurta",
+      "pastel",
+      "comfortable",
+      "festive"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-05-27",
+    "event_name": "Id-ul-Zuha (Bakrid)",
+    "event_type": "festival",
+    "attire_tags": [
+      "kurta",
+      "silk",
+      "ethnic",
+      "pastel",
+      "formal",
+      "breezy"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-04-03",
+    "event_name": "Good Friday",
+    "event_type": "festival",
+    "attire_tags": [
+      "white",
+      "cotton",
+      "sober",
+      "ethnic",
+      "minimalist"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-12-25",
+    "event_name": "Christmas",
+    "event_type": "festival",
+    "attire_tags": [
+      "silk",
+      "red",
+      "ethnic",
+      "handloom",
+      "formal",
+      "warm"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-04-01",
+    "event_name": "Odisha Day (Utkala Dibasa)",
+    "event_type": "festival",
+    "attire_tags": [
+      "sambalpuri",
+      "silk",
+      "ethnic",
+      "handloom",
+      "traditional",
+      "bright"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-04-15",
+    "event_name": "Maha Vishuva Sankranti / Pana Sankranti",
+    "event_type": "festival",
+    "attire_tags": [
+      "handloom",
+      "sambalpuri",
+      "cotton",
+      "ethnic",
+      "traditional",
+      "bright"
+    ],
+    "is_festive": true
+  }
+]

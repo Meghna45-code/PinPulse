@@ -133,54 +133,52 @@ INSERT INTO calendar (zip_code, date, event_name, event_type, attire_tags, is_fe
 ('682001', '2026-12-27', 'Kochi Wedding Day (Thalikettu)', 'wedding_day', '{"kasavu_weave", "off-white", "cream", "gold"}', true),
 ('682001', '2026-12-29', 'Kochi Post-Wedding (Reception)', 'post_wedding', '{"contemporary_fusion", "royal-blue", "wine", "black", "silver"}', true);
 
--- Seed Calendar Events for Shillong (793003)
+-- Seed Calendar Events for Odisha (752001)
 INSERT INTO calendar (zip_code, date, event_name, event_type, attire_tags, is_festive) VALUES
-('793003', '2026-11-15', 'Shillong Cherry Blossom Fest', 'festival', '{"streetwear", "jacket", "coat", "scarf", "boots"}', true),
-('793003', '2026-12-25', 'Christmas Day Celebration', 'festival', '{"velvet", "woolen", "dress", "formal", "winter"}', true),
-('793003', '2026-04-15', 'Shad Suk Mynsiem Harvest Fest', 'festival', '{"jainsem", "jymphong", "traditional", "ethnic", "silk"}', true),
-('793003', '2026-10-25', 'Shillong Autumn Festival', 'festival', '{"indie", "fusion", "denim-fusion", "streetwear"}', true),
-('793003', '2026-11-10', 'Wangala Festival (100 Drums)', 'festival', '{"traditional", "tribal_heritage", "headgear", "accessories"}', true),
-('793003', '2026-07-14', 'Behdiengkhlam Festival Rituals', 'festival', '{"traditional"}', true),
--- Shillong Wedding Scenario presets
-('793003', '2026-12-19', 'Shillong Pre-Wedding (Pynhiar Synjat)', 'pre_wedding', '{"western_formal", "silver", "white", "pastel", "fusion"}', true),
-('793003', '2026-12-20', 'Shillong Wedding Day (Traditional)', 'wedding_day', '{"handwoven_silk", "tribal_heritage", "jainsem", "jymphong", "earth-tones"}', true),
-('793003', '2026-12-21', 'Shillong Post-Wedding (Reception)', 'post_wedding', '{"western_formal", "navy", "burgundy", "black", "metallic"}', true);
+('752001', '2026-01-14', 'Makar Sankranti (Makar Mela)', 'festival', '{"traditional", "tussar_silk", "yellow", "red", "odisha"}', true),
+('752001', '2026-06-14', 'Pahili Raja (Raja Parba)', 'festival', '{"traditional", "cotton", "pastel", "lightweight", "sambalpuri"}', true),
+('752001', '2026-06-15', 'Raja Sankranti Festival', 'festival', '{"traditional", "cotton", "pastel", "sambalpuri", "ethnic"}', true),
+('752001', '2026-07-16', 'Puri Rath Yatra Chariot Festival', 'festival', '{"sambalpuri", "cotton", "traditional", "yellow", "saffron", "saree", "kurta"}', true),
+-- Odisha Wedding Scenario presets
+('752001', '2026-12-19', 'Odisha Pre-Wedding (Mangan)', 'pre_wedding', '{"traditional", "yellow", "cotton", "saffron"}', true),
+('752001', '2026-12-20', 'Odisha Winter Wedding (Pheras)', 'wedding_day', '{"heavy_silk", "tussar_silk", "ceremonial", "sherwani", "crimson", "gold"}', true),
+('752001', '2026-12-21', 'Odisha Post-Wedding (Reception)', 'post_wedding', '{"formal", "ethnic_fusion", "silk"}', true);
 
 -- Universal Civic, Academic & Social Velocity Events (Regional Variations)
 INSERT INTO calendar (zip_code, date, event_name, event_type, attire_tags, is_festive) VALUES
 -- 1. Republic Day (Jan 26)
 ('800008', '2026-01-26', 'Republic Day Parade', 'festival', '{"white", "saffron", "green", "ethnic", "formal"}', true),
 ('682001', '2026-01-26', 'Republic Day Parade', 'festival', '{"white", "fusion", "formal", "lightweight"}', true),
-('793003', '2026-01-26', 'Republic Day Parade', 'festival', '{"white", "saffron", "green", "winter", "jacket", "formal"}', true),
+('752001', '2026-01-26', 'Republic Day Parade', 'festival', '{"white", "saffron", "green", "winter", "jacket", "formal"}', true),
 
 -- 2. Holi (Mar 3)
 ('800008', '2026-03-03', 'Holi Festival of Colors', 'festival', '{"white", "cotton", "casual", "dailywear"}', true),
 ('682001', '2026-03-03', 'Holi Festival of Colors', 'festival', '{"casual", "streetwear", "denim", "cotton"}', true),
-('793003', '2026-03-03', 'Holi Festival of Colors', 'festival', '{"hoodie", "winter", "warm", "streetwear"}', true),
+('752001', '2026-03-03', 'Holi Festival of Colors', 'festival', '{"hoodie", "winter", "warm", "streetwear"}', true),
 
 -- 3. Good Friday / Easter (Apr 5)
 ('800008', '2026-04-05', 'Easter Sunday Service', 'festival', '{"ethnic", "formal", "modest", "pastel"}', true),
-('793003', '2026-04-05', 'Easter Sunday Service', 'festival', '{"western_formal", "navy", "black", "grey", "suit", "gown"}', true),
+('752001', '2026-04-05', 'Easter Sunday Service', 'festival', '{"western_formal", "navy", "black", "grey", "suit", "gown"}', true),
 
 -- 4. Eid-ul-Fitr (Mar 20)
 ('800008', '2026-03-20', 'Eid-ul-Fitr Celebration', 'festival', '{"ethnic", "festive", "traditional_embroidery", "embroidered", "kurta", "sherwani"}', true),
 ('682001', '2026-03-20', 'Eid-ul-Fitr Celebration', 'festival', '{"ethnic", "festive", "modest", "elegant"}', true),
-('793003', '2026-03-20', 'Eid-ul-Fitr Celebration', 'festival', '{"western_formal", "modest", "fusion"}', true),
+('752001', '2026-03-20', 'Eid-ul-Fitr Celebration', 'festival', '{"western_formal", "modest", "fusion"}', true),
 
 -- 5. Independence Day (Aug 15)
 ('800008', '2026-08-15', 'Independence Day Ceremony', 'festival', '{"saffron", "white", "green", "ethnic", "formal", "cotton"}', true),
 ('682001', '2026-08-15', 'Independence Day Ceremony', 'festival', '{"saffron", "white", "green", "ethnic", "formal", "lightweight"}', true),
-('793003', '2026-08-15', 'Independence Day Ceremony', 'festival', '{"saffron", "white", "green", "formal", "jacket", "layered"}', true),
+('752001', '2026-08-15', 'Independence Day Ceremony', 'festival', '{"saffron", "white", "green", "formal", "jacket", "layered"}', true),
 
 -- 6. Durga Puja (Oct 18)
 ('800008', '2026-10-18', 'Durga Puja Peak Pandals', 'festival', '{"ethnic", "festive", "silk", "saree", "heavy_silk", "traditional"}', true),
 ('682001', '2026-10-18', 'Durga Puja Celebrations', 'festival', '{"ethnic", "festive", "minimalist", "cotton"}', true),
-('793003', '2026-10-18', 'Durga Puja Autumn Fusion', 'festival', '{"streetwear", "fusion", "modern"}', true),
+('752001', '2026-10-18', 'Durga Puja Autumn Fusion', 'festival', '{"streetwear", "fusion", "modern"}', true),
 
 -- 7. Diwali (Nov 8)
 ('800008', '2026-11-08', 'Diwali Lights Festival', 'festival', '{"ethnic", "festive", "traditional", "regal", "gold", "silk"}', true),
 ('682001', '2026-11-08', 'Diwali Lights Festival', 'festival', '{"ethnic", "festive", "contemporary_fusion", "fusion", "earth-tones"}', true),
-('793003', '2026-11-08', 'Diwali Festival of Lights', 'festival', '{"winter", "warm", "jacket", "velvet", "festive"}', true),
+('752001', '2026-11-08', 'Diwali Festival of Lights', 'festival', '{"winter", "warm", "jacket", "velvet", "festive"}', true),
 
 -- 8. Christmas Day (Dec 25)
 ('800008', '2026-12-25', 'Christmas Day Celebrations', 'festival', '{"winter", "party", "jacket", "velvet", "warm"}', true),
@@ -189,42 +187,42 @@ INSERT INTO calendar (zip_code, date, event_name, event_type, attire_tags, is_fe
 -- 9. College Farewells (Apr 10)
 ('800008', '2026-04-10', 'College Farewell Gala', 'festival', '{"formal", "saree", "suit", "ethnic"}', true),
 ('682001', '2026-04-10', 'College Farewell Gala', 'festival', '{"pastel", "fusion", "cotton", "lightweight"}', true),
-('793003', '2026-04-10', 'College Farewell Gala', 'festival', '{"western_formal", "navy", "black", "grey", "blazer", "suit"}', true),
+('752001', '2026-04-10', 'College Farewell Gala', 'festival', '{"western_formal", "navy", "black", "grey", "blazer", "suit"}', true),
 
 -- 10. Graduation / Annual (May 15)
 ('800008', '2026-05-15', 'Annual Convocation Ceremony', 'festival', '{"formal", "ethnic", "fusion"}', true),
 ('682001', '2026-05-15', 'Annual Convocation Ceremony', 'festival', '{"formal", "elegant", "premium"}', true),
-('793003', '2026-05-15', 'Annual Convocation Ceremony', 'festival', '{"western_formal", "suit", "gown", "blazer"}', true),
+('752001', '2026-05-15', 'Annual Convocation Ceremony', 'festival', '{"western_formal", "suit", "gown", "blazer"}', true),
 
 -- 11. Annual School Day (Dec 5)
 ('800008', '2026-12-05', 'Annual School Day Celebration', 'festival', '{"formal", "smart_casual", "ethnic"}', true),
 ('682001', '2026-12-05', 'Annual School Day Celebration', 'festival', '{"formal", "smart_casual", "ethnic"}', true),
-('793003', '2026-12-05', 'Annual School Day Celebration', 'festival', '{"formal", "smart_casual", "ethnic"}', true),
+('752001', '2026-12-05', 'Annual School Day Celebration', 'festival', '{"formal", "smart_casual", "ethnic"}', true),
 
 -- 12. Back-to-College (Jul 5)
 ('800008', '2026-07-05', 'Back-to-College Opening', 'festival', '{"casual", "streetwear", "cotton", "breathable"}', false),
 ('682001', '2026-07-05', 'Back-to-College Opening', 'festival', '{"casual", "streetwear", "linen", "breathable"}', false),
-('793003', '2026-07-05', 'Back-to-College Opening', 'festival', '{"casual", "streetwear", "jacket", "coat", "winter"}', false),
+('752001', '2026-07-05', 'Back-to-College Opening', 'festival', '{"casual", "streetwear", "jacket", "coat", "winter"}', false),
 
 -- 13. College Fests (Feb 15)
 ('800008', '2026-02-15', 'Annual College Fest', 'festival', '{"indie", "streetwear", "denim", "graphic"}', true),
 ('682001', '2026-02-15', 'Annual College Fest', 'festival', '{"indie", "streetwear", "denim", "graphic"}', true),
-('793003', '2026-02-15', 'Annual College Fest', 'festival', '{"indie", "streetwear", "denim", "graphic"}', true),
+('752001', '2026-02-15', 'Annual College Fest', 'festival', '{"indie", "streetwear", "denim", "graphic"}', true),
 
 -- 14. Wedding Guest Day (Nov 25)
 ('800008', '2026-11-25', 'Wedding Guest Ceremony', 'festival', '{"ethnic", "festive", "silk", "velvet", "traditional"}', true),
 ('682001', '2026-11-25', 'Wedding Guest Ceremony', 'festival', '{"ethnic", "festive", "silk", "velvet", "traditional"}', true),
-('793003', '2026-11-25', 'Wedding Guest Ceremony', 'festival', '{"ethnic", "festive", "silk", "velvet", "traditional"}', true),
+('752001', '2026-11-25', 'Wedding Guest Ceremony', 'festival', '{"ethnic", "festive", "silk", "velvet", "traditional"}', true),
 
 -- 15. Office Ethnic Day (Sep 4)
 ('800008', '2026-09-04', 'Office Ethnic Day', 'festival', '{"ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"}', true),
 ('682001', '2026-09-04', 'Office Ethnic Day', 'festival', '{"ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"}', true),
-('793003', '2026-09-04', 'Office Ethnic Day', 'festival', '{"ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"}', true),
+('752001', '2026-09-04', 'Office Ethnic Day', 'festival', '{"ethnic", "subtle", "pastel", "minimalist", "kurta", "saree"}', true),
 
 -- 16. College Admissions (Jul 15)
 ('800008', '2026-07-15', 'College Admissions Season', 'festival', '{"smart_casual", "breathable_cotton", "modest_fusion", "summer_wear"}', false),
 ('682001', '2026-07-15', 'College Admissions Season', 'festival', '{"monsoon_ready", "contemporary_casual", "dark_tones", "minimalist"}', false),
-('793003', '2026-07-15', 'College Admissions Season', 'festival', '{"streetwear", "light_layers", "western_casual", "trendy_youth"}', false);
+('752001', '2026-07-15', 'College Admissions Season', 'festival', '{"streetwear", "light_layers", "western_casual", "trendy_youth"}', false);
 
 -- ============================================================
 -- CHECKOUT VELOCITY TABLE (Real-Time Purchase Pulse)
@@ -267,18 +265,18 @@ INSERT INTO checkout_velocity (product_id, zip_code, velocity_score, units_last_
 (24, '682001', 0.58, 14),  -- Cochin Carnival Party Tee
 (30, '682001', 0.45, 7);   -- Artsy Asymmetrical Kurta
 
--- Seed Checkout Velocity: Shillong (793003)
+-- Seed Checkout Velocity: Odisha (793003)
 -- Simulating: Winter streetwear and tribal heritage pieces trending
 INSERT INTO checkout_velocity (product_id, zip_code, velocity_score, units_last_hour) VALUES
-(31, '793003', 0.90, 42),  -- [Khasi Weaves] Silk Jainsem: VIRAL
-(32, '793003', 0.82, 32),  -- [Boutique Jymphong] Maroon Vest: HOT
-(33, '793003', 0.78, 26),  -- [Hillcrest] Designer Jainsem
-(36, '793003', 0.72, 22),  -- Cherry Blossom Suede Jacket
-(37, '793003', 0.68, 19),  -- Velvet Christmas Maxi Dress
-(41, '793003', 0.65, 17),  -- Woolen Cable Knit Cardigan
-(44, '793003', 0.60, 14),  -- Indie Streetwear Fleece Hoodie
-(40, '793003', 0.55, 10),  -- Avant-Garde Denim Trench
-(39, '793003', 0.75, 25);  -- Shad Suk Ryndia Shawl
+(31, '752001', 0.90, 42),  -- [Khasi Weaves] Silk Jainsem: VIRAL
+(32, '752001', 0.82, 32),  -- [Boutique Jymphong] Maroon Vest: HOT
+(33, '752001', 0.78, 26),  -- [Hillcrest] Designer Jainsem
+(36, '752001', 0.72, 22),  -- Cherry Blossom Suede Jacket
+(37, '752001', 0.68, 19),  -- Velvet Christmas Maxi Dress
+(41, '752001', 0.65, 17),  -- Woolen Cable Knit Cardigan
+(44, '752001', 0.60, 14),  -- Indie Streetwear Fleece Hoodie
+(40, '752001', 0.55, 10),  -- Avant-Garde Denim Trench
+(39, '752001', 0.75, 25);  -- Shad Suk Ryndia Shawl
 
 -- ============================================================
 -- OUTFIT COMPLETER TABLE (Cross-Category Look Completer Mapping)
@@ -307,7 +305,7 @@ INSERT INTO outfit_completer (primary_item_id, suggested_accessory_id, suggested
 (16, 292, NULL, 'festival'),
 -- Kochi Wedding Kasavu Saree -> Kundan Jewelry + Traditional footwear
 (97, 286, 334, 'wedding_day'),
--- Shillong Cherry Blossom Fest -> Beaded Vest/Scarf + Ankle boots
+-- Odisha Cherry Blossom Fest -> Beaded Vest/Scarf + Ankle boots
 (110, 38, 334, 'festival'),
 -- Christmas Day Velvet Dress -> Pearl Jewelry + Boots
 (112, 307, 334, 'festival');

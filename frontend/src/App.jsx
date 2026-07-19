@@ -3,117 +3,109 @@ import './App.css';
 import { FALLBACK_PRODUCTS } from './catalog_fallback';
 
 const ZIP_CODES = {
-  "560034": { city: "Koramangala", state: "Bengaluru", name: "Bengaluru (560034) - Gen-Z Streetwear" },
-  "110049": { city: "South Ext", state: "Delhi", name: "Delhi (110049) - Premium Indo-Western" },
-  "800001": { city: "Frazer Road", state: "Patna", name: "Patna (800001) - Traditional Silk" }
+  "682001": { city: "Fort Kochi", state: "Kochi", name: "Kochi (682001)" },
+  "752001": { city: "Puri", state: "Odisha", name: "Odisha (752001)" },
+  "800008": { city: "Patna City", state: "Patna", name: "Patna (800008)" }
 };
 
-// Regional date profile presets
-// Weather Matrix throughout the year for the three zip codes
+// Mapped canonical ZIP codes for backend queries
+const BACKEND_ZIP_MAPPED = {
+  "800008": "800008",
+  "682001": "682001",
+  "752001": "752001",
+};
+
+// Weather Matrix throughout the year
 const WEATHER_MATRIX = {
-  "560034": { // Koramangala, Bengaluru
-    1: { desc: "Pleasant & Breezy 🍃", temp: "18°C–27°C", cold_wave: false, hot_wave: false, rainy: false },
-    2: { desc: "Breezy & Warm 🍃", temp: "19°C–29°C", cold_wave: false, hot_wave: false, rainy: false },
-    3: { desc: "Warm & Sunny ☀️", temp: "21°C–32°C", cold_wave: false, hot_wave: false, rainy: false },
-    4: { desc: "Warm & Dry ☀️", temp: "22°C–34°C", cold_wave: false, hot_wave: false, rainy: false },
-    5: { desc: "Pre-Monsoon Showers 🌧️", temp: "21°C–33°C", cold_wave: false, hot_wave: false, rainy: true },
-    6: { desc: "Cool & Rainy 🌧️", temp: "20°C–29°C", cold_wave: false, hot_wave: false, rainy: true },
-    7: { desc: "Monsoon Breezes 🌧️", temp: "19°C–28°C", cold_wave: false, hot_wave: false, rainy: true },
-    8: { desc: "Cloudy & Rainy 🌧️", temp: "19°C–27°C", cold_wave: false, hot_wave: false, rainy: true },
-    9: { desc: "Pleasant Showers 🌧️", temp: "19°C–28°C", cold_wave: false, hot_wave: false, rainy: true },
-    10: { desc: "Cool & Pleasant 🍂", temp: "19°C–28°C", cold_wave: false, hot_wave: false, rainy: false },
-    11: { desc: "Cool & Cozy 🍃", temp: "18°C–27°C", cold_wave: false, hot_wave: false, rainy: false },
-    12: { desc: "Pleasant Winter ❄️", temp: "16°C–26°C", cold_wave: false, hot_wave: false, rainy: false }
+  "682001": { // Fort Kochi
+    1: { desc: "Pleasant & Breezy 🍃", temp: "23°C–31°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    2: { desc: "Breezy & Warm 🍃", temp: "24°C–32°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    3: { desc: "Warm & Sunny ☀️", temp: "25°C–33°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "hot_humid" },
+    4: { desc: "Warm & Dry ☀️", temp: "27°C–33°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
+    5: { desc: "Pre-Monsoon Showers 🌧️", temp: "27°C–31°C", cold_wave: false, hot_wave: true, rainy: true, weather_conditions: "hot_humid" },
+    6: { desc: "Cool & Rainy 🌧️", temp: "26°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    7: { desc: "Monsoon Breezes 🌧️", temp: "25°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    8: { desc: "Cloudy & Rainy 🌧️", temp: "25°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    9: { desc: "Pleasant Showers 🌧️", temp: "25°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    10: { desc: "Cool & Pleasant 🍂", temp: "25°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "hot_humid" },
+    11: { desc: "Cool & Cozy 🍃", temp: "25°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    12: { desc: "Pleasant Winter ❄️", temp: "24°C–31°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" }
   },
-  "110049": { // South Ext, Delhi
-    1: { desc: "Cold & Foggy ❄️", temp: "7°C–18°C", cold_wave: true, hot_wave: false, rainy: false },
-    2: { desc: "Pleasant & Sunny ☀️", temp: "10°C–24°C", cold_wave: false, hot_wave: false, rainy: false },
-    3: { desc: "Getting Hot ☀️", temp: "15°C–30°C", cold_wave: false, hot_wave: false, rainy: false },
-    4: { desc: "Hot & Dry 🔥", temp: "20°C–36°C", cold_wave: false, hot_wave: true, rainy: false },
-    5: { desc: "Extreme Heatwave 🔥", temp: "25°C–41°C", cold_wave: false, hot_wave: true, rainy: false },
-    6: { desc: "Extreme Heat & Humid 🔥", temp: "27°C–39°C", cold_wave: false, hot_wave: true, rainy: false },
-    7: { desc: "Hot & Monsoon 🌧️", temp: "26°C–34°C", cold_wave: false, hot_wave: false, rainy: true },
-    8: { desc: "Humid & Wet 🌧️", temp: "26°C–33°C", cold_wave: false, hot_wave: false, rainy: true },
-    9: { desc: "Humid & Pleasant 🍃", temp: "23°C–33°C", cold_wave: false, hot_wave: false, rainy: true },
-    10: { desc: "Pleasant Autumn 🍂", temp: "18°C–31°C", cold_wave: false, hot_wave: false, rainy: false },
-    11: { desc: "Cool & Dry 🍂", temp: "12°C–26°C", cold_wave: false, hot_wave: false, rainy: false },
-    12: { desc: "Very Cold Winter ❄️", temp: "8°C–20°C", cold_wave: true, hot_wave: false, rainy: false }
+  "752001": { // Puri, Odisha
+    1: { desc: "Cool & Pleasant 🍃", temp: "18°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    2: { desc: "Pleasant & Sunny ☀️", temp: "21°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    3: { desc: "Warm & Sunny ☀️", temp: "24°C–33°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "hot_humid" },
+    4: { desc: "Hot & Humid 🔥", temp: "27°C–35°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
+    5: { desc: "Very Hot & Humid 🔥", temp: "28°C–37°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
+    6: { desc: "Monsoon Showers 🌧️", temp: "27°C–33°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    7: { desc: "Heavy Monsoons 🌧️", temp: "26°C–31°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    8: { desc: "Wet & Humid 🌧️", temp: "26°C–31°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    9: { desc: "Breezy Showers 🌧️", temp: "25°C–30°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    10: { desc: "Pleasant Autumn 🍂", temp: "23°C–31°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    11: { desc: "Cool & Dry 🍂", temp: "20°C–29°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    12: { desc: "Mild Winter ❄️", temp: "17°C–26°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" }
   },
-  "800001": { // Frazer Road, Patna
-    1: { desc: "Cold & Foggy ❄️", temp: "9°C–21°C", cold_wave: true, hot_wave: false, rainy: false },
-    2: { desc: "Warm & Dry ☀️", temp: "12°C–26°C", cold_wave: false, hot_wave: false, rainy: false },
-    3: { desc: "Getting Hot ☀️", temp: "17°C–33°C", cold_wave: false, hot_wave: false, rainy: false },
-    4: { desc: "Hot & Dry 🔥", temp: "21°C–38°C", cold_wave: false, hot_wave: true, rainy: false },
-    5: { desc: "Very Hot 🔥", temp: "24°C–39°C", cold_wave: false, hot_wave: true, rainy: false },
-    6: { desc: "Hot & Humid 🌡️", temp: "25°C–35°C", cold_wave: false, hot_wave: true, rainy: false },
-    7: { desc: "Hot & Monsoon 🌧️", temp: "26°C–33°C", cold_wave: false, hot_wave: false, rainy: true },
-    8: { desc: "Humid & Wet 🌧️", temp: "25°C–32°C", cold_wave: false, hot_wave: false, rainy: true },
-    9: { desc: "Humid 🌧️", temp: "24°C–32°C", cold_wave: false, hot_wave: false, rainy: true },
-    10: { desc: "Pleasant 🍂", temp: "20°C–30°C", cold_wave: false, hot_wave: false, rainy: false },
-    11: { desc: "Cool & Dry 🍂", temp: "15°C–27°C", cold_wave: false, hot_wave: false, rainy: false },
-    12: { desc: "Cold & Dry ❄️", temp: "10°C–22°C", cold_wave: true, hot_wave: false, rainy: false }
-  }
-};
-
-const getPresetWeather = (zip, dateStr) => {
-  try {
-    const month = parseInt(dateStr.split("-")[1], 10);
-    return WEATHER_MATRIX[zip]?.[month] || { desc: "Pleasant & Breezy 🍃", temp: "22°C" };
-  } catch {
-    return { desc: "Pleasant & Breezy 🍃", temp: "22°C" };
+  "800008": { // Patna
+    1: { desc: "Cold & Foggy ❄️", temp: "10°C–22°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
+    2: { desc: "Cool & Sunny 🌤️", temp: "12°C–26°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "cold" },
+    3: { desc: "Warming Up ☀️", temp: "17°C–33°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    4: { desc: "Hot & Dry 🔥", temp: "21°C–38°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
+    5: { desc: "Very Hot 🔥", temp: "24°C–39°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
+    6: { desc: "Hot & Humid 🌡️", temp: "25°C–35°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
+    7: { desc: "Hot & Monsoon 🌧️", temp: "26°C–33°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    8: { desc: "Humid & Wet 🌧️", temp: "25°C–32°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    9: { desc: "Post-Monsoon Humidity 🌧️", temp: "24°C–32°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    10: { desc: "Pleasant & Sunny 🍂", temp: "20°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    11: { desc: "Cool & Dry 🍂", temp: "15°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    12: { desc: "Cold & Dry ❄️", temp: "11°C–23°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
   }
 };
 
 // Regional date profile presets
 const REGIONAL_DATE_PRESETS = {
-  "800001": [
+  "800008": [
     { key: "jan_26", label: "Jan 26 (Republic Day)", dateStr: "2026-01-26", event: "Republic Day Parade", event_type: "festival", isFestive: true, trendingTags: ["white", "saffron", "green", "ethnic", "formal"] },
     { key: "feb_2", label: "Feb 2 (Saraswati Puja)", dateStr: "2026-02-02", event: "Saraswati Puja (Vasant Panchami)", event_type: "festival", isFestive: true, trendingTags: ["saree", "kurta", "yellow", "ethnic"] },
     { key: "mar_3", label: "Mar 3 (Holi)", dateStr: "2026-03-03", event: "Holi Festival of Colors", event_type: "festival", isFestive: true, trendingTags: ["white", "cotton", "casual", "dailywear"] },
-    { key: "mar_20", label: "Mar 20 (Eid-ul-Fitr)", dateStr: "2026-03-20", event: "Eid-ul-Fitr Celebration", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "traditional_embroidery", "embroidered", "kurta", "sherwani"] },
+    { key: "mar_22", label: "Mar 22 (Bihar Diwas)", dateStr: "2026-03-22", event: "Bihar Diwas (Bihar Day)", event_type: "festival", isFestive: true, trendingTags: ["saree", "salwar", "bhagalpuri_silk", "kurta", "dhoti", "nehru_jacket", "white"] },
     { key: "apr_10", label: "Apr 10 (Farewell)", dateStr: "2026-04-10", event: "College Farewell Gala", event_type: "festival", isFestive: true, trendingTags: ["formal", "saree", "suit", "ethnic"] },
     { key: "may_15", label: "May 15 (Graduation)", dateStr: "2026-05-15", event: "Annual Convocation Ceremony", event_type: "festival", isFestive: true, trendingTags: ["formal", "ethnic", "fusion"] },
     { key: "jul_15", label: "Jul 15 (Admissions)", dateStr: "2026-07-15", event: "College Admissions Season", event_type: "festival", isFestive: false, trendingTags: ["smart_casual", "breathable_cotton", "modest_fusion", "summer_wear"] },
     { key: "aug_15", label: "Aug 15 (Independence Day)", dateStr: "2026-08-15", event: "Independence Day Ceremony", event_type: "festival", isFestive: true, trendingTags: ["saffron", "white", "green", "ethnic", "formal", "cotton"] },
     { key: "oct_18", label: "Oct 18 (Durga Puja)", dateStr: "2026-10-18", event: "Durga Puja Peak Pandals", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "silk", "saree", "heavy_silk", "traditional"] },
     { key: "nov_8", label: "Nov 8 (Diwali)", dateStr: "2026-11-08", event: "Diwali Lights Festival", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "traditional", "regal", "gold", "silk"] },
-    { key: "nov_15", label: "Nov 15 (Chhath Puja)", dateStr: "2026-11-15", event: "Chhath Puja (Sandhya Arghya)", event_type: "festival", isFestive: true, trendingTags: ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath-puja"] },
-    { key: "dec_10", label: "Dec 10 (Wedding Day)", dateStr: "2026-12-10", event: "Patna Wedding Day (Pheras Ritual)", event_type: "wedding_day", isFestive: true, trendingTags: ["heavy_silk", "traditional_embroidery", "ceremonial", "silk", "saree", "sherwani", "crimson", "gold", "maroon"] },
-    { key: "dec_25", label: "Dec 25 (Christmas)", dateStr: "2026-12-25", event: "Christmas Day Celebrations", event_type: "festival", isFestive: true, trendingTags: ["winter", "party", "jacket", "velvet", "warm"] }
+    { key: "nov_15", label: "Nov 15 (Chhath Puja)", dateStr: "2026-11-15", event: "Chhath Puja (Sandhya Arghya)", event_type: "festival", isFestive: true, trendingTags: ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath_puja"] },
+    { key: "dec_10", label: "Dec 10 (Wedding Day)", dateStr: "2026-12-10", event: "Patna Wedding Day (Pheras Ritual)", event_type: "wedding_day", isFestive: true, trendingTags: ["heavy_silk", "traditional_embroidery", "ceremonial", "silk", "saree", "sherwani", "crimson", "gold", "maroon"] }
   ],
-  "560034": [
+  "682001": [
     { key: "jan_20", label: "Jan 20 (Biennale Peak)", dateStr: "2026-01-20", event: "Kochi-Muziris Biennale Peak", event_type: "festival", isFestive: true, trendingTags: ["artsy", "bohemian", "linen", "sustainable", "modern"] },
     { key: "jan_26", label: "Jan 26 (Republic Day)", dateStr: "2026-01-26", event: "Republic Day Parade", event_type: "festival", isFestive: true, trendingTags: ["white", "fusion", "formal", "lightweight"] },
     { key: "mar_3", label: "Mar 3 (Holi)", dateStr: "2026-03-03", event: "Holi Festival of Colors", event_type: "festival", isFestive: true, trendingTags: ["casual", "streetwear", "denim", "cotton"] },
-    { key: "mar_20", label: "Mar 20 (Eid-ul-Fitr)", dateStr: "2026-03-20", event: "Eid-ul-Fitr Celebration", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "modest", "elegant"] },
     { key: "apr_10", label: "Apr 10 (Farewell)", dateStr: "2026-04-10", event: "College Farewell Gala", event_type: "festival", isFestive: true, trendingTags: ["pastel", "fusion", "cotton", "lightweight"] },
+    { key: "apr_14", label: "Apr 14 (Vishu)", dateStr: "2026-04-14", event: "Vishu Festival (Malayali New Year)", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "yellow", "gold", "cream", "kasavu_weave"] },
     { key: "may_15", label: "May 15 (Graduation)", dateStr: "2026-05-15", event: "Annual Convocation Ceremony", event_type: "festival", isFestive: true, trendingTags: ["formal", "elegant", "premium"] },
     { key: "jul_15", label: "Jul 15 (Admissions)", dateStr: "2026-07-15", event: "College Admissions Season", event_type: "festival", isFestive: false, trendingTags: ["monsoon_ready", "contemporary_casual", "dark_tones", "minimalist"] },
     { key: "aug_15", label: "Aug 15 (Independence Day)", dateStr: "2026-08-15", event: "Independence Day Ceremony", event_type: "festival", isFestive: true, trendingTags: ["saffron", "white", "green", "ethnic", "formal", "lightweight"] },
     { key: "aug_27", label: "Aug 27 (Onam Thiruvonam)", dateStr: "2026-08-27", event: "Onam Festival (Thiruvonam)", event_type: "festival", isFestive: true, trendingTags: ["saree", "mundu", "kasavu_weave", "white", "cream", "gold"] },
     { key: "oct_18", label: "Oct 18 (Durga Puja)", dateStr: "2026-10-18", event: "Durga Puja Celebrations", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "minimalist", "cotton"] },
     { key: "nov_8", label: "Nov 8 (Diwali)", dateStr: "2026-11-08", event: "Diwali Lights Festival", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "contemporary_fusion", "fusion", "earth-tones"] },
-    { key: "dec_25", label: "Dec 25 (Christmas)", dateStr: "2026-12-25", event: "Christmas Day Celebrations", event_type: "festival", isFestive: true, trendingTags: ["vibrant", "party", "bohemian", "modern", "western"] },
     { key: "dec_27", label: "Dec 27 (Wedding Day)", dateStr: "2026-12-27", event: "Kochi Wedding Day (Thalikettu)", event_type: "wedding_day", isFestive: true, trendingTags: ["kasavu_weave", "off-white", "cream", "gold"] }
   ],
-  "110049": [
-    { key: "jan_26", label: "Jan 26 (Republic Day)", dateStr: "2026-01-26", event: "Republic Day Parade", event_type: "festival", isFestive: true, trendingTags: ["white", "saffron", "green", "winter", "jacket", "formal"] },
-    { key: "mar_3", label: "Mar 3 (Holi)", dateStr: "2026-03-03", event: "Holi Festival of Colors", event_type: "festival", isFestive: true, trendingTags: ["hoodie", "winter", "warm", "streetwear"] },
-    { key: "mar_20", label: "Mar 20 (Eid-ul-Fitr)", dateStr: "2026-03-20", event: "Eid-ul-Fitr Celebration", event_type: "festival", isFestive: true, trendingTags: ["western_formal", "modest", "fusion"] },
-    { key: "apr_10", label: "Apr 10 (Farewell)", dateStr: "2026-04-10", event: "College Farewell Gala", event_type: "festival", isFestive: true, trendingTags: ["western_formal", "navy", "black", "grey", "blazer", "suit"] },
-    { key: "apr_15", label: "Apr 15 (Harvest Fest)", dateStr: "2026-04-15", event: "Shad Suk Mynsiem Harvest Fest", event_type: "festival", isFestive: true, trendingTags: ["jainsem", "jymphong", "traditional", "ethnic", "silk"] },
-    { key: "may_15", label: "May 15 (Graduation)", dateStr: "2026-05-15", event: "Annual Convocation Ceremony", event_type: "festival", isFestive: true, trendingTags: ["western_formal", "suit", "gown", "blazer"] },
-    { key: "jul_15", label: "Jul 15 (Admissions)", dateStr: "2026-07-15", event: "College Admissions Season", event_type: "festival", isFestive: false, trendingTags: ["streetwear", "light_layers", "western_casual", "trendy_youth"] },
-    { key: "aug_15", label: "Aug 15 (Independence Day)", dateStr: "2026-08-15", event: "Independence Day Ceremony", event_type: "festival", isFestive: true, trendingTags: ["saffron", "white", "green", "formal", "jacket", "layered"] },
-    { key: "oct_18", label: "Oct 18 (Durga Puja)", dateStr: "2026-10-18", event: "Durga Puja Autumn Fusion", event_type: "festival", isFestive: true, trendingTags: ["streetwear", "fusion", "modern"] },
-    { key: "nov_8", label: "Nov 8 (Diwali)", dateStr: "2026-11-08", event: "Diwali Festival of Lights", event_type: "festival", isFestive: true, trendingTags: ["winter", "warm", "jacket", "velvet", "festive"] },
-    { key: "nov_15", label: "Nov 15 (Cherry Blossom)", dateStr: "2026-11-15", event: "Shillong Cherry Blossom Fest", event_type: "festival", isFestive: true, trendingTags: ["streetwear", "jacket", "coat", "scarf", "boots"] },
-    { key: "dec_20", label: "Dec 20 (Khasi Wedding Day)", dateStr: "2026-12-20", event: "Shillong Wedding Day (Traditional)", event_type: "wedding_day", isFestive: true, trendingTags: ["handwoven_silk", "tribal_heritage", "jainsem", "jymphong", "earth-tones"] },
-    { key: "dec_25", label: "Dec 25 (Christmas Day)", dateStr: "2026-12-25", event: "Christmas Day Celebration", event_type: "festival", isFestive: true, trendingTags: ["velvet", "woolen", "dress", "formal", "winter", "premium"] }
+  "752001": [
+    { key: "jan_14", label: "Jan 14 (Makar Sankranti)", dateStr: "2026-01-14", event: "Makar Sankranti (Makar Mela)", event_type: "festival", isFestive: true, trendingTags: ["traditional", "tussar_silk", "yellow", "red", "odisha"] },
+    { key: "jan_26", label: "Jan 26 (Republic Day)", dateStr: "2026-01-26", event: "Republic Day Parade", event_type: "festival", isFestive: true, trendingTags: ["smart_casual", "tricolor", "khadi", "white"] },
+    { key: "apr_10", label: "Apr 10 (Farewell)", dateStr: "2026-04-10", event: "College Farewell Gala", event_type: "festival", isFestive: true, trendingTags: ["formal", "saree", "pastel", "cotton_silk", "fusion"] },
+    { key: "may_15", label: "May 15 (Graduation)", dateStr: "2026-05-15", event: "Annual Convocation Ceremony", event_type: "festival", isFestive: true, trendingTags: ["smart_formal", "blazer", "premium_fusion"] },
+    { key: "jun_14", label: "Jun 14 (Pahili Raja)", dateStr: "2026-06-14", event: "Pahili Raja (Raja Parba)", event_type: "festival", isFestive: true, trendingTags: ["traditional", "cotton", "pastel", "lightweight", "sambalpuri"] },
+    { key: "jun_15", label: "Jun 15 (Raja Sankranti)", dateStr: "2026-06-15", event: "Raja Sankranti Festival", event_type: "festival", isFestive: true, trendingTags: ["traditional", "cotton", "pastel", "sambalpuri", "ethnic"] },
+    { key: "jul_15", label: "Jul 15 (Admissions)", dateStr: "2026-07-15", event: "College Admissions Season", event_type: "festival", isFestive: false, trendingTags: ["casual", "denim", "graphic_tee", "breathable_cotton"] },
+    { key: "jul_16", label: "Jul 16 (Rath Yatra)", dateStr: "2026-07-16", event: "Puri Rath Yatra Chariot Festival", event_type: "festival", isFestive: true, trendingTags: ["sambalpuri", "cotton", "traditional", "yellow", "saffron", "saree", "kurta"] },
+    { key: "aug_15", label: "Aug 15 (Independence Day)", dateStr: "2026-08-15", event: "Independence Day Ceremony", event_type: "festival", isFestive: true, trendingTags: ["khadi", "tricolor", "smart_casual"] },
+    { key: "oct_18", label: "Oct 18 (Durga Puja)", dateStr: "2026-10-18", event: "Durga Puja (Ravana Podi)", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "traditional_silk", "red", "gold", "sambalpuri"] },
+    { key: "nov_8", label: "Nov 8 (Diwali)", dateStr: "2026-11-08", event: "Diwali Lights Festival", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "regal", "gold", "silk", "heavy_embroidery"] },
+    { key: "dec_20", label: "Dec 20 (Odia Wedding)", dateStr: "2026-12-20", event: "Odisha Winter Wedding (Pheras)", event_type: "wedding_day", isFestive: true, trendingTags: ["heavy_silk", "tussar_silk", "ceremonial", "sherwani", "crimson", "gold"] }
   ]
 };
-
-
 
 const VIBE_DEFINITIONS = {
   festive: {
@@ -142,9 +134,15 @@ const VIBE_DEFINITIONS = {
   }
 };
 
-// Local velocity cache (mirrors backend LOCAL_VELOCITY_CACHE for offline mode)
+const CONTEXT_MATRICES = {
+  "discovery": { "w_aesthetic": 0.35, "w_fabric": 0.15, "w_festivity": 0.05, "w_boutique": 0.05, "w_creator": 0.05, "w_cf": 0.25, "w_intent": 0.05, "w_velocity": 0.05 },
+  "high_intent": { "w_aesthetic": 0.15, "w_fabric": 0.10, "w_festivity": 0.0, "w_boutique": 0.0, "w_creator": 0.0, "w_cf": 0.15, "w_intent": 0.50, "w_velocity": 0.10 },
+  "festive_season": { "w_aesthetic": 0.20, "w_fabric": 0.10, "w_festivity": 0.40, "w_boutique": 0.05, "w_creator": 0.05, "w_cf": 0.10, "w_intent": 0.05, "w_velocity": 0.05 },
+  "hyper_local_boutique": { "w_aesthetic": 0.10, "w_fabric": 0.05, "w_festivity": 0.0, "w_boutique": 0.40, "w_creator": 0.0, "w_cf": 0.05, "w_intent": 0.10, "w_velocity": 0.30 },
+  "social_commerce": { "w_aesthetic": 0.10, "w_fabric": 0.05, "w_festivity": 0.0, "w_boutique": 0.0, "w_creator": 0.40, "w_cf": 0.05, "w_intent": 0.10, "w_velocity": 0.30 },
+};
+
 const LOCAL_VELOCITY_CACHE = {
-  // Patna
   1:  { velocity_score: 0.92, units_last_hour: 47 },
   2:  { velocity_score: 0.88, units_last_hour: 38 },
   7:  { velocity_score: 0.75, units_last_hour: 22 },
@@ -154,7 +152,6 @@ const LOCAL_VELOCITY_CACHE = {
   11: { velocity_score: 0.55, units_last_hour: 12 },
   48: { velocity_score: 0.60, units_last_hour: 15 },
   6:  { velocity_score: 0.72, units_last_hour: 24 },
-  // Kochi
   16: { velocity_score: 0.95, units_last_hour: 52 },
   17: { velocity_score: 0.85, units_last_hour: 35 },
   25: { velocity_score: 0.78, units_last_hour: 28 },
@@ -164,7 +161,6 @@ const LOCAL_VELOCITY_CACHE = {
   23: { velocity_score: 0.50, units_last_hour:  9 },
   24: { velocity_score: 0.58, units_last_hour: 14 },
   30: { velocity_score: 0.45, units_last_hour:  7 },
-  // Shillong
   31: { velocity_score: 0.90, units_last_hour: 42 },
   32: { velocity_score: 0.82, units_last_hour: 32 },
   33: { velocity_score: 0.78, units_last_hour: 26 },
@@ -178,12 +174,10 @@ const LOCAL_VELOCITY_CACHE = {
 
 function generateVibeVector(vibeName) {
   const vec = new Array(512).fill(0);
-  
   if (vibeName === "festive") vec.fill(1, 0, 100);
   else if (vibeName === "casual") vec.fill(1, 100, 200);
   else if (vibeName === "winter") vec.fill(1, 200, 300);
   else if (vibeName === "streetwear") vec.fill(1, 300, 400);
-  
   vec.fill(0.2, 400, 512);
   
   let hash = 0;
@@ -229,8 +223,23 @@ function calculateCosineSimilarity(vecA, vecB) {
 }
 
 function App() {
-  const [currentZipCode, setCurrentZipCode] = useState("800001");
+  const [calendarPresets, setCalendarPresets] = useState(REGIONAL_DATE_PRESETS);
+  const [weatherMatrix, setWeatherMatrix] = useState(WEATHER_MATRIX);
+  
+  const getPresetWeather = (zip, dateStr) => {
+    try {
+      const month = parseInt(dateStr.split("-")[1], 10);
+      const dbZip = BACKEND_ZIP_MAPPED[zip] || "800008";
+      return weatherMatrix[dbZip]?.[month] || weatherMatrix[dbZip]?.[String(month)] || { desc: "Pleasant & Breezy 🍃", temp: "22°C", weather_conditions: "warm_moderate" };
+    } catch {
+      return { desc: "Pleasant & Breezy 🍃", temp: "22°C", weather_conditions: "warm_moderate" };
+    }
+  };
+
+  const [currentZipCode, setCurrentZipCode] = useState("800008");
   const [sliderVal, setSliderVal] = useState(0);
+  const [trendsPanelOpen, setTrendsPanelOpen] = useState(false);
+  const [trendsPanelTab, setTrendsPanelTab] = useState('youtube');
   const [currentVibe, setCurrentVibe] = useState("casual");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -240,21 +249,36 @@ function App() {
   const [logs, setLogs] = useState([]);
   const [backendStatus, setBackendStatus] = useState("checking");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionCart, setSessionCart] = useState([]);
   
-  // Trends Panel State — data is only fetched on first tab click, never auto-loaded
+  // Dev State variables synced from backend
+  const [engineState, setEngineState] = useState("discovery");
+  const [timeOffsetHours, setTimeOffsetHours] = useState(0);
+  const [manualFestival, setManualFestival] = useState("None");
+  const [activeSurgeTab, setActiveSurgeTab] = useState(null);
+  const [velocitySurgeData, setVelocitySurgeData] = useState(null);
+  
+  // Trends Panel State
   const [activeTab, setActiveTab] = useState('youtube');
-  const [youtubeData, setYoutubeData] = useState(null);      // null = not yet fetched
+  const [youtubeData, setYoutubeData] = useState(null);
   const [isYoutubeLoading, setIsYoutubeLoading] = useState(false);
-  const [boutiqueData, setBoutiqueData] = useState(null);     // null = not yet fetched
+  const [boutiqueData, setBoutiqueData] = useState(null);
   const [isBoutiqueLoading, setIsBoutiqueLoading] = useState(false);
   const [youtubeFetched, setYoutubeFetched] = useState(false);
   const [boutiqueFetched, setBoutiqueFetched] = useState(false);
+  // Zip Code Intelligence (AOV + weather + upcoming events)
+  const [zipInsights, setZipInsights] = useState(null);
   
   const consoleEndRef = useRef(null);
+  // ── Performance: embedding cache (computed once per session per tag-string) ──
+  const embeddingCacheRef = useRef({});
+  // ── Performance: recommendation result cache keyed by "zip|date|vibe|state" ──
+  const recCacheRef = useRef({});
+  // ── Performance: debounce timer ref for slider ──────────────────────────────
+  const debounceTimerRef = useRef(null);
 
-  // Active date profile list based on zip code
-  const dateProfiles = REGIONAL_DATE_PRESETS[currentZipCode] || REGIONAL_DATE_PRESETS["800001"];
-  const activeDateProfile = dateProfiles[sliderVal] || dateProfiles[0];
+  const dateProfiles = calendarPresets[currentZipCode] || calendarPresets["800008"] || [];
+  const activeDateProfile = dateProfiles[sliderVal] || dateProfiles[0] || { key: "default", label: "N/A", dateStr: "2026-01-01", event: "N/A", trendingTags: [] };
 
   const logMessage = (text, type = "info") => {
     const timestamp = new Date().toLocaleTimeString();
@@ -269,17 +293,38 @@ function App() {
 
   useEffect(() => {
     if (!ZIP_CODES[currentZipCode]) {
-      setCurrentZipCode("800001");
+      setCurrentZipCode("800008");
     }
   }, [currentZipCode]);
 
   useEffect(() => {
-    logMessage("Initializing Myntra PinPulse Tri-Layer recommendation engine...", "info");
-    const activeZip = ZIP_CODES[currentZipCode] || ZIP_CODES["800001"];
-    logMessage(`Geographic boundary boundary: ${activeZip.name}.`, "info");
+    logMessage("Initializing Myntra PinPulse Unified 8-Pillar Recommender...", "info");
+    const activeZip = ZIP_CODES[currentZipCode] || ZIP_CODES["800008"];
+    logMessage(`Geographic boundary: ${activeZip.name}.`, "info");
     logMessage("Loaded local fallback catalog database containing 60 items.", "success");
     checkBackendConnection();
+    loadDynamicPresets();
   }, []);
+
+  const loadDynamicPresets = async () => {
+    try {
+      const resCal = await fetch("http://localhost:8000/api/calendar-presets");
+      if (resCal.ok) {
+        const calData = await resCal.json();
+        setCalendarPresets(calData);
+        logMessage("Dynamically loaded regional holiday and festival presets from database.", "success");
+      }
+    } catch (_) { /* Fallback used */ }
+
+    try {
+      const resWea = await fetch("http://localhost:8000/api/weather-matrix");
+      if (resWea.ok) {
+        const weaData = await resWea.json();
+        setWeatherMatrix(weaData);
+        logMessage("Dynamically loaded local monthly climate rules and materials from database.", "success");
+      }
+    } catch (_) { /* Fallback used */ }
+  };
 
   const checkBackendConnection = async () => {
     try {
@@ -287,29 +332,63 @@ function App() {
       if (res.ok) {
         setBackendStatus("connected");
         logMessage("FastAPI application server detected online at http://localhost:8000.", "success");
+        syncDevState();
       } else {
         throw new Error();
       }
     } catch {
       setBackendStatus("offline");
-      logMessage("FastAPI server offline. Activating client-side vector search and ranking subsystem.", "warning");
+      logMessage("FastAPI server offline. Activating client-side vector search & 8-pillar scoring simulator.", "warning");
     }
   };
 
-  // Reset fetched state when zip code changes so stale data is cleared
+  const syncDevState = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/dev/state");
+      if (res.ok) {
+        const data = await res.json();
+        setEngineState(data.session.state);
+        setSessionCart(data.session.session_cart || []);
+        setTimeOffsetHours(data.session.time_offset_hours);
+        setManualFestival(data.session.active_festival || "None");
+      }
+    } catch (e) {
+      logger.error("Error syncing dev state: ", e);
+    }
+  };
+
+  // Reset fetched state when zip code changes
   useEffect(() => {
     setYoutubeData(null);
     setBoutiqueData(null);
     setYoutubeFetched(false);
     setBoutiqueFetched(false);
+    setActiveSurgeTab(null);
+    setVelocitySurgeData(null);
   }, [currentZipCode]);
 
-  // Re-run connection check when zip code or state changes
+  // Re-run recommendations when key inputs change — debounced 120ms
   useEffect(() => {
-    if (backendStatus !== "checking") {
+    if (backendStatus === "checking") return;
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    debounceTimerRef.current = setTimeout(() => {
       updateRecommendations();
-    }
+    }, 120);
+    return () => clearTimeout(debounceTimerRef.current);
   }, [currentZipCode, sliderVal, currentVibe, backendStatus]);
+
+  // Fetch Zip Code Intelligence (AOV, weather, upcoming events)
+  useEffect(() => {
+    const fetchZipInsights = async () => {
+      const profile = (calendarPresets[currentZipCode] || calendarPresets['800008'])[sliderVal] ||
+                      (calendarPresets[currentZipCode] || calendarPresets['800008'])[0];
+      try {
+        const res = await fetch(`http://localhost:8000/api/zip-insights?zip_code=${currentZipCode}&date=${profile.dateStr}`);
+        if (res.ok) setZipInsights(await res.json());
+      } catch (_) { /* backend offline — silently skip */ }
+    };
+    fetchZipInsights();
+  }, [currentZipCode, sliderVal]);
 
   // Fetch Look Completer mappings when product selection changes
   useEffect(() => {
@@ -330,12 +409,7 @@ function App() {
           }
         }
       } catch (e) {
-        // Local Fallback simulation - IDs verified against catalog (1-159):
-        // ID=124: Heavy kundan necklace set
-        // ID=127: Traditional silver anklets
-        // ID=135: Minimalist gold earring set
-        // ID=149: Modern ankle boots for women
-        // ID=38: Wangala Tribal Beaded Vest
+        // Local Fallback simulation
         const fallbackMapping = {
           1: { accessory: { id: 124, name: "Heavy kundan necklace set", image_url: "/catalog/catalog_124.jpg" }, footwear: { id: 149, name: "Modern ankle boots for women", image_url: "/catalog/catalog_149.jpg" } },
           2: { accessory: { id: 124, name: "Heavy kundan necklace set", image_url: "/catalog/catalog_124.jpg" }, footwear: { id: 149, name: "Modern ankle boots for women", image_url: "/catalog/catalog_149.jpg" } },
@@ -354,40 +428,65 @@ function App() {
     fetchLookCompleter();
   }, [selectedProduct, activeDateProfile]);
 
-  const handleZipCodeChange = (e) => {
+  const handleZipCodeChange = async (e) => {
     const zip = e.target.value;
     setCurrentZipCode(zip);
-    setSliderVal(0); // Reset slider to index 0 on zip shift
+    setSliderVal(0);
     logMessage(`Geographic boundary shifted. Active zip code: ${ZIP_CODES[zip].name}.`, "success");
+    if (backendStatus === "connected") {
+      try {
+        await fetch("http://localhost:8000/api/dev/set-zip", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ zip_code: zip })
+        });
+        syncDevState();
+      } catch (err) {
+        logMessage("Failed to sync ZIP with backend dev panel.", "error");
+      }
+    }
   };
 
   const handleSliderChange = (e) => {
     const val = parseInt(e.target.value);
     setSliderVal(val);
-    const profile = REGIONAL_DATE_PRESETS[currentZipCode][val];
+    const profile = (calendarPresets[currentZipCode] || calendarPresets["800008"])[val] || (calendarPresets[currentZipCode] || calendarPresets["800008"])[0];
     logMessage(`Time slider shifted. Active regional scenario: ${profile.label}.`, "info");
   };
 
   const updateRecommendations = async () => {
     setIsLoading(true);
-    const profile = REGIONAL_DATE_PRESETS[currentZipCode][sliderVal] || REGIONAL_DATE_PRESETS[currentZipCode][0];
+    const profile = (calendarPresets[currentZipCode] || calendarPresets["800008"])[sliderVal] || (calendarPresets[currentZipCode] || calendarPresets["800008"])[0];
     const userVibeVector = generateVibeVector(currentVibe);
-    
-    logMessage(`Querying recommendations: zip='${currentZipCode}' date='${profile.dateStr}' vibe='${currentVibe}'`, "info");
-    
+
+    // ── Result Cache: return instantly if same combo was already computed ──
+    const cacheKey = `${currentZipCode}|${profile.dateStr}|${currentVibe}|${engineState}`;
+    const cached = recCacheRef.current[cacheKey];
+    if (cached) {
+      setProducts(cached);
+      setIsLoading(false);
+      const stillExists = cached.find(p => selectedProduct && p.id === selectedProduct.id);
+      setSelectedProduct(stillExists || cached[0]);
+      return;
+    }
+
+    logMessage(`Scoring recommendations: ${ZIP_CODES[currentZipCode].city} • ${profile.dateStr} • ${currentVibe}`, "info");
     if (backendStatus === "connected") {
       try {
-        logMessage("Executing Hybrid Vector matching via Supabase RPC...", "sql");
-        const url = `http://localhost:8000/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}`;
+        logMessage("Executing 8-Pillar Scoring Pipeline on FastAPI backend...", "sql");
+        const url = `http://localhost:8000/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}&state=${engineState}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error("API responded with error code");
         
         const data = await response.json();
+        recCacheRef.current[cacheKey] = data;  // cache backend result
         setProducts(data);
-        logMessage(`SQL query successful. Retreived ${data.length} products ordered by composite score.`, "success");
+        logMessage(`Scoring Engine finished. Retrieved ${data.length} products sorted by composite score.`, "success");
         
         if (data.length > 0) {
-          setSelectedProduct(data[0]);
+          // Keep current selected if still in list, else pick top
+          const stillExists = data.find(p => selectedProduct && p.id === selectedProduct.id);
+          setSelectedProduct(stillExists || data[0]);
         }
       } catch (err) {
         logMessage(`API call failed: ${err.message}. Falling back to local calculator.`, "warning");
@@ -406,7 +505,7 @@ function App() {
     setYoutubeData(null);
     logMessage("Loading YouTube creator trends from database...", "info");
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/youtube?zip_code=${zip || currentZipCode}`);
+      const res = await fetch(`http://localhost:8000/api/trends/youtube?zip_code=${BACKEND_ZIP_MAPPED[zip || currentZipCode]}`);
       if (!res.ok) throw new Error("Failed to fetch YouTube trends");
       const data = await res.json();
       const isArr = Array.isArray(data);
@@ -418,7 +517,7 @@ function App() {
     } catch (e) {
       logMessage(`YouTube trends error: ${e.message}`, "error");
       setIsYoutubeLoading(false);
-      setYoutubeFetched(true); // Mark as fetched even on error so we show error state
+      setYoutubeFetched(true);
     }
   };
 
@@ -427,7 +526,7 @@ function App() {
     setBoutiqueData(null);
     logMessage(`Loading local stores for ${ZIP_CODES[zip || currentZipCode]?.city}...`, "info");
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/boutiques?zip_code=${zip || currentZipCode}`);
+      const res = await fetch(`http://localhost:8000/api/trends/boutiques?zip_code=${BACKEND_ZIP_MAPPED[zip || currentZipCode]}`);
       if (!res.ok) throw new Error("Failed to fetch boutiques");
       const data = await res.json();
       setBoutiqueData(data);
@@ -442,7 +541,6 @@ function App() {
     }
   };
 
-  // Called when user clicks a tab — only fetch if not already loaded for current zip
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === 'youtube' && !youtubeFetched) {
@@ -453,128 +551,291 @@ function App() {
     }
   };
 
+  const openTrendsPanel = (tab) => {
+    setTrendsPanelTab(tab);
+    setTrendsPanelOpen(true);
+    handleTabClick(tab);
+  };
+
+  const closeTrendsPanel = () => {
+    setTrendsPanelOpen(false);
+  };
+
+  // Client-side 8-Pillar Scoring Simulation Fallback
   const runLocalRecommendationCalculator = (profile, userVibeVector) => {
-    logMessage("Running client-side vector cosine distance similarity calculations...", "sql");
+    logMessage("Running client-side 8-Pillar mathematical scoring simulation...", "sql");
     
     const month = parseInt(profile.dateStr.split("-")[1], 10);
-    const weatherEntry = WEATHER_MATRIX[currentZipCode]?.[month] || {};
+    const dbZip = BACKEND_ZIP_MAPPED[currentZipCode] || "800008";
+    const weatherEntry = weatherMatrix[dbZip]?.[month] || weatherMatrix[dbZip]?.[String(month)] || {};
     const isColdWave = weatherEntry.cold_wave || false;
     const isHotWave = weatherEntry.hot_wave || false;
     const isRainy = weatherEntry.rainy || false;
     const isWeddingDay = (profile.event_type === "wedding_day");
     
-    logMessage(`Active Event: '${profile.event}' | Type: '${profile.event_type}'`, "info");
-    logMessage(`Active Weather: '${weatherEntry.desc}' | Temp Range: '${weatherEntry.temp}'`, "info");
-    logMessage(`Trending active tags: [${profile.trendingTags.join(", ")}]`, "info");
+    const weatherCondition = weatherEntry.weather_conditions || "hot_humid";
+    const allowableMaterials = WEATHER_RULES[weatherCondition]?.allowable_materials || ["cotton", "linen"];
+    const allowableMaterialsVector = generateVibeVector(weatherCondition);
     
+    const isFestivalActive = profile.isFestive || manualFestival !== "None";
+    const festName = manualFestival !== "None" ? manualFestival.toLowerCase() : profile.isFestive ? "chhath_puja" : "";
+    const festivalRule = FESTIVAL_RULES[festName] || {};
+    const targetColor = festivalRule.target_color || "";
+    const targetNature = festivalRule.target_nature || "";
+    const festiveContextVector = generateVibeVector(festName || "chhath_puja");
+
+    // Local CF Lookup mock
+    const activeCFBoosts = {};
+    sessionCart.forEach(cid => {
+      const recs = CF_LOOKUP[cid]?.recommendations || [];
+      recs.forEach(rec => {
+        if (!activeCFBoosts[rec.id] || rec.strength > activeCFBoosts[rec.id]) {
+          activeCFBoosts[rec.id] = rec.strength;
+        }
+      });
+    });
+
+    const weights = CONTEXT_MATRICES[engineState] || CONTEXT_MATRICES["discovery"];
+
     const computed = FALLBACK_PRODUCTS.filter(product => {
-      // Geographic filter
       if (product.zip_codes && product.zip_codes.length > 0) {
         return product.zip_codes.includes(currentZipCode);
       }
-      return true; // Global
+      return true;
     }).map(product => {
-      // Cosine similarity
-      const productVibeVector = generateVibeVector(product.tags);
-      const similarity = calculateCosineSimilarity(userVibeVector, productVibeVector);
-      
-      // Tag overlap score against trending/event tags
-      const overlapTags = product.tags.filter(tag => profile.trendingTags.includes(tag));
-      const tagScore = overlapTags.length;
-      
-      // Determine boosts
-      let climateBoost = 0.0;
-      let festiveBoost = 0.0;
-      let weddingBoost = 0.0;
-      let eventBoost = 0.0;
-      let hotBoost = 0.0;
-      let rainyBoost = 0.0;
-      
-      if (isColdWave && product.tags.includes("winter")) {
-        climateBoost = 0.15;
+      const id = product.id;
+      const tags = product.tags;
+      const descLower = product.description.lower || product.description.toLowerCase();
+
+      // Extract attributes dynamically
+      let material = "cotton";
+      for (let m of ["silk", "linen", "rayon", "velvet", "wool", "denim", "polyester", "chanderi", "georgette", "organza"]) {
+        if (tags.includes(m) || descLower.includes(m)) { material = m; break; }
       }
-      if (isHotWave && (product.tags.includes("summer") || product.tags.includes("breathable"))) {
-        hotBoost = 0.15;
+      let color = "multi";
+      for (let c of ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]) {
+        if (tags.includes(c) || descLower.includes(c)) { color = c; break; }
       }
-      if (isRainy && (product.tags.includes("cotton") || product.tags.includes("breathable"))) {
-        rainyBoost = 0.15;
+      let nature = "casual";
+      for (let n of ["ethnic", "festive", "casual", "streetwear", "traditional", "ceremonial"]) {
+        if (tags.includes(n) || descLower.includes(n)) { nature = n; break; }
       }
-      if (profile.isFestive && product.tags.includes("festive")) {
-        festiveBoost = 0.15;
+      let category = "Ethnic";
+      for (let cat of ["Ethnic", "Western", "Accessory", "Footwear"]) {
+        if (tags.includes(cat.toLowerCase()) || descLower.includes(cat.toLowerCase())) { category = cat; break; }
       }
-      if (isWeddingDay && product.tags.includes("ceremonial")) {
-        weddingBoost = 0.30;
-      }
-      // Target event tag intersection boost
-      if (profile.trendingTags.length > 0 && product.tags.some(t => profile.trendingTags.includes(t))) {
-        eventBoost = 0.15;
-      }
-      
-      const boostScore = climateBoost + festiveBoost + weddingBoost + eventBoost + hotBoost + rainyBoost;
-      
-      // Checkout Velocity Boost (mirrors backend: max +0.20 for viral items)
-      const velocityEntry = LOCAL_VELOCITY_CACHE[product.id] || {};
+      if (category === "Ethnic" && tags.some(t => ["hoodie", "cargo", "jeans", "jacket"].includes(t))) category = "Western";
+      if (tags.some(t => ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"].includes(t))) category = "Accessory";
+      if (tags.some(t => ["boots", "mojari", "sandals", "footwear"].includes(t))) category = "Footwear";
+
+      const price = (id * 17) % 3000 + 499;
+      const stockLevel = (id * 7) % 50 + 1;
+      const isEvergreen = (id % 15 === 0);
+      const baselineSales = (id * 3) % 20 + 5;
+      const velocityEntry = LOCAL_VELOCITY_CACHE[id] || {};
       const vScore = velocityEntry.velocity_score || 0.0;
-      const unitsLastHour = velocityEntry.units_last_hour || 0;
-      const velocityBoost = vScore > 0 ? parseFloat((vScore * 0.20).toFixed(4)) : 0.0;
-      const isTrending = vScore >= 0.75;
-      
-      const visualScoreVal = Math.max(0.0, Math.min(1.0, similarity));
-      const normalizedTagScore = Math.min(1.0, tagScore / 3);
-      
-      // Base hybrid score + velocity boost (mirrors backend formula)
-      let finalScore = (visualScoreVal * 0.4) + (normalizedTagScore * 0.3) + (boostScore * 0.3) + velocityBoost;
-      
-      // --- APPLY STRICT HACKATHON LOGIC RULES ---
-      
-      // Patna Wedding Day: Heavy silk must dominate, lightweight summerwear penalized
-      if (currentZipCode === "800008" && isWeddingDay) {
-        if (product.tags.includes("heavy_silk")) {
-          finalScore += 0.50;
-        } else if (product.tags.includes("summer") || product.tags.includes("casual")) {
-          finalScore -= 0.50; // Heavy penalty
-        }
+      const currentSales = vScore > 0 ? Math.floor(baselineSales * (1.0 + 2.0 * vScore)) : baselineSales + (id % 5);
+      const ageGroup = tags.includes("streetwear") ? "gen-z" : "millennial";
+
+      const tagKey = product.tags.join("|");
+      const embedding = embeddingCacheRef.current[tagKey]
+        || (embeddingCacheRef.current[tagKey] = generateVibeVector(tagKey));
+
+      // === Pillar 1: Aesthetic score ===
+      let sAesthetic = calculateCosineSimilarity(userVibeVector, embedding);
+      if (nature === currentVibe) sAesthetic = 1.0;
+      else sAesthetic = (sAesthetic + 1) / 2;
+
+      // === Pillar 2: Fabric score ===
+      let sFabric = calculateCosineSimilarity(allowableMaterialsVector, embedding);
+      if (allowableMaterials.includes(material)) sFabric = 1.0;
+      else sFabric = (sFabric + 1) / 2;
+
+      // WEATHER VETO
+      if (sFabric < 0.2) return null;
+
+      // === Pillar 3: Festivity score ===
+      let sFestivity = 1.0;
+      if (isFestivalActive) {
+        sFestivity = calculateCosineSimilarity(festiveContextVector, embedding);
+        if (color === targetColor && nature === targetNature) sFestivity = 1.0;
+        else sFestivity = (sFestivity + 1) / 2;
       }
-      
-      // Kochi Wedding Day: Kasavu saree is non-negotiable
-      if (currentZipCode === "682001" && isWeddingDay) {
-        if (product.tags.includes("kasavu_weave")) {
-          finalScore += 0.50;
-        }
+
+      // === Pillar 4: Creator score ===
+      let sCreator = 0.5;
+      if (isEvergreen) sCreator = 0.85;
+      else {
+        const localCreators = FALLBACK_CREATORS[dbZip] || [];
+        let maxC = 0.0;
+        localCreators.forEach(c => {
+          const sim = (calculateCosineSimilarity(c.vector, embedding) + 1) / 2;
+          const penalty = ageGroup === c.demographic ? 1.0 : 0.1;
+          maxC = Math.max(maxC, sim * penalty * c.subscriber_weight);
+        });
+        sCreator = maxC;
       }
-      
-      // Shillong Wedding Day: Jainsem & Jymphong boost
-      if (currentZipCode === "793003" && isWeddingDay) {
-        if (product.tags.includes("handwoven_silk") || product.tags.includes("tribal_heritage")) {
-          finalScore += 0.50;
-        }
+
+      // === Pillar 5: Boutique score ===
+      let sBoutique = 0.5;
+      if (isEvergreen) sBoutique = 0.85;
+      else {
+        const localStores = FALLBACK_STORES[dbZip] || [];
+        let maxS = 0.0;
+        localStores.forEach(s => {
+          const sim = (calculateCosineSimilarity(s.vector, embedding) + 1) / 2;
+          let wRating = Math.max(0.0, (s.rating - 3.0) / 2.0);
+          if (s.review_count < 50) wRating *= 0.5;
+          const catGate = ["ethnic", "occasion", "festive", "traditional"].includes(category.toLowerCase()) ? 1.0 : 0.2;
+          const pricePenalty = s.estimated_cost > 2500 * 2 ? 0.3 : 1.0;
+          maxS = Math.max(maxS, sim * wRating * catGate * pricePenalty);
+        });
+        sBoutique = maxS;
       }
-      
+
+      // === Pillar 6: Velocity score ===
+      let sVelocity = 0.0;
+      if (baselineSales > 0) {
+        const delta = currentSales / baselineSales;
+        if (delta > 1.0) sVelocity = Math.min(1.0, (delta - 1.0) / 2.0);
+      }
+
+      // === Pillar 7: Intent score ===
+      let sIntent = 0.0; // offline simple intent decay mock
+
+      // === Pillar 8: CF score ===
+      let sCf = activeCFBoosts[id] || 0.0;
+
+      // Final score formula
+      let finalScore = (
+        weights.w_aesthetic * sAesthetic +
+        weights.w_fabric * sFabric +
+        weights.w_festivity * sFestivity +
+        weights.w_boutique * sBoutique +
+        weights.w_creator * sCreator +
+        weights.w_cf * sCf +
+        weights.w_intent * sIntent +
+        weights.w_velocity * sVelocity
+      );
+
+      // Low Stock Penalty
+      if (stockLevel < 5) finalScore *= 0.1;
+
+      // Dynamic rules overrides
+      if (currentZipCode === "800001" && isWeddingDay) {
+        if (tags.includes("heavy_silk")) finalScore += 0.50;
+        else if (tags.includes("summer") || tags.includes("casual")) finalScore -= 0.50;
+      }
+      if (currentZipCode === "560034" && isWeddingDay) {
+        if (tags.includes("kasavu_weave")) finalScore += 0.50;
+      }
+      if (currentZipCode === "752001" && isWeddingDay) {
+        if (tags.includes("sambalpuri") || tags.includes("tussar_silk")) finalScore += 0.50;
+      }
+
       return {
         ...product,
-        vector_score: visualScoreVal,
-        tag_score: normalizedTagScore,
-        boost_score: boostScore,
-        velocity_score: vScore,
-        velocity_boost: velocityBoost,
-        units_last_hour: unitsLastHour,
-        is_trending: isTrending,
+        material,
+        color,
+        nature,
+        category,
+        price,
+        stock_level: stockLevel,
+        is_evergreen: isEvergreen,
+        baseline_sales: baselineSales,
+        current_sales: currentSales,
+        units_last_hour: currentSales - baselineSales,
+        is_trending: sVelocity >= 0.75,
+        vector_score: sAesthetic,
+        tag_score: sCreator,
+        boost_score: sFestivity,
+        velocity_score: sVelocity,
+        velocity_boost: sIntent,
         final_score: finalScore,
-        overlap_tags: overlapTags
+        overlap_tags: tags.filter(tag => profile.trendingTags.includes(tag)),
+        scoring_breakdown: {
+          layer1_personal_vibe: weights.w_aesthetic * sAesthetic,
+          layer2_creator_trend: weights.w_creator * sCreator,
+          layer3_local_boutique: weights.w_boutique * sBoutique,
+          layer4_festivity: weights.w_festivity * sFestivity,
+          layer5_weather: weights.w_fabric * sFabric,
+          layer6_velocity: weights.w_velocity * sVelocity,
+          layer7_intent: weights.w_intent * sIntent,
+          layer8_cf: weights.w_cf * sCf,
+          raw_values: {
+            personal_vibe_similarity: sAesthetic,
+            creator_trend_match: sCreator,
+            local_boutique_match: sBoutique,
+            festivity_match: sFestivity,
+            weather_match: sFabric,
+            checkout_velocity_score: sVelocity,
+            intent_score: sIntent,
+            cf_score: sCf
+          }
+        },
+        reason_labels: [
+          sFestivity > 0.7 && isFestivalActive ? `✨ Trending for Festival` : null,
+          sCreator > 0.7 ? `🔥 Loved by local creators` : null,
+          sFabric > 0.8 ? `☀️ Climate-appropriate` : null,
+          sCf > 0.5 ? `👥 People also bought` : null
+        ].filter(Boolean)
       };
-    });
-    
-    // Sort descending by final score
+    }).filter(Boolean);
+
     computed.sort((a, b) => b.final_score - a.final_score);
-    
-    setProducts(computed);
-    logMessage(`Local matching algorithm ranked ${computed.length} items. Velocity boosts applied.`, "success");
-    if (computed.filter(p => p.is_trending).length > 0) {
-      logMessage(`⚡ ${computed.filter(p => p.is_trending).length} trending items detected via checkout velocity.`, "success");
-    }
-    
-    if (computed.length > 0) {
-      setSelectedProduct(computed[0]);
+
+    // ── Score-Gated Diversity Stratification ───────────────────────────────
+    // A category only earns a diversity "slot" if its best item meets the
+    // minimum relevance threshold. This prevents a 3.8% hoodie from jumping
+    // ahead of 57% festive kurtas just because it's a different category.
+    const DIVERSITY_MIN_SCORE = 0.20; // 20% threshold to qualify for a slot
+    const MAX_PER_CATEGORY   = 2;     // max diversity slots per category
+    const DIVERSITY_POOL_SIZE = 20;   // consider top-N items for stratification
+
+    const diversityPool = computed.slice(0, DIVERSITY_POOL_SIZE);
+    const categoryCount  = {};
+    const diversitySlots = [];   // items that earned a diversity slot
+    const remainder      = [];   // everything else in the pool
+
+    diversityPool.forEach(item => {
+      const cat   = item.category || 'other';
+      const count = categoryCount[cat] || 0;
+      // Earns a slot only if score ≥ threshold AND category not yet saturated
+      if (item.final_score >= DIVERSITY_MIN_SCORE && count < MAX_PER_CATEGORY) {
+        categoryCount[cat] = count + 1;
+        diversitySlots.push(item);
+      } else {
+        remainder.push(item);
+      }
+    });
+
+    // Merge: diversity winners + remainder + anything beyond the pool
+    const merged = [
+      ...diversitySlots,
+      ...remainder,
+      ...computed.slice(DIVERSITY_POOL_SIZE)
+    ];
+
+    // De-duplicate (in case the same item ended up in two buckets)
+    const seenIds  = new Set();
+    const deduped  = merged.filter(p => {
+      if (seenIds.has(p.id)) return false;
+      seenIds.add(p.id);
+      return true;
+    });
+
+    // ── Critical: re-sort by score so rank always mirrors the badge ─────────
+    deduped.sort((a, b) => b.final_score - a.final_score);
+
+    // Pad to at least 20 items
+    const finalFeed = deduped.length < 20
+      ? [...deduped, ...computed.filter(p => !seenIds.has(p.id))].slice(0, Math.max(20, deduped.length))
+      : deduped;
+
+    setProducts(finalFeed);
+    logMessage(`Local matching algorithm ranked ${paddedFeed.length} items. 8-Pillar weights applied.`, "success");
+    if (paddedFeed.length > 0) {
+      setSelectedProduct(paddedFeed[0]);
     }
   };
 
@@ -588,6 +849,194 @@ function App() {
     setShowOnboarding(false);
     logMessage(`Vibe check onboarding completed. Selected Vibe: '${VIBE_DEFINITIONS[tempVibe].name}'.`, "success");
   };
+
+  // Dev Panel Operations
+
+  const handleSetState = async (stateName) => {
+    setEngineState(stateName);
+    logMessage(`[DEV] Switching State Machine weight context to: ${stateName.toUpperCase()}`, "info");
+    if (backendStatus === "connected") {
+      try {
+        await fetch("http://localhost:8000/api/dev/set-state", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ state: stateName })
+        });
+        syncDevState();
+        updateRecommendations();
+      } catch (err) {
+        logMessage("Failed to sync state with backend.", "error");
+      }
+    } else {
+      updateRecommendations();
+    }
+  };
+
+  const handleTimeWarp = async (hours) => {
+    setTimeOffsetHours(prev => prev + hours);
+    logMessage(`[DEV] Time Warping +${hours} hours forward. Decrementing intent decay...`, "warning");
+    if (backendStatus === "connected") {
+      try {
+        const res = await fetch("http://localhost:8000/api/dev/time-warp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ hours })
+        });
+        const data = await res.json();
+        logMessage(`[DEV] Backend warp done. Interactions decay adjusted.`, "success");
+        syncDevState();
+        updateRecommendations();
+      } catch (err) {
+        logMessage("Failed to execute backend time-warp.", "error");
+      }
+    } else {
+      logMessage("[DEV] Offline. Time warp simulated on client logs.", "success");
+    }
+  };
+
+  const handleSetFestival = async (festName) => {
+    setManualFestival(festName || "None");
+    logMessage(`[DEV] Triggering manual festival override: ${festName || 'None'}`, "info");
+    if (backendStatus === "connected") {
+      try {
+        await fetch("http://localhost:8000/api/dev/set-festival", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ festival: festName })
+        });
+        syncDevState();
+        updateRecommendations();
+      } catch (err) {
+        logMessage("Failed to set festival override on backend.", "error");
+      }
+    } else {
+      updateRecommendations();
+    }
+  };
+
+  const handleVelocitySurge = async () => {
+    logMessage("[DEV] Simulating real-time local velocity checkout surge...", "warning");
+    if (backendStatus === "connected") {
+      try {
+        const res = await fetch("http://localhost:8000/api/dev/velocity-surge", { method: "POST" });
+        if (res.ok) {
+          const data = await res.json();
+          setVelocitySurgeData(data);
+          setActiveSurgeTab("surge");
+          logMessage(`[DEV] Spiked checkout velocity for local catalog cluster! Theme: ${data.theme}`, "success");
+        }
+      } catch (err) {
+        logMessage("Failed to simulate velocity surge.", "error");
+      }
+    } else {
+      // Local fallback surge
+      const data = {
+        theme: "Midnight Blue Festive Bodycons & Modern Lehengas",
+        products: FALLBACK_PRODUCTS.slice(0, 5),
+        log: "[SYSTEM] Local velocity surge simulated on offline fallback list."
+      };
+      setVelocitySurgeData(data);
+      setActiveSurgeTab("surge");
+      logMessage(`[DEV] Offline: Simulated surge theme: ${data.theme}`, "success");
+    }
+  };
+
+  const handleResetSession = async () => {
+    logMessage("[DEV] Resetting user session parameters...", "warning");
+    if (backendStatus === "connected") {
+      try {
+        await fetch("http://localhost:8000/api/dev/reset", { method: "POST" });
+        syncDevState();
+        updateRecommendations();
+      } catch (err) {
+        logMessage("Failed to reset session on backend.", "error");
+      }
+    } else {
+      setSessionCart([]);
+      setEngineState("discovery");
+      setTimeOffsetHours(0);
+      setManualFestival("None");
+      updateRecommendations();
+    }
+  };
+
+  // Cart operations
+  const handleAddToCart = async (pid) => {
+    logMessage(`🛒 Adding Product ID ${pid} to session cart...`, "info");
+    if (backendStatus === "connected") {
+      try {
+        const res = await fetch("http://localhost:8000/api/cart/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ item_id: pid })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSessionCart(data.cart);
+          setEngineState(data.state);
+          logMessage(`🛒 Cart updated. Collaborative filtering boosts applied. State shifted to HIGH_INTENT.`, "success");
+          updateRecommendations();
+        }
+      } catch (e) {
+        logMessage("Failed to add to backend cart.", "error");
+      }
+    } else {
+      if (!sessionCart.includes(pid)) {
+        setSessionCart(prev => [...prev, pid]);
+        setEngineState("high_intent");
+        logMessage(`🛒 Offline: Added to cart. Collaborative filtering boost simulated on next rank cycle. State shifted to HIGH_INTENT.`, "success");
+      }
+    }
+  };
+
+  const handleRemoveFromCart = async (pid) => {
+    logMessage(`🛒 Removing Product ID ${pid} from session cart...`, "info");
+    if (backendStatus === "connected") {
+      try {
+        const res = await fetch("http://localhost:8000/api/cart/remove", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ item_id: pid })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setSessionCart(data.cart);
+          setEngineState(data.state);
+          logMessage(`🛒 Cart updated. Product removed. State reverted to ${data.state.toUpperCase()}.`, "success");
+          updateRecommendations();
+        }
+      } catch (e) {
+        logMessage("Failed to remove from backend cart.", "error");
+      }
+    } else {
+      setSessionCart(prev => prev.filter(id => id !== pid));
+      if (sessionCart.length <= 1) {
+        setEngineState("discovery");
+      }
+      logMessage(`🛒 Offline: Removed from cart. State reverted.`, "success");
+    }
+  };
+
+  const handleAddToWishlist = async (pid) => {
+    logMessage(`❤️ Adding Product ID ${pid} to wishlist...`, "info");
+    if (backendStatus === "connected") {
+      try {
+        await fetch("http://localhost:8000/api/wishlist/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ item_id: pid })
+        });
+        logMessage(`❤️ Wishlist interaction recorded. Exponential decay timer started.`, "success");
+        updateRecommendations();
+      } catch (e) {
+        logMessage("Failed to record wishlist in backend.", "error");
+      }
+    } else {
+      logMessage(`❤️ Wishlist interaction mock recorded on client.`, "success");
+    }
+  };
+
+  const weights = CONTEXT_MATRICES[engineState] || CONTEXT_MATRICES["discovery"];
 
   return (
     <div id="root">
@@ -659,15 +1108,14 @@ function App() {
             </select>
           </div>
           
-          <div className={`meta-pill ${backendStatus === 'connected' ? 'highlight' : ''}`}>
-            Status: {backendStatus === "connected" ? "FastAPI Online" : "FastAPI Offline (Local Sim)"}
+
+          <div className="meta-pill">
+            🛒 Cart: {sessionCart.length}
           </div>
           <div className="meta-pill">
             📅 {activeDateProfile.dateStr}
           </div>
-          <div className="meta-pill highlight">
-            ⚡ Vibe: {VIBE_DEFINITIONS[currentVibe].name}
-          </div>
+
         </div>
       </header>
 
@@ -683,16 +1131,82 @@ function App() {
               <h3 className="control-title">
                 🕒 Time-Traveler Control Panel ({ZIP_CODES[currentZipCode].city})
               </h3>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button className="onboarding-btn" style={{ background: '#ec4899', border: 'none' }} onClick={() => {
-                  // Reset fetched state to force re-fetch on next tab click
-                  if (activeTab === 'youtube') { setYoutubeFetched(false); fetchYoutubeTrends(currentZipCode); }
-                  if (activeTab === 'boutiques') { setBoutiqueFetched(false); fetchBoutiques(currentZipCode); }
-                }}>
-                  🎬 Refresh Trends
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+
+                {/* Trend intelligence buttons inline with the panel */}
+                <button
+                  id="btn-creator-feed"
+                  onClick={() => openTrendsPanel('youtube')}
+                  style={{
+                    padding: '7px 16px',
+                    background: trendsPanelOpen && trendsPanelTab === 'youtube'
+                      ? 'linear-gradient(135deg, #c69fd5, #9b6cb5)'
+                      : 'rgba(198,159,213,0.1)',
+                    color: trendsPanelOpen && trendsPanelTab === 'youtube' ? '#fdfdc9' : '#c69fd5',
+                    border: '1px solid rgba(198,159,213,0.4)',
+                    borderRadius: '8px',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    whiteSpace: 'nowrap',
+                    boxShadow: trendsPanelOpen && trendsPanelTab === 'youtube' ? '0 0 12px rgba(253,253,201,0.25)' : 'none'
+                  }}
+                >
+                  🎬 Creator Feed
+                  {Array.isArray(youtubeData) && (
+                    <span style={{
+                      background: trendsPanelOpen && trendsPanelTab === 'youtube' ? 'rgba(253,253,201,0.3)' : 'rgba(198,159,213,0.2)',
+                      borderRadius: '10px',
+                      padding: '1px 7px',
+                      fontSize: '0.65rem',
+                      fontWeight: 'bold'
+                    }}>{youtubeData.length}</span>
+                  )}
                 </button>
+
+                <button
+                  id="btn-local-boutiques"
+                  onClick={() => openTrendsPanel('boutiques')}
+                  style={{
+                    padding: '7px 16px',
+                    background: trendsPanelOpen && trendsPanelTab === 'boutiques'
+                      ? 'linear-gradient(135deg, #c69fd5, #9b6cb5)'
+                      : 'rgba(198,159,213,0.08)',
+                    color: trendsPanelOpen && trendsPanelTab === 'boutiques' ? '#fdfdc9' : '#c69fd5',
+                    border: '1px solid rgba(198,159,213,0.4)',
+                    borderRadius: '8px',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    whiteSpace: 'nowrap',
+                    boxShadow: trendsPanelOpen && trendsPanelTab === 'boutiques' ? '0 0 12px rgba(253,253,201,0.25)' : 'none'
+                  }}
+                >
+                  🏪 Local Boutiques
+                  {boutiqueData?.boutiques && (
+                    <span style={{
+                      background: trendsPanelOpen && trendsPanelTab === 'boutiques' ? 'rgba(253,253,201,0.3)' : 'rgba(198,159,213,0.2)',
+                      borderRadius: '10px',
+                      padding: '1px 7px',
+                      fontSize: '0.65rem',
+                      fontWeight: 'bold'
+                    }}>{boutiqueData.boutiques.length}</span>
+                  )}
+                </button>
+
+                <div style={{ width: '1px', height: '28px', background: 'var(--border-color)', margin: '0 4px' }} />
+
+
                 <button className="onboarding-btn" onClick={() => setShowOnboarding(true)}>
-                  🔄 Vibe Check
+                  ✨ Vibe Check
                 </button>
               </div>
             </div>
@@ -727,9 +1241,9 @@ function App() {
                 <div className="factor-value" style={{
                   color: getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("10°") || 
                          getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("8°") || 
-                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("9°") ? '#06b6d4' : 
+                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("9°") ? '#c69fd5' : 
                          getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("39°") || 
-                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("38°") ? '#ef4444' : 'white'
+                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("38°") ? '#fdfdc9' : '#f6f1f9'
                 }}>
                   {getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp}
                 </div>
@@ -742,36 +1256,97 @@ function App() {
               </div>
               <div className="factor-box">
                 <div className="factor-title">Local Calendar Event</div>
-                <div className="factor-value" style={{fontSize: '0.75rem', color: '#ff3f6c', lineHeight: '1.2'}}>
+                <div className="factor-value" style={{fontSize: '0.75rem', color: '#fdfdc9', lineHeight: '1.2'}}>
                   {activeDateProfile.event}
                 </div>
               </div>
               <div className="factor-box">
                 <div className="factor-title">Active Surge</div>
-                <div className="factor-value" style={{fontSize: '0.8rem', color: '#bef264'}}>
+                <div className="factor-value" style={{fontSize: '0.8rem', color: '#c69fd5'}}>
                   {activeDateProfile.event_type === 'wedding_day' ? 'Wedding Surge 💍' : activeDateProfile.isFestive ? 'Festive Surge 🥻' : 'None'}
+                </div>
+              </div>
+              <div className="factor-box">
+                <div className="factor-title">Avg Order Value</div>
+                <div className="factor-value" style={{ color: '#fdfdc9', fontWeight: 'bold' }}>
+                  {zipInsights ? `₹${zipInsights.average_order_value.toLocaleString('en-IN')}` : '₹...'}
+                </div>
+              </div>
+              <div className="factor-box">
+                <div className="factor-title">Upcoming (7 Days)</div>
+                <div className="factor-value" style={{ fontSize: '0.7rem', color: '#c69fd5', lineHeight: '1.4' }}>
+                  {zipInsights && zipInsights.upcoming_events && zipInsights.upcoming_events.length > 0
+                    ? zipInsights.upcoming_events.slice(0, 2).map((ev, i) => (
+                        <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#fdfdc9' }}>
+                          📅 {ev.event_name.split('(')[0].trim()}
+                        </div>
+                      ))
+                    : 'No events soon'
+                  }
                 </div>
               </div>
             </div>
           </div>
           
-          {/* Feed Header */}
-          <div className="feed-header">
-            <h2>🛒 Hyper-Local Ranked Feed ({products.length} Items)</h2>
-            <div className="meta-pill">
-              Filtered for {ZIP_CODES[currentZipCode].city} • Cosine match + regional surges
+          {/* Feed Header - only show surge tab toggle when active */}
+          {velocitySurgeData && (
+            <div className="feed-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <h2
+                  style={{ cursor: 'pointer', opacity: activeSurgeTab === null ? 1 : 0.5 }}
+                  onClick={() => setActiveSurgeTab(null)}
+                >
+                  🛒 Recommendations
+                </h2>
+                <h2
+                  style={{ cursor: 'pointer', opacity: activeSurgeTab === "surge" ? 1 : 0.5, color: '#fdfdc9' }}
+                  onClick={() => setActiveSurgeTab("surge")}
+                >
+                  🔥 Local Surge
+                </h2>
+              </div>
             </div>
-          </div>
+          )}
           
           {/* Product Feed Grid */}
           {isLoading ? (
             <div className="spinner"></div>
+          ) : activeSurgeTab === "surge" && velocitySurgeData ? (
+            <div>
+              <p style={{ margin: '0 0 15px 0', color: '#c69fd5', fontStyle: 'italic' }}>
+                🚀 Showing real-time trending products matching the local demand cluster: <strong>{velocitySurgeData.theme}</strong>
+              </p>
+              <div className="catalog-grid">
+                {velocitySurgeData.products.map((product) => (
+                  <div key={product.id} className="product-card" style={{ border: '1px solid rgba(198,159,213,0.4)' }}>
+                    <div className="surge-pill" style={{ background: '#c69fd5', color: '#120917', top: '10px', left: '10px' }}>Trending 📈</div>
+                    <div className="product-image-container">
+                      <img 
+                        src={product.image_url} 
+                        alt={product.name} 
+                        className="product-image"
+                        onError={(e) => { e.target.src = `https://placehold.co/400x500/1a1a2e/ffffff?text=${encodeURIComponent(product.name)}`; }}
+                      />
+                    </div>
+                    <div className="product-info">
+                      <p className="product-category">{product.category}</p>
+                      <h4 className="product-name">{product.name}</h4>
+                      <p style={{ fontSize: '0.85rem', color: '#CD9FBC', fontWeight: 'bold' }}>₹{(product.id * 17) % 3000 + 499}</p>
+                      <button className="onboarding-btn" style={{ width: '100%', marginTop: '10px', border: 'none' }} onClick={() => handleAddToCart(product.id)}>
+                        🛒 Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           ) : (
             <div className="catalog-grid">
               {products.map((product, idx) => {
                 const hasWeddingSurge = (activeDateProfile.event_type === "wedding_day") && product.tags.includes("ceremonial");
                 const hasFestiveSurge = activeDateProfile.isFestive && product.tags.includes("festive") && !hasWeddingSurge;
                 const isMicroCreator = product.tags.includes("micro_creator");
+                const isInCart = sessionCart.includes(product.id);
                 
                 return (
                   <div 
@@ -798,19 +1373,19 @@ function App() {
                       </div>
                       
                       {isMicroCreator && (
-                        <div className="surge-pill" style={{ background: '#a855f7', color: 'white', top: '40px', left: '8px', bottom: 'auto' }}>
+                        <div className="surge-pill" style={{ background: '#7A5A45', color: '#CD9FBC', top: '40px', left: '8px', bottom: 'auto' }}>
                           Micro-Creator 🌾
                         </div>
                       )}
                       
                       {product.is_trending && (
-                        <div className="surge-pill" style={{ background: 'linear-gradient(135deg, #f97316, #ef4444)', color: 'white', top: isMicroCreator ? '68px' : '40px', left: '8px', bottom: 'auto', fontWeight: '800' }}>
+                        <div className="surge-pill" style={{ background: 'linear-gradient(135deg, #824265, #5C283C)', color: '#CD9FBC', top: isMicroCreator ? '68px' : '40px', left: '8px', bottom: 'auto', fontWeight: '800' }}>
                           🔥 Trending
                         </div>
                       )}
                       
                       {hasWeddingSurge && (
-                        <div className="surge-pill" style={{ background: '#ec4899', color: 'white' }}>Wedding Surge 💍</div>
+                        <div className="surge-pill" style={{ background: '#824265', color: '#CD9FBC' }}>Wedding Surge 💍</div>
                       )}
                       {hasFestiveSurge && (
                         <div className="surge-pill festive">Festive Surge 🥻</div>
@@ -821,11 +1396,13 @@ function App() {
                       <p className="product-category" style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span>{product.category}</span>
                         {product.zip_codes && product.zip_codes.length > 0 && (
-                          <span style={{ color: '#ec4899', fontWeight: 'bold' }}>LOCAL</span>
+                          <span style={{ color: '#CD9FBC', fontWeight: 'bold' }}>LOCAL</span>
                         )}
                       </p>
                       <h4 className="product-name">{product.name}</h4>
-                      <div className="product-tags">
+                      <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#BA9476', fontWeight: 'bold' }}>₹{product.price}</p>
+                      
+                      <div className="product-tags" style={{ margin: '8px 0' }}>
                         {product.tags.slice(0, 3).map(tag => (
                           <span 
                             key={tag} 
@@ -834,10 +1411,33 @@ function App() {
                             #{tag}
                           </span>
                         ))}
-                        {product.tags.length > 3 && (
-                          <span className="product-tag">+{product.tags.length - 3}</span>
-                        )}
                       </div>
+
+                      {/* Interactive Buttons */}
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                        <button 
+                          className="onboarding-btn" 
+                          style={{ flex: 1, padding: '4px 8px', fontSize: '0.75rem', background: isInCart ? '#5C283C' : '#824265', border: '1px solid rgba(205,159,188,0.2)', color: '#CD9FBC' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (isInCart) handleRemoveFromCart(product.id);
+                            else handleAddToCart(product.id);
+                          }}
+                        >
+                          {isInCart ? "🛒 Remove" : "🛒 Add"}
+                        </button>
+                        <button 
+                          className="onboarding-btn"
+                          style={{ padding: '4px 8px', fontSize: '0.75rem', background: 'transparent', border: '1px solid var(--border-color)', color: 'white' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToWishlist(product.id);
+                          }}
+                        >
+                          ❤️ Wishlist
+                        </button>
+                      </div>
+
                       {product.product_url && (
                         <div style={{ marginTop: '10px' }}>
                           <a 
@@ -845,18 +1445,20 @@ function App() {
                             target="_blank" 
                             rel="noreferrer"
                             style={{ 
-                              display: 'inline-block', 
+                              display: 'block', 
                               padding: '5px 10px', 
-                              background: '#ff3f6c', 
+                              background: 'rgba(255,255,255,0.05)', 
                               color: 'white', 
                               textDecoration: 'none', 
                               borderRadius: '4px', 
-                              fontSize: '0.8rem',
-                              fontWeight: 'bold'
+                              fontSize: '0.75rem',
+                              fontWeight: 'bold',
+                              textAlign: 'center',
+                              border: '1px solid var(--border-color)'
                             }}
                             onClick={(e) => e.stopPropagation()}
                           >
-                            🛍️ Buy on Myntra
+                            🛍️ View on Myntra
                           </a>
                         </div>
                       )}
@@ -868,650 +1470,230 @@ function App() {
           )}
         </div>
         
-        {/* Right Side: Logs Terminal + Decision Tracker Panel */}
-        <div className="dev-console-panel">
-          
-          {/* Logs Terminal */}
-          <div className="console-card">
-            <div className="console-header">
-              <span className="console-header-title">
-                <span className="console-pulse"></span> SYSTEM REALTIME LOGS MONITOR
-              </span>
-              <span style={{fontSize: '0.65rem', color: '#6b7280', fontFamily: 'monospace'}}>
-                ACTIVE PORT: 8000
-              </span>
-            </div>
-            
-            <div className="console-lines">
-              {logs.map((log, index) => (
-                <div key={index} className="log-line">
-                  <span className="log-time">[{log.time}]</span>
-                  <span className={`log-${log.type}`}>
-                    {log.type === 'sql' ? '⚡ SQL: ' : log.type === 'warning' ? '⚠ WARN: ' : log.type === 'error' ? '✖ ERR: ' : 'ℹ SYSTEM: '}
-                    {log.text}
-                  </span>
-                </div>
-              ))}
-              <div ref={consoleEndRef} />
-            </div>
-          </div>
-          
-          {/* Decision Math Dissection Panel */}
-          <div className="decision-card">
-            <h3 className="decision-title">
-              🔬 Score Decision Dissect
-            </h3>
-            
-            {selectedProduct ? (
-              <div className="metrics-breakdown">
-                <h4 style={{margin: '0 0 5px 0', fontSize: '0.95rem', color: 'white'}}>
-                  {selectedProduct.name}
-                </h4>
-                <p style={{fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0 0 10px 0'}}>
-                  {selectedProduct.description}
-                </p>
-                
-                {/* Metric 1: Vector similarity */}
-                <div className="metric-row">
-                  <div className="metric-info">
-                    <span className="metric-name">
-                      🧠 Visual Vibe Similarity (CLIP)
-                    </span>
-                    <span className="metric-val">
-                      {(selectedProduct.vector_score * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="metric-bar-bg">
-                    <div 
-                      className="metric-bar-fill vibe" 
-                      style={{width: `${selectedProduct.vector_score * 100}%`}}
-                    />
-                  </div>
-                </div>
 
-                {/* Metric 2: Trending Tag Overlap */}
-                <div className="metric-row">
-                  <div className="metric-info">
-                    <span className="metric-name">
-                      📈 Youtube/Event Tag Overlap
-                    </span>
-                    <span className="metric-val">
-                      {(selectedProduct.tag_score * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                  <div className="metric-bar-bg">
-                    <div 
-                      className="metric-bar-fill tag" 
-                      style={{width: `${selectedProduct.tag_score * 100}%`}}
-                    />
-                  </div>
-                </div>
-
-                {/* Metric 3: Climate/Festive Boost */}
-                <div className="metric-row">
-                  <div className="metric-info">
-                    <span className="metric-name">
-                      ⚡ Dynamic Surge Boost
-                    </span>
-                    <span className="metric-val">
-                      {selectedProduct.boost_score > 0 ? `+${(selectedProduct.boost_score * 100).toFixed(0)}%` : '0%'}
-                    </span>
-                  </div>
-                  <div className="metric-bar-bg">
-                    <div 
-                      className="metric-bar-fill boost" 
-                      style={{width: `${selectedProduct.boost_score > 0 ? Math.min(100, (selectedProduct.boost_score / 0.6) * 100) : 0}%`}}
-                    />
-                  </div>
-                </div>
-
-                {/* Metric 4: Checkout Velocity */}
-                <div className="metric-row">
-                  <div className="metric-info">
-                    <span className="metric-name" style={{ color: selectedProduct.is_trending ? '#f97316' : 'inherit' }}>
-                      🔥 Checkout Velocity {selectedProduct.is_trending ? '(TRENDING)' : ''}
-                    </span>
-                    <span className="metric-val" style={{ color: selectedProduct.is_trending ? '#f97316' : 'inherit' }}>
-                      {selectedProduct.velocity_score != null ? `${(selectedProduct.velocity_score * 100).toFixed(0)}%` : 'N/A'}
-                    </span>
-                  </div>
-                  <div className="metric-bar-bg">
-                    <div 
-                      className="metric-bar-fill" 
-                      style={{
-                        width: `${selectedProduct.velocity_score != null ? selectedProduct.velocity_score * 100 : 0}%`,
-                        background: selectedProduct.is_trending ? 'linear-gradient(90deg, #f97316, #ef4444)' : 'rgba(107,114,128,0.4)'
-                      }}
-                    />
-                  </div>
-                  {selectedProduct.units_last_hour > 0 && (
-                    <div style={{ fontSize: '0.7rem', color: '#9ca3af', marginTop: '2px' }}>
-                      {selectedProduct.units_last_hour} units sold in last hour · Velocity Boost: +{((selectedProduct.velocity_boost || 0) * 100).toFixed(1)}%
-                    </div>
-                  )}
-                </div>
-
-                {/* Mathematical Equation output */}
-                <div className="vector-matches-section" style={{marginTop: '10px'}}>
-                  <h4>Matched Active Surge Tags</h4>
-                  {selectedProduct.overlap_tags && selectedProduct.overlap_tags.length > 0 ? (
-                    <div className="tag-match-list">
-                      {selectedProduct.overlap_tags.map(tag => (
-                        <span key={tag} className="match-pill">{tag}</span>
-                      ))}
-                    </div>
-                  ) : (
-                    <p style={{fontSize: '0.75rem', color: '#6b7280', margin: '0'}}>No active tag matches</p>
-                  )}
-                </div>
-
-                <div className="metric-formula-box">
-                  <strong style={{color: '#ff3f6c', display: 'block', marginBottom: '4px'}}>
-                    Composite Engine Formula:
-                  </strong>
-                  <code>
-                    Base_Score = (0.4 * Visual) + (0.3 * Trend) + (0.3 * Boost) + Velocity<br />
-                    Base_Score = (0.4 × {selectedProduct.vector_score.toFixed(3)}) + (0.3 × {selectedProduct.tag_score.toFixed(3)}) + (0.3 × {selectedProduct.boost_score.toFixed(3)}) + {(selectedProduct.velocity_boost || 0).toFixed(4)} = {((selectedProduct.vector_score * 0.4) + (selectedProduct.tag_score * 0.3) + (selectedProduct.boost_score * 0.3) + (selectedProduct.velocity_boost || 0)).toFixed(4)}<br />
-                    
-                    {/* Specific rules print */}
-                    {currentZipCode === "800008" && activeDateProfile.event_type === "wedding_day" && (
-                      <span style={{ color: '#fb7185', display: 'block', marginTop: '4px' }}>
-                        * Patna Wedding Day Rule applied: {selectedProduct.tags.includes("heavy_silk") ? "+0.50 (heavy silk boost)" : (selectedProduct.tags.includes("summer") || selectedProduct.tags.includes("casual")) ? "-0.50 (lightwear penalty)" : "0.0"}
-                      </span>
-                    )}
-                    {currentZipCode === "682001" && activeDateProfile.event_type === "wedding_day" && (
-                      <span style={{ color: '#fb7185', display: 'block', marginTop: '4px' }}>
-                        * Kochi Wedding Day Rule applied: {selectedProduct.tags.includes("kasavu_weave") ? "+0.50 (Kasavu weave boost)" : "0.0"}
-                      </span>
-                    )}
-                    {currentZipCode === "793003" && activeDateProfile.event_type === "wedding_day" && (
-                      <span style={{ color: '#fb7185', display: 'block', marginTop: '4px' }}>
-                        * Shillong Wedding Day Rule applied: {(selectedProduct.tags.includes("handwoven_silk") || selectedProduct.tags.includes("tribal_heritage")) ? "+0.50 (handwoven Khasi heritage boost)" : "0.0"}
-                      </span>
-                    )}
-                    {selectedProduct.velocity_score > 0 && (
-                      <span style={{ color: '#f97316', display: 'block', marginTop: '4px' }}>
-                        * Checkout Velocity Boost: +{((selectedProduct.velocity_boost || 0) * 100).toFixed(1)}% ({selectedProduct.units_last_hour} units/hr)
-                      </span>
-                    )}
-                    
-                    Final Ranked Score = <strong style={{color: 'white'}}>{selectedProduct.final_score.toFixed(4)} ({(selectedProduct.final_score * 100).toFixed(1)}%)</strong>
-                  </code>
-                </div>
-
-                {/* --- LOOK COMPLETER CROSS-CATEGORY STYLING SECTION --- */}
-                {(lookCompleter.accessory || lookCompleter.footwear) && (
-                  <div className="look-completer-section" style={{
-                    marginTop: '20px',
-                    padding: '12px',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '8px'
-                  }}>
-                    <h4 style={{
-                      margin: '0 0 10px 0',
-                      fontSize: '0.85rem',
-                      color: '#ff3f6c',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}>
-                      ✨ Complete The Look (Stylist Choice)
-                    </h4>
-                    <p style={{ fontSize: '0.7rem', color: '#94a3b8', margin: '0 0 12px 0' }}>
-                      Recommended cross-category matches for {activeDateProfile.event}
-                    </p>
-                    
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      {lookCompleter.accessory && (
-                        <div style={{
-                          background: 'var(--bg-app)',
-                          border: '1px solid rgba(255,255,255,0.05)',
-                          borderRadius: '6px',
-                          padding: '8px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          textAlign: 'center'
-                        }}>
-                          <span style={{ fontSize: '0.65rem', color: '#a855f7', fontWeight: 'bold', marginBottom: '6px' }}>ACCESSORY</span>
-                          <img 
-                            src={lookCompleter.accessory.image_url} 
-                            alt={lookCompleter.accessory.name}
-                            style={{ width: '50px', height: '60px', objectFit: 'cover', borderRadius: '4px', marginBottom: '6px' }}
-                            onError={(e) => {
-                              e.target.src = `https://placehold.co/100x120/1a1a2e/a855f7?text=Accessory`;
-                            }}
-                          />
-                          <span style={{ fontSize: '0.7rem', color: 'white', fontWeight: '500', height: '24px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-                            {lookCompleter.accessory.name}
-                          </span>
-                          {lookCompleter.accessory.product_url && (
-                            <a 
-                              href={lookCompleter.accessory.product_url} 
-                              target="_blank" 
-                              rel="noreferrer"
-                              style={{
-                                marginTop: '8px',
-                                display: 'block',
-                                padding: '3px 8px',
-                                background: '#a855f7',
-                                color: 'white',
-                                textDecoration: 'none',
-                                borderRadius: '4px',
-                                fontSize: '0.65rem',
-                                fontWeight: 'bold'
-                              }}
-                            >
-                              🛍️ Add
-                            </a>
-                          )}
-                        </div>
-                      )}
-                      
-                      {lookCompleter.footwear && (
-                        <div style={{
-                          background: 'var(--bg-app)',
-                          border: '1px solid rgba(255,255,255,0.05)',
-                          borderRadius: '6px',
-                          padding: '8px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          textAlign: 'center'
-                        }}>
-                          <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 'bold', marginBottom: '6px' }}>FOOTWEAR</span>
-                          <img 
-                            src={lookCompleter.footwear.image_url} 
-                            alt={lookCompleter.footwear.name}
-                            style={{ width: '50px', height: '60px', objectFit: 'cover', borderRadius: '4px', marginBottom: '6px' }}
-                            onError={(e) => {
-                              e.target.src = `https://placehold.co/100x120/1a1a2e/10b981?text=Footwear`;
-                            }}
-                          />
-                          <span style={{ fontSize: '0.7rem', color: 'white', fontWeight: '500', height: '24px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-                            {lookCompleter.footwear.name}
-                          </span>
-                          {lookCompleter.footwear.product_url && (
-                            <a 
-                              href={lookCompleter.footwear.product_url} 
-                              target="_blank" 
-                              rel="noreferrer"
-                              style={{
-                                marginTop: '8px',
-                                display: 'block',
-                                padding: '3px 8px',
-                                background: '#10b981',
-                                color: 'white',
-                                textDecoration: 'none',
-                                borderRadius: '4px',
-                                fontSize: '0.65rem',
-                                fontWeight: 'bold'
-                              }}
-                            >
-                              🛍️ Add
-                            </a>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="empty-decision-state">
-                Click any product card in the feed to dissect its visual, tag-overlap, and climate/wedding surge composite ranking score.
-              </div>
-            )}
-          </div>
-        </div>
 
       </div>
 
-      {/* ===== TRENDS INTELLIGENCE PANEL (Inline Tabs) ===== */}
-      <div className="trends-panel">
-        {/* Tab Headers */}
-        <div className="trends-tab-header">
-          <div className="trends-tab-title">📡 Trends Intelligence Layer</div>
-          <div className="trends-tabs">
-            <button
-              id="tab-youtube"
-              className={`trends-tab-btn ${activeTab === 'youtube' ? 'active' : ''}`}
-              onClick={() => handleTabClick('youtube')}
-            >
-              🎬 Creator Feed
-              {Array.isArray(youtubeData) && <span className="tab-count">{youtubeData.length}</span>}
-            </button>
-            <button
-              id="tab-boutiques"
-              className={`trends-tab-btn ${activeTab === 'boutiques' ? 'active' : ''}`}
-              onClick={() => handleTabClick('boutiques')}
-            >
-              🏪 Local Stores
-              {boutiqueData && <span className="tab-count">{boutiqueData.boutiques?.length}</span>}
-            </button>
-          </div>
-          <div style={{ fontSize: '0.7rem', color: '#6b7280' }}>
-            {ZIP_CODES[currentZipCode].city} · Click a tab to load
-          </div>
-        </div>
 
-        {activeTab === 'youtube' && (
-          <div className="trends-tab-content">
-            {isYoutubeLoading ? (
-              <div className="trends-loading">
-                <div className="spinner" style={{ width: '28px', height: '28px', margin: '0 auto 10px' }}></div>
-                <p style={{ color: '#ec4899', fontSize: '0.8rem', margin: 0 }}>Loading creator videos from database...</p>
-              </div>
-            ) : Array.isArray(youtubeData) && youtubeData.length > 0 ? (
-              <div className="creator-feed-grid">
-                {youtubeData.map((item, idx) => (
-                  <div key={idx} className="creator-card">
-                    {/* Thumbnail + Video Info */}
-                    <div className="creator-thumb-wrap">
-                      <img
-                        src={item.youtube_video.thumbnail_url}
-                        alt="thumb"
-                        className="creator-thumb"
-                        onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
-                      />
-                      <div className="creator-rank-badge">#{idx + 1}</div>
-                      {item.youtube_video.video_url && (
-                        <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" className="creator-play-btn">▶</a>
-                      )}
-                    </div>
-                    <div className="creator-info">
-                      <p className="creator-video-title">{item.youtube_video.title}</p>
-                      <p className="creator-channel">📺 {item.youtube_video.channel}</p>
-                      <p className="creator-llm-desc">"{item.youtube_video.llm_extracted_description}"</p>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
-                        {item.youtube_video.inferred_tags?.slice(0, 4).map(tag => (
-                          <span key={tag} className="creator-tag">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-                    {/* Matched Product */}
-                    {item.matched_product && (
-                      <div className="creator-match">
-                        <div className="creator-match-label">🎯 Catalog Match</div>
-                        <img
-                          src={item.matched_product.image_url}
-                          alt={item.matched_product.name}
-                          className="creator-match-img"
-                          onError={(e) => { e.target.src = 'https://placehold.co/70x90/1a1a2e/22c55e?text=Match'; }}
-                        />
-                        <p className="creator-match-name">{item.matched_product.name}</p>
-                        <div className="creator-match-score">
-                          {item.matched_product.overlap_tags?.slice(0, 2).map(t => (
-                            <span key={t} className="match-pill" style={{ fontSize: '0.6rem', padding: '1px 5px' }}>#{t}</span>
-                          ))}
+
+      {/* ===== SLIDE-IN TRENDS PANEL ===== */}
+      {trendsPanelOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: 'min(480px, 90vw)',
+          background: 'var(--bg-card)',
+          borderLeft: '1px solid var(--border-color)',
+          zIndex: 999,
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '-8px 0 40px rgba(0,0,0,0.5)',
+          animation: 'slideInRight 0.25s ease'
+        }}>
+          {/* Slide-in Header */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '16px 18px',
+            borderBottom: '1px solid var(--border-color)',
+            background: 'var(--bg-app)'
+          }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <button
+                onClick={() => { setTrendsPanelTab('youtube'); handleTabClick('youtube'); }}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  border: 'none',
+                  background: trendsPanelTab === 'youtube' ? '#824265' : 'rgba(122,90,69,0.12)',
+                  color: 'white',
+                  fontSize: '0.78rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                🎬 Creator Feed
+              </button>
+              <button
+                onClick={() => { setTrendsPanelTab('boutiques'); handleTabClick('boutiques'); }}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  border: 'none',
+                  background: trendsPanelTab === 'boutiques' ? '#5C283C' : 'rgba(122,90,69,0.08)',
+                  color: 'white',
+                  fontSize: '0.78rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                🏪 Local Boutiques
+              </button>
+            </div>
+            <button
+              onClick={closeTrendsPanel}
+              style={{
+                padding: '6px 10px',
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid var(--border-color)',
+                color: 'white',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontWeight: 'bold'
+              }}
+            >
+              ✕ Close
+            </button>
+          </div>
+
+          {/* Sub-header: city + refresh */}
+          <div style={{ padding: '10px 18px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)' }}>
+            <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+              📍 {ZIP_CODES[currentZipCode].city} · Trends Intelligence
+            </span>
+            <button
+              onClick={() => {
+                if (trendsPanelTab === 'youtube') { setYoutubeFetched(false); fetchYoutubeTrends(currentZipCode); }
+                if (trendsPanelTab === 'boutiques') { setBoutiqueFetched(false); fetchBoutiques(currentZipCode); }
+              }}
+              style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border-color)', color: 'white', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}
+            >
+              🔄 Refresh
+            </button>
+          </div>
+
+          {/* Scrollable Content */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '16px 18px' }}>
+
+            {/* ---- YOUTUBE / CREATOR FEED ---- */}
+            {trendsPanelTab === 'youtube' && (
+              <>
+                {isYoutubeLoading ? (
+                  <div className="trends-loading">
+                    <div className="spinner" style={{ width: '28px', height: '28px', margin: '0 auto 10px' }}></div>
+                    <p style={{ color: '#CD9FBC', fontSize: '0.8rem', margin: 0 }}>Loading creator videos...</p>
+                  </div>
+                ) : Array.isArray(youtubeData) && youtubeData.length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {youtubeData.map((item, idx) => (
+                      <div key={idx} className="creator-card" style={{ flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                          <div className="creator-thumb-wrap" style={{ minWidth: '100px', width: '100px', height: '60px' }}>
+                            <img
+                              src={item.youtube_video.thumbnail_url}
+                              alt="thumb"
+                              className="creator-thumb"
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                              onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
+                            />
+                            <div className="creator-rank-badge">#{idx + 1}</div>
+                            {item.youtube_video.video_url && (
+                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" className="creator-play-btn">▶</a>
+                            )}
+                          </div>
+                          <div className="creator-info" style={{ flex: 1 }}>
+                            <p className="creator-video-title">{item.youtube_video.title}</p>
+                            <p className="creator-channel">📺 {item.youtube_video.channel}</p>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
+                              {item.youtube_video.inferred_tags?.slice(0, 3).map(tag => (
+                                <span key={tag} className="creator-tag">{tag}</span>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        {item.matched_product.product_url && (
-                          <a href={item.matched_product.product_url} target="_blank" rel="noreferrer" className="creator-buy-btn">Shop ↗</a>
+                        <p className="creator-llm-desc" style={{ marginTop: '8px' }}>"{item.youtube_video.llm_extracted_description}"</p>
+                        {item.matched_product && (
+                          <div className="creator-match" style={{ marginTop: '8px', padding: '8px', background: 'rgba(34,197,94,0.07)', borderRadius: '8px', border: '1px solid rgba(34,197,94,0.15)', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                            <img
+                              src={item.matched_product.image_url}
+                              alt={item.matched_product.name}
+                              style={{ width: '48px', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
+                              onError={(e) => { e.target.src = 'https://placehold.co/70x90/1a1a2e/22c55e?text=Match'; }}
+                            />
+                            <div>
+                              <span style={{ fontSize: '0.6rem', color: '#22c55e', fontWeight: 'bold' }}>🎯 CATALOG MATCH</span>
+                              <p className="creator-match-name">{item.matched_product.name}</p>
+                            </div>
+                          </div>
                         )}
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : youtubeData === null ? (
-              <div className="trends-empty">
-                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🎬</div>
-                <p style={{ fontWeight: '600', color: 'white', marginBottom: '4px' }}>Creator Feed not loaded</p>
-                <p style={{ fontSize: '0.75rem' }}>Click the <strong>🎬 Creator Feed</strong> tab above to load regional fashion creator videos</p>
-              </div>
-            ) : (
-              <div className="trends-empty">No creator videos found for this region.</div>
-            )}
-          </div>
-        )}
-
-        {/* ---- BOUTIQUES TAB ---- */}
-        {activeTab === 'boutiques' && (
-          <div className="trends-tab-content">
-            {isBoutiqueLoading ? (
-              <div className="trends-loading">
-                <div className="spinner" style={{ width: '28px', height: '28px', margin: '0 auto 10px' }}></div>
-                <p style={{ color: '#a855f7', fontSize: '0.8rem', margin: 0 }}>Loading local boutique stores from database...</p>
-              </div>
-            ) : boutiqueData?.boutiques?.length > 0 ? (
-              <div className="boutique-feed-grid">
-                {boutiqueData.boutiques.map((store, idx) => (
-                  <div key={store.store_id} className="boutique-card">
-                    <div className="boutique-card-top">
-                      <div className="boutique-rank">#{idx + 1}</div>
-                      <div className="boutique-store-info">
-                        <p className="boutique-store-name">{store.store_name}</p>
-                        <p className="boutique-locality">📍 {store.locality}</p>
-                      </div>
-                      <div className="boutique-rating">⭐ {store.rating}</div>
-                    </div>
-
-                    <div className="boutique-trend-row">
-                      <span className="boutique-trend-badge">#{store.extracted_visual_trend}</span>
-                      <span className="boutique-vibe-cluster">{store.style_vibe_cluster}</span>
-                    </div>
-
-                    <div className="boutique-meta-row">
-                      <span className="boutique-source">{store.social_signal_source}</span>
-                      <span className="boutique-engagement">🔥 {(store.simulated_engagement / 1000).toFixed(1)}K</span>
-                    </div>
-
-                    {/* Matched Product Preview */}
-                    {store.matched_product && (
-                      <div className="boutique-matched-product">
-                        <img
-                          src={store.matched_product.image_url}
-                          alt={store.matched_product.name}
-                          className="boutique-match-img"
-                          onError={(e) => { e.target.src = 'https://placehold.co/60x75/1a1a2e/a855f7?text=Item'; }}
-                        />
-                        <div className="boutique-match-details">
-                          <span style={{ fontSize: '0.6rem', color: '#a855f7', fontWeight: 'bold' }}>TRENDING IN STORE</span>
-                          <p className="boutique-match-name">{store.matched_product.name}</p>
-                          {store.matched_product.product_url && (
-                            <a href={store.matched_product.product_url} target="_blank" rel="noreferrer" className="creator-buy-btn" style={{ background: '#a855f7' }}>Shop ↗</a>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    <a
-                      href={store.maps_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="boutique-maps-btn"
-                    >
-                      🗺️ Open in Maps
-                    </a>
+                ) : (
+                  <div className="trends-empty">
+                    <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🎬</div>
+                    <p style={{ fontWeight: '600', color: 'white', marginBottom: '4px' }}>Creator Feed loading...</p>
+                    <p style={{ fontSize: '0.75rem' }}>Fetching regional fashion creator videos</p>
                   </div>
-                ))}
-              </div>
-            ) : boutiqueData === null ? (
-              <div className="trends-empty">
-                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🏪</div>
-                <p style={{ fontWeight: '600', color: 'white', marginBottom: '4px' }}>Local Stores not loaded</p>
-                <p style={{ fontSize: '0.75rem' }}>Click the <strong>🏪 Local Stores</strong> tab above to load boutiques near {ZIP_CODES[currentZipCode].city}</p>
-              </div>
-            ) : (
-              <div className="trends-empty">No local stores found for this region.</div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Old YouTube modal — removed */}
-      {false && (
-        <div className="onboarding-overlay" onClick={() => { if (!isYoutubeLoading) setShowYoutubeModal(false); }}>
-          <div 
-            className="onboarding-modal" 
-            onClick={(e) => e.stopPropagation()}
-            style={{ maxWidth: '720px', maxHeight: '85vh', overflowY: 'auto' }}
-          >
-            <h2 style={{ textAlign: 'center', marginBottom: '8px' }}>
-              🎬 Real-Time YouTube Trend Pipeline
-            </h2>
-            <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '20px' }}>
-              Scraping → Vision LLM Analysis → Vector Similarity Match
-            </p>
-
-            {isYoutubeLoading && (
-              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div className="spinner" style={{ margin: '0 auto 20px auto' }}></div>
-                <p style={{ color: '#ec4899', fontWeight: 'bold', fontSize: '1rem', marginBottom: '8px' }}>
-                  🔍 Scraping YouTube Data API for {ZIP_CODES[currentZipCode].city} fashion hauls...
-                </p>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
-                  Running Vision LLM (Gemini 2.5 Pro) on video thumbnail...
-                </p>
-              </div>
+                )}
+              </>
             )}
 
-            {Array.isArray(youtubeData) && !isYoutubeLoading && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '20px' }}>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '0 0 10px 0', textAlign: 'center' }}>
-                  Found {youtubeData.length} matching creator styling hauls for this zone:
-                </p>
-                
-                {youtubeData.map((item, idx) => (
-                  <div key={idx} style={{ 
-                    background: 'var(--bg-app)', 
-                    border: '1px solid rgba(255,255,255,0.06)', 
-                    borderRadius: '12px', 
-                    padding: '16px',
-                    display: 'grid',
-                    gridTemplateColumns: '1.2fr 1fr',
-                    gap: '16px'
-                  }}>
-                    {/* Left: YouTube Video Info */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                        <img 
-                          src={item.youtube_video.thumbnail_url} 
-                          alt="YouTube Thumbnail"
-                          style={{ width: '100px', height: '60px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}
-                          onError={(e) => {
-                            e.target.src = `https://placehold.co/120x90/1a1a2e/ec4899?text=Video+${idx+1}`;
-                          }}
-                        />
-                        <div>
-                          <p style={{ color: 'white', fontWeight: 'bold', fontSize: '0.75rem', margin: '0 0 2px 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                            {item.youtube_video.title}
-                          </p>
-                          <p style={{ color: 'var(--text-muted)', fontSize: '0.7rem', margin: '0' }}>
-                            📺 {item.youtube_video.channel}
-                          </p>
-                        </div>
-                      </div>
-                      <p style={{ color: '#cbd5e1', fontSize: '0.7rem', margin: '4px 0', fontStyle: 'italic', lineHeight: '1.3' }}>
-                        "{item.youtube_video.llm_extracted_description}"
-                      </p>
-                      
-                      {item.youtube_video.video_url && (
-                        <a 
-                          href={item.youtube_video.video_url} 
-                          target="_blank" 
-                          rel="noreferrer"
-                          style={{
-                            alignSelf: 'flex-start',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            background: 'rgba(255, 63, 108, 0.1)',
-                            border: '1px solid rgba(255, 63, 108, 0.2)',
-                            padding: '3px 8px',
-                            color: '#ff3f6c',
-                            textDecoration: 'none',
-                            borderRadius: '12px',
-                            fontSize: '0.65rem',
-                            fontWeight: 'bold',
-                            marginTop: '2px'
-                          }}
-                        >
-                          🎥 Watch Styling Video ↗
-                        </a>
-                      )}
-                    </div>
-
-                    {/* Right: Matched Catalog Product */}
-                    {item.matched_product ? (
-                      <div style={{ 
-                        borderLeft: '1px solid rgba(255,255,255,0.06)', 
-                        paddingLeft: '16px',
-                        display: 'flex',
-                        gap: '10px',
-                        alignItems: 'center'
-                      }}>
-                        <img 
-                          src={item.matched_product.image_url} 
-                          alt={item.matched_product.name}
-                          style={{ width: '50px', height: '65px', objectFit: 'cover', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.2)' }}
-                          onError={(e) => {
-                            e.target.src = `https://placehold.co/100x130/1a1a2e/22c55e?text=Match`;
-                          }}
-                        />
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                          <span style={{ fontSize: '0.6rem', color: '#22c55e', fontWeight: 'bold' }}>
-                            🎯 Match: {item.matched_product.match_score ? (item.matched_product.match_score * 10).toFixed(0) : "100"}%
-                          </span>
-                          <span style={{ color: 'white', fontWeight: '500', fontSize: '0.75rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                            {item.matched_product.name}
-                          </span>
-                          {item.matched_product.product_url && (
-                            <a 
-                              href={item.matched_product.product_url} 
-                              target="_blank" 
-                              rel="noreferrer"
-                              style={{
-                                alignSelf: 'flex-start',
-                                display: 'inline-block',
-                                padding: '2px 6px',
-                                background: '#ff3f6c',
-                                color: 'white',
-                                textDecoration: 'none',
-                                borderRadius: '4px',
-                                fontSize: '0.6rem',
-                                fontWeight: 'bold',
-                                marginTop: '2px'
-                              }}
-                            >
-                              View on Myntra
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: '0.7rem' }}>
-                        No catalog match found
-                      </div>
-                    )}
+            {/* ---- BOUTIQUES TAB ---- */}
+            {trendsPanelTab === 'boutiques' && (
+              <>
+                {isBoutiqueLoading ? (
+                  <div className="trends-loading">
+                    <div className="spinner" style={{ width: '28px', height: '28px', margin: '0 auto 10px' }}></div>
+                    <p style={{ color: '#BA9476', fontSize: '0.8rem', margin: 0 }}>Loading local boutique trends...</p>
                   </div>
-                ))}
-
-                <button 
-                  onClick={() => setShowYoutubeModal(false)}
-                  style={{ 
-                    width: '100%', 
-                    marginTop: '16px', 
-                    padding: '10px', 
-                    background: 'rgba(255,255,255,0.1)', 
-                    border: '1px solid rgba(255,255,255,0.2)', 
-                    borderRadius: '8px', 
-                    color: 'white', 
-                    cursor: 'pointer', 
-                    fontSize: '0.9rem' 
-                  }}
-                >
-                  Close Pipeline View
-                </button>
-              </div>
+                ) : boutiqueData?.boutiques?.length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {boutiqueData.boutiques.map((store, idx) => (
+                      <div key={store.store_id} className="boutique-card">
+                        <div className="boutique-card-top">
+                          <div className="boutique-rank">#{idx + 1}</div>
+                          <div className="boutique-store-info">
+                            <p className="boutique-store-name">{store.store_name}</p>
+                            <p className="boutique-locality">📍 {store.locality || ZIP_CODES[currentZipCode]?.city}</p>
+                          </div>
+                          <div className="boutique-rating">⭐ {store.rating || store.simulated_engagement}</div>
+                        </div>
+                        <div className="boutique-trend-row">
+                          <span className="boutique-trend-badge">#{store.extracted_visual_trend}</span>
+                          <span className="boutique-vibe-cluster">{store.style_vibe_cluster}</span>
+                        </div>
+                        <div className="boutique-meta-row">
+                          <span className="boutique-source">{store.social_signal_source}</span>
+                          <span className="boutique-engagement">🔥 {(store.simulated_engagement / 1000).toFixed(1)}K</span>
+                        </div>
+                        {store.matched_product && (
+                          <div className="boutique-matched-product">
+                            <img
+                              src={store.matched_product.image_url}
+                              alt={store.matched_product.name}
+                              className="boutique-match-img"
+                              onError={(e) => { e.target.src = 'https://placehold.co/60x75/1a1a2e/a855f7?text=Item'; }}
+                            />
+                            <div className="boutique-match-details">
+                              <span style={{ fontSize: '0.6rem', color: '#CD9FBC', fontWeight: 'bold' }}>TRENDING IN STORE</span>
+                              <p className="boutique-match-name">{store.matched_product.name}</p>
+                              {store.matched_product.product_url && (
+                                <a href={store.matched_product.product_url} target="_blank" rel="noreferrer" className="creator-buy-btn" style={{ background: '#a855f7' }}>Shop ↗</a>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        <a href={store.maps_url} target="_blank" rel="noreferrer" className="boutique-maps-btn">🗺️ Open in Maps</a>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="trends-empty">
+                    <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🏪</div>
+                    <p style={{ fontWeight: '600', color: 'white', marginBottom: '4px' }}>Local Boutiques loading...</p>
+                    <p style={{ fontSize: '0.75rem' }}>Fetching geo-tagged boutiques near {ZIP_CODES[currentZipCode].city}</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
       )}
-
     </div>
   );
 }
