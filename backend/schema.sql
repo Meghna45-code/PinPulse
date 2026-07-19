@@ -287,28 +287,29 @@ CREATE TABLE outfit_completer (
     primary_item_id BIGINT NOT NULL,
     suggested_accessory_id BIGINT,
     suggested_footwear_id BIGINT,
+    suggested_dress_id BIGINT,
     occasion_tag TEXT NOT NULL,
     PRIMARY KEY (primary_item_id, occasion_tag)
 );
 
--- Seed Look Completer mappings
-INSERT INTO outfit_completer (primary_item_id, suggested_accessory_id, suggested_footwear_id, occasion_tag) VALUES
--- Patna Wedding Pheras (Crimson Banarasi Silk Saree -> Kundan Necklace + Traditional heels)
-(1, 286, 334, 'wedding_day'),
--- Patna Wedding Sherwani -> Kundan Necklace/Stole + Mojris/Traditional footwear
-(2, 286, 334, 'wedding_day'),
--- Saraswati Puja Yellow Saree -> Anklets + Sandals
-(9, 292, 334, 'festival'),
--- Chhath Puja Saree -> Anklets
-(7, 292, NULL, 'festival'),
--- Onam Kasavu Saree -> Golden jewellery/Anklets
-(16, 292, NULL, 'festival'),
--- Kochi Wedding Kasavu Saree -> Kundan Jewelry + Traditional footwear
-(97, 286, 334, 'wedding_day'),
--- Odisha Cherry Blossom Fest -> Beaded Vest/Scarf + Ankle boots
-(110, 38, 334, 'festival'),
--- Christmas Day Velvet Dress -> Pearl Jewelry + Boots
-(112, 307, 334, 'festival');
+-- Seed Look Completer mappings with actual valid product IDs (1-206)
+INSERT INTO outfit_completer (primary_item_id, suggested_accessory_id, suggested_footwear_id, suggested_dress_id, occasion_tag) VALUES
+-- Patna Wedding Pheras (Crimson Banarasi Silk Saree -> Kundan Necklace + Boots + Sambalpuri Saree)
+(1, 74, 100, 31, 'wedding_day'),
+-- Patna Wedding Sherwani -> Kundan Necklace + Boots + Bomkai Sherwani
+(2, 74, 100, 45, 'wedding_day'),
+-- Saraswati Puja Yellow Saree -> Kasavu Dupatta + Boots + Kasavu Saree
+(9, 28, 100, 16, 'festival'),
+-- Chhath Puja Saree -> Wedding Chunri + Boots + Temple Motif Kurta
+(7, 15, 100, 42, 'festival'),
+-- Onam Kasavu Saree -> Kasavu Dupatta + Boots + Tussar Silk Saree
+(16, 28, 100, 33, 'festival'),
+-- Kochi Wedding Kasavu Saree -> Kundan Jewelry + Boots + Kasavu Saree
+(97, 74, 100, 16, 'wedding_day'),
+-- Odisha Cherry Blossom Fest -> Beaded Vest/Scarf + Boots + Trendy boots
+(110, 38, 100, 191, 'festival'),
+-- Christmas Day Velvet Dress -> Pearl Jewelry/Scarf + Boots + Trendy boots
+(112, 99, 100, 191, 'festival');
 
 -- ============================================================
 -- REGIONAL BOUTIQUE TRENDS TABLE (Micro-Trends)

@@ -1132,58 +1132,84 @@ def get_boutiques_endpoint(zip_code: str):
 
 @app.get("/api/look-completer")
 def get_look_completer(product_id: int, occasion_tag: str):
-    sb = get_supabase_client()
-    mapping = None
-    if sb:
-        try:
-            res = sb.table("outfit_completer").select("suggested_accessory_id, suggested_footwear_id").eq("primary_item_id", product_id).eq("occasion_tag", occasion_tag).execute()
-            if res.data and len(res.data) > 0:
-                mapping = res.data[0]
-        except Exception as e:
-            logger.error(f"Supabase Look Completer query failed: {e}")
+    raw_products = get_db_products()
+    primary_product = next((p for p in raw_products if p["id"] == product_id), None)
+    if not primary_product:
+        return {"accessory": None, "footwear": None, "suggested_dress": None}
 
-    if not mapping:
-        # Fallback local look completer dictionary
-        completer_dict = {
-            1: {"suggested_accessory_id": 124, "suggested_footwear_id": 149},
-            2: {"suggested_accessory_id": 124, "suggested_footwear_id": 149},
-            9: {"suggested_accessory_id": 127, "suggested_footwear_id": 149},
-            7: {"suggested_accessory_id": 127, "suggested_footwear_id": None},
-            16: {"suggested_accessory_id": 127, "suggested_footwear_id": None},
-            97: {"suggested_accessory_id": 124, "suggested_footwear_id": 149},
-            110: {"suggested_accessory_id": 38, "suggested_footwear_id": 149},
-            112: {"suggested_accessory_id": 135, "suggested_footwear_id": 149},
-        }
-        mapping = completer_dict.get(product_id)
+    def get_embedding(p):
+        emb = p.get("embedding", [])
+        if isinstance(emb, str):
+            try:
+                emb = json.loads(emb)
+            except:
+                pass
+        return emb
 
-    if not mapping:
-        return {"accessory": None, "footwear": None}
+    primary_vector = get_embedding(primary_product)
+    if not primary_vector or len(primary_vector) != 512:
+        primary_vector = [0.0] * 512
 
+    # 1. Resolve Suggested Accessory dynamically using Vector Similarity
+    acc_candidates = [
+        p for p in raw_products 
+        if p["id"] != product_id and (
+            str(p.get("category")).lower() == "accessory" or 
+            "accessories" in p.get("tags", []) or 
+            any(x in p["name"].lower() or x in p.get("description", "").lower() for x in ["earring", "necklace", "anklet", "ring", "sunglasses", "tote", "handbag", "watch", "bangle", "bracelet", "stole", "scarf", "beanie", "chunri", "dupatta", "jewelry"])
+        )
+    ]
     accessory_item = None
+    if acc_candidates:
+        best_acc = max(acc_candidates, key=lambda p: cosine_similarity(primary_vector, get_embedding(p)))
+        accessory_item = {
+            "id": best_acc["id"],
+            "name": best_acc["name"],
+            "image_url": best_acc["image_url"],
+            "product_url": best_acc.get("product_url")
+        }
+
+    # 2. Resolve Suggested Footwear dynamically using Vector Similarity
+    foot_candidates = [
+        p for p in raw_products 
+        if p["id"] != product_id and (
+            str(p.get("category")).lower() == "footwear" or 
+            "footwear" in p.get("tags", []) or 
+            any(x in p["name"].lower() or x in p.get("description", "").lower() for x in ["boot", "shoe", "sandal", "heel", "mojri", "sneaker"])
+        )
+    ]
     footwear_item = None
-    
-    acc_id = mapping.get("suggested_accessory_id")
-    foot_id = mapping.get("suggested_footwear_id")
-    
-    for p in RAW_CATALOG:
-        if acc_id and p["id"] == acc_id:
-            accessory_item = {
-                "id": acc_id,
-                "name": p["name"],
-                "image_url": p["image_url"],
-                "product_url": p.get("product_url")
-            }
-        if foot_id and p["id"] == foot_id:
-            footwear_item = {
-                "id": foot_id,
-                "name": p["name"],
-                "image_url": p["image_url"],
-                "product_url": p.get("product_url")
-            }
-            
+    if foot_candidates:
+        best_foot = max(foot_candidates, key=lambda p: cosine_similarity(primary_vector, get_embedding(p)))
+        footwear_item = {
+            "id": best_foot["id"],
+            "name": best_foot["name"],
+            "image_url": best_foot["image_url"],
+            "product_url": best_foot.get("product_url")
+        }
+
+    # 3. Resolve Similar Suggested Dress dynamically using Vector Similarity
+    dress_candidates = [
+        p for p in raw_products 
+        if p["id"] != product_id and (
+            str(p.get("category")).lower() not in ["accessory", "footwear"] and
+            p.get("category") == primary_product.get("category")
+        )
+    ]
+    suggested_dress_item = None
+    if dress_candidates:
+        best_dress = max(dress_candidates, key=lambda p: cosine_similarity(primary_vector, get_embedding(p)))
+        suggested_dress_item = {
+            "id": best_dress["id"],
+            "name": best_dress["name"],
+            "image_url": best_dress["image_url"],
+            "product_url": best_dress.get("product_url")
+        }
+
     return {
         "accessory": accessory_item,
-        "footwear": footwear_item
+        "footwear": footwear_item,
+        "suggested_dress": suggested_dress_item
     }
 
 if __name__ == "__main__":
