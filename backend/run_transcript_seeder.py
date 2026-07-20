@@ -147,7 +147,7 @@ def embed_dress(dress_meta):
     festive_signals = {"festive", "wedding", "ceremonial", "bridal", "traditional", "ethnic"}
     category  = "festive" if any(t in festive_signals for t in all_tags) else "casual"
     aesthetic = dress_meta.get("aesthetic", dress_meta.get("vibe", "casual"))
-    return get_vibe_vector(tags=all_tags, category_str=category, aesthetic_str=aesthetic)
+    return get_vibe_vector(all_tags, category_str=category, aesthetic_str=aesthetic)
 
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -192,11 +192,95 @@ def find_best_catalog_match(dress_vector, dress_meta, catalog, zip_code):
 
 def get_transcript(video_id):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
-        return " ".join([entry["text"] for entry in transcript])
+        # youtube-transcript-api v1.x: instance-based API
+        api = YouTubeTranscriptApi()
+        transcript = api.fetch(video_id)
+        return " ".join([entry.text for entry in transcript])
     except Exception as e:
-        logger.error(f"  Failed to fetch transcript for {video_id}: {e}")
+        logger.warning(f"  Transcript unavailable for {video_id}: {e}")
         return None
+
+
+def generate_fashion_from_context(creator_name, pincode, is_creator=True, store_name="Unknown"):
+    """
+    Fallback: when YouTube Shorts have no transcript, use Gemini to generate
+    region-appropriate fashion items based on the creator/store context.
+    """
+    if not GEMINI_API_KEY:
+        return []
+
+    REGION_HINTS = {
+        "800008": "Patna, Bihar — known for Banarasi silk, Bhagalpuri silk, Madhubani prints, "
+                  "cotton kurtas, saffron outfits for Chhath Puja, wedding sherwanis, ethnic festive wear",
+        "682001": "Kochi, Kerala — known for Kasavu sarees with gold zari, white and cream Kerala mundu, "
+                  "cotton linen summer wear, pastel dresses, Vishu festival attire, boat-race casuals",
+        "752001": "Odisha (Cuttack/Bhubaneswar) — known for Sambalpuri silk ikat weaves, Bomkai silk, "
+                  "Pipli applique work, Tussar silk sarees, handloom cotton kurtas, temple motif prints",
+    }
+    region_hint = REGION_HINTS.get(pincode, f"Indian region pincode {pincode}")
+
+    if is_creator:
+        prompt = f"""
+You are an AI fashion analyst. A local lifestyle content creator named "{creator_name}"
+from {region_hint} (pincode {pincode}) creates fashion-related YouTube content.
+
+Based on this creator's probable style for their region, generate exactly 3 DISTINCT
+clothing items they would likely showcase. Use authentic regional fashion knowledge.
+
+Return ONLY a valid JSON array — no markdown, no extra text:
+[
+  {{
+    "item": "maroon silk Banarasi saree",
+    "description": "Heavy pure silk Banarasi saree with intricate gold zari brocade, ideal for wedding ceremonies.",
+    "tags": ["silk", "banarasi", "festive", "ethnic", "traditional", "ceremonial"],
+    "aesthetic": "festive ethnic bridal",
+    "material": "pure silk",
+    "fabric": "silk",
+    "color": "maroon",
+    "age_group": "25-35",
+    "estimated_price_inr": 8500,
+    "occasion": "wedding"
+  }}
+]
+"""
+    else:
+        prompt = f"""
+You are an AI retail fashion analyst. A local boutique/store named "{store_name}"
+located in {region_hint} (pincode {pincode}) features regional fashion inventory.
+
+Based on what this store would likely carry, generate exactly 3 DISTINCT clothing items.
+Use authentic regional fashion knowledge.
+
+Return ONLY a valid JSON array — no markdown, no extra text:
+[
+  {{
+    "item": "green Kasavu saree",
+    "description": "Traditional Kerala handloom saree woven with thick gold zari border, perfect for Onam.",
+    "tags": ["kasavu", "handloom", "traditional", "ethnic", "kerala"],
+    "aesthetic": "traditional Kerala ethnic",
+    "material": "handloom cotton",
+    "fabric": "cotton",
+    "color": "white and gold",
+    "age_group": "25-45",
+    "estimated_price_inr": 2200,
+    "inventory_status": "new arrival"
+  }}
+]
+"""
+
+    try:
+        model = genai.GenerativeModel("models/gemini-flash-lite-latest")
+        response = model.generate_content(prompt)
+        text = response.text.strip()
+        if text.startswith("```"):
+            text = text.split("\n", 1)[1].rsplit("\n", 1)[0].strip()
+            if text.startswith("json"):
+                text = text[4:].strip()
+        dresses = json.loads(text)
+        return dresses[:MAX_DRESSES] if isinstance(dresses, list) else []
+    except Exception as e:
+        logger.error(f"  Gemini context-based generation failed: {e}")
+        return []
 
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -307,14 +391,18 @@ def process_seeding_from_excel(excel_path):
         logger.info(f"\n  Processing ({feed_type}) Video ID: {video_id}  [{pincode}]")
 
         # 1. Transcript
-        transcript = get_transcript(video_id)
-        if not transcript:
-            continue
-
-        # 2. Gemini: 2-3 full-schema garments
         is_creator = (feed_type == "creator")
-        dresses = extract_dresses_from_transcript(transcript, is_creator, pincode)
-        logger.info(f"  Gemini: {len(dresses)} garments extracted.")
+        transcript = get_transcript(video_id)
+
+        if transcript:
+            # 2a. Transcript available → extract from transcript
+            dresses = extract_dresses_from_transcript(transcript, is_creator, pincode)
+            logger.info(f"  Gemini (transcript): {len(dresses)} garments extracted.")
+        else:
+            # 2b. No transcript (YouTube Shorts, etc.) → generate from context
+            logger.info(f"  No transcript — using Gemini context-based generation.")
+            dresses = generate_fashion_from_context(store_name, pincode, is_creator, store_name)
+            logger.info(f"  Gemini (context): {len(dresses)} garments generated.")
 
         # 3. Per garment: text embedding → hybrid match → build record
         for d in dresses:

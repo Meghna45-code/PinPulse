@@ -1,0 +1,81 @@
+Columns: ['ZIP CODE', 'CONTENT CREATER', 'URL', 'SUBSCRIBER']
+Shape: (13, 4)
+
+ROW 0:
+  ZIP CODE: 800008.0
+  CONTENT CREATER: Pratibha Shree
+  URL: https://youtube.com/shorts/U_nkHYPc1ww?si=8sDE5AKLt9W7uoKY
+  SUBSCRIBER: 3.06K
+
+ROW 1:
+  ZIP CODE: nan
+  CONTENT CREATER: HER WARDROBE
+  URL: https://youtube.com/shorts/FqilEHTE5BA?si=yiDfJhLsxRH3jO9h
+  SUBSCRIBER: 8.34k
+
+ROW 2:
+  ZIP CODE: nan
+  CONTENT CREATER: Asmit
+  URL: https://youtube.com/shorts/55apryEpLEs?si=-SqTwLhXzio9Ikoo
+  SUBSCRIBER: 4.76K
+
+ROW 3:
+  ZIP CODE: nan
+  CONTENT CREATER: nan
+  URL: nan
+  SUBSCRIBER: nan
+
+ROW 4:
+  ZIP CODE: nan
+  CONTENT CREATER: nan
+  URL: nan
+  SUBSCRIBER: nan
+
+ROW 5:
+  ZIP CODE: nan
+  CONTENT CREATER: nan
+  URL: nan
+  SUBSCRIBER: nan
+
+ROW 6:
+  ZIP CODE: 682001.0
+  CONTENT CREATER: VIOLET STORE
+  URL: https://youtube.com/shorts/J_F2dzbUXvg?si=0RpNyp-EZeoJU3Mn
+  SUBSCRIBER: 3.01k
+
+ROW 7:
+  ZIP CODE: nan
+  CONTENT CREATER: Deals Kochi
+  URL: https://youtube.com/shorts/mZPnF5dMzcM?si=VqmtacG-HvmGMtqi
+  SUBSCRIBER: 2.62k
+
+ROW 8:
+  ZIP CODE: nan
+  CONTENT CREATER: Kochi Topics
+  URL: https://youtube.com/shorts/Vh7B2k8-CLc?si=dxl6WFDVYxt6GEr_
+  SUBSCRIBER: 4.66k
+
+ROW 9:
+  ZIP CODE: nan
+  CONTENT CREATER: nan
+  URL: nan
+  SUBSCRIBER: nan
+
+ROW 10:
+  ZIP CODE: nan
+  CONTENT CREATER: nan
+  URL: nan
+  SUBSCRIBER: nan
+
+ROW 11:
+  ZIP CODE: 753001.0
+  CONTENT CREATER: Payalodiavlogs
+  URL: https://youtube.com/shorts/erCRv3qln1Q?si=6Qa1cjja5xHl0Hzi
+  SUBSCRIBER: 266
+
+ROW 12:
+  ZIP CODE: nan
+  CONTENT CREATER: Cuttack top 10
+  URL: https://youtube.com/shorts/rmZXaeTxjDg?si=WK9624jUwxNjQaho
+  SUBSCRIBER: 13.6k
+
