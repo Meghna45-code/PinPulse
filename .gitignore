@@ -25,3 +25,8 @@ dist-ssr/
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
+
+# Agent config
+.gemini/
+.agents/

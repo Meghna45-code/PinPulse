@@ -1,0 +1,115 @@
+Columns: ['ZIP CODE', 'STORES/MARKET', 'LOCATION', 'RATING', 'IMAGE']
+Shape: (16, 5)
+
+ROW 0:
+  ZIP CODE: 800008.0
+  STORES/MARKET: V2 Retails
+  LOCATION: RAILWAY STATION, MFC COMPLEX, PATNA SAHIB, Patna City, Patna, Bihar 800008
+  RATING: 5.0
+  IMAGE: nan
+
+ROW 1:
+  ZIP CODE: nan
+  STORES/MARKET: V-Mart Patna City
+  LOCATION: Kasera Toll, Pani Tanki Mor Khaze Kain Road, Kasera Toli, near Krishna Cinema, Patna, Bihar 800008
+  RATING: 4.3
+  IMAGE: nan
+
+ROW 2:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 3:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 4:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 5:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 6:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 7:
+  ZIP CODE: 682001.0
+  STORES/MARKET: KLOTH FASHION STORE
+  LOCATION: hi tech lab, Near, Pottakuzhy Rd, Pachalam, Kochi, Ernakulam, Kerala 682012
+  RATING: 4.5
+  IMAGE: nan
+
+ROW 8:
+  ZIP CODE: nan
+  STORES/MARKET: The Shop
+  LOCATION: 1/771,1, Abraham & Co, 772, Napier Street, Fort Kochi, Kochi, Kerala 682001
+  RATING: 4.5
+  IMAGE: nan
+
+ROW 9:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 10:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 11:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 12:
+  ZIP CODE: nan
+  STORES/MARKET: nan
+  LOCATION: nan
+  RATING: nan
+  IMAGE: nan
+
+ROW 13:
+  ZIP CODE: 753001.0
+  STORES/MARKET: Fashion Factory
+  LOCATION: 858, Mission Rd, opposite S B Womens College, Buxi Bazaar, Cuttack, Odisha 753001
+  RATING: 4.7
+  IMAGE: nan
+
+ROW 14:
+  ZIP CODE: nan
+  STORES/MARKET: V-Mart
+  LOCATION: Ground Floor, Link Rd, Bishram Nagar, Badambadi Colony, Cuttack, Odisha 753012
+  RATING: 4.9
+  IMAGE: nan
+
+ROW 15:
+  ZIP CODE: nan
+  STORES/MARKET: DD Textiles
+  LOCATION: Choudhury Bazar, Nandi Sahi, Cuttack, Odisha 753001
+  RATING: 4.3
+  IMAGE: nan
+
