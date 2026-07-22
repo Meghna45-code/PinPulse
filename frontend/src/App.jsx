@@ -64,6 +64,7 @@ const WEATHER_MATRIX = {
 // Regional date profile presets
 const REGIONAL_DATE_PRESETS = {
   "800008": [
+    { key: "jan_14", label: "Jan 14 (Makar Sankranti)", dateStr: "2026-01-14", event: "Makar Sankranti Harvest", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "casual", "cotton", "yellow", "dailywear"] },
     { key: "jan_26", label: "Jan 26 (Republic Day)", dateStr: "2026-01-26", event: "Republic Day Parade", event_type: "festival", isFestive: true, trendingTags: ["white", "saffron", "green", "ethnic", "formal"] },
     { key: "feb_2", label: "Feb 2 (Saraswati Puja)", dateStr: "2026-02-02", event: "Saraswati Puja (Vasant Panchami)", event_type: "festival", isFestive: true, trendingTags: ["saree", "kurta", "yellow", "ethnic"] },
     { key: "mar_3", label: "Mar 3 (Holi)", dateStr: "2026-03-03", event: "Holi Festival of Colors", event_type: "festival", isFestive: true, trendingTags: ["white", "cotton", "casual", "dailywear"] },
@@ -101,6 +102,7 @@ const REGIONAL_DATE_PRESETS = {
     { key: "jul_15", label: "Jul 15 (Admissions)", dateStr: "2026-07-15", event: "College Admissions Season", event_type: "festival", isFestive: false, trendingTags: ["casual", "denim", "graphic_tee", "breathable_cotton"] },
     { key: "jul_16", label: "Jul 16 (Rath Yatra)", dateStr: "2026-07-16", event: "Puri Rath Yatra Chariot Festival", event_type: "festival", isFestive: true, trendingTags: ["sambalpuri", "cotton", "traditional", "yellow", "saffron", "saree", "kurta"] },
     { key: "aug_15", label: "Aug 15 (Independence Day)", dateStr: "2026-08-15", event: "Independence Day Ceremony", event_type: "festival", isFestive: true, trendingTags: ["khadi", "tricolor", "smart_casual"] },
+    { key: "sep_15", label: "Sep 15 (Nuakhai Harvest)", dateStr: "2026-09-15", event: "Nuakhai Agricultural Harvest Festival", event_type: "festival", isFestive: true, trendingTags: ["sambalpuri", "handloom", "cotton", "traditional", "ethnic", "saree", "kurta", "odisha"] },
     { key: "oct_18", label: "Oct 18 (Durga Puja)", dateStr: "2026-10-18", event: "Durga Puja (Ravana Podi)", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "traditional_silk", "red", "gold", "sambalpuri"] },
     { key: "nov_8", label: "Nov 8 (Diwali)", dateStr: "2026-11-08", event: "Diwali Lights Festival", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "regal", "gold", "silk", "heavy_embroidery"] },
     { key: "dec_20", label: "Dec 20 (Odia Wedding)", dateStr: "2026-12-20", event: "Odisha Winter Wedding (Pheras)", event_type: "wedding_day", isFestive: true, trendingTags: ["heavy_silk", "tussar_silk", "ceremonial", "sherwani", "crimson", "gold"] }
@@ -108,29 +110,65 @@ const REGIONAL_DATE_PRESETS = {
 };
 
 const VIBE_DEFINITIONS = {
-  festive: {
-    name: "Ethnic & Festive",
+  heritage_traditionalist: {
+    name: "Heritage Traditionalist",
     emoji: "🥻",
-    desc: "Traditional silks, zari brocades, kurtas, and festival sarees matching regional cultural dates.",
-    tags: ["ethnic", "festive", "traditional", "silk", "saree", "jainsem", "jymphong", "mundu", "sherwani"]
+    desc: "Traditional silks, zari brocades, and classic festival sarees.",
+    tags: ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"]
   },
-  casual: {
-    name: "Summer Casual",
-    emoji: "👕",
-    desc: "Lightweight cottons, linens, breezy tunics, and everyday wear for hot humid climates.",
-    tags: ["casual", "summer", "cotton", "linen", "breathable", "dailywear"]
+  festive_glam: {
+    name: "Festive Glam",
+    emoji: "✨",
+    desc: "Bright, embellished, heavy ethnic wear, lehengas, and celebration outfits.",
+    tags: ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"]
   },
-  winter: {
-    name: "Cozy Winter",
-    emoji: "🧥",
-    desc: "Heavy velvet ensembles, wool shawls, pullovers, and fleece layers for extreme cold spells.",
-    tags: ["winter", "warm", "heavy-weight", "velvet", "shawl", "jacket", "cardigan", "woolen"]
+  indie_fusion: {
+    name: "Indie Fusion (Desi Boho)",
+    emoji: "🎨",
+    desc: "Desi Boho chic with block prints, indigo dyes, and contemporary fusion kurtas.",
+    tags: ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"]
   },
-  streetwear: {
-    name: "Urban Streetwear",
+  high_street_rebel: {
+    name: "High-Street Rebel",
     emoji: "👟",
-    desc: "Oversized hoodies, utility cargoes, denim jackets, and modern graphic tees for modern shoppers.",
-    tags: ["streetwear", "hoodie", "cargo", "modern", "denim", "fusion", "party"]
+    desc: "Oversized hoodies, utility cargoes, denim jackets, and edgy modern graphic tees.",
+    tags: ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"]
+  },
+  coastal_tropical: {
+    name: "Coastal Tropical",
+    emoji: "🏝️",
+    desc: "Light, breezy cottons, linen shirts, and floral sundresses.",
+    tags: ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"]
+  },
+  winter_academia: {
+    name: "Winter Academia",
+    emoji: "🧥",
+    desc: "Smart-casual layering, cable-knit sweaters, velvet blazers, and warm woolen shawls.",
+    tags: ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shawl", "velvet"]
+  },
+  y2k_nostalgia: {
+    name: "Y2K Nostalgia",
+    emoji: "📟",
+    desc: "Retro pop, Gen-Z crop tops, baggy jeans, bucket hats, and bold neon aesthetics.",
+    tags: ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"]
+  },
+  minimalist_essentials: {
+    name: "Minimalist Essentials",
+    emoji: "🤍",
+    desc: "Solid neutrals, clean structures, clean lines, and timeless capsule basics.",
+    tags: ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"]
+  },
+  earthy_handloom: {
+    name: "Earthy Handloom",
+    emoji: "🌾",
+    desc: "Organic, sustainable handlooms, khadi weaves, natural dyes, and artisanal textures.",
+    tags: ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"]
+  },
+  urban_athleisure: {
+    name: "Urban Athleisure",
+    emoji: "🏃",
+    desc: "Activewear, sporty joggers, ribbed tracksuits, and premium athletic apparel.",
+    tags: ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"]
   }
 };
 
@@ -174,11 +212,51 @@ const LOCAL_VELOCITY_CACHE = {
 
 function generateVibeVector(vibeName) {
   const vec = new Array(512).fill(0);
-  if (vibeName === "festive") vec.fill(1, 0, 100);
-  else if (vibeName === "casual") vec.fill(1, 100, 200);
-  else if (vibeName === "winter") vec.fill(1, 200, 300);
-  else if (vibeName === "streetwear") vec.fill(1, 300, 400);
-  vec.fill(0.2, 400, 512);
+  const def = VIBE_DEFINITIONS[vibeName];
+  if (!def) return vec;
+  
+  const tags = def.tags;
+  
+  // === STYLE ZONE 1: Ethnic / Traditional / Festive (0-99) ===
+  if (tags.some(t => ["ethnic", "festive", "saree", "lehenga", "traditional", "jainsem", "jymphong", "mundu", "sherwani", "kurta", "ceremonial", "zari", "banarasi", "bhagalpuri-silk"].includes(t))) {
+    vec.fill(1, 0, 100);
+  }
+  // === STYLE ZONE 2: Casual / Summer / Breathable (100-149) ===
+  if (tags.some(t => ["casual", "summer", "linen", "cotton", "breathable", "light", "printed", "salwar"].includes(t))) {
+    vec.fill(1, 100, 150);
+  }
+  // === STYLE ZONE 3: Winter / Warm / Heavy-weight (150-199) ===
+  if (tags.some(t => ["winter", "heavy-weight", "velvet", "shawl", "warm", "jacket", "cardigan", "woolen", "quilted", "layered"].includes(t))) {
+    vec.fill(1, 150, 200);
+  }
+  // === STYLE ZONE 4: Streetwear / Modern / Fusion / Party (200-249) ===
+  if (tags.some(t => ["streetwear", "hoodie", "cargo", "modern", "denim", "fusion", "party", "contemporary", "indo-western"].includes(t))) {
+    vec.fill(1, 200, 250);
+  }
+  // === AESTHETIC ZONE 1: Luxury / Premium / Designer / Bridal (250-299) ===
+  if (tags.some(t => ["luxury", "premium", "designer", "bridal", "silk", "heavy_silk", "gold", "zari", "embellished", "brocade", "ceremonial"].includes(t))) {
+    vec.fill(1, 250, 300);
+  }
+  // === AESTHETIC ZONE 2: Minimalist / Clean / Subtle / Neutral (300-349) ===
+  if (tags.some(t => ["minimalist", "clean", "subtle", "neutral", "solid", "simple", "basic", "pastel", "white", "beige"].includes(t))) {
+    vec.fill(1, 300, 350);
+  }
+  // === AESTHETIC ZONE 3: Boho / Earthy / Artisanal / Handloom (350-399) ===
+  if (tags.some(t => ["boho", "earthy", "artisanal", "handloom", "natural-dye", "block-print", "ikat", "khadi", "woven", "tribal", "bhagalpuri-silk", "traditional_embroidery"].includes(t))) {
+    vec.fill(1, 350, 400);
+  }
+  // === AESTHETIC ZONE 4: Maximalist / Bold / Embellished / Printed (400-449) ===
+  if (tags.some(t => ["maximalist", "bold", "embellished", "printed", "sequin", "mirror-work", "heavy", "multicolor", "vibrant", "crimson", "magenta", "fuchsia"].includes(t))) {
+    vec.fill(1, 400, 450);
+  }
+  // === AESTHETIC ZONE 5: Workwear / Formal / Office (450-474) ===
+  if (tags.some(t => ["workwear", "formal", "office", "corporate", "blazer", "structured", "tailored"].includes(t))) {
+    vec.fill(1, 450, 475);
+  }
+  // === AESTHETIC ZONE 6: Athleisure / Sporty / Active (475-499) ===
+  if (tags.some(t => ["athleisure", "sporty", "active", "yoga", "gym", "stretch", "moisture-wicking"].includes(t))) {
+    vec.fill(1, 475, 500);
+  }
   
   let hash = 0;
   for (let i = 0; i < vibeName.length; i++) {
@@ -238,9 +316,10 @@ function App() {
 
   const [currentZipCode, setCurrentZipCode] = useState("800008");
   const [sliderVal, setSliderVal] = useState(0);
+  const [timeTravelVisible, setTimeTravelVisible] = useState(true);
   const [trendsPanelOpen, setTrendsPanelOpen] = useState(false);
   const [trendsPanelTab, setTrendsPanelTab] = useState('youtube');
-  const [currentVibe, setCurrentVibe] = useState("casual");
+  const [currentVibe, setCurrentVibe] = useState("coastal_tropical");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [coPurchaseItems, setCoPurchaseItems] = useState([]);
@@ -248,7 +327,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [lookCompleter, setLookCompleter] = useState({ accessory: null, footwear: null });
   const [showOnboarding, setShowOnboarding] = useState(true);
-  const [tempVibe, setTempVibe] = useState("casual");
+  const [tempVibe, setTempVibe] = useState("coastal_tropical");
   const [logs, setLogs] = useState([]);
   const [backendStatus, setBackendStatus] = useState("checking");
   const [isLoading, setIsLoading] = useState(false);
@@ -269,6 +348,11 @@ function App() {
   const [isBoutiqueLoading, setIsBoutiqueLoading] = useState(false);
   const [youtubeFetched, setYoutubeFetched] = useState(false);
   const [boutiqueFetched, setBoutiqueFetched] = useState(false);
+  const [globalRunwayData, setGlobalRunwayData] = useState(null);
+  const [isGlobalRunwayLoading, setIsGlobalRunwayLoading] = useState(false);
+  const [globalRunwayFetched, setGlobalRunwayFetched] = useState(false);
+  const [globalRunwayFilter, setGlobalRunwayFilter] = useState('all'); // 'all' | 'seoul' | 'paris' | 'tokyo'
+  const [expandedSections, setExpandedSections] = useState({ local: false, national: false, global: false });
   // Zip Code Intelligence (AOV + weather + upcoming events)
   const [zipInsights, setZipInsights] = useState(null);
   
@@ -307,6 +391,7 @@ function App() {
     logMessage("Loaded local fallback catalog database containing 60 items.", "success");
     checkBackendConnection();
     loadDynamicPresets();
+    fetchGlobalRunway('all');
   }, []);
 
   const loadDynamicPresets = async () => {
@@ -558,6 +643,29 @@ function App() {
     }
   };
 
+  const fetchGlobalRunway = async (cityFilter) => {
+    setIsGlobalRunwayLoading(true);
+    setGlobalRunwayData(null);
+    logMessage('Loading Global Runway trends (Tokyo / Paris / Seoul)...', 'info');
+    try {
+      const url = cityFilter && cityFilter !== 'all'
+        ? `http://localhost:8000/api/trends/global?city=${cityFilter}`
+        : 'http://localhost:8000/api/trends/global';
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch global trends');
+      const data = await res.json();
+      setGlobalRunwayData(data);
+      setGlobalRunwayFetched(true);
+      const totalTrends = Object.values(data.cities || {}).reduce((s, c) => s + (c.trends?.length || 0), 0);
+      logMessage(`Global Runway: Loaded ${totalTrends} aspirational style signals.`, 'success');
+    } catch (e) {
+      logMessage(`Global Runway error: ${e.message}`, 'warning');
+      setGlobalRunwayData({ cities: {} });
+    } finally {
+      setIsGlobalRunwayLoading(false);
+    }
+  };
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === 'youtube' && !youtubeFetched) {
@@ -565,6 +673,9 @@ function App() {
     }
     if (tab === 'boutiques' && !boutiqueFetched) {
       fetchBoutiques(currentZipCode);
+    }
+    if (tab === 'global' && !globalRunwayFetched) {
+      fetchGlobalRunway(globalRunwayFilter);
     }
   };
 
@@ -1088,7 +1199,427 @@ function App() {
     }, 450);
   };
 
-  const weights = CONTEXT_MATRICES[engineState] || CONTEXT_MATRICES["discovery"];
+  const getFestivalBanner = (eventName) => {
+    if (!eventName) return '/images/generic_festival_banner.png';
+    const evLower = eventName.toLowerCase();
+    if (evLower.includes('diwali')) return '/images/diwali_banner.png';
+    if (evLower.includes('durga puja') || evLower.includes('dussehra')) return '/images/durga_puja_banner.png';
+    if (evLower.includes('wedding') || evLower.includes('marriage') || evLower.includes('convocation') || evLower.includes('pheras') || evLower.includes('gala') || evLower.includes('graduation') || evLower.includes('farewell')) return '/images/wedding_day_banner.png';
+    if (evLower.includes('independence day')) return '/images/independence_day_banner.png';
+    if (evLower.includes('republic day')) return '/images/republic_day_banner.png';
+    if (evLower.includes('holi')) return '/images/holi_banner.png';
+    if (evLower.includes('saraswati puja') || evLower.includes('prakash parv') || evLower.includes('panchami')) return '/images/saraswati_puja_banner.png';
+    if (evLower.includes('chhath puja')) return '/images/chhath_puja_banner.png';
+    if (evLower.includes('onam') || evLower.includes('vishu') || evLower.includes('biennale')) return '/images/onam_vishu_banner.png';
+    if (evLower.includes('rath yatra')) return '/images/rath_yatra_banner.png';
+    if (evLower.includes('makar sankranti')) return '/images/makar_sankranti_banner.png';
+    if (evLower.includes('nuakhai')) return '/images/nuakhai_banner.png';
+    return '/images/generic_festival_banner.png';
+  };
+
+  // Meticulous classification of National vs Local events per date & zip code
+  const getEventBannersForDate = (dateStr, zipCode) => {
+    const banners = { national: null, local: null };
+    const dateObj = new Date(dateStr);
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+
+    // ── 1. NATIONAL FESTIVALS (Strictly Pan-India Only) ──────────────────────
+    if ((month === 10 && day >= 15 && day <= 24) || dateStr === "2026-10-18") {
+      banners.national = {
+        title: "Durga Puja & Navratri Celebrations 🥻",
+        badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
+        desc: "Nationwide festive surge across India! Pandals, Dandiya nights, and grand ethnic celebrations.",
+        tags: ["Festive Silk", "Heavy Embroidered Saree", "Lehenga Choli", "Kurta Sets", "Red & Gold"],
+        type: "national",
+        bannerImg: "/images/durga_puja_banner.png"
+      };
+    } else if ((month === 11 && day >= 5 && day <= 10) || dateStr === "2026-11-08") {
+      banners.national = {
+        title: "Diwali Festival of Lights 🪔",
+        badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
+        desc: "Gleaming Deepavali celebrations across India! Premium festive silks, gold zari brocades, and regal sherwanis.",
+        tags: ["Gleaming Gold", "Brocade Silk", "Regal Sherwani", "Anarkali", "Maroon Silk"],
+        type: "national",
+        bannerImg: "/images/diwali_banner.png"
+      };
+    } else if ((month === 3 && day >= 2 && day <= 5) || dateStr === "2026-03-03") {
+      banners.national = {
+        title: "Holi Festival of Colors 🎨",
+        badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
+        desc: "Joyous spring color festival celebrated across all states! Crisp white cottons, relaxed kurtas, and easy dailywear.",
+        tags: ["Pure White Cotton", "Casual Kurti", "Chikan Handloom", "Breathable Linen"],
+        type: "national",
+        bannerImg: "/images/holi_banner.png"
+      };
+    } else if (month === 8 && day === 15) {
+      banners.national = {
+        title: "79th Independence Day Celebration 🇮🇳",
+        badge: "🇮🇳 NATIONAL DAY · PAN-INDIA",
+        desc: "Tricolor pride nationwide! Khadi, handloom ethnic wear, saffron & white formal kurtas.",
+        tags: ["Tricolor Accent", "Khadi Handloom", "Formal Nehru Jacket", "Saffron White Green"],
+        type: "national",
+        bannerImg: "/images/independence_day_banner.png"
+      };
+    } else if (month === 1 && day === 26) {
+      banners.national = {
+        title: "Republic Day Parade & Celebrations 🇮🇳",
+        badge: "🇮🇳 NATIONAL DAY · PAN-INDIA",
+        desc: "National pride parade and ceremonial gatherings across India.",
+        tags: ["Formal Ethnic", "Tricolor Wear", "Structure Blazer", "Nehru Jacket"],
+        type: "national",
+        bannerImg: "/images/republic_day_banner.png"
+      };
+    }
+
+    // ── 2. LOCAL REGIONAL FESTIVALS (Strictly Local / State Only) ────────────
+    if (zipCode === "800008") { // Patna / Bihar
+      if (dateStr === "2026-11-15") {
+        banners.local = {
+          title: "Chhath Puja — Sandhya Arghya 🛕",
+          badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
+          desc: "Authentic Bihari Mahaparv on the banks of the Ganges! Sacred saffron & yellow sarees, Bhagalpuri silk, and unstitched dhoti sets.",
+          tags: ["Saffron Yellow Saree", "Bhagalpuri Tussar", "Madhubani Hand-Painted", "Cotton Dhoti"],
+          type: "local",
+          bannerImg: "/images/chhath_puja_banner.png"
+        };
+      } else if (dateStr === "2026-03-22") {
+        banners.local = {
+          title: "Bihar Diwas (Statehood Day) 🏛️",
+          badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
+          desc: "Celebrating Bihar's rich heritage with artisanal Bhagalpuri tussar silk and traditional weaves.",
+          tags: ["Bhagalpuri Silk", "Tussar Kurta", "Nehru Jacket", "Traditional Weave"],
+          type: "local",
+          bannerImg: "/images/saraswati_puja_banner.png"
+        };
+      } else if (dateStr === "2026-02-02") {
+        banners.local = {
+          title: "Saraswati Puja / Vasant Panchami 🌾",
+          badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
+          desc: "Spring festival of learning in Bihar! Bright basanti yellow sarees, georgettes, and yellow kurtis.",
+          tags: ["Basanti Yellow Saree", "Georgette Kurti", "Yellow Anklet Set", "Ethnic Kurta"],
+          type: "local",
+          bannerImg: "/images/saraswati_puja_banner.png"
+        };
+      } else if (dateStr === "2026-12-10") {
+        banners.local = {
+          title: "Patna Wedding Day — Pheras Rituals 💍",
+          badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
+          desc: "Peak Bihari wedding season surge! Heavy Banarasi silk sarees, zardozi lehengas, and royal wedding sherwanis.",
+          tags: ["Banarasi Crimson Silk", "Heavy Zardozi", "Royal Sherwani", "Gold Brocade"],
+          type: "local",
+          bannerImg: "/images/wedding_day_banner.png"
+        };
+      } else if (dateStr === "2026-01-14") {
+        banners.local = {
+          title: "Makar Sankranti Harvest Mela 🌾",
+          badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
+          desc: "Harvest festival traditions in Bihar with comfortable cotton kurtas and vibrant dailywear.",
+          tags: ["Cotton Ethnic", "Casual Kurti", "Yellow Accent"],
+          type: "local",
+          bannerImg: "/images/makar_sankranti_banner.png"
+        };
+      }
+    } else if (zipCode === "682001") { // Kochi / Kerala
+      if (dateStr === "2026-08-27") {
+        banners.local = {
+          title: "Onam Festival — Thiruvonam 🌾",
+          badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
+          desc: "Grand harvest festival of Kerala! Authentic Kasavu sarees with woven gold tissue borders, Kara mundus, and traditional pookalam attire.",
+          tags: ["Kerala Kasavu Saree", "Gold Zari Border", "Men's Kara Mundu", "Off-White & Gold"],
+          type: "local",
+          bannerImg: "/images/onam_vishu_banner.png"
+        };
+      } else if (dateStr === "2026-04-14") {
+        banners.local = {
+          title: "Vishu Festival (Malayali New Year) 🌼",
+          badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
+          desc: "Malayali New Year celebrations! Golden Kani yellow silks, traditional Kasavu weaves, and fresh festival cottons.",
+          tags: ["Kasavu Weave", "Vishu Yellow Silk", "Gold Border Mundu", "Traditional Kerala"],
+          type: "local",
+          bannerImg: "/images/onam_vishu_banner.png"
+        };
+      } else if (dateStr === "2026-01-20") {
+        banners.local = {
+          title: "Kochi-Muziris Biennale Art Peak 🎨",
+          badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
+          desc: "Fort Kochi arts & design surge! Sustainable organic linens, artsy boho silhouettes, and coastal summer layers.",
+          tags: ["Breezy Linen", "Boho Indigo", "Artsy Midi Dress", "Sustainable Cotton"],
+          type: "local",
+          bannerImg: "/images/onam_vishu_banner.png"
+        };
+      } else if (dateStr === "2026-12-27") {
+        banners.local = {
+          title: "Kochi Wedding Day — Thalikettu 💍",
+          badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
+          desc: "Traditional Kerala wedding ceremony surge! Pure tissue Kasavu sarees and Kanjeevaram silk.",
+          tags: ["Tissue Kasavu Silk", "Kanjeevaram Gold", "Kasavu Mundu", "Bridal Cream"],
+          type: "local",
+          bannerImg: "/images/wedding_day_banner.png"
+        };
+      }
+    } else if (zipCode === "752001") { // Puri / Odisha
+      if (dateStr === "2026-07-16" || dateStr === "2026-07-15") {
+        banners.local = {
+          title: "Puri Rath Yatra Chariot Festival 🚩",
+          badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
+          desc: "World-famous Lord Jagannath Grand Chariot Festival! Handwoven Sambalpuri Ikat cotton, saffron yellow temple wear, and Odia weaves.",
+          tags: ["Sambalpuri Ikat", "Temple Yellow Cotton", "Odia Handloom", "Pasapalli Weave"],
+          type: "local",
+          bannerImg: "/images/rath_yatra_banner.png"
+        };
+      } else if (dateStr === "2026-06-14" || dateStr === "2026-06-15") {
+        banners.local = {
+          title: "Raja Parba / Raja Sankranti 🌿",
+          badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
+          desc: "Unique Odia festival celebrating womanhood and nature! New pastel cotton sarees, Alata-patterned borders, and lightweight handlooms.",
+          tags: ["Lightweight Handloom", "Pastel Cotton Saree", "Sambalpuri Kurti", "Fresh Weave"],
+          type: "local",
+          bannerImg: "/images/nuakhai_banner.png"
+        };
+      } else if (dateStr === "2026-09-15") {
+        banners.local = {
+          title: "Nuakhai Agricultural Harvest Festival 🌾",
+          badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
+          desc: "Western Odisha new crop harvest celebration! Traditional Tussar silk sarees and Sambalpuri Kurta sets.",
+          tags: ["Tussar Silk", "Sambalpuri Handloom", "Harvest Earth Tones", "Traditional Odia"],
+          type: "local",
+          bannerImg: "/images/nuakhai_banner.png"
+        };
+      } else if (dateStr === "2026-12-20") {
+        banners.local = {
+          title: "Odisha Winter Wedding — Pheras 💍",
+          badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
+          desc: "Peak Odia winter wedding season! Heavy Bomkai silk sarees, Tussar brocades, and ceremonial Nehru jacket sets.",
+          tags: ["Bomkai Silk Saree", "Tussar Brocade", "Ceremonial Sherwani", "Crimson Red"],
+          type: "local",
+          bannerImg: "/images/wedding_day_banner.png"
+        };
+      }
+    }
+
+    return banners;
+  };
+
+  const renderFestivalBanners = () => {
+    const banners = getEventBannersForDate(activeDateProfile.dateStr, currentZipCode);
+
+    if (!banners.national && !banners.local) {
+      return null;
+    }
+
+    return (
+      <div className="festival-banners-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+        {/* National Festival Banner */}
+        {banners.national && (
+          <div className="festival-banner-card national-banner">
+            <div className="banner-badge-row">
+              <span className="banner-pill national-pill">{banners.national.badge}</span>
+              <span className="banner-weight-tag">⚡ 1.5x Festivity Score Weight</span>
+            </div>
+            <div className="banner-content">
+              <div className="banner-text-col">
+                <h2 className="banner-title">{banners.national.title}</h2>
+                <p className="banner-desc">{banners.national.desc}</p>
+                <div className="banner-tags">
+                  <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#fdfdc9' }}>Trending Attire:</span>
+                  {banners.national.tags.map((tag, ti) => (
+                    <span key={ti} className="banner-tag-pill">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Local Regional Festival Banner */}
+        {banners.local && (
+          <div className="festival-banner-card local-banner">
+            <div className="banner-badge-row">
+              <span className="banner-pill local-pill">{banners.local.badge}</span>
+              <span className="banner-weight-tag">🌾 Hyperlocal Creator & Boutique Active</span>
+            </div>
+            <div className="banner-content">
+              <div className="banner-text-col">
+                <h2 className="banner-title">{banners.local.title}</h2>
+                <p className="banner-desc">{banners.local.desc}</p>
+                <div className="banner-tags">
+                  <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#fdfdc9' }}>Regional Tags:</span>
+                  {banners.local.tags.map((tag, ti) => (
+                    <span key={ti} className="banner-tag-pill local-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderProductCard = (product, idx) => {
+    const hasWeddingSurge = (activeDateProfile.event_type === "wedding_day") && product.tags.includes("ceremonial");
+    const hasFestiveSurge = activeDateProfile.isFestive && product.tags.includes("festive") && !hasWeddingSurge;
+    const isMicroCreator = product.tags.includes("micro_creator");
+    const isInCart = sessionCart.includes(product.id);
+    
+    return (
+      <div 
+        key={product.id} 
+        className={`product-card ${selectedProduct && selectedProduct.id === product.id ? 'selected' : ''} ${purchasingId === product.id ? 'card-purchasing' : ''}`}
+        onClick={() => {
+          setSelectedProduct(product);
+          setShowModal(true);
+          logMessage(`Opened detail modal for '${product.name}'. Fetching co-purchases & styling shelf...`, "info");
+        }}
+      >
+        <div className="product-card-header" style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '8px 12px',
+          background: 'var(--daisy-card)',
+          borderBottom: '1px solid var(--olive-border)',
+          borderTopLeftRadius: '12px',
+          borderTopRightRadius: '12px'
+        }}>
+          <span style={{ fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-muted)' }}>
+            Rank {idx + 1}
+          </span>
+          {product.is_trending && (
+            <span style={{
+              fontSize: '0.68rem',
+              fontWeight: '800',
+              color: '#96636a',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '3px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em'
+            }}>
+              🔥 Trending
+            </span>
+          )}
+        </div>
+        
+        <div className="product-image-container">
+          <img 
+            src={product.image_url} 
+            alt={product.name} 
+            className="product-image"
+            onError={(e) => {
+              e.target.src = `https://placehold.co/400x500/EFEBCE/A3A380?text=${encodeURIComponent(product.name)}`;
+            }}
+          />
+          <div className="score-badge">
+            {(product.final_score * 100).toFixed(1)}%
+          </div>
+          
+          {isMicroCreator && (
+            <div className="surge-pill" style={{ background: '#A3A380', color: '#faf9f0', top: '8px', left: '8px', bottom: 'auto' }}>
+              Micro-Creator 🌾
+            </div>
+          )}
+          
+          {hasWeddingSurge && (
+            <div className="surge-pill" style={{ background: '#BB8588', color: '#faf9f0', top: '8px', left: '8px', bottom: 'auto' }}>Wedding Surge 💍</div>
+          )}
+          {hasFestiveSurge && (
+            <div className="surge-pill festive" style={{ top: '8px', left: '8px', bottom: 'auto' }}>Festive Surge 🥻</div>
+          )}
+        </div>
+        
+        <div className="product-info">
+          <p className="product-category" style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span>{product.category}</span>
+            {product.zip_codes && product.zip_codes.length > 0 && (
+              <span style={{ color: '#96636a', fontWeight: 'bold' }}>LOCAL</span>
+            )}
+          </p>
+          <h4 className="product-name">{product.name}</h4>
+          <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#96636a', fontWeight: 'bold' }}>₹{product.price}</p>
+          
+          <div className="product-tags" style={{ margin: '8px 0' }}>
+            {product.tags.slice(0, 3).map(tag => (
+              <span 
+                key={tag} 
+                className={`product-tag ${activeDateProfile.trendingTags.includes(tag) ? 'highlight' : ''}`}
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+            <button 
+              className="onboarding-btn" 
+              style={{ flex: 1, padding: '4px 8px', fontSize: '0.75rem', background: isInCart ? '#96636a' : '#BB8588', border: '1px solid rgba(187,133,136,0.30)', color: '#faf9f0' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isInCart) handleRemoveFromCart(product.id);
+                else handleAddToCart(product.id);
+              }}
+            >
+              {isInCart ? "🛒 Remove" : "🛒 Add"}
+            </button>
+            <button 
+              className="onboarding-btn"
+              style={{ padding: '4px 8px', fontSize: '0.75rem', background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-muted)' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToWishlist(product.id);
+              }}
+            >
+              ❤️ Wishlist
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderGlobalTrendCard = (product) => {
+    return (
+      <div
+        key={product.id}
+        className="global-trend-card"
+        style={{ '--city-color': product.global_primary_color || '#9b6cb5', flex: '0 0 260px', maxWidth: '260px' }}
+        onClick={() => openTrendsPanel('global')}
+      >
+        <div className="global-trend-badge">
+          <span>{product.global_flag} {product.global_city}</span>
+          <span className="global-season-tag">{product.global_season}</span>
+        </div>
+        <div className="global-trend-archetype">{product.global_style_archetype}</div>
+        <h4 className="global-trend-name">{product.name}</h4>
+        <p className="global-trend-desc">{product.description}</p>
+        <div className="global-trend-pieces">
+          {(product.global_key_pieces || []).slice(0, 2).map((piece, pi) => (
+            <span key={pi} className="global-piece-pill">{piece}</span>
+          ))}
+        </div>
+        <div className="global-trend-colors">
+          {(product.global_trending_colors || []).slice(0, 4).map((col, ci) => (
+            <span key={ci} className="global-color-swatch" title={col}
+              style={{ background: col.includes(' ') ? col.split(' ').pop() : col }}>
+            </span>
+          ))}
+          <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginLeft: '4px' }}>
+            {(product.global_trending_colors || []).slice(0, 2).join(' · ')}
+          </span>
+        </div>
+        <div className="global-trend-footer">
+          <span className="global-heat-bar">
+            🔥 {((product.global_heat_score || 0) * 100).toFixed(0)}% heat
+          </span>
+          <span className="global-searches">
+            📈 {((product.global_searches_weekly || 0) / 1000000).toFixed(1)}M/wk
+          </span>
+          <span className="global-runway-cta">See Runway →</span>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div id="root">
@@ -1137,16 +1668,15 @@ function App() {
         
         {/* Selector Panel */}
         <div className="header-meta">
-          <div className="meta-pill highlight" style={{ padding: '0px 10px', background: 'transparent' }}>
-            <span style={{ fontSize: '0.75rem', marginRight: '4px', color: '#94a3b8' }}>📍 REGION:</span>
+          <div className="meta-pill" style={{ padding: '0px 4px 0px 12px', background: 'rgba(250,249,240,0.15)', border: '1px solid rgba(250,249,240,0.30)' }}>
+            <span style={{ fontSize: '0.75rem', color: 'rgba(250, 249, 240, 0.85)' }}>📍 REGION:</span>
             <select 
               value={currentZipCode} 
               onChange={handleZipCodeChange}
               style={{
-                background: 'var(--bg-card)',
+                background: 'transparent',
                 color: 'white',
-                border: '1px solid var(--border-color)',
-                borderRadius: '6px',
+                border: 'none',
                 padding: '4px 8px',
                 fontSize: '0.8rem',
                 cursor: 'pointer',
@@ -1155,7 +1685,9 @@ function App() {
               }}
             >
               {Object.entries(ZIP_CODES).map(([zip, details]) => (
-                <option key={zip} value={zip}>{details.name}</option>
+                <option key={zip} value={zip} style={{ background: 'var(--bg-deep)', color: 'white' }}>
+                  {details.name}
+                </option>
               ))}
             </select>
           </div>
@@ -1179,83 +1711,113 @@ function App() {
           
           {/* Time-Travel Control Console */}
           <div className="control-card">
-            <div className="control-card-header">
-              <h3 className="control-title">
-                🕒 Time-Traveler Control Panel ({ZIP_CODES[currentZipCode].city})
-              </h3>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="control-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px' }}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <h3 className="control-title" style={{ margin: 0 }}>
+                  🕒 Time-Traveler Control Panel ({ZIP_CODES[currentZipCode].city})
+                </h3>
+                <button
+                  onClick={() => {
+                    const nextVal = !timeTravelVisible;
+                    setTimeTravelVisible(nextVal);
+                    if (!nextVal) {
+                      setTrendsPanelOpen(false);
+                    }
+                  }}
+                  style={{
+                    background: 'rgba(163,163,128,0.15)',
+                    border: '1px solid var(--border-color)',
+                    color: 'var(--text-main)',
+                    borderRadius: '20px',
+                    padding: '4px 12px',
+                    fontSize: '0.75rem',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {timeTravelVisible ? "👁️ Hide Panel" : "👁️ Show Panel"}
+                </button>
+              </div>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
 
                 {/* Trend intelligence buttons inline with the panel */}
-                <button
-                  id="btn-creator-feed"
-                  onClick={() => openTrendsPanel('youtube')}
-                  style={{
-                    padding: '7px 16px',
-                    background: trendsPanelOpen && trendsPanelTab === 'youtube'
-                      ? 'linear-gradient(135deg, #c69fd5, #9b6cb5)'
-                      : 'rgba(198,159,213,0.1)',
-                    color: trendsPanelOpen && trendsPanelTab === 'youtube' ? '#fdfdc9' : '#c69fd5',
-                    border: '1px solid rgba(198,159,213,0.4)',
-                    borderRadius: '8px',
-                    fontSize: '0.8rem',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    whiteSpace: 'nowrap',
-                    boxShadow: trendsPanelOpen && trendsPanelTab === 'youtube' ? '0 0 12px rgba(253,253,201,0.25)' : 'none'
-                  }}
-                >
-                  🎬 Creator Feed
-                  {Array.isArray(youtubeData) && (
-                    <span style={{
-                      background: trendsPanelOpen && trendsPanelTab === 'youtube' ? 'rgba(253,253,201,0.3)' : 'rgba(198,159,213,0.2)',
-                      borderRadius: '10px',
-                      padding: '1px 7px',
-                      fontSize: '0.65rem',
-                      fontWeight: 'bold'
-                    }}>{youtubeData.length}</span>
-                  )}
-                </button>
+                {timeTravelVisible && (
+                  <>
+                    <button
+                      id="btn-creator-feed"
+                      onClick={() => openTrendsPanel('youtube')}
+                      style={{
+                        padding: '7px 16px',
+                        background: trendsPanelOpen && trendsPanelTab === 'youtube'
+                          ? 'linear-gradient(135deg, #c69fd5, #9b6cb5)'
+                          : 'rgba(130, 66, 101, 0.08)',
+                        color: trendsPanelOpen && trendsPanelTab === 'youtube' ? '#fdfdc9' : '#824265',
+                        border: '1px solid rgba(130, 66, 101, 0.3)',
+                        borderRadius: '8px',
+                        fontSize: '0.8rem',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        whiteSpace: 'nowrap',
+                        boxShadow: trendsPanelOpen && trendsPanelTab === 'youtube' ? '0 0 12px rgba(253,253,201,0.25)' : 'none'
+                      }}
+                    >
+                      🎬 Creator Feed
+                      {Array.isArray(youtubeData) && (
+                        <span style={{
+                          background: trendsPanelOpen && trendsPanelTab === 'youtube' ? 'rgba(253,253,201,0.3)' : 'rgba(130, 66, 101, 0.15)',
+                          borderRadius: '10px',
+                          padding: '1px 7px',
+                          fontSize: '0.65rem',
+                          fontWeight: 'bold'
+                        }}>{youtubeData.length}</span>
+                      )}
+                    </button>
 
-                <button
-                  id="btn-local-boutiques"
-                  onClick={() => openTrendsPanel('boutiques')}
-                  style={{
-                    padding: '7px 16px',
-                    background: trendsPanelOpen && trendsPanelTab === 'boutiques'
-                      ? 'linear-gradient(135deg, #c69fd5, #9b6cb5)'
-                      : 'rgba(198,159,213,0.08)',
-                    color: trendsPanelOpen && trendsPanelTab === 'boutiques' ? '#fdfdc9' : '#c69fd5',
-                    border: '1px solid rgba(198,159,213,0.4)',
-                    borderRadius: '8px',
-                    fontSize: '0.8rem',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    whiteSpace: 'nowrap',
-                    boxShadow: trendsPanelOpen && trendsPanelTab === 'boutiques' ? '0 0 12px rgba(253,253,201,0.25)' : 'none'
-                  }}
-                >
-                  🏪 Local Boutiques
-                  {boutiqueData?.boutiques && (
-                    <span style={{
-                      background: trendsPanelOpen && trendsPanelTab === 'boutiques' ? 'rgba(253,253,201,0.3)' : 'rgba(198,159,213,0.2)',
-                      borderRadius: '10px',
-                      padding: '1px 7px',
-                      fontSize: '0.65rem',
-                      fontWeight: 'bold'
-                    }}>{boutiqueData.boutiques.length}</span>
-                  )}
-                </button>
+                    <button
+                      id="btn-local-boutiques"
+                      onClick={() => openTrendsPanel('boutiques')}
+                      style={{
+                        padding: '7px 16px',
+                        background: trendsPanelOpen && trendsPanelTab === 'boutiques'
+                          ? 'linear-gradient(135deg, #c69fd5, #9b6cb5)'
+                          : 'rgba(130, 66, 101, 0.08)',
+                        color: trendsPanelOpen && trendsPanelTab === 'boutiques' ? '#fdfdc9' : '#824265',
+                        border: '1px solid rgba(130, 66, 101, 0.3)',
+                        borderRadius: '8px',
+                        fontSize: '0.8rem',
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        whiteSpace: 'nowrap',
+                        boxShadow: trendsPanelOpen && trendsPanelTab === 'boutiques' ? '0 0 12px rgba(253,253,201,0.25)' : 'none'
+                      }}
+                    >
+                      🏪 Local Boutiques
+                      {boutiqueData?.boutiques && (
+                        <span style={{
+                          background: trendsPanelOpen && trendsPanelTab === 'boutiques' ? 'rgba(253,253,201,0.3)' : 'rgba(130, 66, 101, 0.15)',
+                          borderRadius: '10px',
+                          padding: '1px 7px',
+                          fontSize: '0.65rem',
+                          fontWeight: 'bold'
+                        }}>{boutiqueData.boutiques.length}</span>
+                      )}
+                    </button>
 
-                <div style={{ width: '1px', height: '28px', background: 'var(--border-color)', margin: '0 4px' }} />
-
+                    <div style={{ width: '1px', height: '28px', background: 'var(--border-color)', margin: '0 4px' }} />
+                  </>
+                )}
 
                 <button className="onboarding-btn" onClick={() => setShowOnboarding(true)}>
                   ✨ Vibe Check
@@ -1263,83 +1825,90 @@ function App() {
               </div>
             </div>
             
-            <div className="slider-container">
-              <input 
-                type="range" 
-                min="0" 
-                max={dateProfiles.length - 1} 
-                value={sliderVal} 
-                onChange={handleSliderChange}
-                className="slider-input"
-              />
-              <div className="slider-labels" style={{ gridTemplateColumns: `repeat(${dateProfiles.length}, 1fr)` }}>
-                {dateProfiles.map((profile, index) => (
-                  <span 
-                    key={profile.key} 
-                    className={`slider-label ${sliderVal === index ? 'active' : ''}`} 
-                    onClick={() => handleSliderChange({target:{value:index}})}
-                    style={{ fontSize: '0.7rem' }}
-                  >
-                    {profile.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-            
-            {/* Live Environmental Factors */}
-            <div className="env-factors-row">
-              <div className="factor-box">
-                <div className="factor-title">Temperature</div>
-                <div className="factor-value" style={{
-                  color: getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("10°") || 
-                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("8°") || 
-                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("9°") ? '#c69fd5' : 
-                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("39°") || 
-                         getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("38°") ? '#fdfdc9' : '#f6f1f9'
-                }}>
-                  {getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp}
+            {timeTravelVisible && (
+              <>
+                <div className="slider-container">
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max={dateProfiles.length - 1} 
+                    value={sliderVal} 
+                    onChange={handleSliderChange}
+                    className="slider-input"
+                  />
+                  <div className="slider-labels" style={{ gridTemplateColumns: `repeat(${dateProfiles.length}, 1fr)` }}>
+                    {dateProfiles.map((profile, index) => (
+                      <span 
+                        key={profile.key} 
+                        className={`slider-label ${sliderVal === index ? 'active' : ''}`} 
+                        onClick={() => handleSliderChange({target:{value:index}})}
+                        style={{ fontSize: '0.7rem' }}
+                      >
+                        {profile.label}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="factor-box">
-                <div className="factor-title">Weather Status</div>
-                <div className="factor-value">
-                  {getPresetWeather(currentZipCode, activeDateProfile.dateStr).desc}
+                
+                {/* Live Environmental Factors */}
+                <div className="env-factors-row">
+                  <div className="factor-box">
+                    <div className="factor-title">Temperature</div>
+                    <div className="factor-value" style={{
+                      color: getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("10°") || 
+                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("8°") || 
+                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("9°") ? '#1e40af' : 
+                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("39°") || 
+                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("38°") ? '#9a3412' : 'var(--text-main)'
+                    }}>
+                      {getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp}
+                    </div>
+                  </div>
+                  <div className="factor-box">
+                    <div className="factor-title">Weather Status</div>
+                    <div className="factor-value" style={{ color: 'var(--text-main)' }}>
+                      {getPresetWeather(currentZipCode, activeDateProfile.dateStr).desc}
+                    </div>
+                  </div>
+                  <div className="factor-box">
+                    <div className="factor-title">Local Calendar Event</div>
+                    <div className="factor-value" style={{fontSize: '0.75rem', color: 'var(--peach-dark)', lineHeight: '1.2'}}>
+                      {activeDateProfile.event}
+                    </div>
+                  </div>
+                  <div className="factor-box">
+                    <div className="factor-title">Active Surge</div>
+                    <div className="factor-value" style={{fontSize: '0.8rem', color: 'var(--peach-dark)'}}>
+                      {activeDateProfile.event_type === 'wedding_day' ? 'Wedding Surge 💍' : activeDateProfile.isFestive ? 'Festive Surge 🥻' : 'None'}
+                    </div>
+                  </div>
+                  <div className="factor-box">
+                    <div className="factor-title">Avg Order Value</div>
+                    <div className="factor-value" style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>
+                      {zipInsights ? `₹${zipInsights.average_order_value.toLocaleString('en-IN')}` : '₹...'}
+                    </div>
+                  </div>
+                  <div className="factor-box">
+                    <div className="factor-title">Upcoming (7 Days)</div>
+                    <div className="factor-value" style={{ fontSize: '0.7rem', color: 'var(--peach-dark)', lineHeight: '1.4' }}>
+                      {zipInsights && zipInsights.upcoming_events && zipInsights.upcoming_events.length > 0
+                        ? zipInsights.upcoming_events.slice(0, 2).map((ev, i) => (
+                            <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-main)' }}>
+                              📅 {ev.event_name.split('(')[0].trim()}
+                            </div>
+                          ))
+                        : 'No events soon'
+                      }
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="factor-box">
-                <div className="factor-title">Local Calendar Event</div>
-                <div className="factor-value" style={{fontSize: '0.75rem', color: '#fdfdc9', lineHeight: '1.2'}}>
-                  {activeDateProfile.event}
-                </div>
-              </div>
-              <div className="factor-box">
-                <div className="factor-title">Active Surge</div>
-                <div className="factor-value" style={{fontSize: '0.8rem', color: '#c69fd5'}}>
-                  {activeDateProfile.event_type === 'wedding_day' ? 'Wedding Surge 💍' : activeDateProfile.isFestive ? 'Festive Surge 🥻' : 'None'}
-                </div>
-              </div>
-              <div className="factor-box">
-                <div className="factor-title">Avg Order Value</div>
-                <div className="factor-value" style={{ color: '#fdfdc9', fontWeight: 'bold' }}>
-                  {zipInsights ? `₹${zipInsights.average_order_value.toLocaleString('en-IN')}` : '₹...'}
-                </div>
-              </div>
-              <div className="factor-box">
-                <div className="factor-title">Upcoming (7 Days)</div>
-                <div className="factor-value" style={{ fontSize: '0.7rem', color: '#c69fd5', lineHeight: '1.4' }}>
-                  {zipInsights && zipInsights.upcoming_events && zipInsights.upcoming_events.length > 0
-                    ? zipInsights.upcoming_events.slice(0, 2).map((ev, i) => (
-                        <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#fdfdc9' }}>
-                          📅 {ev.event_name.split('(')[0].trim()}
-                        </div>
-                      ))
-                    : 'No events soon'
-                  }
-                </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
           
+          {/* Dynamic National & Regional Festival Banners */}
+          {renderFestivalBanners()}
+
           {/* Feed Header - only show surge tab toggle when active */}
           {velocitySurgeData && (
             <div className="feed-header">
@@ -1393,134 +1962,83 @@ function App() {
               </div>
             </div>
           ) : (
-            <div className="catalog-grid">
-              {products.map((product, idx) => {
-                const hasWeddingSurge = (activeDateProfile.event_type === "wedding_day") && product.tags.includes("ceremonial");
-                const hasFestiveSurge = activeDateProfile.isFestive && product.tags.includes("festive") && !hasWeddingSurge;
-                const isMicroCreator = product.tags.includes("micro_creator");
-                const isInCart = sessionCart.includes(product.id);
-                
-                return (
-                  <div 
-                    key={product.id} 
-                    className={`product-card ${selectedProduct && selectedProduct.id === product.id ? 'selected' : ''} ${purchasingId === product.id ? 'card-purchasing' : ''}`}
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setShowModal(true);
-                      logMessage(`Opened detail modal for '${product.name}'. Fetching co-purchases & styling shelf...`, "info");
-                    }}
-                  >
-                    <div className="rank-badge">Rank {idx + 1}</div>
-                    
-                    <div className="product-image-container">
-                      <img 
-                        src={product.image_url} 
-                        alt={product.name} 
-                        className="product-image"
-                        onError={(e) => {
-                          e.target.src = `https://placehold.co/400x500/${product.category === 'festive' ? '8b0000' : product.category === 'winter' ? '301934' : product.category === 'streetwear' ? '708090' : '135206'}/ffffff?text=${encodeURIComponent(product.name)}`;
-                        }}
-                      />
-                      <div className="score-badge">
-                        {(product.final_score * 100).toFixed(1)}%
-                      </div>
-                      
-                      {isMicroCreator && (
-                        <div className="surge-pill" style={{ background: '#7A5A45', color: '#CD9FBC', top: '40px', left: '8px', bottom: 'auto' }}>
-                          Micro-Creator 🌾
-                        </div>
-                      )}
-                      
-                      {product.is_trending && (
-                        <div className="surge-pill" style={{ background: 'linear-gradient(135deg, #824265, #5C283C)', color: '#CD9FBC', top: isMicroCreator ? '68px' : '40px', left: '8px', bottom: 'auto', fontWeight: '800' }}>
-                          🔥 Trending
-                        </div>
-                      )}
-                      
-                      {hasWeddingSurge && (
-                        <div className="surge-pill" style={{ background: '#824265', color: '#CD9FBC' }}>Wedding Surge 💍</div>
-                      )}
-                      {hasFestiveSurge && (
-                        <div className="surge-pill festive">Festive Surge 🥻</div>
-                      )}
-                    </div>
-                    
-                    <div className="product-info">
-                      <p className="product-category" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>{product.category}</span>
-                        {product.zip_codes && product.zip_codes.length > 0 && (
-                          <span style={{ color: '#CD9FBC', fontWeight: 'bold' }}>LOCAL</span>
-                        )}
-                      </p>
-                      <h4 className="product-name">{product.name}</h4>
-                      <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#BA9476', fontWeight: 'bold' }}>₹{product.price}</p>
-                      
-                      <div className="product-tags" style={{ margin: '8px 0' }}>
-                        {product.tags.slice(0, 3).map(tag => (
-                          <span 
-                            key={tag} 
-                            className={`product-tag ${activeDateProfile.trendingTags.includes(tag) ? 'highlight' : ''}`}
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
+            <div>
+              {/* 1. Recommended For You */}
+              <div className="section-container">
+                <h2 className="section-title">✨ Recommended For You</h2>
+                {products.filter(p => !p.is_global_trend).length > 0 ? (
+                  <div className="horizontal-shelf">
+                    {products
+                      .filter(p => !p.is_global_trend)
+                      .slice(0, 25)
+                      .map((product, idx) => renderProductCard(product, idx))}
+                  </div>
+                ) : (
+                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No recommendations matching your search space.</p>
+                )}
+              </div>
 
-                      {/* Interactive Buttons */}
-                      <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
-                        <button 
-                          className="onboarding-btn" 
-                          style={{ flex: 1, padding: '4px 8px', fontSize: '0.75rem', background: isInCart ? '#5C283C' : '#824265', border: '1px solid rgba(205,159,188,0.2)', color: '#CD9FBC' }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (isInCart) handleRemoveFromCart(product.id);
-                            else handleAddToCart(product.id);
-                          }}
-                        >
-                          {isInCart ? "🛒 Remove" : "🛒 Add"}
-                        </button>
-                        <button 
-                          className="onboarding-btn"
-                          style={{ padding: '4px 8px', fontSize: '0.75rem', background: 'transparent', border: '1px solid var(--border-color)', color: 'white' }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddToWishlist(product.id);
-                          }}
-                        >
-                          ❤️ Wishlist
-                        </button>
-                      </div>
-
-                      {product.product_url && (
-                        <div style={{ marginTop: '10px' }}>
-                          <a 
-                            href={product.product_url} 
-                            target="_blank" 
-                            rel="noreferrer"
-                            style={{ 
-                              display: 'block', 
-                              padding: '5px 10px', 
-                              background: 'rgba(255,255,255,0.05)', 
-                              color: 'white', 
-                              textDecoration: 'none', 
-                              borderRadius: '4px', 
-                              fontSize: '0.75rem',
-                              fontWeight: 'bold',
-                              textAlign: 'center',
-                              border: '1px solid var(--border-color)'
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            🛍️ View on Myntra
-                          </a>
-                        </div>
-                      )}
+              {/* 2. Global Trends */}
+              <div className="section-container">
+                <div 
+                  className="festival-banner" 
+                  style={{ backgroundImage: `url(/images/global_trends_banner.png)` }}
+                  onClick={() => setExpandedSections(prev => ({ ...prev, global: !prev.global }))}
+                >
+                    <div className="banner-overlay">
+                      <span className="banner-badge">🌍 GLOBAL STYLE PULSE</span>
+                      <h2 className="banner-title">GLOBAL RUNWAY TRENDS</h2>
+                      <span className="banner-cta">
+                        {expandedSections.global ? '🙈 CLICK TO COLLAPSE COLLECTION' : '✨ CLICK TO EXPLORE TRENDS'}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
+                  
+                  {expandedSections.global && (() => {
+                    let extractedGlobalTrends = [];
+                    if (globalRunwayData && globalRunwayData.cities) {
+                      Object.entries(globalRunwayData.cities).forEach(([cityKey, cityData]) => {
+                        if (cityData.trends) {
+                          cityData.trends.forEach(trend => {
+                            extractedGlobalTrends.push({
+                              id: `global_${trend.id || trend.trend_name}`,
+                              name: trend.trend_name,
+                              description: trend.description,
+                              tags: trend.vibe_tags || [],
+                              category: "Global Runway",
+                              is_global_trend: true,
+                              global_city: cityData.city || cityKey,
+                              global_country: cityData.country || "",
+                              global_flag: cityData.flag || "🌍",
+                              global_primary_color: cityData.primary_color || "#9b6cb5",
+                              global_style_archetype: cityData.style_archetype || "",
+                              global_season: cityData.season || "SS26",
+                              global_heat_score: trend.heat_score || 0.9,
+                              global_searches_weekly: trend.global_searches_weekly || 150000,
+                              global_key_pieces: trend.key_pieces || [],
+                              global_trending_colors: trend.trending_colors || []
+                            });
+                          });
+                        }
+                      });
+                    }
+                    const globalProducts = extractedGlobalTrends.length > 0 
+                      ? extractedGlobalTrends 
+                      : products.filter(p => p.is_global_trend);
+                      
+                    return globalProducts.length > 0 ? (
+                      <div className="global-trends-vertical-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px', marginTop: '15px' }}>
+                        {globalProducts
+                          .slice(0, 25)
+                          .map((product) => renderGlobalTrendCard(product))}
+                      </div>
+                    ) : (
+                      <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Global trends loading...</p>
+                    );
+                  })()}
+                </div>
+              </div>
+            )}
         </div>
         
 
@@ -1741,8 +2259,8 @@ function App() {
                   padding: '6px 14px',
                   borderRadius: '20px',
                   border: 'none',
-                  background: trendsPanelTab === 'youtube' ? '#824265' : 'rgba(122,90,69,0.12)',
-                  color: 'white',
+                  background: trendsPanelTab === 'youtube' ? '#824265' : 'rgba(130, 66, 101, 0.08)',
+                  color: trendsPanelTab === 'youtube' ? 'white' : '#824265',
                   fontSize: '0.78rem',
                   fontWeight: 'bold',
                   cursor: 'pointer'
@@ -1756,8 +2274,8 @@ function App() {
                   padding: '6px 14px',
                   borderRadius: '20px',
                   border: 'none',
-                  background: trendsPanelTab === 'boutiques' ? '#5C283C' : 'rgba(122,90,69,0.08)',
-                  color: 'white',
+                  background: trendsPanelTab === 'boutiques' ? '#5C283C' : 'rgba(92, 40, 60, 0.08)',
+                  color: trendsPanelTab === 'boutiques' ? 'white' : '#5C283C',
                   fontSize: '0.78rem',
                   fontWeight: 'bold',
                   cursor: 'pointer'
@@ -1816,21 +2334,45 @@ function App() {
                       <div key={idx} className="creator-card" style={{ flexDirection: 'column' }}>
                         <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                           <div className="creator-thumb-wrap" style={{ minWidth: '100px', width: '100px', height: '60px' }}>
-                            <img
-                              src={item.youtube_video.thumbnail_url}
-                              alt="thumb"
-                              className="creator-thumb"
-                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                              onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
-                            />
+                            {item.youtube_video.video_url ? (
+                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
+                                <img
+                                  src={item.youtube_video.thumbnail_url}
+                                  alt="thumb"
+                                  className="creator-thumb"
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                  onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
+                                />
+                              </a>
+                            ) : (
+                              <img
+                                src={item.youtube_video.thumbnail_url}
+                                alt="thumb"
+                                className="creator-thumb"
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
+                              />
+                            )}
                             <div className="creator-rank-badge">#{idx + 1}</div>
                             {item.youtube_video.video_url && (
                               <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" className="creator-play-btn">▶</a>
                             )}
                           </div>
-                          <div className="creator-info" style={{ flex: 1 }}>
-                            <p className="creator-video-title">{item.youtube_video.title}</p>
-                            <p className="creator-channel">📺 {item.youtube_video.channel}</p>
+                          <div className="creator-info" style={{ flex: 1, padding: '0 10px' }}>
+                            {item.youtube_video.video_url ? (
+                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <p className="creator-video-title" style={{ cursor: 'pointer' }}>{item.youtube_video.title}</p>
+                              </a>
+                            ) : (
+                              <p className="creator-video-title">{item.youtube_video.title}</p>
+                            )}
+                            {item.youtube_video.video_url ? (
+                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <p className="creator-channel" style={{ cursor: 'pointer' }}>📺 {item.youtube_video.channel}</p>
+                              </a>
+                            ) : (
+                              <p className="creator-channel">📺 {item.youtube_video.channel}</p>
+                            )}
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
                               {item.youtube_video.inferred_tags?.slice(0, 3).map(tag => (
                                 <span key={tag} className="creator-tag">{tag}</span>

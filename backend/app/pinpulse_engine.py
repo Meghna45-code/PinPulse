@@ -9,8 +9,6 @@ from config import (
     CONTEXT_MATRICES,
     CACHE_TTL_SECONDS,
     EVERGREEN_FIXED_SCORE,
-    LOW_STOCK_THRESHOLD,
-    LOW_STOCK_PENALTY,
 )
 from scoring_engine import (
     calculate_aesthetic_score,
@@ -102,8 +100,8 @@ class PinPulseEngine:
                 
         return blended
 
-    def _get_cache_key(self, zip_code, state, festival_active, aesthetic):
-        return f"{zip_code}_{state}_{festival_active}_{aesthetic}"
+    def _get_cache_key(self, zip_code, state, festival_active, aesthetic, active_date=""):
+        return f"{zip_code}_{state}_{festival_active}_{aesthetic}_{active_date}"
 
     def score_all_products(self, user_context):
         """
@@ -146,7 +144,7 @@ class PinPulseEngine:
             active_festival = zip_info.get("active_festival")
             
         festival_active = active_festival is not None
-        cache_key = self._get_cache_key(zip_code, state, festival_active, user_aesthetic)
+        cache_key = self._get_cache_key(zip_code, state, festival_active, user_aesthetic, active_date)
         
         now = time.time()
         # Bypass cache if cart has items or interactions exist to keep UI reactive
@@ -330,10 +328,6 @@ class PinPulseEngine:
                 + weights["w_intent"] * s_intent
                 + weights["w_velocity"] * s_velocity
             )
-
-            # === INVENTORY PENALTY ===
-            if product.get("stock_level", 50) < LOW_STOCK_THRESHOLD:
-                final_score *= LOW_STOCK_PENALTY
 
             # === PILLAR A: Age Appropriateness Multiplier ===
             # Use the *inferred* age from cart/wishlist, NOT the user-declared one.

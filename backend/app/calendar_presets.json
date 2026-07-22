@@ -1,6 +1,37 @@
 [
   {
     "zip_code": "800008",
+    "date": "2026-01-14",
+    "event_name": "Makar Sankranti Harvest",
+    "event_type": "festival",
+    "attire_tags": [
+      "ethnic",
+      "casual",
+      "cotton",
+      "yellow",
+      "dailywear"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "752001",
+    "date": "2026-09-15",
+    "event_name": "Nuakhai Agricultural Harvest Festival",
+    "event_type": "festival",
+    "attire_tags": [
+      "sambalpuri",
+      "handloom",
+      "cotton",
+      "traditional",
+      "ethnic",
+      "saree",
+      "kurta",
+      "odisha"
+    ],
+    "is_festive": true
+  },
+  {
+    "zip_code": "800008",
     "date": "2026-11-15",
     "event_name": "Chhath Puja (Sandhya Arghya)",
     "event_type": "festival",

@@ -233,7 +233,7 @@ def seed_database():
         
     except Exception as e:
         logger.error(f"❌ Failed to seed Supabase: {e}")
-        logger.error("IMPORTANT: Make sure you have created the 'regional_boutique_trends' table in your Supabase SQL editor using the schema in backend/schema.sql!")
+        logger.error("IMPORTANT: Make sure you have created the 'regional_boutique_trends' table in your Supabase SQL editor using the schema in database/schema.sql!")
 
 if __name__ == "__main__":
     seed_database()

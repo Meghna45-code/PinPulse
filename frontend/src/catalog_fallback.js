@@ -1,6 +1,6 @@
 export const FALLBACK_PRODUCTS = [
   {
-    "id": 61,
+    "id": 1,
     "name": "Dual-Tone Silk Blend Saree",
     "description": "This elegant dual-tone saree showcases a seamless transition from a bright yellow pallu to a deep red pleated skirt, both enhanced by delicate silver zari motifs. Expertly tailored from a premium silk blend, this ensemble provides a sophisticated and radiant look ideal for festive celebrations and traditional events.",
     "category": "ethnic",
@@ -539,7 +539,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 23
   },
   {
-    "id": 62,
+    "id": 2,
     "name": "Minimalist Red Cotton Saree",
     "description": "Exuding elegance and simplicity, this vibrant red cotton saree is highlighted by a bold yellow border and charming tassel accents at the pallu. It offers a graceful and sophisticated silhouette, making it an ideal choice for traditional festivities and cultural celebrations.",
     "category": "ethnic",
@@ -1077,7 +1077,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 63,
+    "id": 3,
     "name": "Tailored Cream Wool Coat",
     "description": "This sophisticated, cream-colored wool coat features a structured tailored silhouette with a clean back vent and lapel detailing. Perfectly layered over dark leggings and matching ankle boots, it offers a refined, polished aesthetic suitable for professional or upscale settings.",
     "category": "winter",
@@ -1615,7 +1615,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 27
   },
   {
-    "id": 64,
+    "id": 4,
     "name": "Tailored Notch Collar Woolen Coat",
     "description": "This sophisticated, form-fitting black coat features a classic notch lapel and a structured button-front design, offering a sleek silhouette. It is an essential layering piece that combines timeless formal elegance with modern, professional tailoring.",
     "category": "winter",
@@ -2156,7 +2156,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 5
   },
   {
-    "id": 65,
+    "id": 5,
     "name": "Tiered Ruffle Chiffon Maxi Dress",
     "description": "This elegant butter-yellow maxi dress features delicate diagonal tiered ruffles that add volume and texture to the lightweight chiffon fabric. Designed with a sophisticated sleeveless silhouette, it offers a graceful, fluid drape perfect for summer events and special occasions.",
     "category": "western",
@@ -2696,7 +2696,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 11
   },
   {
-    "id": 66,
+    "id": 6,
     "name": "Glitter Bodycon Ruched Midi Dress",
     "description": "This elegant bodycon midi dress features a shimmering glitter finish and a flattering ruched side detail. Designed with delicate spaghetti straps and a clean sweetheart neckline, it is a perfect statement piece for evening parties and celebratory occasions.",
     "category": "western",
@@ -3237,7 +3237,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 67,
+    "id": 7,
     "name": "Red Banarasi Silk Saree",
     "description": "Exquisitely crafted in rich red silk, this Banarasi saree features intricate gold zari woven patterns and a sophisticated border. It is designed to offer a timeless, elegant aesthetic perfect for traditional ceremonies and grand festive celebrations.",
     "category": "ethnic",
@@ -3775,7 +3775,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 68,
+    "id": 8,
     "name": "Heavy Embroidered Banarasi Silk Saree",
     "description": "This exquisite red Banarasi silk saree features intricate golden zari weave patterns throughout the fabric, creating a rich, opulent aesthetic perfect for wedding ceremonies. The ensemble is elegantly complemented by a matching short-sleeved blouse and a traditional broad golden border, reflecting timeless Indian craftsmanship.",
     "category": "ethnic",
@@ -4315,7 +4315,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 69,
+    "id": 9,
     "name": "Embroidered Kasavu Cotton Saree",
     "description": "This elegant off-white Kasavu saree features traditional gold zari borders accented with intricate red and yellow floral embroidery. Designed with a classic pallu and tasseled hem, this piece offers a refined, heritage-inspired look perfect for weddings and cultural festivities.",
     "category": "ethnic",
@@ -4854,7 +4854,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 40
   },
   {
-    "id": 70,
+    "id": 10,
     "name": "Hand-Painted Floral Kasavu Saree",
     "description": "This elegant off-white Kasavu saree features a classic gold zari border complemented by delicate, hand-painted floral motifs along the pallu. Paired with a solid gold blouse, it offers a sophisticated and traditional aesthetic perfect for weddings and cultural festivities.",
     "category": "ethnic",
@@ -5394,7 +5394,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 33
   },
   {
-    "id": 71,
+    "id": 11,
     "name": "Textured Slim-Fit Casual Blazer",
     "description": "Exuding a sharp, minimalist aesthetic, this dark grey textured blazer features a clean notched lapel and a structured silhouette. Perfect for modern office attire or upscale evening events, its subtle micro-pattern adds depth to a polished, professional look.",
     "category": "western",
@@ -5934,7 +5934,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 38
   },
   {
-    "id": 72,
+    "id": 12,
     "name": "Embroidered Black Nehru Jacket Set",
     "description": "This elegant black Nehru jacket features intricate, detailed nature-inspired embroidery and is paired with a matching kurta, making it a sophisticated choice for weddings and festive occasions. The premium fabric offers a refined silhouette that effortlessly combines traditional artistry with contemporary style.",
     "category": "ethnic",
@@ -6474,7 +6474,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 3
   },
   {
-    "id": 73,
+    "id": 13,
     "name": "Beige Linen Co-ord Set",
     "description": "This minimalist beige co-ord set features a button-down tunic shirt with a back pleat and matching high-waisted wide-leg trousers. Crafted from premium breathable linen, this ensemble offers a sophisticated bohemian aesthetic perfect for effortless everyday styling.",
     "category": "casual",
@@ -7011,7 +7011,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 32
   },
   {
-    "id": 74,
+    "id": 14,
     "name": "Embroidered Mustard Straight Kurta Set",
     "description": "This elegant mustard co-ord set features a straight-cut kurta adorned with delicate floral embroidery along the neckline and sleeves, paired with matching tapered trousers. Crafted from premium linen, it offers a refined silhouette perfect for festive celebrations and semi-formal occasions.",
     "category": "ethnic",
@@ -7551,7 +7551,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 11
   },
   {
-    "id": 75,
+    "id": 15,
     "name": "Black Velvet Halter Gown",
     "description": "Exude elegance in this luxurious black velvet evening gown, featuring a sophisticated halter neckline and a minimalist silhouette. This timeless piece is perfect for red carpet events or high-end evening galas, effortlessly capturing a chic, refined aesthetic.",
     "category": "western",
@@ -8089,9 +8089,9 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 21
   },
   {
-    "id": 76,
+    "id": 16,
     "name": "Black Velvet Midi Evening Gown",
-    "description": "This sophisticated evening gown is crafted from plush black velvet, featuring elegant puffed sleeves and a shimmering crystal-embellished waistline. Designed with a classic V-neckline and a graceful A-line midi skirt, it offers a timeless silhouette perfect for formal gala events and cocktail soir\u00e9es.",
+    "description": "This sophisticated evening gown is crafted from plush black velvet, featuring elegant puffed sleeves and a shimmering crystal-embellished waistline. Designed with a classic V-neckline and a graceful A-line midi skirt, it offers a timeless silhouette perfect for formal gala events and cocktail soir\u00c3\u00a9es.",
     "category": "western",
     "image_url": "/images/16.jpg",
     "product_url": "https://www.myntra.com/dresses/miss+chase/miss-chase-women-sequined-puff-sleeve-velvet-gown-maxi-dress/36676226/buy",
@@ -8628,7 +8628,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 44
   },
   {
-    "id": 77,
+    "id": 17,
     "name": "Floral Print Cotton Kurta",
     "description": "Crafted from breathable cotton, this vibrant yellow kurta features an intricate, delicate white floral block print. The classic mandarin collar and refined button placket offer a sophisticated ethnic aesthetic perfect for festive celebrations and traditional gatherings.",
     "category": "ethnic",
@@ -9167,7 +9167,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 78,
+    "id": 18,
     "name": "Chikankari Embroidered Yellow Kurta",
     "description": "Crafted from breathable cotton, this vibrant yellow kurta features intricate tone-on-tone Chikankari embroidery in a classic geometric floral pattern. With its sophisticated mandarin collar and clean button placket, this piece offers a refined aesthetic perfect for traditional gatherings and festive celebrations.",
     "category": "ethnic",
@@ -9706,7 +9706,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 34
   },
   {
-    "id": 79,
+    "id": 19,
     "name": "Navy Blue Shawl Lapel Tuxedo",
     "description": "Exuding sophistication, this navy blue tuxedo features a sleek shawl lapel with a refined satin finish and a single-button closure. It is expertly tailored for a sharp, modern silhouette, making it an ideal choice for formal receptions and high-end evening events.",
     "category": "western",
@@ -10247,7 +10247,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 24
   },
   {
-    "id": 80,
+    "id": 20,
     "name": "Textured Navy Blue Blazer",
     "description": "Elevate your formal wardrobe with this impeccably tailored navy blue blazer, featuring a sophisticated, intricate textured weave pattern. Designed for the modern gentleman, this structured jacket pairs seamlessly with a crisp white shirt for a refined and polished look at any reception or event.",
     "category": "western",
@@ -10787,7 +10787,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 1
   },
   {
-    "id": 81,
+    "id": 21,
     "name": "Embroidered Velvet Lehenga Choli",
     "description": "Exquisitely crafted in premium magenta velvet, this designer lehenga choli features intricate mirror-work embroidery around the neckline and sleeve cuffs. The set offers a regal, sophisticated look, perfect for traditional celebrations and high-end festive occasions.",
     "category": "ethnic",
@@ -11326,7 +11326,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 8
   },
   {
-    "id": 82,
+    "id": 22,
     "name": "Embroidered Velvet Bridal Lehenga",
     "description": "This exquisite crimson velvet lehenga features intricate gold zari embroidery and a structured grid-patterned skirt. The ensemble is completed with a matching blouse featuring a classic open-back design and a heavily embellished, semi-sheer dupatta that drapes elegantly.",
     "category": "ethnic",
@@ -11865,7 +11865,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 12
   },
   {
-    "id": 83,
+    "id": 23,
     "name": "Pink Checkered Floral Linen Saree",
     "description": "This elegant linen saree features a classic pink and white checkered pattern accented with delicate floral embroidery. It is paired with a matching floral-printed blouse, offering a perfect blend of contemporary style and traditional grace for casual outings.",
     "category": "ethnic",
@@ -12404,7 +12404,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 27
   },
   {
-    "id": 84,
+    "id": 24,
     "name": "Geometric Print Linen Saree",
     "description": "Exuding contemporary elegance, this premium linen saree features a sophisticated abstract geometric print in earthy tones. It is styled with a matching sleeveless blouse and finished with subtle gold-toned borders, making it a perfect choice for elevated casual wear or smart-office ensembles.",
     "category": "ethnic",
@@ -12943,7 +12943,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 85,
+    "id": 25,
     "name": "Heart-Applique Ribbed Knit Sweater",
     "description": "Embrace a playful aesthetic with this cozy beige oversized sweater, featuring vibrant pink heart appliques scattered across the sleeves and bodice. Crafted from a soft, chunky ribbed knit, this piece offers both warmth and a trendy, youthful silhouette perfect for layering.",
     "category": "winter",
@@ -13483,7 +13483,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 36
   },
   {
-    "id": 86,
+    "id": 26,
     "name": "Oversized Cable-Knit Wool Sweater",
     "description": "Embrace cozy sophistication with this oversized, chunky cable-knit sweater featuring dramatic flared sleeves and a plush, heavy-weight wool texture. Perfectly curated for a modern winter silhouette, this piece effortlessly blends high-fashion street style with ultimate cold-weather comfort.",
     "category": "winter",
@@ -14022,7 +14022,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 39
   },
   {
-    "id": 87,
+    "id": 27,
     "name": "Embroidered Silk Nehru Jacket",
     "description": "This sophisticated black Nehru jacket features intricate gold thread embroidery in a geometric chevron pattern, finished with metallic button closures. Crafted from high-quality silk, it is the perfect layering piece to elevate a traditional white kurta for weddings and festive celebrations.",
     "category": "ethnic",
@@ -14561,7 +14561,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 33
   },
   {
-    "id": 88,
+    "id": 28,
     "name": "Geometric Brocade Nehru Jacket Set",
     "description": "This sophisticated ensemble features a vibrant blue Nehru jacket adorned with an intricate gold geometric brocade pattern, paired with a subtle, shimmering silver kurta. The structured mandarin collar and metallic button detailing offer a refined, polished aesthetic perfect for weddings and cultural celebrations.",
     "category": "ethnic",
@@ -15102,7 +15102,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 10
   },
   {
-    "id": 89,
+    "id": 29,
     "name": "Maroon Silk Zari Woven Saree",
     "description": "This elegant maroon saree is crafted from premium silk, featuring sophisticated geometric zari woven patterns in alternating silver and gold tones. The ensemble is completed with a matching blouse that showcases intricate traditional border detailing, offering a refined look perfect for formal festive occasions.",
     "category": "ethnic",
@@ -15641,7 +15641,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 29
   },
   {
-    "id": 90,
+    "id": 30,
     "name": "Embroidered Maroon Silk Kurta Set",
     "description": "This elegant maroon kurta features intricate gold embroidery on the yoke, paired with a matching dupatta adorned with subtle gold accents. The rich silk fabric and detailed craftsmanship make it an ideal choice for festive celebrations and special occasions.",
     "category": "ethnic",
@@ -16180,7 +16180,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 91,
+    "id": 31,
     "name": "Yellow Cotton Mandarin Collar Kurta",
     "description": "Exuding vibrant charm, this bright yellow cotton kurta features a classic mandarin collar and a refined half-button placket. Designed with versatile roll-up sleeves, this breathable ethnic piece is perfectly tailored for festive celebrations like Haldi ceremonies.",
     "category": "ethnic",
@@ -16719,7 +16719,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 17
   },
   {
-    "id": 92,
+    "id": 32,
     "name": "Printed Yellow Cotton Kurta",
     "description": "This vibrant yellow kurta features an intricate geometric and floral print with a graceful ombre-style hemline, perfect for festive celebrations and haldi ceremonies. Crafted from breathable cotton, it offers a sophisticated balance of traditional charm and modern comfort.",
     "category": "ethnic",
@@ -17257,7 +17257,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 8
   },
   {
-    "id": 93,
+    "id": 33,
     "name": "Embroidered Chikankari Kurta",
     "description": "This sophisticated navy blue kurta features intricate all-over Chikankari embroidery with delicate sequin embellishments. Designed with a modern mandarin collar and a clean button-down placket, this piece offers a perfect blend of traditional craftsmanship and contemporary style for festive occasions.",
     "category": "ethnic",
@@ -17796,7 +17796,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 20
   },
   {
-    "id": 94,
+    "id": 34,
     "name": "Chikankari Embroidered Mandarin Kurta",
     "description": "Elevate your festive look with this sophisticated red kurta, intricately detailed with classic Chikankari embroidery and subtle sequin work. Featuring a sharp mandarin collar and a refined button-down placket, this premium piece offers a perfect blend of traditional craftsmanship and contemporary style.",
     "category": "ethnic",
@@ -18336,7 +18336,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 7
   },
   {
-    "id": 95,
+    "id": 35,
     "name": "Tailored Formal Beige Blazer",
     "description": "This sophisticated beige blazer features a structured silhouette with clean lines and classic button detailing on the cuffs, perfect for a refined office aesthetic. Crafted with a premium finish, it offers a versatile and polished layer for modern formal wear.",
     "category": "western",
@@ -18874,7 +18874,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 24
   },
   {
-    "id": 96,
+    "id": 36,
     "name": "Black Velvet Notch Collar Blazer",
     "description": "Elevate your professional ensemble with this sophisticated black blazer, crafted from plush, high-quality velvet. Featuring a refined notch collar and a tailored fit, this piece serves as the perfect layering garment for formal winter engagements.",
     "category": "winter",
@@ -19413,7 +19413,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 48
   },
   {
-    "id": 97,
+    "id": 37,
     "name": "Ombre Floral Print Cotton Kurta",
     "description": "Crafted from breathable cotton, this elegant kurta features a sophisticated ombre fade from soft pink to muted teal. Detailed with subtle geometric block-print motifs and a refined mandarin collar, it offers a contemporary silhouette perfect for festive celebrations.",
     "category": "ethnic",
@@ -19953,7 +19953,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 37
   },
   {
-    "id": 98,
+    "id": 38,
     "name": "Printed Olive Green Kurta Set",
     "description": "This sophisticated olive green kurta features an intricate tonal geometric print throughout the fabric, finished with a decorative dark border at the hem. Paired with crisp white trousers and classic brown loafers, this ensemble offers a refined and modern look perfect for festive celebrations.",
     "category": "ethnic",
@@ -20493,7 +20493,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 34
   },
   {
-    "id": 99,
+    "id": 39,
     "name": "Floral Print Pink Cotton Kurti",
     "description": "This elegant pink kurti features a delicate floral block print and a classic V-neckline with three-quarter sleeves. Crafted from breathable cotton, it offers a comfortable yet sophisticated silhouette perfect for daily wear or casual outings.",
     "category": "ethnic",
@@ -21032,7 +21032,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 44
   },
   {
-    "id": 100,
+    "id": 40,
     "name": "Floral Print Cotton Kurti",
     "description": "This elegant short kurti features a vibrant floral block print on a crisp white base, accented with a notched mandarin collar and three-quarter sleeves. Its breathable cotton fabric and contemporary silhouette make it a versatile choice for everyday office wear or relaxed casual outings.",
     "category": "ethnic",
@@ -21571,7 +21571,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 1
   },
   {
-    "id": 101,
+    "id": 41,
     "name": "White Cotton Mandarin Collar Kurta",
     "description": "Crafted from breathable cotton fabric, this minimalist short white kurta features a clean mandarin collar and a refined chest pocket. Its understated aesthetic makes it a versatile staple for festive celebrations or smart-casual summer occasions.",
     "category": "ethnic",
@@ -22110,7 +22110,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 37
   },
   {
-    "id": 102,
+    "id": 42,
     "name": "White Cotton Casual Shirt",
     "description": "A crisp, minimalist white shirt crafted from breathable cotton, designed with a clean-cut silhouette and stylish rolled-up sleeves. This versatile piece offers a modern, sophisticated look perfect for effortless daily wear or semi-formal gatherings.",
     "category": "casual",
@@ -22646,7 +22646,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 14
   },
   {
-    "id": 103,
+    "id": 43,
     "name": "Maroon Printed Mandarin Collar Kurta",
     "description": "Elevate your ethnic wardrobe with this sophisticated maroon kurta featuring a subtle, intricate gold-toned print throughout. Designed with a clean mandarin collar and branded button placket, this piece offers a refined aesthetic perfect for festive celebrations and cultural gatherings.",
     "category": "ethnic",
@@ -23186,7 +23186,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 13
   },
   {
-    "id": 104,
+    "id": 44,
     "name": "Floral Print Anarkali Maxi Set",
     "description": "This elegant ethnic ensemble features a tiered Anarkali maxi dress adorned with a delicate pink and green floral block print on a subtle white striped base. It is complemented by a sheer, embroidered forest green dupatta, making it a sophisticated choice for festive celebrations and cultural gatherings.",
     "category": "ethnic",
@@ -23727,7 +23727,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 11
   },
   {
-    "id": 105,
+    "id": 45,
     "name": "Embroidered Organza Lehenga Set",
     "description": "This exquisite dark purple lehenga set is crafted from premium organza fabric, featuring intricate floral embroidery and a scalloped hemline on the dupatta. The elegant blouse design and rich, deep hue make it a perfect choice for sophisticated evening celebrations and festive occasions.",
     "category": "ethnic",
@@ -24266,7 +24266,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 20
   },
   {
-    "id": 106,
+    "id": 46,
     "name": "Embroidered Velvet Lehenga Choli",
     "description": "This exquisite deep purple velvet lehenga choli features intricate golden zari embroidery and a traditional paisley border. The ensemble is designed with a flared skirt and a matching embellished blouse, making it a sophisticated choice for traditional festive celebrations.",
     "category": "ethnic",
@@ -24805,7 +24805,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 48
   },
   {
-    "id": 107,
+    "id": 47,
     "name": "Symbolic Print Cotton Kurta",
     "description": "This sophisticated maroon kurta features an intricate white print showcasing Latvian mythological symbols and corresponding text. Designed with a feminine round neckline and elegant tassel-tie detailing, it offers a contemporary blend of ethnic heritage and minimalist office-ready style.",
     "category": "ethnic",
@@ -25344,7 +25344,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 43
   },
   {
-    "id": 108,
+    "id": 48,
     "name": "Printed Cotton Anarkali Kurta Set",
     "description": "This elegant rust-colored A-line kurta features a subtle floral motif print and a flattering gathered silhouette, perfect for a sophisticated office aesthetic. It is paired with minimalist bottoms and intricate gold-toned accents, offering a polished look for professional settings.",
     "category": "ethnic",
@@ -25884,7 +25884,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 25
   },
   {
-    "id": 109,
+    "id": 49,
     "name": "Satin Trimmed Slim-Fit Suit",
     "description": "This sophisticated black suit features a tailored blazer with sleek satin lapel trim, perfectly paired with a matching slim-fit shirt and trousers. Designed for formal elegance, it provides a sharp, polished silhouette ideal for high-end evening events or black-tie occasions.",
     "category": "western",
@@ -26424,7 +26424,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 42
   },
   {
-    "id": 110,
+    "id": 50,
     "name": "Women's Tailored Black Formal Suit",
     "description": "Elevate your professional wardrobe with this impeccably tailored women's black formal suit, featuring a single-button blazer with a sharp lapel and matching tapered trousers. Designed for a sleek, contemporary silhouette, this set is the perfect choice for corporate events or formal occasions.",
     "category": "western",
@@ -26963,7 +26963,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 21
   },
   {
-    "id": 111,
+    "id": 51,
     "name": "Pastel Gingham Puff Sleeve Dress",
     "description": "This charming pastel pink gingham dress features a classic collared neckline, delicate puffed sleeves, and intricate lace detailing along the yoke. Finished with a matching headband, this feminine piece offers a vintage-inspired aesthetic perfect for summer outings.",
     "category": "casual",
@@ -27503,7 +27503,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 2
   },
   {
-    "id": 112,
+    "id": 52,
     "name": "Embroidered Sheer Sleeve Shift Dress",
     "description": "This sophisticated black shift dress features striking white floral embroidery and elegant, voluminous sheer organza sleeves. The modern silhouette is perfectly complemented by a v-neckline, offering a refined yet contemporary look for upscale evening occasions.",
     "category": "western",
@@ -28044,7 +28044,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 24
   },
   {
-    "id": 113,
+    "id": 53,
     "name": "Suede Platform Block Heel Boots",
     "description": "These stylish black ankle boots feature a bold platform sole and a chunky block heel for elevated comfort and a modern aesthetic. Finished with a striking gold-toned side zipper, they are the perfect statement piece for a contemporary casual wardrobe.",
     "category": "footwear",
@@ -28584,7 +28584,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 22
   },
   {
-    "id": 114,
+    "id": 54,
     "name": "Block-Heeled Leather Riding Boots",
     "description": "These elegant knee-high boots are crafted from smooth black leather, featuring a sophisticated block heel and a subtle buckle-strap detail at the ankle. Designed with a sleek, minimalist silhouette and a convenient side zipper, they offer a polished look perfect for both professional and refined evening attire.",
     "category": "footwear",
@@ -29123,7 +29123,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 48
   },
   {
-    "id": 115,
+    "id": 55,
     "name": "Embroidered Maroon Silk Kurta",
     "description": "Crafted from rich, lustrous silk, this deep maroon kurta features intricate mirror-work embroidery along the placket and cuffs. It offers a sophisticated ethnic aesthetic perfect for festive celebrations and cultural gatherings.",
     "category": "ethnic",
@@ -29661,7 +29661,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 34
   },
   {
-    "id": 116,
+    "id": 56,
     "name": "Printed Geometric Art Silk Kurta",
     "description": "Exude sophistication in this premium art silk kurta, featuring a vibrant geometric pattern with intricate floral accents. Expertly tailored for festive occasions, this piece pairs seamlessly with white trousers and traditional sandals for a refined cultural look.",
     "category": "ethnic",
@@ -30201,7 +30201,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 5
   },
   {
-    "id": 117,
+    "id": 57,
     "name": "Double-Breasted Woolen Pea Coat",
     "description": "Elevate your cold-weather wardrobe with this sophisticated double-breasted grey wool coat, featuring a clean structured collar and tonal button detailing. Its polished, minimalist silhouette offers a timeless aesthetic, making it an ideal choice for professional or elegant layered ensembles.",
     "category": "winter",
@@ -30741,7 +30741,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 118,
+    "id": 58,
     "name": "Woolen Hooded Button-Down Coat",
     "description": "Crafted from premium wool, this elegant deep blue hooded coat features a sophisticated button-down front and a relaxed fit, perfect for layering during chilly weather. The structured silhouette and minimalist design make it an essential addition to any sophisticated winter wardrobe.",
     "category": "winter",
@@ -31281,7 +31281,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 36
   },
   {
-    "id": 119,
+    "id": 59,
     "name": "Printed Chiffon Casual Saree",
     "description": "This elegant casual saree features a contemporary newspaper-inspired typography print on a lightweight, airy chiffon fabric. Designed with a sophisticated dark border, it offers a chic and comfortable silhouette perfect for day-to-day wear or casual social gatherings.",
     "category": "ethnic",
@@ -31819,7 +31819,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 15
   },
   {
-    "id": 120,
+    "id": 60,
     "name": "Monochrome Striped Linen Saree",
     "description": "Exuding contemporary elegance, this monochrome saree features sharp vertical metallic stripes on a premium linen base, paired with a sophisticated sleeveless white blouse. The ensemble is perfectly complemented by a structured black handbag and a coordinating pallu, creating a polished, modern look for formal events.",
     "category": "ethnic",
@@ -32358,7 +32358,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 121,
+    "id": 61,
     "name": "Denim Collared Shirt Dress",
     "description": "This chic denim shirt dress features a classic pointed collar, long sleeves with button cuffs, and a flattering A-line silhouette. Its versatile indigo wash makes it a perfect staple for a polished, minimalist casual look.",
     "category": "western",
@@ -32897,7 +32897,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 38
   },
   {
-    "id": 122,
+    "id": 62,
     "name": "Kalamkari Accent Linen Shift Dress",
     "description": "This elegant powder blue linen shift dress features a refined shirt collar with a keyhole neckline and three-quarter sleeves finished with contrasting Kalamkari printed cuffs. The minimalist silhouette is elevated by a vibrant, hand-painted motif at the hem, blending contemporary comfort with traditional artisanal details.",
     "category": "western",
@@ -33437,7 +33437,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 36
   },
   {
-    "id": 123,
+    "id": 63,
     "name": "Black Embroidered Cotton Kurta Set",
     "description": "This elegant black ethnic kurta set features intricate cream-colored floral embroidery along the neckline and sleeves. Crafted from premium-quality fabric, the ensemble is completed with a matching sheer dupatta, offering a sophisticated look perfect for festive gatherings and celebrations.",
     "category": "ethnic",
@@ -33976,7 +33976,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 26
   },
   {
-    "id": 124,
+    "id": 64,
     "name": "Embroidered Elephant Motif Lehenga Set",
     "description": "This exquisite magenta lehenga set features intricate silver thread embroidery with traditional elephant motifs along the hemline. The ensemble is completed with a matching, heavily bordered dupatta, offering a sophisticated and vibrant look for festive celebrations.",
     "category": "ethnic",
@@ -34517,7 +34517,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 6
   },
   {
-    "id": 125,
+    "id": 65,
     "name": "Floral Printed Cotton Kurta Set",
     "description": "This elegant three-piece cotton ensemble features a straight-cut kurta adorned with intricate floral prints and delicate lace-trimmed detailing on the neckline. The set is beautifully coordinated with matching floral-print slim-fit trousers and a soft, airy dupatta, making it a perfect choice for comfortable yet sophisticated festive gatherings.",
     "category": "ethnic",
@@ -35057,7 +35057,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 42
   },
   {
-    "id": 126,
+    "id": 66,
     "name": "Bandhani Print Embroidered Kurta Set",
     "description": "Exude elegance with this navy blue cotton kurta featuring intricate mirror-work embroidery on the yoke and a classic Bandhani-inspired print. Paired with a complementary patterned dupatta, this set offers a sophisticated blend of traditional craftsmanship and contemporary festive style.",
     "category": "ethnic",
@@ -35598,7 +35598,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 49
   },
   {
-    "id": 127,
+    "id": 67,
     "name": "Printed Boho Tiered Midi Dress",
     "description": "This breezy midi-length dress features a tiered silhouette and vibrant, bohemian-inspired motifs on a soft, light-toned cotton base. Complemented by short flutter sleeves and a flattering V-neck, this versatile piece pairs perfectly with tan leather Chelsea boots for a chic, effortless daytime look.",
     "category": "casual",
@@ -36138,7 +36138,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 30
   },
   {
-    "id": 128,
+    "id": 68,
     "name": "Floral Print Flutter Sleeve Dress",
     "description": "Exude effortless elegance in this vibrant turquoise dress featuring a delicate watercolor floral print and romantic flutter sleeves. The soft, flowy silhouette and classic round neckline make it a perfect choice for sunlit garden parties or polished daytime outings.",
     "category": "casual",
@@ -36678,7 +36678,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 1
   },
   {
-    "id": 129,
+    "id": 69,
     "name": "Pink Banarasi Silk Saree",
     "description": "This exquisite pink Banarasi silk saree features intricate silver zari butti work throughout, complemented by a broad, ornate metallic border. The traditional craftsmanship and rich texture make it a sophisticated choice for festive celebrations and evening gatherings.",
     "category": "ethnic",
@@ -37216,7 +37216,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 42
   },
   {
-    "id": 130,
+    "id": 70,
     "name": "Sleeveless Bodycon Mini Dress",
     "description": "This sophisticated sleeveless bodycon mini dress features a sleek, minimalist design with a structured bodice and a clean silhouette. Perfectly tailored for an evening out, it offers a contemporary and elegant look that defines modern chic.",
     "category": "western",
@@ -37756,7 +37756,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 42
   },
   {
-    "id": 131,
+    "id": 71,
     "name": "Floral Print Rayon Kurti",
     "description": "Exuding a youthful charm, this casual rayon kurti features a vibrant botanical print in soft pastel hues. It is elevated by a contrasting, intricately embroidered central placket adorned with delicate lace trim, making it a perfect fusion staple for everyday college or office wear.",
     "category": "ethnic",
@@ -38295,7 +38295,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 5
   },
   {
-    "id": 132,
+    "id": 72,
     "name": "Printed Satin Co-ord Set",
     "description": "This sophisticated co-ord set features a relaxed-fit button-down shirt paired with matching wide-leg trousers, showcasing a vibrant abstract floral print. Crafted from smooth, lustrous satin, this ensemble offers an effortless blend of comfort and modern style, perfect for elevated daytime wear.",
     "category": "casual",
@@ -38833,7 +38833,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 16
   },
   {
-    "id": 133,
+    "id": 73,
     "name": "Embroidered Woolen Kurta",
     "description": "This sophisticated navy blue woolen kurta features intricate floral embroidery and shimmering sequin embellishments, offering a perfect blend of warmth and ethnic elegance. The notched neckline and refined craftsmanship make it an ideal choice for festive winter occasions.",
     "category": "winter",
@@ -39372,7 +39372,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 35
   },
   {
-    "id": 134,
+    "id": 74,
     "name": "Embroidered Net Lace Dupatta",
     "description": "Elevate your ethnic ensemble with this sophisticated red net dupatta, featuring intricate geometric embroidery and a delicate scalloped lace border. Designed to drape elegantly, this sheer accessory adds a layer of refined texture and traditional charm to any festive or formal outfit.",
     "category": "ethnic",
@@ -39911,7 +39911,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 135,
+    "id": 75,
     "name": "High-Low Hemline Kurta Set",
     "description": "This sophisticated red kurta set features a modern high-low hemline and is elegantly accented with a wide, decorative gold metallic panel along the neckline. Paired with coordinating wide-leg trousers, this ensemble offers a contemporary silhouette perfect for festive celebrations.",
     "category": "ethnic",
@@ -40451,7 +40451,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 28
   },
   {
-    "id": 136,
+    "id": 76,
     "name": "Embroidered Red Silk Kurta",
     "description": "This vibrant red kurta is crafted from premium silk, featuring exquisite multi-colored thread embroidery and delicate pearl embellishments around the neckline. The three-quarter sleeves and subtle floral motifs throughout the garment offer a sophisticated, festive aesthetic perfect for traditional celebrations.",
     "category": "ethnic",
@@ -40989,7 +40989,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 11
   },
   {
-    "id": 137,
+    "id": 77,
     "name": "Beige Linen Mandarin Collar Kurta",
     "description": "Crafted from breathable linen fabric, this minimalist beige kurta features a sleek mandarin collar and a classic button-down placket. Its clean silhouette and understated aesthetic make it a versatile choice for traditional festive occasions or sophisticated cultural gatherings.",
     "category": "ethnic",
@@ -41528,7 +41528,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 138,
+    "id": 78,
     "name": "Kalamkari Printed Silk Saree",
     "description": "Exude elegance in this sophisticated off-white silk saree, beautifully adorned with traditional Kalamkari-inspired bird and floral motifs in deep red and black. Its artisanal design and graceful drape make it a perfect choice for festive celebrations and cultural gatherings.",
     "category": "ethnic",
@@ -42067,7 +42067,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 36
   },
   {
-    "id": 139,
+    "id": 79,
     "name": "Floral Print Chiffon Saree",
     "description": "This elegant saree features a delicate, vibrant yellow floral print on a sheer chiffon base, accented with a subtle beaded trim along the border. Perfectly paired with a solid sleeveless blouse, this ensemble offers a sophisticated and contemporary take on traditional ethnic wear.",
     "category": "ethnic",
@@ -42606,7 +42606,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 9
   },
   {
-    "id": 140,
+    "id": 80,
     "name": "Pleated Cotton Casual Kurta",
     "description": "Crafted from soft, breathable cotton, this off-white kurta features delicate vertical pleat detailing along the front placket for a refined textured look. Finished with simple wooden-style buttons, this versatile piece offers a clean, minimalist aesthetic perfect for everyday ethnic wear or festive occasions.",
     "category": "ethnic",
@@ -43144,7 +43144,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 25
   },
   {
-    "id": 141,
+    "id": 81,
     "name": "Floral Print Cotton Kurta",
     "description": "This elegant white cotton kurta features a vibrant magenta floral block print and delicate lace detailing along the neckline and sleeves. Designed with a contemporary silhouette, it is perfectly paired with wide-leg denim jeans for a chic and comfortable fusion look.",
     "category": "ethnic",
@@ -43683,7 +43683,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 41
   },
   {
-    "id": 142,
+    "id": 82,
     "name": "Velvet Crop Top Lehenga Set",
     "description": "This elegant ethnic ensemble features a solid black velvet long-sleeve crop top paired with a voluminous floor-length skirt adorned with a bold, monochromatic abstract wavy print. Perfect for festive celebrations, the outfit combines traditional silhouettes with a contemporary, high-contrast aesthetic.",
     "category": "ethnic",
@@ -44223,7 +44223,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 35
   },
   {
-    "id": 143,
+    "id": 83,
     "name": "Sequin Embroidered Crop Top",
     "description": "This elegant black crop top is adorned with intricate, shimmering sequin embellishments, designed to capture the light for a stunning festive look. The sleeveless, structured silhouette offers a contemporary and sophisticated aesthetic perfect for celebratory occasions.",
     "category": "ethnic",
@@ -44763,7 +44763,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 37
   },
   {
-    "id": 144,
+    "id": 84,
     "name": "Block Heel Leather Ankle Boots",
     "description": "These elegant brown ankle boots feature a sophisticated block heel and a sleek, minimalist design with precise side-zipper detailing. Crafted from smooth, high-quality leather, they offer a polished aesthetic that pairs perfectly with tailored denim for a versatile, everyday look.",
     "category": "footwear",
@@ -45303,7 +45303,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 20
   },
   {
-    "id": 145,
+    "id": 85,
     "name": "Tartan Check Woolen Belted Coat",
     "description": "Exuding classic elegance, this dark green tartan plaid coat features a structured collar, a defining waist-cinching tie belt, and minimalist button detailing. Crafted from premium woolen fabric, it offers a refined silhouette that pairs perfectly with a sophisticated turtleneck for a polished cold-weather ensemble.",
     "category": "winter",
@@ -45844,7 +45844,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 34
   },
   {
-    "id": 146,
+    "id": 86,
     "name": "Black Textured Linen Shirt",
     "description": "Crafted from breathable, high-quality linen, this black shirt features a subtle textured weave and a modern slim-fit silhouette. Perfect for elevated summer styling, the sleeves are neatly cuffed, offering a refined yet relaxed aesthetic suitable for any casual outing.",
     "category": "casual",
@@ -46381,7 +46381,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 36
   },
   {
-    "id": 147,
+    "id": 87,
     "name": "Striped Linen Casual Shirt",
     "description": "Elevate your summer wardrobe with this premium linen shirt, featuring a sophisticated vertical stripe pattern in soft blue and earthy tan tones. Tailored for a relaxed yet polished look, it is perfect for casual outings or elevated weekend ensembles.",
     "category": "casual",
@@ -46918,7 +46918,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 39
   },
   {
-    "id": 148,
+    "id": 88,
     "name": "Double-Breasted Wool Belted Coat",
     "description": "This elegant double-breasted wool coat features a sophisticated shawl collar and a contrasting faux-leather waist belt to create a defined, tailored silhouette. Perfectly paired with knee-high boots, this piece offers a chic, polished aesthetic suitable for refined winter occasions.",
     "category": "winter",
@@ -47457,7 +47457,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 7
   },
   {
-    "id": 149,
+    "id": 89,
     "name": "Camel Wool Blend Trench Coat",
     "description": "Elevate your winter wardrobe with this sophisticated camel-toned wool blend coat, featuring a classic notched lapel, structured shoulders, and a self-tie waist belt. This timeless piece offers a polished silhouette, perfect for layering over elegant outfits for formal occasions.",
     "category": "winter",
@@ -47996,7 +47996,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 23
   },
   {
-    "id": 150,
+    "id": 90,
     "name": "Floral Print Cotton Maxi Dress",
     "description": "This elegant floral print midi dress features a soft pink base adorned with blue lotus motifs and a flattering tiered ruffle hem. With its classic round neckline and three-quarter sleeves, this breathable cotton piece offers a graceful silhouette perfect for relaxed everyday wear or festive outings.",
     "category": "casual",
@@ -48535,7 +48535,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 11
   },
   {
-    "id": 151,
+    "id": 91,
     "name": "Embroidered Teal V-Neck Kurta",
     "description": "This elegant teal kurta features a sophisticated V-neckline adorned with a button-down placket and intricate white thread embroidery on the sleeves. Finished with a graceful waist-tie detail, this piece offers a contemporary fusion aesthetic perfect for festive celebrations.",
     "category": "ethnic",
@@ -49074,7 +49074,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 26
   },
   {
-    "id": 152,
+    "id": 92,
     "name": "Embroidered Kasavu Silk Saree",
     "description": "This elegant Kasavu saree features a classic off-white silk base complemented by traditional gold zari borders and delicate purple floral thread embroidery. It is paired with a matching deep purple sleeveless blouse, making it an ideal choice for cultural celebrations and festive occasions.",
     "category": "ethnic",
@@ -49613,7 +49613,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 10
   },
   {
-    "id": 153,
+    "id": 93,
     "name": "Kerala Kasavu Silk Saree",
     "description": "This elegant traditional Kerala Kasavu saree features a classic off-white base with a rich, shimmering gold zari border and intricate ethnic motifs. Perfectly tailored for festive celebrations like Vishu, it exudes timeless grace and cultural sophistication.",
     "category": "ethnic",
@@ -50152,7 +50152,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 23
   },
   {
-    "id": 154,
+    "id": 94,
     "name": "Embroidered Red Kurta Pant Set",
     "description": "This sophisticated ethnic set features a vibrant red kurta adorned with intricate gold-toned neckline embroidery and paired with coordinating tailored trousers. Complemented by a dual-toned, metallic-striped dupatta, this ensemble offers a graceful and polished look perfect for festive celebrations.",
     "category": "ethnic",
@@ -50692,7 +50692,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 49
   },
   {
-    "id": 155,
+    "id": 95,
     "name": "Floral Brocade Silk Kurta",
     "description": "Crafted from fine silk, this cream-toned kurta features an intricate golden floral brocade pattern and elegant potli-button detailing along the placket. Its refined aesthetic and sophisticated sheen make it an ideal choice for traditional celebrations and festive gatherings.",
     "category": "ethnic",
@@ -51231,7 +51231,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 38
   },
   {
-    "id": 156,
+    "id": 96,
     "name": "Sequin Feather Hem One-Shoulder Dress",
     "description": "Exude glamour in this striking one-shoulder mini dress, meticulously crafted from shimmering sequin-embellished fabric. Finished with a playful feather-trimmed hemline, this piece offers a perfect blend of high-octane drama and sophisticated style for your next festive evening event.",
     "category": "western",
@@ -51772,7 +51772,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 37
   },
   {
-    "id": 157,
+    "id": 97,
     "name": "Burgundy Lace Spaghetti Strap Dress",
     "description": "Elevate your evening ensemble with this sophisticated burgundy lace dress, featuring delicate spaghetti straps and an intricate floral-patterned overlay. Perfect for elegant celebrations, the fitted silhouette exudes a refined, contemporary charm.",
     "category": "western",
@@ -52311,7 +52311,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 7
   },
   {
-    "id": 158,
+    "id": 98,
     "name": "Burgundy Tailored Three-Piece Suit",
     "description": "This sophisticated three-piece suit features a sharp, tailored burgundy blazer and matching trousers, paired with a classic waistcoat. Expertly styled with a contrasting black button-down shirt and brown leather oxford shoes, it offers a refined silhouette ideal for formal events or professional engagements.",
     "category": "western",
@@ -52850,7 +52850,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 4
   },
   {
-    "id": 159,
+    "id": 99,
     "name": "Navy Embroidered Lapel Tuxedo Suit",
     "description": "Exude elegance with this slim-fit navy blue formal suit, featuring a sophisticated shawl lapel adorned with subtle, intricate embroidery. This tailored ensemble offers a sharp, modern silhouette perfect for formal evening events or special occasions.",
     "category": "western",
@@ -53390,7 +53390,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 33
   },
   {
-    "id": 160,
+    "id": 100,
     "name": "Navy Blue Jodhpuri Bandhgala Suit",
     "description": "Elevate your formal wardrobe with this impeccably tailored navy blue Bandhgala suit, featuring a sharp Mandarin collar and a classic button-down front. Designed for a sophisticated silhouette, this piece is an ideal choice for formal events, college farewells, or celebratory gatherings.",
     "category": "ethnic",
@@ -53931,7 +53931,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 4
   },
   {
-    "id": 161,
+    "id": 101,
     "name": "Red Banarasi Silk Saree",
     "description": "Exquisitely crafted in rich red silk, this traditional Banarasi saree features intricate gold zari motifs and a luxurious dual-tone pallu with geometric patterns. Its elegant drape and vibrant sheen make it a timeless choice for festive celebrations and special occasions.",
     "category": "ethnic",
@@ -54469,7 +54469,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 5
   },
   {
-    "id": 162,
+    "id": 102,
     "name": "Mustard Yellow Cotton Kurta",
     "description": "Crafted in breathable cotton, this solid mustard yellow kurta features a classic mandarin collar and a clean, minimalist silhouette. Perfect for festive celebrations, it offers a refined and comfortable traditional look.",
     "category": "ethnic",
@@ -55008,7 +55008,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 22
   },
   {
-    "id": 163,
+    "id": 103,
     "name": "Embroidered Banarasi Silk Half Saree",
     "description": "This exquisite half saree set features a rich, deep purple embroidered blouse paired with a structured, pleated Banarasi silk skirt in dual tones of beige and wine. The ensemble is cinched with an ornate gold waist belt, offering a sophisticated silhouette perfect for traditional weddings and grand festive celebrations.",
     "category": "ethnic",
@@ -55548,7 +55548,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 34
   },
   {
-    "id": 164,
+    "id": 104,
     "name": "Temple Design Gold Necklace Set",
     "description": "Exquisitely crafted in a traditional temple jewelry aesthetic, this ornate gold necklace set features intricate deity motifs, elephant carvings, and peacock detailing. The set is completed with matching jhumka earrings, offering a sophisticated and regal finish for festive bridal or ethnic celebrations.",
     "category": "accessories",
@@ -56087,7 +56087,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 40
   },
   {
-    "id": 165,
+    "id": 105,
     "name": "Embroidered Maroon Indo-Western Sherwani",
     "description": "This sophisticated maroon Indo-Western sherwani features intricate tonal thread embroidery and delicate sequin detailing. Tailored with a structured mandarin collar and a layered placket, this ensemble offers a contemporary silhouette perfect for weddings and formal festive celebrations.",
     "category": "ethnic",
@@ -56626,7 +56626,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 29
   },
   {
-    "id": 166,
+    "id": 106,
     "name": "Geometric Print Cotton Saree",
     "description": "This elegant cotton saree features a striking geometric triangular pattern in a classic maroon and beige palette. It is finished with a traditional intricate border, offering a sophisticated yet comfortable aesthetic perfect for daily wear.",
     "category": "ethnic",
@@ -57165,7 +57165,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 1
   },
   {
-    "id": 167,
+    "id": 107,
     "name": "Striped Cotton Kurta Pyjama Set",
     "description": "Crafted from breathable cotton, this vibrant yellow kurta features delicate vertical stripes and a sophisticated mandarin collar. It is perfectly paired with crisp white trousers and traditional sandals, making it an ideal choice for haldi ceremonies and daytime ethnic festivities.",
     "category": "ethnic",
@@ -57705,7 +57705,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 6
   },
   {
-    "id": 168,
+    "id": 108,
     "name": "Gold Embroidered Organza Dupatta",
     "description": "Exude elegance with this luxurious gold organza dupatta, featuring intricate gold foil and thread embroidery throughout. Perfectly styled with a solid black ensemble, this sheer, lightweight piece is an ideal statement accessory for festive celebrations and weddings.",
     "category": "ethnic",
@@ -58243,7 +58243,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 40
   },
   {
-    "id": 169,
+    "id": 109,
     "name": "Banarasi Silk Jacquard Saree",
     "description": "Exquisitely crafted in a vibrant pink hue, this Banarasi silk saree features intricate gold zari jacquard patterns and a contrasting deep blue border. The set includes a matching blouse, making it an elegant choice for weddings and festive celebrations.",
     "category": "ethnic",
@@ -58782,7 +58782,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 25
   },
   {
-    "id": 170,
+    "id": 110,
     "name": "Cotton Blend Mandarin Kurta Set",
     "description": "This elegant cream-colored kurta set features a clean mandarin collar, a button-down placket, and a functional chest pocket, paired with slim-fit churidar bottoms. Crafted from a soft cotton blend, this minimalist ensemble offers a sophisticated and comfortable look perfect for traditional ceremonies and festive gatherings.",
     "category": "ethnic",
@@ -59322,7 +59322,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 38
   },
   {
-    "id": 171,
+    "id": 111,
     "name": "Floral Printed Cotton Kurta Set",
     "description": "This elegant floral printed cotton suit features a refined V-neck kurta with delicate lace-trimmed hemlines and a coordinating dupatta adorned with intricate botanical motifs. Perfect for pre-wedding festivities, this ensemble combines traditional craftsmanship with a contemporary soft pastel aesthetic.",
     "category": "ethnic",
@@ -59862,7 +59862,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 31
   },
   {
-    "id": 172,
+    "id": 112,
     "name": "Chiffon Embroidered Scalloped Edge Saree",
     "description": "This elegant red chiffon saree features delicate white floral embroidery and a distinctive scalloped neckline on the blouse. It is finished with a detailed embroidered border, making it a sophisticated choice for traditional gatherings and festive celebrations.",
     "category": "ethnic",
@@ -60402,7 +60402,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 49
   },
   {
-    "id": 173,
+    "id": 113,
     "name": "Paisley Print Nehru Jacket",
     "description": "Exquisitely crafted in plush velvet, this Nehru jacket features an intricate, multi-colored paisley motif that exudes traditional sophistication. Perfect for wedding festivities or sangeet events, this layered piece pairs seamlessly with a solid maroon kurta for a refined, celebratory look.",
     "category": "ethnic",
@@ -60942,7 +60942,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 26
   },
   {
-    "id": 174,
+    "id": 114,
     "name": "Kundan Pearl Choker Set",
     "description": "This exquisite Kundan jewelry set features a heavy, intricately crafted choker necklace adorned with lustrous pearls and clear stones, paired with matching jhumka earrings, a maang tikka, and a statement ring. Perfect for weddings and traditional celebrations, this set adds a regal and timeless elegance to any ethnic ensemble.",
     "category": "accessories",
@@ -61482,7 +61482,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 28
   },
   {
-    "id": 175,
+    "id": 115,
     "name": "Magenta Banarasi Silk Lehenga Set",
     "description": "This exquisite magenta Banarasi silk lehenga features intricate gold zari motifs throughout the flare, paired with a matching blouse and a contrasting gold-bordered dupatta. The opulent traditional weave makes it a sophisticated choice for weddings, receptions, and grand festive celebrations.",
     "category": "ethnic",
@@ -62021,7 +62021,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 10
   },
   {
-    "id": 176,
+    "id": 116,
     "name": "Mirror-Embroidered Off-White Cotton Kurta",
     "description": "This sophisticated off-white kurta features intricate silver mirror work along the neckline and cuffs, complemented by delicate scattered embroidery throughout the body. Crafted from high-quality cotton, it offers a refined silhouette perfect for festive celebrations and elegant social events.",
     "category": "ethnic",
@@ -62560,7 +62560,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 23
   },
   {
-    "id": 177,
+    "id": 117,
     "name": "Braided Silver Gemstone Anklet",
     "description": "Exquisitely crafted from polished silver, this multi-strand braided anklet features subtle, vibrant gemstone accents for a refined touch. Perfect for elevating traditional ensembles, its intricate design offers a sophisticated blend of heritage charm and contemporary elegance.",
     "category": "accessories",
@@ -63098,7 +63098,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 37
   },
   {
-    "id": 178,
+    "id": 118,
     "name": "Embroidered Silk Salwar Suit",
     "description": "This vibrant orange salwar suit features intricate floral embroidery on the yoke and a matching dupatta adorned with ornate gold foil print detailing. Tailored in a classic silhouette, it offers a sophisticated and festive look perfect for traditional celebrations.",
     "category": "ethnic",
@@ -63637,7 +63637,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 8
   },
   {
-    "id": 179,
+    "id": 119,
     "name": "Kerala Kasavu Tissue Saree",
     "description": "Exude grace in this traditional off-white Kerala Kasavu saree, crafted with delicate golden tissue borders and finished with elegant tassels. Perfect for weddings and cultural festivities, this timeless piece offers a sophisticated, minimalist aesthetic that honors heritage craftsmanship.",
     "category": "ethnic",
@@ -64177,7 +64177,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 22
   },
   {
-    "id": 180,
+    "id": 120,
     "name": "Men's Cream Kasavu Mundu Set",
     "description": "This elegant traditional set features a cream-colored formal long-sleeve shirt paired with a classic Kasavu mundu, characterized by its subtle golden zari border. Perfectly curated for cultural celebrations and formal ethnic occasions, this ensemble offers a sophisticated blend of heritage and contemporary style.",
     "category": "ethnic",
@@ -64717,7 +64717,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 14
   },
   {
-    "id": 181,
+    "id": 121,
     "name": "Printed Embroidered Linen Co-ord Set",
     "description": "This elegant linen co-ord set features an intricately embroidered tunic with a button-down placket, embellished with traditional artistic motifs and tassel detailing at the hem. It is paired with matching straight-fit trousers adorned with detailed botanical embroidery at the cuffs, creating a sophisticated and culturally inspired bohemian look.",
     "category": "ethnic",
@@ -65257,7 +65257,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 2
   },
   {
-    "id": 182,
+    "id": 122,
     "name": "Navy Shawl Lapel Tuxedo Set",
     "description": "This sophisticated three-piece navy blue tuxedo features a distinct shawl lapel blazer, a matching waistcoat, and slim-fit trousers. Perfect for black-tie events, the ensemble is completed with a coordinated bow tie and a refined texture, offering a polished silhouette for formal occasions.",
     "category": "western",
@@ -65798,7 +65798,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 49
   },
   {
-    "id": 183,
+    "id": 123,
     "name": "Block Printed Cotton Anarkali Kurta",
     "description": "This elegant navy blue Anarkali kurta features a delicate white block-print motif and a flattering V-neckline with a drawstring tassel detail. Crafted from breathable cotton, its flowy silhouette and three-quarter sleeves offer a sophisticated yet comfortable aesthetic for everyday ethnic wear.",
     "category": "ethnic",
@@ -66338,7 +66338,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 4
   },
   {
-    "id": 184,
+    "id": 124,
     "name": "Yellow Banarasi Silk Saree",
     "description": "This exquisite yellow Banarasi silk saree features a rich, heavy red zari border adorned with intricate traditional motifs and a matching pallu with elaborate peacock embroidery. Completed with elegant beaded tassel detailing, this ensemble perfectly captures the grace and grandeur of traditional Indian festive wear.",
     "category": "ethnic",
@@ -66876,7 +66876,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 185,
+    "id": 125,
     "name": "Gold Floral Pearl Stud Set",
     "description": "This charming earring set features a pair of delicate daisy-inspired studs with lustrous faux pearls surrounding a central gold bead, complemented by a pair of minimalist gold ball studs. The dainty design offers a versatile and elegant aesthetic perfect for everyday wear.",
     "category": "accessories",
@@ -67416,7 +67416,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 17
   },
   {
-    "id": 186,
+    "id": 126,
     "name": "Embroidered Cotton Straight Kurti",
     "description": "Elevate your daily wardrobe with this crisp, white cotton kurti featuring elegant black geometric embroidery along the yoke and neckline. Designed for comfort and breathability, this versatile piece pairs perfectly with denim jeans for a chic, contemporary ethnic look.",
     "category": "ethnic",
@@ -67955,7 +67955,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 187,
+    "id": 127,
     "name": "Striped Cotton Blend Casual Shirt",
     "description": "Elevate your weekend wardrobe with this sophisticated shirt featuring a rhythmic vertical striped pattern in earthy tones. Crafted from a soft, breathable fabric, it offers a relaxed yet polished silhouette that transitions effortlessly from brunch to seaside gatherings.",
     "category": "casual",
@@ -68493,7 +68493,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 43
   },
   {
-    "id": 188,
+    "id": 128,
     "name": "Lavender Chikankari Kurta Set",
     "description": "This elegant lavender cotton kurta set features delicate white chikankari embroidery on the neckline, sleeves, and hemline. The ensemble includes a matching dupatta with intricate borders and slim-fit trousers, offering a sophisticated and graceful look for festive occasions.",
     "category": "ethnic",
@@ -69032,7 +69032,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 36
   },
   {
-    "id": 189,
+    "id": 129,
     "name": "Classic Black Wayfarer Sunglasses",
     "description": "These sleek, black-frame wayfarer sunglasses offer a timeless, minimalist aesthetic perfect for everyday wear. With their versatile design and dark lenses, they provide a sharp, sophisticated look that effortlessly complements any modern wardrobe.",
     "category": "accessories",
@@ -69571,7 +69571,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 16
   },
   {
-    "id": 190,
+    "id": 130,
     "name": "Classic White Linen Shirt",
     "description": "Crafted from breathable, premium-quality linen, this crisp white shirt features a refined collar and a functional patch pocket. Its clean silhouette and versatile aesthetic make it an essential staple for sophisticated daytime or semi-formal ensembles.",
     "category": "casual",
@@ -70108,7 +70108,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 38
   },
   {
-    "id": 191,
+    "id": 131,
     "name": "Lavender Shimmer Organza Salwar Suit",
     "description": "Exuding ethereal charm, this lavender organza salwar suit features subtle shimmer detailing and delicate silver lace trim along the edges. The set includes a straight-cut kurta, matching tailored trousers, and a lightweight sheer dupatta, perfect for sophisticated festive gatherings.",
     "category": "ethnic",
@@ -70647,7 +70647,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 25
   },
   {
-    "id": 192,
+    "id": 132,
     "name": "Beaded Boho Embroidered Tote Bag",
     "description": "This exquisite boho-chic tote bag features intricate beadwork and vibrant geometric embroidery, complemented by a playful multi-layered tassel charm. The combination of textured cream panels and elaborate craftsmanship makes it a standout accessory for artsy, bohemian-inspired ensembles.",
     "category": "accessories",
@@ -71188,7 +71188,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 46
   },
   {
-    "id": 193,
+    "id": 133,
     "name": "Silver Teardrop Fringed Choker",
     "description": "This sophisticated statement necklace features a rigid silver choker base adorned with an intricate, fanned-out fringe of polished teardrop-shaped pendants. Its minimalist yet striking silhouette adds a bold, architectural edge to any evening or festive ensemble.",
     "category": "accessories",
@@ -71727,7 +71727,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 20
   },
   {
-    "id": 194,
+    "id": 134,
     "name": "Textured Pastel Linen Co-ord Set",
     "description": "Exuding effortless Mediterranean charm, this two-piece co-ord set features a short-sleeved button-down shirt and matching shorts, crafted from a breathable linen fabric with a subtle, tactile geometric texture. The relaxed silhouette and soft dusty pink hue make it an ideal choice for elevated seaside style or leisurely summer outings.",
     "category": "casual",
@@ -72266,7 +72266,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 7
   },
   {
-    "id": 195,
+    "id": 135,
     "name": "Embroidered Mint Green Lehenga Set",
     "description": "Exquisitely crafted in a soft mint green hue, this voluminous lehenga set features intricate, tone-on-tone thread work and delicate embroidery throughout the skirt and blouse. Complete with a matching embroidered dupatta, this ensemble offers a sophisticated, regal silhouette perfect for upscale festive celebrations and bridal functions.",
     "category": "ethnic",
@@ -72807,7 +72807,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 1
   },
   {
-    "id": 196,
+    "id": 136,
     "name": "Faux Leather Paneled Bomber Jacket",
     "description": "This sleek, modern bomber jacket features a sophisticated mix of smooth faux leather panels and comfortable fabric detailing. Designed with a ribbed hem and cuffs and a full-length silver zipper, it offers a sharp, contemporary look perfect for layering during transitional weather.",
     "category": "winter",
@@ -73347,7 +73347,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 40
   },
   {
-    "id": 197,
+    "id": 137,
     "name": "Fleece-Lined Knit Winter Accessory Set",
     "description": "This cozy three-piece winter set features a soft fleece-lined beanie, a matching cable-knit infinity scarf, and a pair of minimalist black gloves. Designed for maximum warmth and comfort, this set offers a sophisticated yet functional aesthetic perfect for cold weather layering.",
     "category": "winter",
@@ -73887,7 +73887,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 50
   },
   {
-    "id": 198,
+    "id": 138,
     "name": "Leather Chelsea Ankle Boots",
     "description": "These sophisticated brown leather Chelsea boots feature a sleek almond-toe silhouette and classic elastic side panels for effortless wear. Designed with a sturdy, low block heel, they offer a perfect blend of comfort and timeless style for any seasonal wardrobe.",
     "category": "footwear",
@@ -74426,7 +74426,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 21
   },
   {
-    "id": 199,
+    "id": 139,
     "name": "Kasavu Kerala Kasavu Saree",
     "description": "This traditional Kerala Kasavu saree features a sophisticated off-white silk base accented with a lustrous gold zari border. The minimalist elegance and timeless gold detailing make it a quintessential choice for auspicious ceremonies and festive occasions.",
     "category": "ethnic",
@@ -74965,7 +74965,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 21
   },
   {
-    "id": 200,
+    "id": 140,
     "name": "Textured Navy Formal Nehru Jacket",
     "description": "Elevate your sophisticated wardrobe with this slim-fit Nehru jacket, featuring a refined textured finish and a sharp mandarin collar. Designed with a classic button-down front and functional welt pockets, this versatile piece offers a polished, professional look perfect for formal events or corporate gatherings.",
     "category": "ethnic",
@@ -75504,7 +75504,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 26
   },
   {
-    "id": 201,
+    "id": 141,
     "name": "Patchwork Denim Bomber Jacket",
     "description": "Elevate your casual ensemble with this trendy zip-up bomber jacket featuring an artistic denim-on-denim patchwork design. Finished with comfortable ribbed white cuffs and a clean collar, this versatile piece brings a modern, edgy aesthetic to any urban wardrobe.",
     "category": "streetwear",
@@ -76043,7 +76043,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 9
   },
   {
-    "id": 202,
+    "id": 142,
     "name": "Ruched Mesh Bodycon Mini Dress",
     "description": "This sophisticated bodycon mini dress features a flattering square neckline and long sheer mesh sleeves. The ruched bodice creates a sculpted silhouette, making it an ideal choice for evening parties or cocktail events.",
     "category": "western",
@@ -76584,7 +76584,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 48
   },
   {
-    "id": 203,
+    "id": 143,
     "name": "Navy Blue Wool Overcoat",
     "description": "Crafted from a premium wool-blend fabric, this tailored navy blue overcoat features a structured lapel, buttoned cuffs, and a sleek single-breasted silhouette. It offers a sophisticated, polished look perfect for formal winter layering over a turtleneck.",
     "category": "winter",
@@ -77123,7 +77123,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 11
   },
   {
-    "id": 204,
+    "id": 144,
     "name": "Textured Striped Knit Sweater",
     "description": "Elevate your cold-weather wardrobe with this vibrant, textured knit sweater featuring alternating wavy and straight striped patterns in purple, pink, and blush tones. Designed with a cozy mock-neck collar and dropped shoulders, this piece offers a relaxed, stylish fit perfect for casual outings.",
     "category": "winter",
@@ -77663,9 +77663,9 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 31
   },
   {
-    "id": 205,
+    "id": 145,
     "name": "Crossover Diamond Engagement Ring",
-    "description": "This sophisticated engagement ring features a brilliant central stone framed by an elegant crossover band adorned with pav\u00e9-set diamonds. Crafted with meticulous detail, its sparkling design offers a timeless aesthetic perfect for celebrating life's most precious milestones.",
+    "description": "This sophisticated engagement ring features a brilliant central stone framed by an elegant crossover band adorned with pav\u00c3\u00a9-set diamonds. Crafted with meticulous detail, its sparkling design offers a timeless aesthetic perfect for celebrating life's most precious milestones.",
     "category": "accessories",
     "image_url": "/images/195.png",
     "product_url": "https://www.myntra.com/ring/giva/giva-rhodium-plated-sterling-silver-finger-ring/26138158/buy",
@@ -78202,7 +78202,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 32
   },
   {
-    "id": 206,
+    "id": 146,
     "name": "Oversized Minimalist Cotton Hoodie",
     "description": "Crafted from soft, high-quality cotton, this minimalist oversized hoodie features a clean aesthetic with a functional kangaroo pocket and a drawstring hood. Its relaxed silhouette makes it an essential layering piece for modern, effortless streetwear styling.",
     "category": "streetwear",
@@ -78741,7 +78741,7 @@ export const FALLBACK_PRODUCTS = [
     "inventory": 10
   },
   {
-    "id": 207,
+    "id": 147,
     "name": "Floral Embroidered Pashmina Shawl",
     "description": "This exquisite off-white Pashmina shawl features intricate traditional floral embroidery and ornate paisley motifs, finished with delicate fringed edges. Perfectly draped over a vibrant golden ensemble, this piece adds a layer of sophisticated warmth and timeless elegance to any festive attire.",
     "category": "winter",

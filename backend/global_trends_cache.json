@@ -1,0 +1,171 @@
+{
+  "last_updated": "2026-07-21T10:00:00Z",
+  "meta": {
+    "description": "Global Runway trend signals for PinPulse feed injection. Interleaved at Slots 6 and 12 in the main feed.",
+    "version": "1.0",
+    "sources": ["Vogue Runway", "Pinterest Trends", "WGSN", "Instagram Explore"]
+  },
+  "cities": {
+    "tokyo": {
+      "city": "Tokyo",
+      "country": "Japan",
+      "flag": "🇯🇵",
+      "primary_color": "#E8B4B8",
+      "accent_color": "#7B2D8B",
+      "trends": [
+        {
+          "id": "tokyo_01",
+          "trend_name": "Harajuku Pastel Layers",
+          "style_archetype": "Y2K Pastel Pop",
+          "vibe_tags": ["pastel", "layered", "kawaii", "y2k", "oversized", "playful", "streetwear"],
+          "description": "Soft pastel co-ords, tulle skirts over denim, and dreamy layered fits dominating Harajuku. Gen-Z obsession meets Tokyo craft.",
+          "key_pieces": ["Pastel tulle midi skirt", "Oversized pastel blazer", "Baby tee in cream or lilac"],
+          "trending_colors": ["lilac", "blush pink", "mint", "lemon yellow"],
+          "season": "SS26",
+          "heat_score": 0.94,
+          "global_searches_weekly": 2800000,
+          "image_placeholder_style": "pastel_harajuku",
+          "matched_catalog_tags": ["casual", "streetwear", "pastel", "cotton", "summer"]
+        },
+        {
+          "id": "tokyo_02",
+          "trend_name": "Wabi-Sabi Minimalism",
+          "style_archetype": "Quiet Luxury",
+          "vibe_tags": ["minimalist", "neutral", "linen", "wabi-sabi", "artisan", "earth_tones"],
+          "description": "Imperfectly perfect – raw linen, asymmetric hems, and earthy mono tones inspired by Japanese aesthetic philosophy.",
+          "key_pieces": ["Unstructured linen kurta-coat", "Raw-edge wrap skirt", "Stone-washed cotton coord"],
+          "trending_colors": ["greige", "stone", "terracotta", "off-white"],
+          "season": "AW26",
+          "heat_score": 0.88,
+          "global_searches_weekly": 1900000,
+          "image_placeholder_style": "wabi_sabi_minimal",
+          "matched_catalog_tags": ["linen", "minimalist", "earthy", "coord", "cotton"]
+        },
+        {
+          "id": "tokyo_03",
+          "trend_name": "Dopamine Streetwear",
+          "style_archetype": "Bold Street",
+          "vibe_tags": ["graphic", "bold", "neon", "streetwear", "oversized", "urban", "print"],
+          "description": "Neon graphic tees, wide-leg cargo pants, and chunky sneakers. Tokyo's youth fashion at its most fearless and electric.",
+          "key_pieces": ["Graphic neon oversized tee", "Wide-leg cargo pants", "Patchwork bomber jacket"],
+          "trending_colors": ["electric blue", "neon green", "hot pink", "deep black"],
+          "season": "SS26",
+          "heat_score": 0.91,
+          "global_searches_weekly": 3100000,
+          "image_placeholder_style": "dopamine_street",
+          "matched_catalog_tags": ["graphic", "streetwear", "bold", "casual", "urban"]
+        }
+      ]
+    },
+    "paris": {
+      "city": "Paris",
+      "country": "France",
+      "flag": "🇫🇷",
+      "primary_color": "#B8860B",
+      "accent_color": "#2C3E50",
+      "trends": [
+        {
+          "id": "paris_01",
+          "trend_name": "Parisian Quiet Luxury",
+          "style_archetype": "Stealth Wealth",
+          "vibe_tags": ["quiet_luxury", "minimalist", "silk", "tailored", "elevated_basics", "neutral"],
+          "description": "The old-money aesthetic refined – silk blouses, cashmere coats, and perfect-fit trousers. No logos, all presence.",
+          "key_pieces": ["Camel cashmere overcoat", "Fluid silk blouse", "High-waist wide-leg trousers"],
+          "trending_colors": ["camel", "ivory", "navy", "chocolate brown"],
+          "season": "AW26",
+          "heat_score": 0.96,
+          "global_searches_weekly": 4200000,
+          "image_placeholder_style": "parisian_quiet_luxury",
+          "matched_catalog_tags": ["silk", "minimalist", "tailored", "ethnic", "formal"]
+        },
+        {
+          "id": "paris_02",
+          "trend_name": "French Romantic Revival",
+          "style_archetype": "Cottagecore Luxe",
+          "vibe_tags": ["romantic", "floral", "feminine", "midi", "ruffles", "silk", "dreamy"],
+          "description": "Romantic florals on bias-cut satin, puff sleeves, and midi silhouettes define the Parisian summer dream aesthetic.",
+          "key_pieces": ["Bias-cut floral midi dress", "Puff-sleeve silk blouse", "Ruffle-trim linen set"],
+          "trending_colors": ["dusty rose", "sage green", "champagne", "vintage coral"],
+          "season": "SS26",
+          "heat_score": 0.92,
+          "global_searches_weekly": 3600000,
+          "image_placeholder_style": "french_romantic",
+          "matched_catalog_tags": ["floral", "midi", "dress", "feminine", "silk", "cotton"]
+        },
+        {
+          "id": "paris_03",
+          "trend_name": "Power Femme Tailoring",
+          "style_archetype": "Corporate Luxe",
+          "vibe_tags": ["power_dressing", "blazer", "tailored", "structured", "boss", "monochrome"],
+          "description": "Oversized blazers, pinstripe coords, and structured shoulders — Paris reclaims the power suit for the modern woman.",
+          "key_pieces": ["Oversized pinstripe blazer", "Wide-leg trouser coord", "Structured boxy suit"],
+          "trending_colors": ["chalk white", "pinstripe navy", "slate grey", "burgundy"],
+          "season": "AW26",
+          "heat_score": 0.89,
+          "global_searches_weekly": 2700000,
+          "image_placeholder_style": "power_femme_suit",
+          "matched_catalog_tags": ["blazer", "formal", "tailored", "coord", "western"]
+        }
+      ]
+    },
+    "seoul": {
+      "city": "Seoul",
+      "country": "South Korea",
+      "flag": "🇰🇷",
+      "primary_color": "#FF6B9D",
+      "accent_color": "#1A1A2E",
+      "trends": [
+        {
+          "id": "seoul_01",
+          "trend_name": "K-Drama Soft Aesthetic",
+          "style_archetype": "Soft Femme",
+          "vibe_tags": ["k-fashion", "soft", "feminine", "pastel", "elegant", "minimal", "kdrama"],
+          "description": "Delicate pleated midi skirts, soft-knit cardigans, and pearl-accessorised coords straight from your favourite K-drama wardrobe.",
+          "key_pieces": ["Pleated pastel midi skirt", "Soft knit cardigan set", "Flowy shirt dress in blush"],
+          "trending_colors": ["blush", "powder blue", "cream", "dusty lavender"],
+          "season": "SS26",
+          "heat_score": 0.97,
+          "global_searches_weekly": 5100000,
+          "image_placeholder_style": "k_drama_soft",
+          "matched_catalog_tags": ["dress", "midi", "cotton", "pastel", "casual", "feminine"]
+        },
+        {
+          "id": "seoul_02",
+          "trend_name": "Gen-Z Seoul Streetwear",
+          "style_archetype": "Street Luxe",
+          "vibe_tags": ["streetwear", "edgy", "dark", "layered", "oversized", "urban", "gen-z"],
+          "description": "Dark-toned layered oversized fits, chunky boots, and avant-garde accessories dominate the Hongdae streets of Seoul.",
+          "key_pieces": ["Oversized dark graphic hoodie", "Cargo wide-leg pants", "Layered mesh turtleneck"],
+          "trending_colors": ["jet black", "charcoal", "deep burgundy", "forest green"],
+          "season": "AW26",
+          "heat_score": 0.93,
+          "global_searches_weekly": 3800000,
+          "image_placeholder_style": "seoul_gen_z_street",
+          "matched_catalog_tags": ["streetwear", "casual", "layered", "urban", "oversized"]
+        },
+        {
+          "id": "seoul_03",
+          "trend_name": "Haenyeo Clean Girl Edit",
+          "style_archetype": "Clean Minimalism",
+          "vibe_tags": ["clean_girl", "minimal", "dewy", "effortless", "glass_skin_fashion", "simple"],
+          "description": "The 'Clean Girl' aesthetic from Seoul: slicked-back buns, barrel jeans, linen crops. Beauty meets effortless minimalism.",
+          "key_pieces": ["Fitted linen crop blouse", "High-waist barrel jeans", "Simple gold-chain coord"],
+          "trending_colors": ["oat", "sand", "white", "light sky blue"],
+          "season": "SS26",
+          "heat_score": 0.90,
+          "global_searches_weekly": 4500000,
+          "image_placeholder_style": "clean_girl_seoul",
+          "matched_catalog_tags": ["linen", "minimal", "crop", "casual", "cotton", "coord"]
+        }
+      ]
+    }
+  },
+  "feed_injection_config": {
+    "enabled": true,
+    "inject_slots": [5, 11],
+    "rotation_strategy": "round_robin",
+    "rotation_order": ["seoul", "paris", "tokyo"],
+    "badge_label": "🌍 Global Runway",
+    "slot_label": "Trending Globally"
+  }
+}

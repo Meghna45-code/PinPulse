@@ -1,0 +1,16 @@
+path = r"backend/run_trend_extraction_pipeline.py"
+output_path = r"backend/dev_scripts/pipeline_search.txt"
+
+with open(path, "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+results = []
+for i, l in enumerate(lines):
+    l_lower = l.lower()
+    if "youtube" in l_lower or "search" in l_lower or "query" in l_lower or "trend" in l_lower or "q=" in l_lower:
+        results.append(f"Line {i+1}: {l.strip()}\n")
+
+with open(output_path, "w", encoding="utf-8") as f_out:
+    f_out.writelines(results)
+
+print("Pipeline search results written.")

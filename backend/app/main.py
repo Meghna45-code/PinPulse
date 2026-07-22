@@ -27,12 +27,73 @@ app.add_middleware(
 
 # File paths
 LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "local_catalog.json"))
+GLOBAL_TRENDS_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "global_trends_cache.json"))
+
+# Load Global Trends Cache
+GLOBAL_TRENDS_CACHE: dict = {}
+try:
+    with open(GLOBAL_TRENDS_FILE, "r", encoding="utf-8") as _f:
+        GLOBAL_TRENDS_CACHE = json.load(_f)
+    logger.info("Loaded global trends cache (Tokyo/Seoul/Paris).")
+except Exception as _e:
+    logger.warning(f"Could not load global_trends_cache.json: {_e}")
+
+# ── Startup: build velocity map from pinpulse_mock_db.json ───────────────────
+# For each seeder record with hybrid_score > 0, boost the matched catalog
+# product's velocity signal so that calculate_velocity_score() reflects
+# real creator trend strength instead of the static mock dict.
+MOCK_DB_VELOCITY_MAP: dict = {}  # product_id (int) → {velocity_score, units_last_hour}
+_MOCK_DB_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "pinpulse_mock_db.json"))
+try:
+    with open(_MOCK_DB_FILE, "r", encoding="utf-8") as _f:
+        _mock_records = json.load(_f)
+    for _rec in _mock_records:
+        _pid  = _rec.get("matched_product_id")
+        _hscore = float(_rec.get("hybrid_score", 0.0))
+        if _pid is None or _hscore <= 0:
+            continue
+        try:
+            _pid = int(_pid)
+        except (ValueError, TypeError):
+            pass
+        # Take the max hybrid_score seen for each product across all creator records.
+        # velocity_score ∈ [0, 1] directly from hybrid_score.
+        # units_last_hour is a synthetic estimate: base 5 + score-proportional boost.
+        _existing = MOCK_DB_VELOCITY_MAP.get(_pid, {"velocity_score": 0.0, "units_last_hour": 0})
+        if _hscore > _existing["velocity_score"]:
+            MOCK_DB_VELOCITY_MAP[_pid] = {
+                "velocity_score":  round(_hscore, 4),
+                "units_last_hour": max(1, int(_hscore * 50)),
+            }
+    logger.info(
+        f"Loaded pinpulse_mock_db.json → velocity map for "
+        f"{len(MOCK_DB_VELOCITY_MAP)} products from creator trends."
+    )
+except FileNotFoundError:
+    logger.info("pinpulse_mock_db.json not found — velocity pillar will use static fallback.")
+except Exception as _e:
+    logger.warning(f"Could not build velocity map from mock DB: {_e}")
+
+# Pre-flatten global trend cards in round-robin order: Seoul → Paris → Tokyo
+_GLOBAL_ROTATION_ORDER = ["seoul", "paris", "tokyo"]
+_GLOBAL_TREND_CARDS: list = []
+for _city_key in _GLOBAL_ROTATION_ORDER:
+    _city_block = GLOBAL_TRENDS_CACHE.get("cities", {}).get(_city_key, {})
+    for _t in _city_block.get("trends", []):
+        _GLOBAL_TREND_CARDS.append({
+            "city": _city_block.get("city"),
+            "country": _city_block.get("country"),
+            "flag": _city_block.get("flag"),
+            "primary_color": _city_block.get("primary_color"),
+            **_t
+        })
+_GLOBAL_CARD_INDEX = 0  # rotates with each feed call
 
 # Import recommender engine components
 import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
-from config import CONTEXT_MATRICES, INTENT_DECAY_CONFIG
+from config import CONTEXT_MATRICES, INTENT_DECAY_CONFIG, CACHE_TTL_SECONDS
 from scoring_engine import (
     cosine_similarity,
     normalize_cosine_score,
@@ -132,6 +193,27 @@ if os.path.exists(weather_cache_file):
             logger.info("Successfully loaded weather insights cache.")
     except Exception as e:
         logger.error(f"Failed to load weather insights cache: {e}")
+
+import time
+
+class SimpleCache:
+    def __init__(self, ttl=60):
+        self.ttl = ttl
+        self.store = {}
+
+    def get(self, key):
+        if key in self.store:
+            val, expiry = self.store[key]
+            if time.time() < expiry:
+                return val
+            else:
+                del self.store[key]
+        return None
+
+    def set(self, key, value):
+        self.store[key] = (value, time.time() + self.ttl)
+
+api_cache = SimpleCache(ttl=CACHE_TTL_SECONDS)
 
 # Weather Rules vectors
 def generate_vector(seed_text):
@@ -440,30 +522,44 @@ def map_zip_code(zip_code: str) -> str:
     return ZIP_MAPPING.get(zip_code, zip_code)
 
 def get_vibe_vector(vibe_name: str):
-    vec = np.zeros(512)
-    tags = {vibe_name}
+    import sys
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+    from embed_catalog import get_vibe_vector as embed_get_vibe_vector
     
-    if any(t in tags for t in ["ethnic", "festive", "saree", "lehenga", "traditional", "jainsem", "jymphong", "mundu", "sherwani"]):
-        vec[0:100] = 1.0
-    if any(t in tags for t in ["casual", "summer", "linen", "cotton", "breathable"]):
-        vec[100:200] = 1.0
-    if any(t in tags for t in ["winter", "heavy-weight", "velvet", "shawl", "warm", "jacket", "cardigan", "woolen"]):
-        vec[200:300] = 1.0
-    if any(t in tags for t in ["streetwear", "hoodie", "cargo", "modern", "denim", "fusion", "party"]):
-        vec[300:400] = 1.0
-        
-    vec[400:512] = 0.2
+    vibe_lower = vibe_name.lower() if vibe_name else ""
     
-    hash_seed = abs(hash(vibe_name)) % (2**32)
-    rng = np.random.default_rng(hash_seed)
-    noise = rng.normal(0, 0.05, 512)
-    vec += noise
+    # Map the display names/keys from frontend to corresponding tag sets for embedding parity
+    mapping = {
+        "heritage_traditionalist": ("Heritage Traditionalist", ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"]),
+        "heritage traditionalist": ("Heritage Traditionalist", ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"]),
+        "festive_glam": ("Festive Glam", ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"]),
+        "festive glam": ("Festive Glam", ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"]),
+        "indie_fusion": ("Indie Fusion (Desi Boho)", ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"]),
+        "indie fusion": ("Indie Fusion (Desi Boho)", ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"]),
+        "indie fusion (desi boho)": ("Indie Fusion (Desi Boho)", ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"]),
+        "high_street_rebel": ("High-Street Rebel", ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"]),
+        "high-street rebel": ("High-Street Rebel", ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"]),
+        "coastal_tropical": ("Coastal Tropical", ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"]),
+        "coastal tropical": ("Coastal Tropical", ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"]),
+        "winter_academia": ("Winter Academia", ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shadowl", "velvet"]),
+        "winter academia": ("Winter Academia", ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shadowl", "velvet"]),
+        "y2k_nostalgia": ("Y2K Nostalgia", ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"]),
+        "y2k nostalgia": ("Y2K Nostalgia", ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"]),
+        "minimalist_essentials": ("Minimalist Essentials", ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"]),
+        "minimalist essentials": ("Minimalist Essentials", ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"]),
+        "earthy_handloom": ("Earthy Handloom", ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"]),
+        "earthy handloom": ("Earthy Handloom", ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"]),
+        "urban_athleisure": ("Urban Athleisure", ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"]),
+        "urban athleisure": ("Urban Athleisure", ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"]),
+        # Legacy/fallback keys
+        "festive": ("Festive Glam", ["ethnic", "festive", "traditional", "silk", "saree", "jainsem", "jymphong", "mundu", "sherwani"]),
+        "casual": ("Coastal Tropical", ["casual", "summer", "cotton", "linen", "breathable", "dailywear"]),
+        "winter": ("Winter Academia", ["winter", "warm", "heavy-weight", "velvet", "shadowl", "jacket", "cardigan", "woolen"]),
+        "streetwear": ("High-Street Rebel", ["streetwear", "hoodie", "cargo", "modern", "denim", "fusion", "party"])
+    }
     
-    norm = np.linalg.norm(vec)
-    if norm > 0:
-        vec = vec / norm
-        
-    return vec.tolist()
+    aesthetic_name, tags = mapping.get(vibe_lower, (vibe_name, [vibe_name]))
+    return embed_get_vibe_vector(tags, category_str=vibe_name, aesthetic_str=aesthetic_name)
 
 # Load local catalog for fallback and validation
 def load_fallback_catalog():
@@ -529,25 +625,26 @@ def get_supabase_client():
     return None
 
 def get_creators_data(zip_code):
+    cache_key = f"creators_{zip_code}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
+    result = []
     sb = get_supabase_client()
     if sb:
         try:
             res = sb.table("creators").select("*").eq("zip_code", zip_code).execute()
             if res.data:
-                creators = []
                 for row in res.data:
                     creator = dict(row)
-                    # Resolve vector/embedding field names to match expectation
                     if "embedding" in creator and creator["embedding"]:
                         creator["vector"] = creator["embedding"]
-                    # Fetch videos for this creator
                     try:
                         v_res = sb.table("creator_videos").select("*").eq("creator_id", creator["id"]).execute()
                         creator["videos"] = []
                         if v_res.data:
                             for v_row in v_res.data:
                                 video = dict(v_row)
-                                # Fetch mapped product IDs for this video
                                 try:
                                     p_res = sb.table("creator_video_products").select("product_id").eq("video_id", video["id"]).execute()
                                     video["product_ids"] = [p["product_id"] for p in p_res.data] if p_res.data else []
@@ -556,37 +653,75 @@ def get_creators_data(zip_code):
                                 creator["videos"].append(video)
                     except Exception:
                         creator["videos"] = []
-                    creators.append(creator)
-                return creators
+                    result.append(creator)
+                api_cache.set(cache_key, result)
+                return result
         except Exception as e:
             logger.error(f"Supabase creators query failed: {e}")
-    return FALLBACK_CREATORS.get(zip_code, [])
+    fallback = FALLBACK_CREATORS.get(zip_code, [])
+    api_cache.set(cache_key, fallback)
+    return fallback
 
 def get_stores_data(zip_code):
+    cache_key = f"stores_{zip_code}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
+    result = []
     sb = get_supabase_client()
     if sb:
         try:
-            res = sb.table("stores").select("*").eq("zip_code", zip_code).execute()
+            res = sb.table("regional_boutique_trends").select("*").eq("zip_code", zip_code).execute()
             if res.data:
-                return res.data
+                for row in res.data:
+                    trend = row.get("extracted_visual_trend", "ethnic")
+                    vec = generate_vector(f"{trend} boutique fashion store {row.get('store_name', '')}")
+                    result.append({
+                        "name": row.get("store_name"),
+                        "rating": 4.5,
+                        "review_count": row.get("simulated_engagement", 100) // 10,
+                        "estimated_cost": 2000,
+                        "vector": vec,
+                        "locality": row.get("locality"),
+                        "extracted_visual_trend": trend
+                    })
+                api_cache.set(cache_key, result)
+                return result
         except Exception as e:
-            logger.error(f"Supabase stores query failed: {e}")
-    return FALLBACK_STORES.get(zip_code, [])
+            logger.error(f"Supabase regional_boutique_trends query failed: {e}")
+    fallback = FALLBACK_STORES.get(zip_code, [])
+    api_cache.set(cache_key, fallback)
+    return fallback
 
 def get_velocity_map(zip_code):
+    cache_key = f"velocity_{zip_code}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    # ── Primary: use creator trend data from seeder mock DB ───────────────────
+    # MOCK_DB_VELOCITY_MAP is pre-built at startup from pinpulse_mock_db.json.
+    # It maps product_id → {velocity_score, units_last_hour} keyed by
+    # max(hybrid_score) across all creator records for that product.
+    # We don't filter by zip_code here because the mock DB already scoped
+    # matches to the correct zip at seeding time.
+    if MOCK_DB_VELOCITY_MAP:
+        api_cache.set(cache_key, MOCK_DB_VELOCITY_MAP)
+        return MOCK_DB_VELOCITY_MAP
+
+    # ── Secondary: try Supabase live velocity table ───────────────────────────
     sb = get_supabase_client()
     if sb:
         try:
             res = sb.table("checkout_velocity").select("product_id, velocity_score, units_last_hour").eq("zip_code", zip_code).execute()
             if res.data:
-                return {row["product_id"]: row for row in res.data}
+                result = {row["product_id"]: row for row in res.data}
+                api_cache.set(cache_key, result)
+                return result
         except Exception as e:
             logger.error(f"Supabase velocity fetch failed: {e}")
-    # Local mock velocity mapping fallback
-    from app.config import LOW_STOCK_THRESHOLD
-    # Extract from LOCAL_VELOCITY_CACHE mock definitions
-    from App_backup import LOCAL_VELOCITY_CACHE  # try fallback if available
-    # programmatically mock velocity values
+
+    # ── Tertiary: static fallback (demo floor) ────────────────────────────────
     mock_velocity = {
         1: {"velocity_score": 0.92, "units_last_hour": 47},
         2: {"velocity_score": 0.88, "units_last_hour": 38},
@@ -595,29 +730,44 @@ def get_velocity_map(zip_code):
         16: {"velocity_score": 0.95, "units_last_hour": 52},
         31: {"velocity_score": 0.90, "units_last_hour": 42},
     }
+    api_cache.set(cache_key, mock_velocity)
     return mock_velocity
 
 def get_db_products():
+    cache_key = "db_products"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
     sb = get_supabase_client()
     if sb:
         try:
             res = sb.table("products").select("*").execute()
             if res.data:
+                api_cache.set(cache_key, res.data)
                 return res.data
         except Exception as e:
             logger.error(f"Supabase products fetch failed: {e}")
+    api_cache.set(cache_key, RAW_CATALOG)
     return RAW_CATALOG
 
 def get_active_event(zip_code, date_str):
+    cache_key = f"active_event_{zip_code}_{date_str}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
     sb = get_supabase_client()
     if sb:
         try:
             res = sb.table("calendar").select("*").eq("zip_code", zip_code).eq("date", date_str).execute()
             if res.data:
-                return res.data[0]
+                result = res.data[0]
+                api_cache.set(cache_key, result)
+                return result
         except Exception as e:
             logger.error(f"Supabase calendar query failed: {e}")
-    return FALLBACK_CALENDAR.get((zip_code, date_str), {})
+    fallback = FALLBACK_CALENDAR.get((zip_code, date_str), {})
+    api_cache.set(cache_key, fallback)
+    return fallback
 
 def enrich_product(p, velocity_map):
     p_tags = p.get("tags", [])
@@ -651,28 +801,39 @@ def enrich_product(p, velocity_map):
                 nature = n
                 break
             
-    # 4. Determine category — prefer DB value
+    # 4. Determine aesthetic (10 PinPulse VibeCard categories)
+    # ---------------------------------------------------------------
+    AESTHETIC_TAG_MAP = {
+        "Heritage Traditionalist": ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"],
+        "Festive Glam":            ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"],
+        "Indie Fusion (Desi Boho)":["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"],
+        "High-Street Rebel":       ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"],
+        "Coastal Tropical":        ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"],
+        "Winter Academia":         ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shawl", "velvet"],
+        "Y2K Nostalgia":           ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"],
+        "Minimalist Essentials":   ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"],
+        "Earthy Handloom":         ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"],
+        "Urban Athleisure":        ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"],
+    }
+
     category = p.get("category")
     if not category:
-        category = "Ethnic"
-        for cat in ["Ethnic", "Western", "Accessory", "Footwear"]:
-            if cat.lower() in p_tags or cat.lower() in desc_lower:
-                category = cat
-                break
-        if category == "Ethnic" and any(x in p_tags for x in ["hoodie", "cargo", "jeans", "jacket"]):
-            category = "Western"
-        if any(x in p_tags for x in ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"]):
-            category = "Accessory"
-        if any(x in p_tags for x in ["boots", "mojari", "sandals", "footwear"]):
-            category = "Footwear"
+        # Score product against each aesthetic using tag overlap
+        best_aesthetic = "Minimalist Essentials"
+        best_score = 0
+        combined = set(p_tags) | set(desc_lower.split())
+        for aesthetic, a_tags in AESTHETIC_TAG_MAP.items():
+            score = sum(1 for t in a_tags if t in combined)
+            if score > best_score:
+                best_score = score
+                best_aesthetic = aesthetic
+        category = best_aesthetic
 
     # 5. Determine price — prefer DB value; only fallback if null
     price = p.get("price")
     if price is None:
         price = (p_id * 17) % 3000 + 499
     
-    # 6. Determine stock_level
-    stock_level = (p_id * 7) % 50 + 1
     
     # 7. Determine is_evergreen
     is_evergreen = (p_id % 15 == 0)
@@ -716,7 +877,6 @@ def enrich_product(p, velocity_map):
         "nature": nature,
         "category": category,
         "price": price,
-        "stock_level": stock_level,
         "is_evergreen": is_evergreen,
         "baseline_sales": baseline_sales,
         "current_sales": current_sales,
@@ -732,6 +892,11 @@ def enrich_product(p, velocity_map):
 @app.get("/api/calendar-presets")
 def get_calendar_presets():
     """Exposes all seeded calendar events grouped by ZIP code for dynamic frontend dropdowns."""
+    cache_key = "calendar_presets"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     presets = {
         "800008": [],
         "682001": [],
@@ -787,6 +952,7 @@ def get_calendar_presets():
         except:
             pass
         
+    api_cache.set(cache_key, presets)
     return presets
 
 @app.get("/api/weather-matrix")
@@ -819,6 +985,11 @@ def get_system_state():
 
 @app.get("/api/zip-insights")
 def get_zip_insights(zip_code: str = Query(...), date: str = Query(...)):
+    cache_key = f"zip_insights_{zip_code}_{date}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     from datetime import datetime, timedelta
     mapped_zip = map_zip_code(zip_code)
     
@@ -931,13 +1102,15 @@ def get_zip_insights(zip_code: str = Query(...), date: str = Query(...)):
     # Sort upcoming events chronologically
     unique_upcoming.sort(key=lambda x: str(x.get("date")))
 
-    return {
+    res_val = {
         "zip_code": mapped_zip,
         "average_order_value": aov,
         "weather": weather_entry,
         "current_event": current_event,
         "upcoming_events": unique_upcoming
     }
+    api_cache.set(cache_key, res_val)
+    return res_val
 
 @app.get("/api/products")
 @app.get("/api/feed")
@@ -986,39 +1159,45 @@ def get_feed(
 
     # Fetch upcoming events in the next 7 days for priority scoring
     upcoming_events_data = []
-    try:
-        from datetime import timedelta
-        if not isinstance(dt, datetime):
-            dt = datetime.now()
-        end_date = dt + timedelta(days=7)
-        sb = get_supabase_client()
-        if sb:
-            res = sb.table("calendar") \
-                .select("*") \
-                .eq("zip_code", mapped_zip) \
-                .gte("date", active_date) \
-                .lte("date", end_date.strftime("%Y-%m-%d")) \
-                .execute()
-            if res.data:
-                upcoming_events_data = res.data
-        if not upcoming_events_data:
-            # Fallback to in-memory calendar
-            for (z, d_str), val in FALLBACK_CALENDAR.items():
-                if z == mapped_zip:
-                    try:
-                        d_obj = datetime.strptime(d_str, "%Y-%m-%d")
-                        if dt <= d_obj <= end_date:
-                            upcoming_events_data.append({
-                                "zip_code": z, "date": d_str,
-                                "event_name": val["event_name"],
-                                "event_type": val["event_type"],
-                                "attire_tags": val.get("attire_tags", []),
-                                "is_festive": val.get("is_festive", True)
-                            })
-                    except Exception:
-                        pass
-    except Exception as e:
-        logger.error(f"Error fetching upcoming events for engine: {e}")
+    cache_key_events = f"upcoming_events_{mapped_zip}_{active_date}"
+    cached_events = api_cache.get(cache_key_events)
+    if cached_events is not None:
+        upcoming_events_data = cached_events
+    else:
+        try:
+            from datetime import timedelta
+            if not isinstance(dt, datetime):
+                dt = datetime.now()
+            end_date = dt + timedelta(days=7)
+            sb = get_supabase_client()
+            if sb:
+                res = sb.table("calendar") \
+                    .select("*") \
+                    .eq("zip_code", mapped_zip) \
+                    .gte("date", active_date) \
+                    .lte("date", end_date.strftime("%Y-%m-%d")) \
+                    .execute()
+                if res.data:
+                    upcoming_events_data = res.data
+            if not upcoming_events_data:
+                # Fallback to in-memory calendar
+                for (z, d_str), val in FALLBACK_CALENDAR.items():
+                    if z == mapped_zip:
+                        try:
+                            d_obj = datetime.strptime(d_str, "%Y-%m-%d")
+                            if dt <= d_obj <= end_date:
+                                upcoming_events_data.append({
+                                    "zip_code": z, "date": d_str,
+                                    "event_name": val["event_name"],
+                                    "event_type": val["event_type"],
+                                    "attire_tags": val.get("attire_tags", []),
+                                    "is_festive": val.get("is_festive", True)
+                                })
+                        except Exception:
+                            pass
+            api_cache.set(cache_key_events, upcoming_events_data)
+        except Exception as e:
+            logger.error(f"Error fetching upcoming events for engine: {e}")
 
     user_context = {
         "zip_code": mapped_zip,
@@ -1056,6 +1235,8 @@ def get_feed(
             "product_url": clean_item.get("product_url"),
             "tags": clean_item["tags"],
             "zip_codes": clean_item.get("zip_codes", []),
+            "price": clean_item.get("price"),
+            "category": clean_item.get("category"),
             "vector_score": clean_item["s_aesthetic"],
             "tag_score": clean_item["s_creator"],
             "boost_score": clean_item["s_festivity"],
@@ -1065,7 +1246,6 @@ def get_feed(
             "is_trending": clean_item["s_velocity"] >= 0.75,
             "final_score": clean_item["final_score"],
             "overlap_tags": overlap_tags,
-            "stock_level": clean_item.get("stock_level", 50),
             
             "scoring_breakdown": {
                 "layer1_personal_vibe": round(weights["w_aesthetic"] * clean_item["s_aesthetic"], 4),
@@ -1090,6 +1270,46 @@ def get_feed(
             "reason_labels": clean_item["reason_labels"]
         })
 
+    # ── Global Trend Injection: interleave at 0-indexed positions 5 and 11 ──
+    global _GLOBAL_CARD_INDEX
+    inject_slots = [5, 11]  # Before items at index 5 (rank 6) and 11 (rank 12)
+    injected = 0
+    for slot in inject_slots:
+        adjusted_slot = slot + injected
+        if _GLOBAL_TREND_CARDS and adjusted_slot <= len(formatted_products):
+            card = _GLOBAL_TREND_CARDS[_GLOBAL_CARD_INDEX % len(_GLOBAL_TREND_CARDS)]
+            _GLOBAL_CARD_INDEX += 1
+            formatted_products.insert(adjusted_slot, {
+                "id": f"global_{card['id']}",
+                "name": card["trend_name"],
+                "description": card["description"],
+                "image_url": None,
+                "product_url": None,
+                "tags": card.get("vibe_tags", []),
+                "zip_codes": [],
+                "price": None,
+                "category": "Global Runway",
+                "final_score": card.get("heat_score", 0.9),
+                "is_global_trend": True,
+                "global_city": card["city"],
+                "global_country": card["country"],
+                "global_flag": card["flag"],
+                "global_primary_color": card.get("primary_color", "#BB8588"),
+                "global_style_archetype": card.get("style_archetype", ""),
+                "global_key_pieces": card.get("key_pieces", []),
+                "global_trending_colors": card.get("trending_colors", []),
+                "global_heat_score": card.get("heat_score", 0.9),
+                "global_searches_weekly": card.get("global_searches_weekly", 0),
+                "global_season": card.get("season", "SS26"),
+                "matched_catalog_tags": card.get("matched_catalog_tags", []),
+                "vector_score": 0, "tag_score": 0, "boost_score": 0,
+                "velocity_score": 0, "velocity_boost": 0,
+                "units_last_hour": 0, "is_trending": True,
+                "overlap_tags": [],
+                "scoring_breakdown": {}, "reason_labels": ["🌍 Global Runway"]
+            })
+            injected += 1
+
     return formatted_products
 
 @app.get("/api/product/{product_id}")
@@ -1099,6 +1319,9 @@ def get_product(product_id: int):
     product = next((p for p in raw_products if p["id"] == product_id), None)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
+
+    # Populate engine catalog to ensure recommendations can lookup products correctly
+    engine.product_catalog = [enrich_product(p, {}) for p in raw_products]
 
     enriched_p = enrich_product(product, {})
     
@@ -1294,19 +1517,99 @@ except ModuleNotFoundError:
 
 @app.get("/api/trends/youtube")
 def get_youtube_trends(zip_code: str):
+    cache_key = f"trends_youtube_{zip_code}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
     try:
-        return get_youtube_trend_match(zip_code)
+        res = get_youtube_trend_match(zip_code)
+        api_cache.set(cache_key, res)
+        return res
     except Exception as e:
         logger.error(f"YouTube scraper error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/trends/boutiques")
 def get_boutiques_endpoint(zip_code: str):
+    cache_key = f"trends_boutiques_{zip_code}"
+    cached = api_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     # Query stores data
     mapped_zip = map_zip_code(zip_code)
     stores = get_stores_data(mapped_zip)
-    
-    # Enrichment
+    velocity_map = get_velocity_map(mapped_zip)
+    raw_products = get_db_products()
+    catalog = [enrich_product(p, velocity_map) for p in raw_products]
+    catalog_map = {p["id"]: p for p in catalog}
+
+    # 1. Try loading from mock DB first
+    mock_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "pinpulse_mock_db.json"))
+    if os.path.exists(mock_db_path):
+        try:
+            with open(mock_db_path, "r", encoding="utf-8") as f:
+                mock_records = json.load(f)
+            
+            mock_boutiques = [r for r in mock_records if r.get("pincode") == zip_code and r.get("type") == "boutique"]
+            if mock_boutiques:
+                # Group by store_name
+                boutique_groups = {}
+                for r in mock_boutiques:
+                    store_name = r.get("store_name") or r.get("metadata", {}).get("store_name", "Unknown Store")
+                    if store_name not in boutique_groups:
+                        boutique_groups[store_name] = []
+                    boutique_groups[store_name].append(r)
+
+                enriched_boutiques = []
+                for idx, (name, records) in enumerate(boutique_groups.items()):
+                    rating = round(4.2 + (idx % 5) * 0.1, 1)
+                    review_count = 120 + (idx % 8) * 45
+                    cost = records[0].get("metadata", {}).get("estimated_price_inr", 1500)
+                    address = f"Shop {10 + idx}, Commercial Zone, {ZIP_MAPPING.get(zip_code, 'Local District')}"
+                    import urllib.parse
+                    encoded_query = urllib.parse.quote_plus(f"{name} {zip_code}")
+                    maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
+
+                    matched_product = None
+                    mp_id = records[0].get("matched_product_id")
+                    if mp_id and mp_id in catalog_map:
+                        matched_product = catalog_map[mp_id]
+
+                    clean_product = None
+                    if matched_product:
+                        clean_product = {k: v for k, v in matched_product.items() if not k.endswith("_vector") and k != "embedding"}
+
+                    trend_tags = []
+                    for r in records:
+                        t = r.get("metadata", {}).get("aesthetic")
+                        if t:
+                            trend_tags.append(t)
+                    extracted_trend = ", ".join(list(set(trend_tags))[:2]) if trend_tags else "ethnic"
+
+                    enriched_boutiques.append({
+                        "store_id": f"STR_{zip_code}_{idx}",
+                        "zip_code": zip_code,
+                        "store_name": name,
+                        "rating": rating,
+                        "review_count": review_count,
+                        "estimated_cost": cost,
+                        "address": address,
+                        "maps_url": maps_url,
+                        "social_signal_source": "Google Places",
+                        "simulated_engagement": review_count * 10,
+                        "extracted_visual_trend": extracted_trend,
+                        "style_vibe_cluster": "Local Boutique Drapes",
+                        "matched_product": clean_product
+                    })
+                logger.info(f"Successfully loaded {len(enriched_boutiques)} boutiques from pinpulse_mock_db.json.")
+                res_val = {"zip_code": zip_code, "boutiques": enriched_boutiques}
+                api_cache.set(cache_key, res_val)
+                return res_val
+        except Exception as e:
+            logger.error(f"Error parsing mock DB boutiques: {e}")
+
+    # 2. Fall back to standard store lookup
     enriched_boutiques = []
     for idx, s in enumerate(stores):
         name = s["name"]
@@ -1320,15 +1623,38 @@ def get_boutiques_endpoint(zip_code: str):
         encoded_query = urllib.parse.quote_plus(f"{name} {zip_code}")
         maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
         
-        # Match product
+        # Match product using cosine similarity to store vector
         matched_product = None
-        for p in RAW_CATALOG:
-            if idx % 3 == 0 and "festive" in p.get("tags", []):
-                matched_product = p
-                break
-        if not matched_product and RAW_CATALOG:
-            matched_product = RAW_CATALOG[idx % len(RAW_CATALOG)]
-            
+        store_vector = s.get("vector") or s.get("embedding")
+        if store_vector and catalog:
+            best_score = -1.0
+            best_p = None
+            used_product_ids = {
+                item["matched_product"]["id"] 
+                for item in enriched_boutiques 
+                if item.get("matched_product")
+            }
+            for p in catalog:
+                p_id = p.get("id")
+                if p_id in used_product_ids:
+                    continue
+                p_vector = p.get("aesthetic_vector") or p.get("embedding")
+                if not p_vector:
+                    continue
+                score = cosine_similarity(store_vector, p_vector)
+                if score > best_score:
+                    best_score = score
+                    best_p = p
+            matched_product = best_p
+
+        if not matched_product and catalog:
+            matched_product = catalog[idx % len(catalog)]
+
+        # Strip vector fields from returned product object
+        clean_product = None
+        if matched_product:
+            clean_product = {k: v for k, v in matched_product.items() if not k.endswith("_vector") and k != "embedding"}
+
         enriched_boutiques.append({
             "store_id": f"STR_{zip_code}_{idx}",
             "zip_code": zip_code,
@@ -1340,11 +1666,95 @@ def get_boutiques_endpoint(zip_code: str):
             "maps_url": maps_url,
             "social_signal_source": "Google Places",
             "simulated_engagement": review_count * 10,
-            "extracted_visual_trend": "ethnic" if idx % 2 == 0 else "casual",
+            "extracted_visual_trend": s.get("extracted_visual_trend", "ethnic" if idx % 2 == 0 else "casual"),
             "style_vibe_cluster": "Local Boutique Drapes",
-            "matched_product": matched_product
+            "matched_product": clean_product
         })
-    return {"zip_code": zip_code, "boutiques": enriched_boutiques}
+    res_val = {"zip_code": zip_code, "boutiques": enriched_boutiques}
+    api_cache.set(cache_key, res_val)
+    return res_val
+
+
+@app.get("/api/trends/global")
+def get_global_trends(city: str = Query(None), top_k: int = Query(3)):
+    """Returns Global Runway trend data with top-K matched catalog products per trend.
+    Uses Jaccard tag-overlap similarity to match trends to catalog items.
+    Optionally filter by city: 'tokyo', 'paris', 'seoul'.
+    """
+    if not GLOBAL_TRENDS_CACHE:
+        return {"error": "Global trends cache not available.", "cities": []}
+
+    cities_data = GLOBAL_TRENDS_CACHE.get("cities", {})
+    meta = GLOBAL_TRENDS_CACHE.get("meta", {})
+
+    # ── Load catalog for matching ──────────────────────────────────────────
+    raw_products = get_db_products()
+
+    def jaccard_tag_score(trend_tags: list, product_tags: list) -> float:
+        """Jaccard similarity: |A ∩ B| / |A ∪ B|"""
+        t = set(t.lower().strip() for t in trend_tags)
+        p = set(t.lower().strip() for t in product_tags)
+        if not t or not p:
+            return 0.0
+        intersection = len(t & p)
+        union = len(t | p)
+        return intersection / union if union > 0 else 0.0
+
+    def find_top_matches(trend: dict, k: int = 3) -> list:
+        """Score every catalog product against a trend, return top-K."""
+        # Combine vibe_tags + matched_catalog_tags as the trend's tag fingerprint
+        trend_tags = list(set(
+            trend.get("vibe_tags", []) + trend.get("matched_catalog_tags", [])
+        ))
+        scored = []
+        for p in raw_products:
+            product_tags = p.get("tags", [])
+            score = jaccard_tag_score(trend_tags, product_tags)
+            if score > 0:
+                # Count overlapping tags for display
+                trend_tag_set = set(t.lower() for t in trend_tags)
+                product_tag_set = set(t.lower() for t in product_tags)
+                overlap = sorted(trend_tag_set & product_tag_set)
+                scored.append((score, overlap, p))
+        # Sort descending by score, take top-k
+        scored.sort(key=lambda x: -x[0])
+        results = []
+        for score, overlap, p in scored[:k]:
+            results.append({
+                "id": p["id"],
+                "name": p["name"],
+                "image_url": p.get("image_url", ""),
+                "price": p.get("price"),
+                "product_url": p.get("product_url"),
+                "category": p.get("category", ""),
+                "tags": p.get("tags", []),
+                "overlap_tags": overlap,
+                "match_score": round(score, 4)
+            })
+        return results
+
+    # ── Build enriched city data with matched products per trend ───────────
+    if city and city.lower() in cities_data:
+        filtered_keys = [city.lower()]
+    else:
+        filtered_keys = list(cities_data.keys())
+
+    enriched_cities = {}
+    for city_key in filtered_keys:
+        city_block = cities_data[city_key]
+        enriched_trends = []
+        for trend in city_block.get("trends", []):
+            enriched_trend = dict(trend)
+            enriched_trend["matched_products"] = find_top_matches(trend, k=top_k)
+            enriched_trends.append(enriched_trend)
+        enriched_cities[city_key] = {**city_block, "trends": enriched_trends}
+
+    return {
+        "meta": meta,
+        "cities": enriched_cities,
+        "feed_injection_config": GLOBAL_TRENDS_CACHE.get("feed_injection_config", {})
+    }
+
 
 @app.get("/api/look-completer")
 def get_look_completer(product_id: int, occasion_tag: str):
