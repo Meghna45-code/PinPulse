@@ -368,6 +368,12 @@ function App() {
   const dateProfiles = calendarPresets[currentZipCode] || calendarPresets["800008"] || [];
   const activeDateProfile = dateProfiles[sliderVal] || dateProfiles[0] || { key: "default", label: "N/A", dateStr: "2026-01-01", event: "N/A", trendingTags: [] };
 
+  const handleConfirmOnboarding = () => {
+    setCurrentVibe(tempVibe);
+    setShowOnboarding(false);
+    logMessage(`Vibe Check vector shifted to '${VIBE_DEFINITIONS[tempVibe]?.name || tempVibe}'. Computing 8-Pillar search space...`, "success");
+  };
+
   const logMessage = (text, type = "info") => {
     const timestamp = new Date().toLocaleTimeString();
     setLogs(prev => [...prev, { time: timestamp, text, type }]);
@@ -770,10 +776,12 @@ function App() {
       const embedding = embeddingCacheRef.current[tagKey]
         || (embeddingCacheRef.current[tagKey] = generateVibeVector(tagKey));
 
-      // === Pillar 1: Aesthetic score ===
-      let sAesthetic = calculateCosineSimilarity(userVibeVector, embedding);
-      if (nature === currentVibe) sAesthetic = 1.0;
-      else sAesthetic = (sAesthetic + 1) / 2;
+      // === Pillar 1: Aesthetic score (Semantic Vibe Vector Similarity) ===
+      const vibeDef = VIBE_DEFINITIONS[currentVibe] || VIBE_DEFINITIONS["coastal_tropical"];
+      const vibeTags = vibeDef.tags || [];
+      const matchingVibeTags = product.tags.filter(t => vibeTags.includes(t.toLowerCase()));
+      const tagOverlapRatio = matchingVibeTags.length / Math.max(1, vibeTags.length);
+      let sAesthetic = Math.min(1.0, (tagOverlapRatio * 3.0) + (nature === currentVibe ? 0.25 : 0.0) + 0.1);
 
       // === Pillar 2: Fabric score ===
       let sFabric = calculateCosineSimilarity(allowableMaterialsVector, embedding);
@@ -971,12 +979,6 @@ function App() {
   const triggerVibeChange = (vibe) => {
     setCurrentVibe(vibe);
     logMessage(`Shopper style vibe profile changed: '${vibe.toUpperCase()}'.`, "success");
-  };
-
-  const handleConfirmOnboarding = () => {
-    setCurrentVibe(tempVibe);
-    setShowOnboarding(false);
-    logMessage(`Vibe check onboarding completed. Selected Vibe: '${VIBE_DEFINITIONS[tempVibe].name}'.`, "success");
   };
 
   // Dev Panel Operations
@@ -2157,17 +2159,27 @@ function App() {
             <div>
               {/* 1. Recommended For You */}
               <div className="section-container">
-                <h2 className="section-title">✨ Recommended For You</h2>
-                {products.filter(p => !p.is_global_trend).length > 0 ? (
-                  <div className="horizontal-shelf">
-                    {products
-                      .filter(p => !p.is_global_trend)
-                      .slice(0, 25)
-                      .map((product, idx) => renderProductCard(product, idx))}
-                  </div>
-                ) : (
-                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No recommendations matching your search space.</p>
-                )}
+                <h2 className="section-title">✨ Recommended For You ({VIBE_DEFINITIONS[currentVibe]?.name || 'Personal Vibe'})</h2>
+                {(() => {
+                  const recommendedProducts = products.filter(p => {
+                    if (p.is_global_trend) return false;
+                    if (activeDateProfile.isFestive) {
+                      const isHeavyFestive = p.tags && p.tags.some(t => ["heavy_silk", "lehenga", "zardozi", "ceremonial", "kanjeevaram", "banarasi", "pandal"].includes(t));
+                      if (isHeavyFestive) return false;
+                    }
+                    return true;
+                  });
+
+                  return recommendedProducts.length > 0 ? (
+                    <div className="horizontal-shelf">
+                      {recommendedProducts
+                        .slice(0, 25)
+                        .map((product, idx) => renderProductCard(product, idx))}
+                    </div>
+                  ) : (
+                    <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No recommendations matching your active search space.</p>
+                  );
+                })()}
               </div>
 
               {/* 2. Global Trends */}
