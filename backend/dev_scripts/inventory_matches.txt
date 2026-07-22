@@ -1,0 +1,16 @@
+backend/app/main.py:773: # 6. Determine stock_level
+backend/app/main.py:774: stock_level = (p_id * 7) % 50 + 1
+backend/app/main.py:818: "stock_level": stock_level,
+backend/app/main.py:1188: "stock_level": clean_item.get("stock_level", 50),
+backend/app/main.py:1248: "overlap_tags": [], "stock_level": 100,
+backend/app/pinpulse_engine.py:12: LOW_STOCK_THRESHOLD,
+backend/app/pinpulse_engine.py:13: LOW_STOCK_PENALTY,
+backend/app/pinpulse_engine.py:334: # === INVENTORY PENALTY ===
+backend/app/pinpulse_engine.py:335: if product.get("stock_level", 50) < LOW_STOCK_THRESHOLD:
+backend/app/pinpulse_engine.py:336: final_score *= LOW_STOCK_PENALTY
+backend/app/scoring_engine.py:11: LOW_STOCK_THRESHOLD,
+backend/app/scoring_engine.py:12: LOW_STOCK_PENALTY,
+frontend/src/App.jsx:873: const stockLevel = (id * 7) % 50 + 1;
+frontend/src/App.jsx:962: // Low Stock Penalty
+frontend/src/App.jsx:963: if (stockLevel < 5) finalScore *= 0.1;
+frontend/src/App.jsx:984: stock_level: stockLevel,

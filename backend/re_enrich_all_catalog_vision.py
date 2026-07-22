@@ -226,18 +226,11 @@ def main():
                     "id": pid,
                     "name": p["name"],
                     "description": p["description"],
-                    "image_url": p["image_url"],
-                    "product_url": p["product_url"],
+                    "image_url": p.get("image_url", ""),
+                    "product_url": p.get("product_url", ""),
                     "tags": p["tags"],
                     "zip_codes": p.get("zip_codes", []),
-                    "embedding": p["embedding"],
-                    "price": p["price"],
-                    "inventory": p["inventory"],
-                    "material": p["material"],
-                    "color": p["color"],
-                    "nature": p["nature"],
-                    "age_range": p["age_range"],
-                    "category": p["category"]
+                    "embedding": p["embedding"]
                 }
                 supabase.table("products").upsert(payload).execute()
                 logger.info(f"  Successfully synced Product ID {pid} to Supabase: {p['name']}")

@@ -5,17 +5,22 @@ Triggered when a team member uploads pinpulse_youtube_seed.xlsx.
 
 Architecture per Excel row:
   1. YouTubeTranscriptApi  →  full transcript text
-  2. Gemini LLM            →  extract 2-3 garments with FULL product schema:
-                               item, description, tags, aesthetic, material,
-                               fabric, color, age_group, estimated_price_inr,
-                               occasion / inventory_status
-  3. embed_dress()         →  512-dim vector from TEXT fields only
-                               (excludes age_group and estimated_price_inr)
-  4. find_best_catalog_match()  →  HYBRID scoring:
-                               - 70% cosine similarity on embedding
-                               - 20% age_group range overlap  (range comparison)
-                               - 10% price proximity           (ratio decay)
-  5. JSON export           →  appends all garment + match records to pinpulse_mock_db.json
+  2a. (transcript present)
+      Gemini LLM → extract 2-3 garments with FULL product schema:
+        item, description, tags, aesthetic, material, fabric,
+        color, age_group, estimated_price_inr, occasion
+  2b. (no transcript — Shorts/music-only)
+      CLIP zero-shot → classify YouTube thumbnail image against
+        garment-vocab to derive tags (NEW — before Gemini fallback)
+      Gemini regional-context generator (fallback only if CLIP also fails)
+  3. embed_dress()  →  512-dim vibe vector from TEXT fields only
+  4. find_best_match_multi_query()  →  Multi-Query RRF (NEW):
+       Path 1 — transcript/Gemini dress vector (top-20 candidates)
+       Path 2 — CLIP thumbnail dress vector    (top-20 candidates)
+       Path 3 — Regional prior vibe vector     (top-20 candidates)
+       Reciprocal Rank Fusion: score = Σ 1/(60 + rank)
+  5. JSON export → pinpulse_mock_db.json
+       New fields per record: rrf_score, query_sources
 
 Expected Excel columns:
   video_id   — 11-character YouTube video ID
@@ -36,9 +41,14 @@ from dotenv import load_dotenv
 
 import google.generativeai as genai
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisabled
 
 sys.path.append(os.path.dirname(__file__))
 from embed_catalog import get_vibe_vector
+from multi_query_retrieval import (
+    find_best_match_multi_query,
+    classify_thumbnail_with_clip,
+)
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -190,15 +200,104 @@ def find_best_catalog_match(dress_vector, dress_meta, catalog, zip_code):
 # ║                         TRANSCRIPT FETCHING                                 ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 
-def get_transcript(video_id):
+# Language preference order: English first, then major Indian languages
+_TRANSCRIPT_LANG_PRIORITY = ["en", "hi", "pa", "ta", "te", "kn", "ml", "bn", "or", "gu", "mr"]
+
+# ── Transcript cache: persist fetched transcripts to avoid re-hitting YouTube ──
+# Re-runs will load from this file instead of making new YouTube API calls.
+_TRANSCRIPT_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "transcript_cache.json")
+_transcript_cache: dict = {}
+try:
+    if os.path.exists(_TRANSCRIPT_CACHE_FILE):
+        with open(_TRANSCRIPT_CACHE_FILE, "r", encoding="utf-8") as _tc:
+            _transcript_cache = json.load(_tc)
+        logger.info(f"Transcript cache loaded: {len(_transcript_cache)} cached videos.")
+except Exception as _ce:
+    logger.warning(f"Could not load transcript cache: {_ce}")
+
+
+def _save_transcript_cache():
     try:
-        # youtube-transcript-api v1.x: instance-based API
+        with open(_TRANSCRIPT_CACHE_FILE, "w", encoding="utf-8") as _tc:
+            json.dump(_transcript_cache, _tc, ensure_ascii=False, indent=2)
+    except Exception as _e:
+        logger.warning(f"Could not save transcript cache: {_e}")
+
+def get_transcript(video_id):
+    """
+    Fetch transcript for video_id, trying English first then Indian regional languages.
+    Results are cached in transcript_cache.json to avoid re-hitting YouTube on re-runs.
+    IP-block failures are NOT cached permanently — they are retried on next run.
+    Non-English transcripts are passed to Gemini which handles them natively.
+    """
+    # ── Cache hit: skip YouTube ──
+    if video_id in _transcript_cache:
+        cached_val = _transcript_cache[video_id]
+        # Temporary IP block — always retry (don't trust cached block)
+        if isinstance(cached_val, dict) and cached_val.get("__blocked__"):
+            logger.info(f"  [{video_id}] Previously IP-blocked — retrying YouTube.")
+            # Fall through to re-fetch below
+        elif cached_val is None:
+            logger.info(f"  [{video_id}] Transcript: permanently unavailable (cached).")
+            return None
+        else:
+            logger.info(f"  [{video_id}] Transcript: loaded from cache ({len(cached_val)} chars).")
+            return cached_val
+
+    try:
         api = YouTubeTranscriptApi()
-        transcript = api.fetch(video_id)
-        return " ".join([entry.text for entry in transcript])
-    except Exception as e:
-        logger.warning(f"  Transcript unavailable for {video_id}: {e}")
+        # Try preferred languages in order
+        try:
+            transcript = api.fetch(video_id, languages=_TRANSCRIPT_LANG_PRIORITY)
+            text = " ".join([entry.text for entry in transcript])
+            if text.strip():
+                _transcript_cache[video_id] = text
+                _save_transcript_cache()
+                return text
+        except NoTranscriptFound:
+            pass
+
+        # Fallback: fetch whatever language is available
+        try:
+            transcript_list = api.list(video_id)
+            for t in transcript_list:
+                try:
+                    fetched = t.fetch()
+                    text = " ".join([entry.text for entry in fetched])
+                    if text.strip():
+                        logger.info(f"  Transcript found in '{t.language_code}' for {video_id}")
+                        _transcript_cache[video_id] = text
+                        _save_transcript_cache()
+                        return text
+                except Exception:
+                    continue
+        except Exception:
+            pass
+
+    except TranscriptsDisabled:
+        # Permanent — cache as null
+        logger.warning(f"  Transcripts disabled for {video_id}")
+        _transcript_cache[video_id] = None
+        _save_transcript_cache()
         return None
+    except Exception as e:
+        err = str(e)
+        if "blocking" in err.lower() or "IPBlocked" in err or "RequestBlocked" in err or "blocked" in err.lower():
+            # Temporary IP block — cache as blocked (will retry next run)
+            logger.warning(f"  Transcript unavailable for {video_id}: YouTube IP block (will retry next run)")
+            _transcript_cache[video_id] = {"__blocked__": True}
+            _save_transcript_cache()
+        else:
+            # Other error — log and cache as permanent miss
+            logger.warning(f"  Transcript unavailable for {video_id}: {e}")
+            _transcript_cache[video_id] = None
+            _save_transcript_cache()
+        return None
+
+    # Exhausted all language options with no result — permanent miss
+    _transcript_cache[video_id] = None
+    _save_transcript_cache()
+    return None
 
 
 def generate_fashion_from_context(creator_name, pincode, is_creator=True, store_name="Unknown"):
@@ -379,7 +478,7 @@ def process_seeding_from_excel(excel_path):
     all_records   = []
     dress_counter = 0
 
-    for _, row in df.iterrows():
+    for row_idx, (_, row) in enumerate(df.iterrows()):
         video_id   = str(row.get("video_id", "")).strip()
         pincode    = str(row.get("pincode", "800008")).strip()
         feed_type  = str(row.get("type", "creator")).strip().lower()
@@ -388,52 +487,96 @@ def process_seeding_from_excel(excel_path):
         if not video_id or video_id == "nan":
             continue
 
+        # Inter-video delay to avoid YouTube rate-limiting.
+        # Skip delay on the first video, and also skip if the transcript is cached.
+        if row_idx > 0 and video_id not in _transcript_cache:
+            import time
+            time.sleep(3)
+
         logger.info(f"\n  Processing ({feed_type}) Video ID: {video_id}  [{pincode}]")
 
         # 1. Transcript
         is_creator = (feed_type == "creator")
         transcript = get_transcript(video_id)
 
+        # Initialise transcript_dresses for use in multi-query path
+        transcript_dresses = []
+
         if transcript:
             # 2a. Transcript available → extract from transcript
-            dresses = extract_dresses_from_transcript(transcript, is_creator, pincode)
-            logger.info(f"  Gemini (transcript): {len(dresses)} garments extracted.")
+            transcript_dresses = extract_dresses_from_transcript(transcript, is_creator, pincode)
+            logger.info(f"  Gemini (transcript): {len(transcript_dresses)} garments extracted.")
         else:
-            # 2b. No transcript (YouTube Shorts, etc.) → generate from context
-            logger.info(f"  No transcript — using Gemini context-based generation.")
-            dresses = generate_fashion_from_context(store_name, pincode, is_creator, store_name)
-            logger.info(f"  Gemini (context): {len(dresses)} garments generated.")
+            # 2b. No transcript (YouTube Shorts / music-only) —
+            #     Try CLIP thumbnail classification FIRST (new path).
+            logger.info(f"  No transcript — attempting CLIP thumbnail classification.")
+            clip_meta = classify_thumbnail_with_clip(video_id)
+            if clip_meta:
+                transcript_dresses = [clip_meta]
+                logger.info(f"  CLIP: garment '{clip_meta['item']}' detected from thumbnail.")
+            else:
+                # CLIP also failed — fall back to Gemini regional-context generator.
+                logger.info(f"  CLIP unavailable — falling back to Gemini context generation.")
+                transcript_dresses = generate_fashion_from_context(store_name, pincode, is_creator, store_name)
+                logger.info(f"  Gemini (context): {len(transcript_dresses)} garments generated.")
 
-        # 3. Per garment: text embedding → hybrid match → build record
-        for d in dresses:
+        # 3. Multi-query RRF: fuse transcript + thumbnail + regional-prior ranked lists.
+        #    Returns the single best catalog match and metadata about which paths fired.
+        best, rrf_score, query_sources = find_best_match_multi_query(
+            video_id=video_id,
+            transcript_dresses=transcript_dresses,
+            catalog=catalog,
+            zip_code=pincode,
+        )
+
+        matched_id   = best.get("id")   if best else None
+        matched_name = best.get("name") if best else None
+
+        if best:
+            logger.info(
+                f"  └─ RRF match: '{matched_name}'  "
+                f"(rrf={rrf_score:.4f}, sources={query_sources})"
+            )
+        else:
+            logger.info(f"  └─ no catalog match found.")
+
+        # 4. Per garment: build individual records (one per extracted garment)
+        #    Each record points to the same RRF-selected best match but keeps its
+        #    individual Gemini/CLIP metadata for the frontend.
+        for dress_idx, d in enumerate(transcript_dresses):
             dress_counter += 1
             item_name    = d.get("item", "Unknown")
             dress_vector = embed_dress(d)
-            best, score  = find_best_catalog_match(dress_vector, d, catalog, pincode)
 
-            matched_id   = best.get("id")   if best else None
-            matched_name = best.get("name") if best else None
+            age_s   = age_overlap_score(
+                d.get("age_group", ""),
+                best.get("age_group", "") if best else "",
+            )
+            price_s = price_proximity_score(
+                d.get("estimated_price_inr"),
+                best.get("price") if best else None,
+            )
 
-            age_s   = age_overlap_score(d.get("age_group",""), best.get("age_group","") if best else "")
-            price_s = price_proximity_score(d.get("estimated_price_inr"), best.get("price") if best else None)
-
-            logger.info(f"    Garment: '{item_name}'  [age={d.get('age_group')} / ₹{d.get('estimated_price_inr')}]")
-            if best:
-                logger.info(f"    └─ '{matched_name}'  (hybrid={score:.4f}  age={age_s:.2f}  price={price_s:.2f})")
-            else:
-                logger.info(f"    └─ no catalog match found.")
+            logger.info(
+                f"    Garment {dress_idx+1}: '{item_name}'  "
+                f"[age={d.get('age_group')} / ₹{d.get('estimated_price_inr')}]"
+            )
 
             record = {
-                "id":                   f"{pincode}_{feed_type}_{video_id}_{dress_counter}",
-                "type":                 feed_type,
-                "pincode":              pincode,
-                "video_id":             video_id,
-                "metadata":             d,
-                "vector":               dress_vector,
-                "matched_product_id":   matched_id,
-                "matched_product_name": matched_name,
-                "hybrid_score":         round(score, 4) if best else 0.0,
-                "age_overlap_score":    round(age_s, 4),
+                "id":                    f"{pincode}_{feed_type}_{video_id}_{dress_counter}",
+                "type":                  feed_type,
+                "pincode":               pincode,
+                "video_id":              video_id,
+                "metadata":              d,
+                "vector":                dress_vector,
+                "matched_product_id":    matched_id,
+                "matched_product_name":  matched_name,
+                # RRF score replaces the old single-query hybrid_score.
+                # Kept under the same key so downstream consumers are unchanged.
+                "hybrid_score":          round(rrf_score, 4) if best else 0.0,
+                "rrf_score":             round(rrf_score, 4) if best else 0.0,
+                "query_sources":         query_sources,
+                "age_overlap_score":     round(age_s, 4),
                 "price_proximity_score": round(price_s, 4),
             }
             if not is_creator:

@@ -30,7 +30,34 @@ class CollaborativeFilteringEngine:
             target_lookup = self.cf_lookup[str_key]
 
         if not target_lookup:
-            return []
+            # Dynamic fallback: Find up to 3 complementary products based on tag overlap
+            current_product = None
+            if int_key is not None:
+                current_product = next((p for p in product_catalog if p.get("id") == int_key), None)
+            
+            if not current_product:
+                return []
+
+            current_tags = set(current_product.get("tags", []))
+            candidates = []
+            
+            for p in product_catalog:
+                p_id = p.get("id")
+                if p_id == int_key:
+                    continue
+                
+                p_tags = set(p.get("tags", []))
+                overlap = len(current_tags.intersection(p_tags))
+                
+                # Boost accessories and footwear to complete the look
+                p_category = str(p.get("category", "")).lower()
+                if "accessory" in p_category or "footwear" in p_category or "bag" in p_category:
+                    overlap += 2.0
+                
+                candidates.append((p, overlap))
+                
+            candidates.sort(key=lambda x: x[1], reverse=True)
+            return [x[0] for x in candidates[:3]]
 
         # Get recommendations and sort them by strength (highest first)
         recs = sorted(
@@ -62,74 +89,4 @@ class CollaborativeFilteringEngine:
                     break
         return result
 
-    def recalculate_home_feed(self, product_catalog, user_session_cart, current_mode_weights):
-        """Applies probabilistic score bumps based on cart contents."""
-        active_cf_boosts = {}  # Dictionary mapping item_id -> highest strength
 
-        # 1. Extract and map probabilities for everything in the cart
-        for item_id in user_session_cart:
-            try:
-                item_id = int(item_id)
-            except ValueError:
-                pass
-
-            str_key = str(item_id)
-            int_key = None
-            if isinstance(item_id, int):
-                int_key = item_id
-            elif isinstance(item_id, str) and item_id.isdigit():
-                int_key = int(item_id)
-
-            target_lookup = None
-            if int_key is not None and int_key in self.cf_lookup:
-                target_lookup = self.cf_lookup[int_key]
-            elif str_key in self.cf_lookup:
-                target_lookup = self.cf_lookup[str_key]
-
-            if target_lookup:
-                for rec in target_lookup["recommendations"]:
-                    rec_id = rec["id"]
-                    try:
-                        rec_id = int(rec_id)
-                    except ValueError:
-                        pass
-                    rec_strength = rec["strength"]
-
-                    # If multiple cart items recommend the same product, take max
-                    if rec_id not in active_cf_boosts or rec_strength > active_cf_boosts[rec_id]:
-                        active_cf_boosts[rec_id] = rec_strength
-
-        # 2. Score the catalog
-        ranked_catalog = []
-        w = current_mode_weights
-        w6 = 0.3 if active_cf_boosts else 0.0  # CF layer weight
-
-        for item in product_catalog:
-            item_id = item["id"]
-            try:
-                item_id = int(item_id)
-            except ValueError:
-                pass
-
-            # Retrieve the specific probability strength (defaults to 0.0)
-            cf_strength = active_cf_boosts.get(item_id, 0.0)
-
-            # Base Tri-Layer Score + CF layer
-            base_score = (
-                (w.get("w_aesthetic", 0) * item.get("s_aesthetic", 0))
-                + (w.get("w_fabric", 0) * item.get("s_fabric", 0))
-                + (w.get("w_festivity", 0) * item.get("s_festivity", 0))
-                + (w.get("w_creator", 0) * item.get("s_creator", 0))
-                + (w.get("w_boutique", 0) * item.get("s_boutique", 0))
-            )
-
-            # Final Score now scales the CF boost by its actual statistical strength
-            final_score = base_score + (w6 * cf_strength)
-
-            item_copy = item.copy()
-            item_copy["final_score"] = round(final_score, 3)
-            item_copy["cf_boost_applied"] = round(w6 * cf_strength, 3)
-            ranked_catalog.append(item_copy)
-
-        # 3. Sort descending by the final score
-        return sorted(ranked_catalog, key=lambda x: x["final_score"], reverse=True)

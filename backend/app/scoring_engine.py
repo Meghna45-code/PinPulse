@@ -8,8 +8,6 @@ import numpy as np
 from config import (
     WEATHER_VETO_THRESHOLD,
     EVERGREEN_FIXED_SCORE,
-    LOW_STOCK_THRESHOLD,
-    LOW_STOCK_PENALTY,
     RELEVANCE_ALPHA,
     MIN_CATEGORIES_TOP_10,
     EXPLOITATION_RATIO,
@@ -19,14 +17,31 @@ def cosine_similarity(vec_a, vec_b):
     """Calculate cosine similarity between two 512-dimensional vectors."""
     if not vec_a or not vec_b:
         return 0.0
-    a = np.array(vec_a)
-    b = np.array(vec_b)
-    dot = np.dot(a, b)
-    norm_a = np.linalg.norm(a)
-    norm_b = np.linalg.norm(b)
-    if norm_a == 0 or norm_b == 0:
+
+    def parse_vector(v):
+        if isinstance(v, str):
+            try:
+                import json
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return parsed
+            except Exception:
+                pass
+            cleaned = v.strip("[]{}")
+            return [float(x) for x in cleaned.split(",") if x.strip()]
+        return v
+
+    try:
+        a = np.array(parse_vector(vec_a), dtype=float)
+        b = np.array(parse_vector(vec_b), dtype=float)
+        dot = np.dot(a, b)
+        norm_a = np.linalg.norm(a)
+        norm_b = np.linalg.norm(b)
+        if norm_a == 0 or norm_b == 0:
+            return 0.0
+        return float(dot / (norm_a * norm_b))
+    except Exception:
         return 0.0
-    return float(dot / (norm_a * norm_b))
 
 def normalize_cosine_score(raw_score):
     """Min-Max Normalization: maps [-1, 1] to [0, 1]."""
@@ -186,26 +201,6 @@ def calculate_velocity_score(product):
     velocity = min(1.0, (delta_ratio - 1.0) / 2.0)
     return velocity
 
-def apply_weather_veto(products, scores):
-    """
-    Hard Veto: If S_fabric (weather score) < 0.2, disqualify the product.
-    """
-    filtered = {}
-    for pid, score_dict in scores.items():
-        if score_dict.get("s_fabric", 0) >= WEATHER_VETO_THRESHOLD:
-            filtered[pid] = score_dict
-    return filtered
-
-def apply_inventory_penalty(products, scores):
-    """
-    Inventory Penalty: If stock_level < 5, Final_Score *= 0.1
-    """
-    for pid, score_dict in scores.items():
-        product = next((p for p in products if p["id"] == pid), None)
-        if product and product.get("stock_level", 50) < LOW_STOCK_THRESHOLD:
-            score_dict["final_score"] *= LOW_STOCK_PENALTY
-    return scores
-
 def apply_category_stratification(ranked_items, min_categories=MIN_CATEGORIES_TOP_10):
     """
     Category Stratification: Ensure top 10 items have at least 4 distinct categories.
@@ -248,13 +243,15 @@ def apply_exploration_split(ranked_items):
     """
     Exploration vs Exploitation: 90% top-scored + 10% discovery items.
     Discovery = items with high vibe but low velocity (hidden gems).
+    The discovery items are randomly injected into the top results (positions 3-15)
+    so users actually get a chance to see them.
     """
     if len(ranked_items) < 10:
         return ranked_items
     
     split_point = int(len(ranked_items) * EXPLOITATION_RATIO)
-    top_pool = ranked_items[:split_point]
-    discovery_pool = ranked_items[split_point:]
+    top_pool = list(ranked_items[:split_point])
+    discovery_pool = list(ranked_items[split_point:])
     
     # Pick random discovery items (high aesthetic but low velocity)
     import random
@@ -263,7 +260,15 @@ def apply_exploration_split(ranked_items):
         discovery_pool, min(discovery_count, len(discovery_pool))
     )
     
-    return top_pool + discovery_picks
+    # Remove picked discovery items from the catalog pool to prevent duplicate entries
+    remaining_discovery = [item for item in discovery_pool if item not in discovery_picks]
+    
+    # Inject picks into top_pool at random positions (e.g. from index 3 to 15, or len(top_pool))
+    for item in discovery_picks:
+        insert_idx = random.randint(3, min(15, len(top_pool)))
+        top_pool.insert(insert_idx, item)
+        
+    return top_pool + remaining_discovery
 
 def get_boosted_score(product_vector, trend_vector, alpha=RELEVANCE_ALPHA):
     """
