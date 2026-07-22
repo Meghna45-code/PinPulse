@@ -49,41 +49,37 @@ def normalize_cosine_score(raw_score):
 
 def calculate_aesthetic_score(product, user_aesthetic, user_aesthetic_vector):
     """
-    Pillar 1: User Aesthetic Matching (S_aesthetic).
-    Evaluates semantic tag overlap so user selected vibe dominates ranking.
+    Pillar 1: Dual-Modal Hybrid Vector Fusion (50% Image CLIP Vector + 50% Text Vector).
+    Computes 512-dimension continuous cosine similarity dot product.
     """
+    if not user_aesthetic_vector:
+        return 0.5
+
+    # 1. Text Vector Cosine Similarity
+    text_vector = product.get("vector") or product.get("aesthetic_vector") or product.get("embedding")
+    sim_text = 0.5
+    if text_vector:
+        raw_t = cosine_similarity(user_aesthetic_vector, text_vector)
+        sim_text = normalize_cosine_score(raw_t)
+
+    # 2. Image CLIP Visual Vector Cosine Similarity
+    image_vector = product.get("image_vector") or text_vector
+    sim_image = 0.5
+    if image_vector:
+        raw_i = cosine_similarity(user_aesthetic_vector, image_vector)
+        sim_image = normalize_cosine_score(raw_i)
+
+    # 3. Dual-Modal 50/50 Hybrid Vector Fusion
+    hybrid_sim = (0.50 * sim_image) + (0.50 * sim_text)
+
+    # Exact nature/category match boost
     user_key = (user_aesthetic or "").lower()
-    tags = [t.lower() for t in product.get("tags", [])]
-    category = (product.get("category") or "").lower()
-    nature = (product.get("nature") or "").lower()
+    product_nature = (product.get("nature") or "").lower()
+    product_cat = (product.get("category") or "").lower()
+    if product_nature == user_key or product_cat == user_key:
+        hybrid_sim = min(1.0, hybrid_sim + 0.20)
 
-    vibe_tags_map = {
-        "heritage_traditionalist": ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"],
-        "festive_glam": ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"],
-        "indie_fusion": ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"],
-        "high_street_rebel": ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"],
-        "coastal_tropical": ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"],
-        "winter_academia": ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shawl", "velvet"],
-        "y2k_nostalgia": ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"],
-        "minimalist_essentials": ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"],
-        "earthy_handloom": ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"],
-        "urban_athleisure": ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"]
-    }
-
-    target_tags = vibe_tags_map.get(user_key, [user_key])
-    matches = sum(1 for t in tags if t in target_tags)
-
-    if matches > 0:
-        return min(1.0, 0.45 + (matches * 0.15))
-    if nature == user_key or category == user_key:
-        return 1.0
-
-    product_vector = product.get("aesthetic_vector", [])
-    if product_vector and user_aesthetic_vector:
-        raw = cosine_similarity(user_aesthetic_vector, product_vector)
-        return max(0.1, normalize_cosine_score(raw) * 0.3)
-
-    return 0.1
+    return float(np.clip(hybrid_sim, 0.05, 1.0))
 
 def calculate_fabric_score(product, allowable_materials, allowable_materials_vector):
     """
@@ -113,7 +109,7 @@ def calculate_festivity_score(product, festival_active, target_color, target_nat
     if product_color == target_color.lower() and product_nature == target_nature.lower():
         return 1.0
     
-    product_combined_vector = product.get("event_vector", [])
+    product_combined_vector = product.get("event_vector", []) or product.get("vector", [])
     if not product_combined_vector or not festive_context_vector:
         return 0.3
     raw = cosine_similarity(festive_context_vector, product_combined_vector)
@@ -121,25 +117,25 @@ def calculate_festivity_score(product, festival_active, target_color, target_nat
 
 def calculate_creator_score(product, creators, user_age_group):
     """
-    Step 2 Trend Sensing: Creator-based scoring.
-    Uses Max Match Rule across all creators.
-    Includes: Age Penalty, Engagement Weight, Evergreen Bypass.
+    Pillar 4: Creator-based Scoring with Dual-Modal Vector Fusion.
+    Matches creator thumbnail CLIP vector + transcript vector against product vectors.
     """
     if product.get("is_evergreen", False):
         return EVERGREEN_FIXED_SCORE
     
     max_score = 0.0
-    product_vector = product.get("aesthetic_vector", [])
+    product_vector = product.get("vector") or product.get("aesthetic_vector") or product.get("embedding")
+    product_img_vector = product.get("image_vector") or product_vector
     
     for creator in creators:
         creator_vector = creator.get("embedding", creator.get("vector", []))
         if not creator_vector or not product_vector:
             continue
         
-        # Base Score: Cosine Similarity
-        base_score = normalize_cosine_score(
-            cosine_similarity(creator_vector, product_vector)
-        )
+        # Dual-Modal Similarity (Text + Image)
+        sim_t = normalize_cosine_score(cosine_similarity(creator_vector, product_vector))
+        sim_i = normalize_cosine_score(cosine_similarity(creator_vector, product_img_vector)) if product_img_vector else sim_t
+        base_score = (0.50 * sim_i) + (0.50 * sim_t)
         
         # Age Penalty
         product_age = product.get("age_group", "").lower()
@@ -149,7 +145,6 @@ def calculate_creator_score(product, creators, user_age_group):
         # Engagement Weight (subscriber_weight)
         subscriber_weight = creator.get("subscriber_weight", 1.0)
         
-        # Final Creator Score for this creator
         creator_score = base_score * age_penalty * subscriber_weight
         max_score = max(max_score, creator_score)
     
@@ -157,14 +152,15 @@ def calculate_creator_score(product, creators, user_age_group):
 
 def calculate_boutique_score(product, stores, zip_aov):
     """
-    Step 3 Local Store (Boutique) Score.
-    Includes: Stretched rating, review count penalty, category gate, price-affinity.
+    Pillar 5: Local Boutique Scoring with Dual-Modal Vector Fusion.
+    Matches boutique inventory aesthetic & rating against product image + text vectors.
     """
     if product.get("is_evergreen", False):
         return EVERGREEN_FIXED_SCORE
     
     max_score = 0.0
-    product_vector = product.get("aesthetic_vector", [])
+    product_vector = product.get("vector") or product.get("aesthetic_vector") or product.get("embedding")
+    product_img_vector = product.get("image_vector") or product_vector
     product_category = product.get("category", "").lower()
     
     for store in stores:
@@ -172,10 +168,10 @@ def calculate_boutique_score(product, stores, zip_aov):
         if not store_vector or not product_vector:
             continue
         
-        # Base cosine similarity
-        base_score = normalize_cosine_score(
-            cosine_similarity(store_vector, product_vector)
-        )
+        # Dual-Modal Similarity (Text + Image)
+        sim_t = normalize_cosine_score(cosine_similarity(store_vector, product_vector))
+        sim_i = normalize_cosine_score(cosine_similarity(store_vector, product_img_vector)) if product_img_vector else sim_t
+        base_score = (0.50 * sim_i) + (0.50 * sim_t)
         
         # Stretched Rating: W_rating = max(0, (Rating - 3.0) / 2.0)
         rating = store.get("rating", 3.0)
