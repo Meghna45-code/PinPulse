@@ -1766,12 +1766,12 @@ function App() {
         </div>
 
         {/* Fashion Dress Image */}
-        <div className="product-image-container" style={{ margin: '8px 0', height: '220px', borderRadius: '10px', overflow: 'hidden' }}>
+        <div className="product-image-container" style={{ margin: '10px 0', height: '340px', width: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative', background: '#1a1a1a' }}>
           <img 
             src={imgUrl} 
             alt={product.name} 
             className="product-image"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
             onError={(e) => {
               e.target.src = `https://placehold.co/400x500/3b3529/EFEBCE?text=${encodeURIComponent(product.name)}`;
             }}
@@ -2219,7 +2219,7 @@ function App() {
                       : products.filter(p => p.is_global_trend);
                       
                     return globalProducts.length > 0 ? (
-                      <div className="global-trends-vertical-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px', marginTop: '15px' }}>
+                      <div className="horizontal-shelf" style={{ gap: '18px', marginTop: '15px' }}>
                         {globalProducts
                           .slice(0, 25)
                           .map((product) => renderGlobalTrendCard(product))}
