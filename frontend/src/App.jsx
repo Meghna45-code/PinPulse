@@ -568,17 +568,6 @@ function App() {
     const profile = (calendarPresets[currentZipCode] || calendarPresets["800008"])[sliderVal] || (calendarPresets[currentZipCode] || calendarPresets["800008"])[0];
     const userVibeVector = generateVibeVector(currentVibe);
 
-    // ── Result Cache: return instantly if same combo was already computed ──
-    const cacheKey = `${currentZipCode}|${profile.dateStr}|${currentVibe}|${engineState}`;
-    const cached = recCacheRef.current[cacheKey];
-    if (cached) {
-      setProducts(cached);
-      setIsLoading(false);
-      const stillExists = cached.find(p => selectedProduct && p.id === selectedProduct.id);
-      setSelectedProduct(stillExists || cached[0]);
-      return;
-    }
-
     logMessage(`Scoring recommendations: ${ZIP_CODES[currentZipCode].city} • ${profile.dateStr} • ${currentVibe}`, "info");
     if (backendStatus === "connected") {
       try {
