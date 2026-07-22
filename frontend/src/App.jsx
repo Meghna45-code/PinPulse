@@ -1412,45 +1412,118 @@ function App() {
       <div className="festival-banners-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
         {/* National Festival Banner */}
         {banners.national && (
-          <div className="festival-banner-card national-banner">
-            <div className="banner-badge-row">
-              <span className="banner-pill national-pill">{banners.national.badge}</span>
-              <span className="banner-weight-tag">⚡ 1.5x Festivity Score Weight</span>
-            </div>
-            <div className="banner-content">
-              <div className="banner-text-col">
-                <h2 className="banner-title">{banners.national.title}</h2>
-                <p className="banner-desc">{banners.national.desc}</p>
-                <div className="banner-tags">
-                  <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#fdfdc9' }}>Trending Attire:</span>
-                  {banners.national.tags.map((tag, ti) => (
-                    <span key={ti} className="banner-tag-pill">{tag}</span>
-                  ))}
+          <div>
+            <div 
+              className={`festival-banner-card national-banner ${expandedSections.national ? 'expanded' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => setExpandedSections(prev => ({ ...prev, national: !prev.national }))}
+            >
+              <div className="banner-badge-row">
+                <span className="banner-pill national-pill">{banners.national.badge}</span>
+                <span className="banner-weight-tag">⚡ 1.5x Festivity Score Weight</span>
+              </div>
+              <div className="banner-content">
+                <div className="banner-text-col">
+                  <h2 className="banner-title">{banners.national.title}</h2>
+                  <p className="banner-desc">{banners.national.desc}</p>
+                  <div className="banner-tags" style={{ justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#fdfdc9' }}>Trending Attire:</span>
+                      {banners.national.tags.map((tag, ti) => (
+                        <span key={ti} className="banner-tag-pill">{tag}</span>
+                      ))}
+                    </div>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#fdfdc9', background: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '12px', whiteSpace: 'nowrap' }}>
+                      {expandedSections.national ? '🙈 CLICK TO COLLAPSE ↑' : '✨ CLICK TO EXPLORE DRESSES ↓'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* National Expanded Shelf */}
+            {expandedSections.national && (() => {
+              const nationalProducts = products.filter(p => 
+                !p.is_global_trend && 
+                (
+                  (p.tags && p.tags.some(t => ["ethnic", "festive", "silk", "traditional", "saree", "lehenga", "kurta", "ceremonial", "gold", "red"].includes(t.toLowerCase()))) ||
+                  (p.category && ["Heritage Traditionalist", "Festive Glam"].includes(p.category))
+                )
+              );
+              return (
+                <div style={{ marginTop: '14px', background: 'var(--daisy-panel)', padding: '16px', borderRadius: '16px', border: '1px solid rgba(215, 206, 147, 0.4)' }}>
+                  <h3 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: 'var(--peach-dark)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    🥻 {banners.national.title} — Festive Collection ({nationalProducts.length} items)
+                  </h3>
+                  {nationalProducts.length > 0 ? (
+                    <div className="horizontal-shelf">
+                      {nationalProducts.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
+                    </div>
+                  ) : (
+                    <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No products matching {banners.national.title} search space.</p>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
 
         {/* Local Regional Festival Banner */}
         {banners.local && (
-          <div className="festival-banner-card local-banner">
-            <div className="banner-badge-row">
-              <span className="banner-pill local-pill">{banners.local.badge}</span>
-              <span className="banner-weight-tag">🌾 Hyperlocal Creator & Boutique Active</span>
-            </div>
-            <div className="banner-content">
-              <div className="banner-text-col">
-                <h2 className="banner-title">{banners.local.title}</h2>
-                <p className="banner-desc">{banners.local.desc}</p>
-                <div className="banner-tags">
-                  <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#fdfdc9' }}>Regional Tags:</span>
-                  {banners.local.tags.map((tag, ti) => (
-                    <span key={ti} className="banner-tag-pill local-tag">{tag}</span>
-                  ))}
+          <div>
+            <div 
+              className={`festival-banner-card local-banner ${expandedSections.local ? 'expanded' : ''}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => setExpandedSections(prev => ({ ...prev, local: !prev.local }))}
+            >
+              <div className="banner-badge-row">
+                <span className="banner-pill local-pill">{banners.local.badge}</span>
+                <span className="banner-weight-tag">🌾 Hyperlocal Creator & Boutique Active</span>
+              </div>
+              <div className="banner-content">
+                <div className="banner-text-col">
+                  <h2 className="banner-title">{banners.local.title}</h2>
+                  <p className="banner-desc">{banners.local.desc}</p>
+                  <div className="banner-tags" style={{ justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#fdfdc9' }}>Regional Tags:</span>
+                      {banners.local.tags.map((tag, ti) => (
+                        <span key={ti} className="banner-tag-pill local-tag">{tag}</span>
+                      ))}
+                    </div>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#fdfdc9', background: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '12px', whiteSpace: 'nowrap' }}>
+                      {expandedSections.local ? '🙈 CLICK TO COLLAPSE ↑' : '✨ CLICK TO EXPLORE DRESSES ↓'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Local Expanded Shelf */}
+            {expandedSections.local && (() => {
+              const localProducts = products.filter(p => 
+                !p.is_global_trend && 
+                (
+                  (p.zip_codes && p.zip_codes.includes(currentZipCode)) ||
+                  (p.tags && p.tags.some(t => activeDateProfile.trendingTags.includes(t))) ||
+                  (p.tags && (p.tags.includes("local") || p.tags.includes("ethnic") || p.tags.includes("handloom") || p.tags.includes("saree") || p.tags.includes("kurta")))
+                )
+              );
+              return (
+                <div style={{ marginTop: '14px', background: 'var(--daisy-panel)', padding: '16px', borderRadius: '16px', border: '1px solid rgba(216, 164, 143, 0.4)' }}>
+                  <h3 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: 'var(--peach-dark)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    📍 {banners.local.title} — Regional Dispatch Collection ({localProducts.length} items)
+                  </h3>
+                  {localProducts.length > 0 ? (
+                    <div className="horizontal-shelf">
+                      {localProducts.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
+                    </div>
+                  ) : (
+                    <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No regional products matching {banners.local.title}.</p>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
