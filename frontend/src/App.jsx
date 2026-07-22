@@ -2149,10 +2149,6 @@ function App() {
                   const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
                   const recommendedProducts = products.filter(p => {
                     if (p.is_global_trend) return false;
-                    if (activeDateProfile.isFestive) {
-                      const isHeavyFestive = p.tags && p.tags.some(t => ["heavy_silk", "lehenga", "zardozi", "ceremonial", "kanjeevaram", "banarasi", "pandal"].includes(t));
-                      if (isHeavyFestive) return false;
-                    }
                     return true;
                   });
 
