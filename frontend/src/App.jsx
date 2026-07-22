@@ -783,10 +783,17 @@ function App() {
       const tagOverlapRatio = matchingVibeTags.length / Math.max(1, vibeTags.length);
       let sAesthetic = Math.min(1.0, (tagOverlapRatio * 3.0) + (nature === currentVibe ? 0.25 : 0.0) + 0.1);
 
-      // === Pillar 2: Fabric score ===
-      let sFabric = calculateCosineSimilarity(allowableMaterialsVector, embedding);
-      if (allowableMaterials.includes(material)) sFabric = 1.0;
-      else sFabric = (sFabric + 1) / 2;
+      // === Pillar 2: Fabric & Thermal Weather Score ===
+      let sFabric = 0.5;
+      if (allowableMaterials.includes(material)) {
+        sFabric = 1.0;
+      } else if (isHotWave && ["wool", "velvet", "heavy_silk", "brocade"].includes(material)) {
+        sFabric = 0.05; // Thermal Veto for hot weather
+      } else if (isColdWave && ["wool", "velvet", "heavy_silk", "layering", "cardigan", "jacket"].includes(material)) {
+        sFabric = 1.0; // Thermal Comfort boost for cold weather
+      } else {
+        sFabric = 0.6;
+      }
 
       // WEATHER VETO
       if (sFabric < 0.2) return null;
@@ -2159,8 +2166,8 @@ function App() {
             <div>
               {/* 1. Recommended For You */}
               <div className="section-container">
-                <h2 className="section-title">✨ Recommended For You ({VIBE_DEFINITIONS[currentVibe]?.name || 'Personal Vibe'})</h2>
                 {(() => {
+                  const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
                   const recommendedProducts = products.filter(p => {
                     if (p.is_global_trend) return false;
                     if (activeDateProfile.isFestive) {
@@ -2170,14 +2177,21 @@ function App() {
                     return true;
                   });
 
-                  return recommendedProducts.length > 0 ? (
-                    <div className="horizontal-shelf">
-                      {recommendedProducts
-                        .slice(0, 25)
-                        .map((product, idx) => renderProductCard(product, idx))}
-                    </div>
-                  ) : (
-                    <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No recommendations matching your active search space.</p>
+                  return (
+                    <>
+                      <h2 className="section-title">
+                        ✨ Recommended For You ({VIBE_DEFINITIONS[currentVibe]?.name || 'Personal Vibe'} · 🌡️ {activeWeather.temp} {activeWeather.desc})
+                      </h2>
+                      {recommendedProducts.length > 0 ? (
+                        <div className="horizontal-shelf">
+                          {recommendedProducts
+                            .slice(0, 25)
+                            .map((product, idx) => renderProductCard(product, idx))}
+                        </div>
+                      ) : (
+                        <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No recommendations matching your active search space.</p>
+                      )}
+                    </>
                   );
                 })()}
               </div>
