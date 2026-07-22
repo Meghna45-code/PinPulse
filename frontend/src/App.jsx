@@ -2487,6 +2487,9 @@ function App() {
                     {(() => {
                       const currentCreator = youtubeData[selectedCreatorIdx] || youtubeData[0];
                       const channel = currentCreator?.youtube_video?.channel || "Creator";
+                      const channelUrl = currentCreator?.youtube_video?.channel_url || 
+                                         currentCreator?.youtube_video?.video_url || 
+                                         `https://www.youtube.com/results?search_query=${encodeURIComponent(channel + ' fashion')}`;
                       
                       const creatorTags = currentCreator?.youtube_video?.inferred_tags || [];
                       const creatorProducts = products.filter(p => 
@@ -2501,10 +2504,32 @@ function App() {
 
                       return (
                         <div style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                            <h4 style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-main)' }}>
-                              🎬 {channel}'s Showcase ({displayProducts.length} dresses)
-                            </h4>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <h4 style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-main)' }}>
+                                🎬 {channel}'s Showcase ({displayProducts.length} dresses)
+                              </h4>
+                              <a
+                                href={channelUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{
+                                  background: '#FF0000',
+                                  color: '#FFFFFF',
+                                  padding: '4px 10px',
+                                  borderRadius: '16px',
+                                  fontSize: '0.72rem',
+                                  fontWeight: 'bold',
+                                  textDecoration: 'none',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  boxShadow: '0 2px 6px rgba(255,0,0,0.3)'
+                                }}
+                              >
+                                ▶️ Visit YouTube Channel ↗
+                              </a>
+                            </div>
                             <span style={{ fontSize: '0.72rem', color: 'var(--peach-dark)', fontWeight: 'bold' }}>
                               Scroll Horizontally ➔
                             </span>
