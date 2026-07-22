@@ -353,6 +353,7 @@ function App() {
   const [globalRunwayFetched, setGlobalRunwayFetched] = useState(false);
   const [globalRunwayFilter, setGlobalRunwayFilter] = useState('all'); // 'all' | 'seoul' | 'paris' | 'tokyo'
   const [expandedSections, setExpandedSections] = useState({ local: false, national: false, global: false });
+  const [selectedCreatorIdx, setSelectedCreatorIdx] = useState(0);
   // Zip Code Intelligence (AOV + weather + upcoming events)
   const [zipInsights, setZipInsights] = useState(null);
   
@@ -1415,7 +1416,12 @@ function App() {
           <div>
             <div 
               className={`festival-banner-card national-banner ${expandedSections.national ? 'expanded' : ''}`}
-              style={{ cursor: 'pointer' }}
+              style={{ 
+                cursor: 'pointer',
+                backgroundImage: `linear-gradient(135deg, rgba(30, 20, 15, 0.82) 0%, rgba(20, 12, 25, 0.85) 100%), url(${banners.national.bannerImg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
               onClick={() => setExpandedSections(prev => ({ ...prev, national: !prev.national }))}
             >
               <div className="banner-badge-row">
@@ -1473,7 +1479,12 @@ function App() {
           <div>
             <div 
               className={`festival-banner-card local-banner ${expandedSections.local ? 'expanded' : ''}`}
-              style={{ cursor: 'pointer' }}
+              style={{ 
+                cursor: 'pointer',
+                backgroundImage: `linear-gradient(135deg, rgba(40, 20, 15, 0.84) 0%, rgba(20, 15, 25, 0.88) 100%), url(${banners.local.bannerImg})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
               onClick={() => setExpandedSections(prev => ({ ...prev, local: !prev.local }))}
             >
               <div className="banner-badge-row">
@@ -2399,83 +2410,118 @@ function App() {
                 {isYoutubeLoading ? (
                   <div className="trends-loading">
                     <div className="spinner" style={{ width: '28px', height: '28px', margin: '0 auto 10px' }}></div>
-                    <p style={{ color: '#CD9FBC', fontSize: '0.8rem', margin: 0 }}>Loading creator videos...</p>
+                    <p style={{ color: '#CD9FBC', fontSize: '0.8rem', margin: 0 }}>Loading creator fashion feeds...</p>
                   </div>
                 ) : Array.isArray(youtubeData) && youtubeData.length > 0 ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                    {youtubeData.map((item, idx) => (
-                      <div key={idx} className="creator-card" style={{ flexDirection: 'column' }}>
-                        <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                          <div className="creator-thumb-wrap" style={{ minWidth: '100px', width: '100px', height: '60px' }}>
-                            {item.youtube_video.video_url ? (
-                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
-                                <img
-                                  src={item.youtube_video.thumbnail_url}
-                                  alt="thumb"
-                                  className="creator-thumb"
-                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                  onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
-                                />
-                              </a>
-                            ) : (
-                              <img
-                                src={item.youtube_video.thumbnail_url}
-                                alt="thumb"
-                                className="creator-thumb"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                onError={(e) => { e.target.src = `https://placehold.co/160x90/1a1a2e/ec4899?text=Video+${idx+1}`; }}
-                              />
-                            )}
-                            <div className="creator-rank-badge">#{idx + 1}</div>
-                            {item.youtube_video.video_url && (
-                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" className="creator-play-btn">▶</a>
-                            )}
-                          </div>
-                          <div className="creator-info" style={{ flex: 1, padding: '0 10px' }}>
-                            {item.youtube_video.video_url ? (
-                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <p className="creator-video-title" style={{ cursor: 'pointer' }}>{item.youtube_video.title}</p>
-                              </a>
-                            ) : (
-                              <p className="creator-video-title">{item.youtube_video.title}</p>
-                            )}
-                            {item.youtube_video.video_url ? (
-                              <a href={item.youtube_video.video_url} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <p className="creator-channel" style={{ cursor: 'pointer' }}>📺 {item.youtube_video.channel}</p>
-                              </a>
-                            ) : (
-                              <p className="creator-channel">📺 {item.youtube_video.channel}</p>
-                            )}
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
-                              {item.youtube_video.inferred_tags?.slice(0, 3).map(tag => (
-                                <span key={tag} className="creator-tag">{tag}</span>
-                              ))}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    
+                    {/* Circular Avatar Selector Bar */}
+                    <div>
+                      <p style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--peach-dark)', margin: '0 0 10px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        🎬 Regional Creators ({youtubeData.length}) — Click to view reel:
+                      </p>
+                      <div className="horizontal-shelf" style={{ gap: '14px', paddingBottom: '8px' }}>
+                        {youtubeData.map((item, idx) => {
+                          const channelName = item.youtube_video?.channel || `Creator ${idx+1}`;
+                          const initials = channelName
+                            .split(' ')
+                            .filter(Boolean)
+                            .map(n => n[0])
+                            .join('')
+                            .toUpperCase()
+                            .slice(0, 2) || "CR";
+                          const isSelected = selectedCreatorIdx === idx;
+                          
+                          return (
+                            <div
+                              key={idx}
+                              onClick={() => setSelectedCreatorIdx(idx)}
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '6px',
+                                cursor: 'pointer',
+                                flex: '0 0 auto'
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: '56px',
+                                  height: '56px',
+                                  borderRadius: '50%',
+                                  background: isSelected ? 'linear-gradient(135deg, #BB8588, #D8A48F)' : 'var(--daisy-card)',
+                                  border: isSelected ? '3px solid #D7CE93' : '2px solid var(--border-color)',
+                                  boxShadow: isSelected ? '0 0 12px rgba(215,206,147,0.6)' : 'none',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: isSelected ? '#faf9f0' : 'var(--text-main)',
+                                  fontWeight: '800',
+                                  fontSize: '1rem',
+                                  fontFamily: 'var(--font-title)',
+                                  transition: 'all 0.2s ease'
+                                }}
+                              >
+                                {initials}
+                              </div>
+                              <span style={{
+                                fontSize: '0.7rem',
+                                fontWeight: isSelected ? 'bold' : '500',
+                                color: isSelected ? 'var(--peach-dark)' : 'var(--text-muted)',
+                                maxWidth: '70px',
+                                textAlign: 'center',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                              }}>
+                                {channelName}
+                              </span>
                             </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Selected Creator Reel (Horizontal Dress Cards - Max 15) */}
+                    {(() => {
+                      const currentCreator = youtubeData[selectedCreatorIdx] || youtubeData[0];
+                      const channel = currentCreator?.youtube_video?.channel || "Creator";
+                      
+                      const creatorTags = currentCreator?.youtube_video?.inferred_tags || [];
+                      const creatorProducts = products.filter(p => 
+                        !p.is_global_trend && (
+                          (currentCreator?.matched_product && p.id === currentCreator.matched_product.id) ||
+                          (p.tags && p.tags.some(t => creatorTags.includes(t))) ||
+                          (p.tags && p.tags.includes("micro_creator"))
+                        )
+                      );
+
+                      const displayProducts = (creatorProducts.length >= 3 ? creatorProducts : products.filter(p => !p.is_global_trend)).slice(0, 15);
+
+                      return (
+                        <div style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                            <h4 style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-main)' }}>
+                              🎬 {channel}'s Showcase ({displayProducts.length} dresses)
+                            </h4>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--peach-dark)', fontWeight: 'bold' }}>
+                              Scroll Horizontally ➔
+                            </span>
+                          </div>
+                          <div className="horizontal-shelf" style={{ gap: '14px' }}>
+                            {displayProducts.map((product, pIdx) => renderProductCard(product, pIdx))}
                           </div>
                         </div>
-                        <p className="creator-llm-desc" style={{ marginTop: '8px' }}>"{item.youtube_video.llm_extracted_description}"</p>
-                        {item.matched_product && (
-                          <div className="creator-match" style={{ marginTop: '8px', padding: '8px', background: 'rgba(34,197,94,0.07)', borderRadius: '8px', border: '1px solid rgba(34,197,94,0.15)', display: 'flex', gap: '10px', alignItems: 'center' }}>
-                            <img
-                              src={item.matched_product.image_url}
-                              alt={item.matched_product.name}
-                              style={{ width: '48px', height: '60px', objectFit: 'cover', borderRadius: '4px' }}
-                              onError={(e) => { e.target.src = 'https://placehold.co/70x90/1a1a2e/22c55e?text=Match'; }}
-                            />
-                            <div>
-                              <span style={{ fontSize: '0.6rem', color: '#22c55e', fontWeight: 'bold' }}>🎯 CATALOG MATCH</span>
-                              <p className="creator-match-name">{item.matched_product.name}</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })()}
+
                   </div>
                 ) : (
                   <div className="trends-empty">
                     <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🎬</div>
-                    <p style={{ fontWeight: '600', color: 'white', marginBottom: '4px' }}>Creator Feed loading...</p>
-                    <p style={{ fontSize: '0.75rem' }}>Fetching regional fashion creator videos</p>
+                    <p style={{ fontWeight: '600', color: 'var(--text-main)', marginBottom: '4px' }}>Creator Feed loading...</p>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Fetching regional fashion creator videos</p>
                   </div>
                 )}
               </>
@@ -2490,51 +2536,64 @@ function App() {
                     <p style={{ color: '#BA9476', fontSize: '0.8rem', margin: 0 }}>Loading local boutique trends...</p>
                   </div>
                 ) : boutiqueData?.boutiques?.length > 0 ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                    {boutiqueData.boutiques.map((store, idx) => (
-                      <div key={store.store_id} className="boutique-card">
-                        <div className="boutique-card-top">
-                          <div className="boutique-rank">#{idx + 1}</div>
-                          <div className="boutique-store-info">
-                            <p className="boutique-store-name">{store.store_name}</p>
-                            <p className="boutique-locality">📍 {store.locality || ZIP_CODES[currentZipCode]?.city}</p>
-                          </div>
-                          <div className="boutique-rating">⭐ {store.rating || store.simulated_engagement}</div>
-                        </div>
-                        <div className="boutique-trend-row">
-                          <span className="boutique-trend-badge">#{store.extracted_visual_trend}</span>
-                          <span className="boutique-vibe-cluster">{store.style_vibe_cluster}</span>
-                        </div>
-                        <div className="boutique-meta-row">
-                          <span className="boutique-source">{store.social_signal_source}</span>
-                          <span className="boutique-engagement">🔥 {(store.simulated_engagement / 1000).toFixed(1)}K</span>
-                        </div>
-                        {store.matched_product && (
-                          <div className="boutique-matched-product">
-                            <img
-                              src={store.matched_product.image_url}
-                              alt={store.matched_product.name}
-                              className="boutique-match-img"
-                              onError={(e) => { e.target.src = 'https://placehold.co/60x75/1a1a2e/a855f7?text=Item'; }}
-                            />
-                            <div className="boutique-match-details">
-                              <span style={{ fontSize: '0.6rem', color: '#CD9FBC', fontWeight: 'bold' }}>TRENDING IN STORE</span>
-                              <p className="boutique-match-name">{store.matched_product.name}</p>
-                              {store.matched_product.product_url && (
-                                <a href={store.matched_product.product_url} target="_blank" rel="noreferrer" className="creator-buy-btn" style={{ background: '#a855f7' }}>Shop ↗</a>
-                              )}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    {boutiqueData.boutiques.map((store, idx) => {
+                      const storeProducts = products.filter(p => 
+                        !p.is_global_trend && (
+                          (p.zip_codes && p.zip_codes.includes(currentZipCode)) ||
+                          (store.matched_product && p.id === store.matched_product.id) ||
+                          (p.tags && p.tags.some(t => [store.style_vibe_cluster?.toLowerCase(), store.extracted_visual_trend?.toLowerCase()].includes(t)))
+                        )
+                      );
+                      const shopDresses = (storeProducts.length >= 3 ? storeProducts : products.filter(p => !p.is_global_trend)).slice(0, 7);
+                      const mapsUrl = store.maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(store.store_name + ' ' + ZIP_CODES[currentZipCode]?.city)}`;
+
+                      return (
+                        <div key={store.store_id || idx} style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+                            <div>
+                              <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-main)' }}>
+                                🏪 #{idx + 1} {store.store_name}
+                              </h3>
+                              <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                                📍 {store.locality || ZIP_CODES[currentZipCode]?.city} · ⭐ {store.rating || store.simulated_engagement} · #{store.extracted_visual_trend}
+                              </p>
                             </div>
+                            <a
+                              href={mapsUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                background: 'var(--peach)',
+                                color: '#faf9f0',
+                                padding: '6px 14px',
+                                borderRadius: '20px',
+                                fontSize: '0.75rem',
+                                fontWeight: 'bold',
+                                textDecoration: 'none',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                boxShadow: '0 2px 6px rgba(187,133,136,0.3)',
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              🗺️ Google Maps Directions ↗
+                            </a>
                           </div>
-                        )}
-                        <a href={store.maps_url} target="_blank" rel="noreferrer" className="boutique-maps-btn">🗺️ Open in Maps</a>
-                      </div>
-                    ))}
+
+                          <div className="horizontal-shelf" style={{ gap: '14px' }}>
+                            {shopDresses.map((product, pIdx) => renderProductCard(product, pIdx))}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="trends-empty">
                     <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🏪</div>
-                    <p style={{ fontWeight: '600', color: 'white', marginBottom: '4px' }}>Local Boutiques loading...</p>
-                    <p style={{ fontSize: '0.75rem' }}>Fetching geo-tagged boutiques near {ZIP_CODES[currentZipCode].city}</p>
+                    <p style={{ fontWeight: '600', color: 'var(--text-main)', marginBottom: '4px' }}>Local Boutiques loading...</p>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Fetching geo-tagged boutiques near {ZIP_CODES[currentZipCode]?.city}</p>
                   </div>
                 )}
               </>
