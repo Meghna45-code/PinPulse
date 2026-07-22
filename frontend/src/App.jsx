@@ -1409,6 +1409,24 @@ function App() {
       }
     }
 
+    // Helper to resolve exact background image for any event
+    const getBannerImgForEvent = (eventTitle = "", eventType = "") => {
+      const t = eventTitle.toLowerCase();
+      if (t.includes("durga") || t.includes("navratri")) return "/images/durga_puja_banner.png";
+      if (t.includes("diwali") || t.includes("deepavali")) return "/images/diwali_banner.png";
+      if (t.includes("chhath")) return "/images/chhath_puja_banner.png";
+      if (t.includes("holi")) return "/images/holi_banner.png";
+      if (t.includes("onam") || t.includes("vishu") || t.includes("biennale")) return "/images/onam_vishu_banner.png";
+      if (t.includes("rath") || t.includes("chariot")) return "/images/rath_yatra_banner.png";
+      if (t.includes("raja") || t.includes("nuakhai")) return "/images/nuakhai_banner.png";
+      if (t.includes("sankranti") || t.includes("harvest") || t.includes("makar")) return "/images/makar_sankranti_banner.png";
+      if (t.includes("saraswati") || t.includes("vasant") || t.includes("bihar")) return "/images/saraswati_puja_banner.png";
+      if (t.includes("independence")) return "/images/independence_day_banner.png";
+      if (t.includes("republic")) return "/images/republic_day_banner.png";
+      if (t.includes("wedding") || eventType === "wedding_day") return "/images/wedding_day_banner.png";
+      return "/images/diwali_banner.png";
+    };
+
     // Dynamic Guarantee: If no specific national or local match, create a regional festival banner from active date profile
     if (!banners.national && !banners.local && activeDateProfile && activeDateProfile.event) {
       banners.local = {
@@ -1417,7 +1435,7 @@ function App() {
         desc: `Active regional demand surge for ${activeDateProfile.event}! Local creator and boutique signals engaged.`,
         tags: activeDateProfile.trendingTags || ["Ethnic Wear", "Regional Handloom", "Festive Collection"],
         type: "local",
-        bannerImg: activeDateProfile.event_type === "wedding_day" ? "/images/wedding_day_banner.png" : "/images/durga_puja_banner.png"
+        bannerImg: getBannerImgForEvent(activeDateProfile.event, activeDateProfile.event_type)
       };
     }
 
