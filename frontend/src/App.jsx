@@ -1221,12 +1221,12 @@ function App() {
   // Meticulous classification of National vs Local events per date & zip code
   const getEventBannersForDate = (dateStr, zipCode) => {
     const banners = { national: null, local: null };
-    const dateObj = new Date(dateStr);
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
+    const [yearStr, monthStr, dayStr] = (dateStr || "2026-01-01").split("-");
+    const month = parseInt(monthStr, 10);
+    const day = parseInt(dayStr, 10);
 
     // ── 1. NATIONAL FESTIVALS (Strictly Pan-India Only) ──────────────────────
-    if ((month === 10 && day >= 15 && day <= 24) || dateStr === "2026-10-18") {
+    if ((month === 10 && day >= 15 && day <= 25) || dateStr === "2026-10-18") {
       banners.national = {
         title: "Durga Puja & Navratri Celebrations 🥻",
         badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
@@ -1663,20 +1663,77 @@ function App() {
   };
 
   const renderGlobalTrendCard = (product) => {
+    const hashCode = (str) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return hash;
+    };
+    const imgUrl = product.image_url || `/catalog/catalog_${(Math.abs(hashCode(product.name || "trend")) % 60) + 1}.jpg`;
+    
     return (
       <div
         key={product.id}
         className="global-trend-card"
-        style={{ '--city-color': product.global_primary_color || '#9b6cb5', flex: '0 0 260px', maxWidth: '260px' }}
-        onClick={() => openTrendsPanel('global')}
+        style={{ 
+          '--city-color': product.global_primary_color || '#9b6cb5',
+          flex: '0 0 260px',
+          maxWidth: '260px',
+          cursor: 'pointer'
+        }}
+        onClick={() => {
+          setSelectedProduct({
+            id: product.id,
+            name: product.name,
+            price: product.price || 2499,
+            category: product.category || "Global Runway",
+            image_url: imgUrl,
+            description: product.description,
+            material: "Silk / Cotton Blend",
+            color: product.global_trending_colors?.[0] || "Pastel",
+            nature: "Global Trend",
+            age_group: "Gen-Z & Millennials",
+            tags: product.tags || ["global", "runway", "high_fashion"],
+            final_score: product.global_heat_score || 0.92,
+            scoring_breakdown: {
+              raw_values: {
+                personal_vibe_similarity: 0.88,
+                creator_trend_match: 0.95,
+                local_boutique_match: 0.70,
+                festivity_match: 0.60,
+                weather_match: 0.80,
+                checkout_velocity_score: 0.92,
+                intent_score: 0.85,
+                cf_score: 0.90
+              }
+            }
+          });
+          setShowModal(true);
+        }}
       >
         <div className="global-trend-badge">
           <span>{product.global_flag} {product.global_city}</span>
           <span className="global-season-tag">{product.global_season}</span>
         </div>
+
+        {/* Fashion Dress Image */}
+        <div className="product-image-container" style={{ margin: '8px 0', height: '220px', borderRadius: '10px', overflow: 'hidden' }}>
+          <img 
+            src={imgUrl} 
+            alt={product.name} 
+            className="product-image"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={(e) => {
+              e.target.src = `https://placehold.co/400x500/3b3529/EFEBCE?text=${encodeURIComponent(product.name)}`;
+            }}
+          />
+        </div>
+
         <div className="global-trend-archetype">{product.global_style_archetype}</div>
         <h4 className="global-trend-name">{product.name}</h4>
-        <p className="global-trend-desc">{product.description}</p>
+        <p className="global-trend-desc" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.description}</p>
         <div className="global-trend-pieces">
           {(product.global_key_pieces || []).slice(0, 2).map((piece, pi) => (
             <span key={pi} className="global-piece-pill">{piece}</span>
@@ -1699,7 +1756,7 @@ function App() {
           <span className="global-searches">
             📈 {((product.global_searches_weekly || 0) / 1000000).toFixed(1)}M/wk
           </span>
-          <span className="global-runway-cta">See Runway →</span>
+          <span className="global-runway-cta">View Item →</span>
         </div>
       </div>
     );
@@ -1921,16 +1978,20 @@ function App() {
                     className="slider-input"
                   />
                   <div className="slider-labels" style={{ gridTemplateColumns: `repeat(${dateProfiles.length}, 1fr)` }}>
-                    {dateProfiles.map((profile, index) => (
-                      <span 
-                        key={profile.key} 
-                        className={`slider-label ${sliderVal === index ? 'active' : ''}`} 
-                        onClick={() => handleSliderChange({target:{value:index}})}
-                        style={{ fontSize: '0.7rem' }}
-                      >
-                        {profile.label}
-                      </span>
-                    ))}
+                    {dateProfiles.map((profile, index) => {
+                      const shortLabel = profile.label.split('(')[0].trim();
+                      return (
+                        <span 
+                          key={profile.key} 
+                          className={`slider-label ${sliderVal === index ? 'active' : ''}`} 
+                          onClick={() => handleSliderChange({target:{value:index}})}
+                          style={{ fontSize: '0.72rem', fontWeight: sliderVal === index ? 'bold' : '500', whiteSpace: 'nowrap' }}
+                          title={profile.label}
+                        >
+                          {shortLabel}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
                 
