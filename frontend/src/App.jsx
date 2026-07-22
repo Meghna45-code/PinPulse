@@ -2371,14 +2371,15 @@ function App() {
             <button
               onClick={closeTrendsPanel}
               style={{
-                padding: '6px 10px',
-                background: 'rgba(255,255,255,0.08)',
+                padding: '6px 14px',
+                background: 'var(--daisy-card)',
                 border: '1px solid var(--border-color)',
-                color: 'white',
+                color: 'var(--text-main)',
                 borderRadius: '6px',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
-                fontWeight: 'bold'
+                fontWeight: '800',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
               }}
             >
               ✕ Close
@@ -2386,8 +2387,8 @@ function App() {
           </div>
 
           {/* Sub-header: city + refresh */}
-          <div style={{ padding: '10px 18px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)' }}>
-            <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+          <div style={{ padding: '10px 18px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--daisy-panel)' }}>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '600' }}>
               📍 {ZIP_CODES[currentZipCode].city} · Trends Intelligence
             </span>
             <button
@@ -2395,7 +2396,17 @@ function App() {
                 if (trendsPanelTab === 'youtube') { setYoutubeFetched(false); fetchYoutubeTrends(currentZipCode); }
                 if (trendsPanelTab === 'boutiques') { setBoutiqueFetched(false); fetchBoutiques(currentZipCode); }
               }}
-              style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border-color)', color: 'white', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}
+              style={{
+                padding: '5px 12px',
+                background: 'var(--daisy-card)',
+                border: '1px solid var(--border-color)',
+                color: 'var(--text-main)',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
+              }}
             >
               🔄 Refresh
             </button>
