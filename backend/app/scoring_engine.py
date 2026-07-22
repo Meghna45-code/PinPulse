@@ -228,41 +228,31 @@ def calculate_velocity_score(product):
 
 def apply_category_stratification(ranked_items, min_categories=MIN_CATEGORIES_TOP_10):
     """
-    Category Stratification: Ensure top 10 items have at least 4 distinct categories.
-    Prevents 'Wall of Yellow' / Feed Collapse.
+    Priority-Preserving Stratification:
+    Ranks 1-4: Strictly reserved for top-scoring Vibe-matched items (e.g., Sarees, Kurtas, Sherwanis).
+    Ranks 5+: Category diversity (gowns, streetwear, accessories) injected afterwards.
     """
-    if len(ranked_items) <= min_categories:
+    if len(ranked_items) <= 4:
         return ranked_items
-    
-    top_10 = ranked_items[:10]
-    remaining = ranked_items[10:]
-    
-    # Check category diversity in top 10
-    categories_seen = set()
-    stratified = []
+
+    # Keep top 4 items strictly in their earned priority positions
+    protected_top_4 = ranked_items[:4]
+    rest = ranked_items[4:]
+
+    # Apply category diversity to remaining items (ranks 5+)
+    categories_seen = set(item.get("category", "unknown") for item in protected_top_4)
+    stratified_rest = []
     overflow = []
-    
-    for item in top_10:
+
+    for item in rest:
         cat = item.get("category", "unknown")
-        if cat not in categories_seen or len(categories_seen) >= min_categories:
+        if cat not in categories_seen:
             categories_seen.add(cat)
-            stratified.append(item)
+            stratified_rest.append(item)
         else:
             overflow.append(item)
-    
-    # If we need more diversity, pull from remaining
-    if len(categories_seen) < min_categories:
-        for item in remaining:
-            cat = item.get("category", "unknown")
-            if cat not in categories_seen:
-                categories_seen.add(cat)
-                stratified.insert(len(stratified), item)
-                if len(categories_seen) >= min_categories:
-                    break
-    
-    # Rebuild: stratified top + overflow + remaining
-    result = stratified + overflow + [i for i in remaining if i not in stratified]
-    return result
+
+    return protected_top_4 + stratified_rest + overflow
 
 def apply_exploration_split(ranked_items):
     """
@@ -288,9 +278,9 @@ def apply_exploration_split(ranked_items):
     # Remove picked discovery items from the catalog pool to prevent duplicate entries
     remaining_discovery = [item for item in discovery_pool if item not in discovery_picks]
     
-    # Inject picks into top_pool at random positions (e.g. from index 3 to 15, or len(top_pool))
+    # Inject picks into top_pool at random positions (from index 6 to 15)
     for item in discovery_picks:
-        insert_idx = random.randint(3, min(15, len(top_pool)))
+        insert_idx = random.randint(6, min(15, len(top_pool)))
         top_pool.insert(insert_idx, item)
         
     return top_pool + remaining_discovery
