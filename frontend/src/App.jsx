@@ -765,12 +765,17 @@ function App() {
       const embedding = embeddingCacheRef.current[tagKey]
         || (embeddingCacheRef.current[tagKey] = generateVibeVector(tagKey));
 
-      // === Pillar 1: Aesthetic score (Semantic Vibe Vector Similarity) ===
+      // === Pillar 1: Aesthetic score (Dual-Modal Vector Cosine Fusion) ===
+      let productVec = product.vector || product.embedding || embedding;
+      let rawCos = calculateCosineSimilarity(userVibeVector, productVec);
+      let sAesthetic = (rawCos + 1) / 2;
+
       const vibeDef = VIBE_DEFINITIONS[currentVibe] || VIBE_DEFINITIONS["coastal_tropical"];
       const vibeTags = vibeDef.tags || [];
-      const matchingVibeTags = product.tags.filter(t => vibeTags.includes(t.toLowerCase()));
-      const tagOverlapRatio = matchingVibeTags.length / Math.max(1, vibeTags.length);
-      let sAesthetic = Math.min(1.0, (tagOverlapRatio * 3.0) + (nature === currentVibe ? 0.25 : 0.0) + 0.1);
+      const tagOverlap = product.tags.filter(t => vibeTags.includes(t.toLowerCase())).length;
+      if (tagOverlap > 0) {
+        sAesthetic = Math.min(1.0, sAesthetic + 0.15 * tagOverlap);
+      }
 
       // === Pillar 2: Fabric & Thermal Weather Score ===
       let sFabric = 0.5;
