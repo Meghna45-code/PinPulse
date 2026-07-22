@@ -837,29 +837,19 @@ function App() {
         sBoutique = maxS;
       }
 
-      // === Pillar 6: Velocity score ===
-      let sVelocity = 0.0;
-      if (baselineSales > 0) {
-        const delta = currentSales / baselineSales;
-        if (delta > 1.0) sVelocity = Math.min(1.0, (delta - 1.0) / 2.0);
-      }
-
-      // === Pillar 7: Intent score ===
+      // === Pillar 6: Intent score ===
       let sIntent = 0.0; // offline simple intent decay mock
 
-      // === Pillar 8: CF score ===
+      // === Pillar 7: CF score ===
       let sCf = activeCFBoosts[id] || 0.0;
 
-      // Final score formula
+      // Final score formula: Primary weight given to Aesthetic Vibe match
       let finalScore = (
-        weights.w_aesthetic * sAesthetic +
-        weights.w_fabric * sFabric +
-        weights.w_festivity * sFestivity +
-        weights.w_boutique * sBoutique +
-        weights.w_creator * sCreator +
-        weights.w_cf * sCf +
-        weights.w_intent * sIntent +
-        weights.w_velocity * sVelocity
+        0.65 * sAesthetic +
+        0.15 * sFabric +
+        0.10 * sFestivity +
+        0.05 * sBoutique +
+        0.05 * sCreator
       );
 
       // Low Stock Penalty
