@@ -50,15 +50,40 @@ def normalize_cosine_score(raw_score):
 def calculate_aesthetic_score(product, user_aesthetic, user_aesthetic_vector):
     """
     Pillar 1: User Aesthetic Matching (S_aesthetic).
-    Exact match = 1.0, otherwise cosine similarity.
+    Evaluates semantic tag overlap so user selected vibe dominates ranking.
     """
-    if product.get("nature") == user_aesthetic:
+    user_key = (user_aesthetic or "").lower()
+    tags = [t.lower() for t in product.get("tags", [])]
+    category = (product.get("category") or "").lower()
+    nature = (product.get("nature") or "").lower()
+
+    vibe_tags_map = {
+        "heritage_traditionalist": ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"],
+        "festive_glam": ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"],
+        "indie_fusion": ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"],
+        "high_street_rebel": ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"],
+        "coastal_tropical": ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"],
+        "winter_academia": ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shawl", "velvet"],
+        "y2k_nostalgia": ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"],
+        "minimalist_essentials": ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"],
+        "earthy_handloom": ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"],
+        "urban_athleisure": ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"]
+    }
+
+    target_tags = vibe_tags_map.get(user_key, [user_key])
+    matches = sum(1 for t in tags if t in target_tags)
+
+    if matches > 0:
+        return min(1.0, 0.45 + (matches * 0.15))
+    if nature == user_key or category == user_key:
         return 1.0
+
     product_vector = product.get("aesthetic_vector", [])
-    if not product_vector or not user_aesthetic_vector:
-        return 0.5  # Default fallback
-    raw = cosine_similarity(user_aesthetic_vector, product_vector)
-    return normalize_cosine_score(raw)
+    if product_vector and user_aesthetic_vector:
+        raw = cosine_similarity(user_aesthetic_vector, product_vector)
+        return max(0.1, normalize_cosine_score(raw) * 0.3)
+
+    return 0.1
 
 def calculate_fabric_score(product, allowable_materials, allowable_materials_vector):
     """
