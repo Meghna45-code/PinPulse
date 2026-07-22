@@ -1221,12 +1221,13 @@ function App() {
   // Meticulous classification of National vs Local events per date & zip code
   const getEventBannersForDate = (dateStr, zipCode) => {
     const banners = { national: null, local: null };
-    const [yearStr, monthStr, dayStr] = (dateStr || "2026-01-01").split("-");
-    const month = parseInt(monthStr, 10);
-    const day = parseInt(dayStr, 10);
+    if (!dateStr) return banners;
 
-    // ── 1. NATIONAL FESTIVALS (Strictly Pan-India Only) ──────────────────────
-    if ((month === 10 && day >= 15 && day <= 25) || dateStr === "2026-10-18") {
+    // Normalize date string format YYYY-MM-DD
+    const dateKey = dateStr.trim();
+
+    // ── 1. NATIONAL FESTIVALS (Pan-India Celebrations) ──────────────────────
+    if (dateKey === "2026-10-18" || dateKey.endsWith("-10-18")) {
       banners.national = {
         title: "Durga Puja & Navratri Celebrations 🥻",
         badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
@@ -1235,7 +1236,7 @@ function App() {
         type: "national",
         bannerImg: "/images/durga_puja_banner.png"
       };
-    } else if ((month === 11 && day >= 5 && day <= 10) || dateStr === "2026-11-08") {
+    } else if (dateKey === "2026-11-08" || dateKey.endsWith("-11-08")) {
       banners.national = {
         title: "Diwali Festival of Lights 🪔",
         badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
@@ -1244,7 +1245,7 @@ function App() {
         type: "national",
         bannerImg: "/images/diwali_banner.png"
       };
-    } else if ((month === 3 && day >= 2 && day <= 5) || dateStr === "2026-03-03") {
+    } else if (dateKey === "2026-03-03" || dateKey.endsWith("-03-03")) {
       banners.national = {
         title: "Holi Festival of Colors 🎨",
         badge: "🇮🇳 NATIONAL FESTIVAL · PAN-INDIA",
@@ -1253,7 +1254,7 @@ function App() {
         type: "national",
         bannerImg: "/images/holi_banner.png"
       };
-    } else if (month === 8 && day === 15) {
+    } else if (dateKey === "2026-08-15" || dateKey.endsWith("-08-15")) {
       banners.national = {
         title: "79th Independence Day Celebration 🇮🇳",
         badge: "🇮🇳 NATIONAL DAY · PAN-INDIA",
@@ -1262,7 +1263,7 @@ function App() {
         type: "national",
         bannerImg: "/images/independence_day_banner.png"
       };
-    } else if (month === 1 && day === 26) {
+    } else if (dateKey === "2026-01-26" || dateKey.endsWith("-01-26")) {
       banners.national = {
         title: "Republic Day Parade & Celebrations 🇮🇳",
         badge: "🇮🇳 NATIONAL DAY · PAN-INDIA",
@@ -1273,9 +1274,9 @@ function App() {
       };
     }
 
-    // ── 2. LOCAL REGIONAL FESTIVALS (Strictly Local / State Only) ────────────
+    // ── 2. LOCAL REGIONAL FESTIVALS (Region-Specific Heritage) ──────────────
     if (zipCode === "800008") { // Patna / Bihar
-      if (dateStr === "2026-11-15") {
+      if (dateKey === "2026-11-15" || dateKey.endsWith("-11-15")) {
         banners.local = {
           title: "Chhath Puja — Sandhya Arghya 🛕",
           badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
@@ -1284,7 +1285,7 @@ function App() {
           type: "local",
           bannerImg: "/images/chhath_puja_banner.png"
         };
-      } else if (dateStr === "2026-03-22") {
+      } else if (dateKey === "2026-03-22" || dateKey.endsWith("-03-22")) {
         banners.local = {
           title: "Bihar Diwas (Statehood Day) 🏛️",
           badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
@@ -1293,7 +1294,7 @@ function App() {
           type: "local",
           bannerImg: "/images/saraswati_puja_banner.png"
         };
-      } else if (dateStr === "2026-02-02") {
+      } else if (dateKey === "2026-02-02" || dateKey.endsWith("-02-02")) {
         banners.local = {
           title: "Saraswati Puja / Vasant Panchami 🌾",
           badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
@@ -1302,7 +1303,7 @@ function App() {
           type: "local",
           bannerImg: "/images/saraswati_puja_banner.png"
         };
-      } else if (dateStr === "2026-12-10") {
+      } else if (dateKey === "2026-12-10" || dateKey.endsWith("-12-10")) {
         banners.local = {
           title: "Patna Wedding Day — Pheras Rituals 💍",
           badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
@@ -1311,7 +1312,7 @@ function App() {
           type: "local",
           bannerImg: "/images/wedding_day_banner.png"
         };
-      } else if (dateStr === "2026-01-14") {
+      } else if (dateKey === "2026-01-14" || dateKey.endsWith("-01-14")) {
         banners.local = {
           title: "Makar Sankranti Harvest Mela 🌾",
           badge: "📍 LOCAL REGIONAL SURGE · Patna (800008)",
@@ -1322,7 +1323,7 @@ function App() {
         };
       }
     } else if (zipCode === "682001") { // Kochi / Kerala
-      if (dateStr === "2026-08-27") {
+      if (dateKey === "2026-08-27" || dateKey.endsWith("-08-27")) {
         banners.local = {
           title: "Onam Festival — Thiruvonam 🌾",
           badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
@@ -1331,7 +1332,7 @@ function App() {
           type: "local",
           bannerImg: "/images/onam_vishu_banner.png"
         };
-      } else if (dateStr === "2026-04-14") {
+      } else if (dateKey === "2026-04-14" || dateKey.endsWith("-04-14")) {
         banners.local = {
           title: "Vishu Festival (Malayali New Year) 🌼",
           badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
@@ -1340,7 +1341,7 @@ function App() {
           type: "local",
           bannerImg: "/images/onam_vishu_banner.png"
         };
-      } else if (dateStr === "2026-01-20") {
+      } else if (dateKey === "2026-01-20" || dateKey.endsWith("-01-20")) {
         banners.local = {
           title: "Kochi-Muziris Biennale Art Peak 🎨",
           badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
@@ -1349,7 +1350,7 @@ function App() {
           type: "local",
           bannerImg: "/images/onam_vishu_banner.png"
         };
-      } else if (dateStr === "2026-12-27") {
+      } else if (dateKey === "2026-12-27" || dateKey.endsWith("-12-27")) {
         banners.local = {
           title: "Kochi Wedding Day — Thalikettu 💍",
           badge: "📍 LOCAL REGIONAL SURGE · Fort Kochi (682001)",
@@ -1360,7 +1361,7 @@ function App() {
         };
       }
     } else if (zipCode === "752001") { // Puri / Odisha
-      if (dateStr === "2026-07-16" || dateStr === "2026-07-15") {
+      if (dateKey === "2026-07-16" || dateKey === "2026-07-15" || dateKey.endsWith("-07-16") || dateKey.endsWith("-07-15")) {
         banners.local = {
           title: "Puri Rath Yatra Chariot Festival 🚩",
           badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
@@ -1369,7 +1370,7 @@ function App() {
           type: "local",
           bannerImg: "/images/rath_yatra_banner.png"
         };
-      } else if (dateStr === "2026-06-14" || dateStr === "2026-06-15") {
+      } else if (dateKey === "2026-06-14" || dateKey === "2026-06-15" || dateKey.endsWith("-06-14") || dateKey.endsWith("-06-15")) {
         banners.local = {
           title: "Raja Parba / Raja Sankranti 🌿",
           badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
@@ -1378,7 +1379,7 @@ function App() {
           type: "local",
           bannerImg: "/images/nuakhai_banner.png"
         };
-      } else if (dateStr === "2026-09-15") {
+      } else if (dateKey === "2026-09-15" || dateKey.endsWith("-09-15")) {
         banners.local = {
           title: "Nuakhai Agricultural Harvest Festival 🌾",
           badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
@@ -1387,7 +1388,7 @@ function App() {
           type: "local",
           bannerImg: "/images/nuakhai_banner.png"
         };
-      } else if (dateStr === "2026-12-20") {
+      } else if (dateKey === "2026-12-20" || dateKey.endsWith("-12-20")) {
         banners.local = {
           title: "Odisha Winter Wedding — Pheras 💍",
           badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
@@ -1396,7 +1397,28 @@ function App() {
           type: "local",
           bannerImg: "/images/wedding_day_banner.png"
         };
+      } else if (dateKey === "2026-01-14" || dateKey.endsWith("-01-14")) {
+        banners.local = {
+          title: "Makar Sankranti (Makar Mela) 🌾",
+          badge: "📍 LOCAL REGIONAL SURGE · Puri (752001)",
+          desc: "Traditional Odia harvest fair with Tussar silks and yellow cottons.",
+          tags: ["Tussar Silk", "Sambalpuri Ikat", "Yellow Cotton"],
+          type: "local",
+          bannerImg: "/images/makar_sankranti_banner.png"
+        };
       }
+    }
+
+    // Dynamic Guarantee: If no specific national or local match, create a regional festival banner from active date profile
+    if (!banners.national && !banners.local && activeDateProfile && activeDateProfile.event) {
+      banners.local = {
+        title: `${activeDateProfile.event} 🥻`,
+        badge: `📍 LOCAL REGIONAL SURGE · ${ZIP_CODES[zipCode]?.city || 'Regional Dispatch'}`,
+        desc: `Active regional demand surge for ${activeDateProfile.event}! Local creator and boutique signals engaged.`,
+        tags: activeDateProfile.trendingTags || ["Ethnic Wear", "Regional Handloom", "Festive Collection"],
+        type: "local",
+        bannerImg: activeDateProfile.event_type === "wedding_day" ? "/images/wedding_day_banner.png" : "/images/durga_puja_banner.png"
+      };
     }
 
     return banners;
