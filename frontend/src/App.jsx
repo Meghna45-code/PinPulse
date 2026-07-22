@@ -2514,20 +2514,21 @@ function App() {
                                 target="_blank"
                                 rel="noreferrer"
                                 style={{
-                                  background: '#FF0000',
-                                  color: '#FFFFFF',
-                                  padding: '4px 10px',
-                                  borderRadius: '16px',
-                                  fontSize: '0.72rem',
-                                  fontWeight: 'bold',
+                                  background: 'rgba(187, 133, 136, 0.15)',
+                                  border: '1px solid var(--border-accent)',
+                                  color: 'var(--peach-dark)',
+                                  padding: '4px 12px',
+                                  borderRadius: '20px',
+                                  fontSize: '0.75rem',
+                                  fontWeight: '700',
                                   textDecoration: 'none',
                                   display: 'inline-flex',
                                   alignItems: 'center',
-                                  gap: '4px',
-                                  boxShadow: '0 2px 6px rgba(255,0,0,0.3)'
+                                  gap: '5px',
+                                  transition: 'all 0.2s ease'
                                 }}
                               >
-                                ▶️ Visit YouTube Channel ↗
+                                🎬 Visit Channel ↗
                               </a>
                             </div>
                             <span style={{ fontSize: '0.72rem', color: 'var(--peach-dark)', fontWeight: 'bold' }}>
