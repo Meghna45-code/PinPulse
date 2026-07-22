@@ -1703,15 +1703,22 @@ function App() {
   };
 
   const renderGlobalTrendCard = (product) => {
-    const hashCode = (str) => {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = (hash << 5) - hash + str.charCodeAt(i);
-        hash |= 0;
-      }
-      return hash;
+    const getGlobalTrendImage = (p) => {
+      if (p.image_url) return p.image_url;
+      const name = (p.name || p.global_style_archetype || "").toLowerCase();
+      if (name.includes("dopamine")) return "/images/global/dopamine_streetwear_1.jpg";
+      if (name.includes("french") || name.includes("romantic")) return "/images/global/french_romantic_revival_1.jpg";
+      if (name.includes("harajuku") || name.includes("pastel")) return "/images/global/harajuku_pastel_layers_1.jpg";
+      if (name.includes("k-drama") || name.includes("kdrama") || name.includes("soft")) return "/images/global/k_drama_soft_aesthetic_1.jpg";
+      if (name.includes("parisian") || name.includes("quiet luxury")) return "/images/global/parisian_quiet_luxury_1.jpg";
+      if (name.includes("power") || name.includes("tailoring") || name.includes("suit")) return "/images/global/power_femme_tailoring_1.jpg";
+      if (name.includes("wabi")) return "/images/global/wabi_sabi_minimalism_1.png";
+      if (name.includes("streetwear") || name.includes("seoul")) return "/images/global/genz_seoul_streetwear_1.jpg";
+      if (name.includes("clean girl") || name.includes("haenyeo") || name.includes("haneyo")) return "/images/global/haneyo_clean_girl_1.jpg";
+      return "/images/global/parisian_quiet_luxury_1.jpg";
     };
-    const imgUrl = product.image_url || `/catalog/catalog_${(Math.abs(hashCode(product.name || "trend")) % 60) + 1}.jpg`;
+
+    const imgUrl = getGlobalTrendImage(product);
     
     return (
       <div
