@@ -1,6 +1,0 @@
-﻿Patna creators in seed file:
-      video_id  pincode     type      store_name
-0  U_nkHYPc1ww   800008  creator  Pratibha Shree
-1  FqilEHTE5BA   800008  creator    HER WARDROBE
-2  55apryEpLEs   800008  creator           Asmit
-All YT crop files: ['real_patna_yt_crop_55apryEpLEs.jpg', 'real_patna_yt_crop_FqilEHTE5BA.jpg', 'real_patna_yt_crop_U_nkHYPc1ww.jpg', 'yolo_crop_patna_yt_thumb_0.jpg', 'yolo_crop_patna_yt_thumb_1.jpg', 'yolo_crop_patna_yt_thumb_2.jpg', 'yolo_crop_patna_yt_thumb_3.jpg', 'yolo_crop_youtube_thumb_item_102.jpg', 'yolo_crop_youtube_thumb_item_108.jpg', 'yolo_crop_youtube_thumb_item_114.jpg', 'yolo_crop_youtube_thumb_item_115.jpg', 'yolo_crop_youtube_thumb_item_129.jpg', 'yolo_crop_youtube_thumb_item_131.jpg', 'yolo_crop_youtube_thumb_item_132.jpg', 'yolo_crop_youtube_thumb_item_133.jpg', 'yolo_crop_youtube_thumb_item_134.jpg', 'yolo_crop_youtube_thumb_item_137.jpg', 'yolo_crop_youtube_thumb_item_141.jpg', 'yolo_crop_youtube_thumb_item_142.jpg', 'yolo_crop_youtube_thumb_item_143.jpg', 'yolo_crop_youtube_thumb_item_17.jpg', 'yolo_crop_youtube_thumb_item_18.jpg', 'yolo_crop_youtube_thumb_item_214.jpg', 'yolo_crop_youtube_thumb_item_40.jpg', 'yolo_crop_youtube_thumb_item_72.jpg', 'yolo_crop_youtube_thumb_item_79.jpg', 'yolo_crop_youtube_thumb_item_86.jpg']
