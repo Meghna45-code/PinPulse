@@ -1,0 +1,74 @@
+[
+  {
+    "m_label": "M1",
+    "id": 1,
+    "name": "Dual-Tone Silk Blend Saree",
+    "category": "ethnic",
+    "price": 3299,
+    "match_pct": 84.55,
+    "rank_out_of_269": 1,
+    "yolo_crop_path": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m1_yolo_crop.jpg",
+    "dress_artifact": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m_item_1.jpg",
+    "product_link": "https://www.myntra.com/sarees/mitera/mitera-red--yellow-tie--dye-sequinned-saree/19098146/buy"
+  },
+  {
+    "m_label": "M2",
+    "id": 2,
+    "name": "Minimalist Red Cotton Saree",
+    "category": "ethnic",
+    "price": 1850,
+    "match_pct": 84.41,
+    "rank_out_of_269": 1,
+    "yolo_crop_path": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m2_yolo_crop.jpg",
+    "dress_artifact": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m_item_2.jpg",
+    "product_link": "https://www.myntra.com/sarees/arhi/arhi-red--yellow-pure-cotton-saree/19878644/buy"
+  },
+  {
+    "m_label": "M5",
+    "id": 5,
+    "name": "Tiered Ruffle Chiffon Maxi Dress",
+    "category": "western",
+    "price": 2499,
+    "match_pct": 71.32,
+    "rank_out_of_269": 65,
+    "yolo_crop_path": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m5_yolo_crop.jpg",
+    "dress_artifact": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m_item_5.webp",
+    "product_link": "https://www.myntra.com/dresses/aayu/aayu-ruffled-chiffon-a-line-maxi-dress/38066174/buy"
+  },
+  {
+    "m_label": "M7",
+    "id": 7,
+    "name": "Red Banarasi Silk Saree",
+    "category": "ethnic",
+    "price": 3850,
+    "match_pct": 85.4,
+    "rank_out_of_269": 1,
+    "yolo_crop_path": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m7_yolo_crop.jpg",
+    "dress_artifact": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m_item_7.jpg",
+    "product_link": "https://www.myntra.com/sarees/mitera/mitera-ethnic-motifs-zari-heavy-work-banarasi-silk-saree/41888590/buy"
+  },
+  {
+    "m_label": "M12",
+    "id": 12,
+    "name": "Embroidered Black Nehru Jacket Set",
+    "category": "ethnic",
+    "price": 5499,
+    "match_pct": 78.36,
+    "rank_out_of_269": 4,
+    "yolo_crop_path": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m12_yolo_crop.jpg",
+    "dress_artifact": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\catalog_dress_patna_match_12.jpg",
+    "product_link": "https://www.myntra.com/nehru-jackets/wintage/wintage-embroidered-banarasi-cotton-black-nehru-jacket/32701878/buy"
+  },
+  {
+    "m_label": "M14",
+    "id": 14,
+    "name": "Embroidered Mustard Straight Kurta Set",
+    "category": "ethnic",
+    "price": 2499,
+    "match_pct": 85.28,
+    "rank_out_of_269": 1,
+    "yolo_crop_path": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m14_yolo_crop.jpg",
+    "dress_artifact": "C:\\Users\\HP\\.gemini\\antigravity-ide\\brain\\c1bd556a-8a70-484a-830c-8a2779be8fb0\\m_item_14.jpg",
+    "product_link": "https://www.myntra.com/co-ords/nayam+by+lakshita/nayam-by-lakshita-women-solid-embroidered-tunic-and-palazzo-co-ord-set/29059440/buy"
+  }
+]

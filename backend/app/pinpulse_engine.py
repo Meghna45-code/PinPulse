@@ -215,6 +215,13 @@ class PinPulseEngine:
         # Score each product across all pillars
         scored_products = []
         for product in catalog_with_intent:
+            # === STRICT GEOGRAPHIC REGIONAL ISOLATION ===
+            # If a product has explicit zip_codes assigned (e.g. ["302001"] for Rajasthan or ["682001"] for Kochi),
+            # strictly require that the active user region is included in zip_codes.
+            p_zips = product.get("zip_codes", [])
+            if p_zips and zip_code not in p_zips:
+                continue
+
             # === PILLAR 1: Aesthetic ===
             s_aesthetic = calculate_aesthetic_score(
                 product, user_aesthetic, user_aesthetic_vector

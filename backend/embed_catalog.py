@@ -712,10 +712,24 @@ def generate_catalog_images():
     return True
 
 def run_clip_embeddings(use_real_clip=True):
+    """
+    Generate embeddings for all catalog products.
+    
+    For each product:
+      - image_vector: Real 512-dim CLIP visual embedding from catalog_{id}.jpg
+                      (None/zeros if CLIP unavailable — falls back to vibe_vector)
+      - embedding:    512-dim semantic vibe_vector from tags/category/aesthetic
+                      (Always computed — used by RRF transcript/regional paths)
+    
+    The scoring_engine.py dual-modal path uses:
+      sim_image = cosine(user_vector, product[image_vector])
+      sim_text  = cosine(user_vector, product[embedding])
+      final     = 0.5 * sim_image + 0.5 * sim_text
+    """
     processed_products = []
     clip_model = None
     clip_processor = None
-    
+
     if use_real_clip:
         try:
             logger.info("Attempting to load CLIP model ('openai/clip-vit-base-patch32')...")
@@ -724,45 +738,54 @@ def run_clip_embeddings(use_real_clip=True):
             torch.set_num_threads(2)
             clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
             clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-            logger.info("CLIP Model loaded successfully!")
-        except Exception as e:
-            logger.warning(f"Failed to load CLIP model. Falling back to synthetic vectors. Details: {e}")
+            logger.info("CLIP model loaded successfully! ✅")
+        except ImportError:
+            logger.warning("torch/transformers not installed. Falling back to synthetic vibe vectors. Run: pip install torch transformers")
             use_real_clip = False
-            
+        except Exception as e:
+            logger.warning(f"Failed to load CLIP model: {e}. Falling back to synthetic vectors.")
+            use_real_clip = False
+
     for item in PRODUCTS_SOURCE:
         i = item["id"]
         image_name = f"catalog_{i}.jpg"
         image_url = f"/catalog/{image_name}"
-        
-        embedding = None
-        
+
+        # Always compute the semantic vibe_vector (text-based, 512-dim zones)
+        vibe_vec = get_vibe_vector(
+            item["tags"],
+            category_str=item.get("category", ""),
+            aesthetic_str=item.get("aesthetic", "")
+        )
+
+        # Try to compute CLIP image embedding (visual, 512-dim)
+        clip_vec = None
         if use_real_clip and clip_model and clip_processor:
             try:
                 from PIL import Image
                 import torch
-                
                 image_path = os.path.join(CATALOG_DIR, image_name)
-                image = Image.open(image_path)
-                inputs = clip_processor(images=image, return_tensors="pt")
-                with torch.no_grad():
-                    image_features = clip_model.get_image_features(**inputs)
-                    
-                feat_np = image_features.cpu().numpy()[0]
-                norm = np.linalg.norm(feat_np)
-                if norm > 0:
-                    feat_np = feat_np / norm
-                embedding = feat_np.tolist()
+                if os.path.exists(image_path):
+                    image = Image.open(image_path).convert("RGB")
+                    inputs = clip_processor(images=image, return_tensors="pt")
+                    with torch.no_grad():
+                        # Use vision_model + visual_projection for compatibility with
+                        # all transformers versions (v4 and v5 changed get_image_features
+                        # return type to BaseModelOutputWithPooling in some builds).
+                        vision_out = clip_model.vision_model(pixel_values=inputs["pixel_values"])
+                        feat_tensor = clip_model.visual_projection(vision_out.pooler_output)
+                    feat_np = feat_tensor.detach().cpu().numpy()[0]
+                    norm = np.linalg.norm(feat_np)
+                    if norm > 0:
+                        feat_np = feat_np / norm
+                    clip_vec = feat_np.tolist()
+                    logger.info(f"[CLIP] Product {i} ({item['name']}): image_vector ✓ (dim={len(clip_vec)})")
+                else:
+                    logger.warning(f"[CLIP] Catalog image not found: {image_path} — using vibe fallback")
             except Exception as ex:
-                logger.error(f"Error computing CLIP: {ex}. Using fallback.")
-                embedding = None
-                
-        if embedding is None:
-            embedding = get_vibe_vector(
-                item["tags"],
-                category_str=item.get("category", ""),
-                aesthetic_str=item.get("aesthetic", "")
-            )
-            
+                logger.error(f"[CLIP] Error computing image_vector for product {i}: {ex}")
+                clip_vec = None
+
         processed_products.append({
             "id": i,
             "name": item["name"],
@@ -770,26 +793,41 @@ def run_clip_embeddings(use_real_clip=True):
             "image_url": image_url,
             "tags": item["tags"],
             "zip_codes": item["zip_codes"],
-            "embedding": embedding
+            # Semantic text vector (always present — used by transcript/regional RRF paths)
+            "embedding": vibe_vec,
+            # Visual CLIP vector (present only when torch is installed + catalog images exist)
+            # Falls back to vibe_vec so scoring_engine.py always has something to work with
+            "image_vector": clip_vec if clip_vec is not None else vibe_vec,
         })
-        
+
+    clip_count = sum(1 for p in processed_products if p.get("image_vector") != p.get("embedding"))
+    logger.info(f"Embedding complete: {len(processed_products)} products | {clip_count} with real CLIP image_vector | {len(processed_products) - clip_count} using vibe fallback")
     return processed_products
 
 def upload_to_supabase(products):
     if not SUPABASE_URL or not SUPABASE_SERVICE_ROLE_KEY:
         logger.warning("Supabase configuration missing. Skipping upload.")
         return False
-        
+
     try:
         logger.info("Initializing Supabase Client and uploading catalog products...")
         from supabase import create_client, Client
         supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
-        
+
         logger.info("Clearing old products from Supabase table...")
         supabase.table("products").delete().neq("id", 0).execute()
-        
+
         logger.info(f"Inserting {len(products)} products into Supabase...")
-        supabase.table("products").insert(products).execute()
+        # Allowed columns in Supabase products table schema
+        ALLOWED_KEYS = {"id", "name", "description", "image_url", "product_url", "tags", "zip_codes", "embedding"}
+        supabase_products = [{k: v for k, v in p.items() if k in ALLOWED_KEYS} for p in products]
+
+        # Insert in chunks of 50 to prevent HTTP payload size limits
+        chunk_size = 50
+        for i in range(0, len(supabase_products), chunk_size):
+            chunk = supabase_products[i:i + chunk_size]
+            supabase.table("products").insert(chunk).execute()
+
         logger.info("Catalog uploaded to Supabase successfully!")
         return True
     except Exception as e:
@@ -797,25 +835,68 @@ def upload_to_supabase(products):
         return False
 
 def main():
-    logger.info("Starting local catalog generation & embedding pipeline...")
+    """
+    Generates catalog images, computes CLIP image_vector for the 60 hardcoded
+    PRODUCTS_SOURCE items, then MERGES those vectors into the full local_catalog.json
+    (which may have 157+ products from external enrichment).
+
+    Products not in PRODUCTS_SOURCE keep their existing data unchanged.
+    Only 'embedding' and 'image_vector' are updated for PRODUCTS_SOURCE items.
+    """
+    logger.info("Starting CLIP embedding pipeline (merge mode — preserving full catalog)...")
     images_ok = generate_catalog_images()
     if not images_ok:
         logger.error("Failed to generate catalog images.")
-        
-    products = run_clip_embeddings(use_real_clip=True)
-    
+
+    # Compute CLIP embeddings for the 60 hardcoded products
+    clip_products = run_clip_embeddings(use_real_clip=True)
+    clip_map = {p["id"]: p for p in clip_products}  # id → {embedding, image_vector, ...}
+
+    # Load the full existing catalog (may have 157+ products)
+    existing_catalog = []
+    if os.path.exists(LOCAL_CATALOG_FILE):
+        try:
+            # utf-8-sig handles BOM from PowerShell Out-File (common on Windows)
+            with open(LOCAL_CATALOG_FILE, "r", encoding="utf-8-sig") as f:
+                existing_catalog = json.load(f)
+            logger.info(f"Loaded existing catalog: {len(existing_catalog)} products")
+        except Exception as e:
+            logger.warning(f"Could not load existing catalog: {e}. Starting fresh.")
+
+    # Merge: update embedding + image_vector for PRODUCTS_SOURCE items; keep rest untouched
+    existing_map = {p["id"]: p for p in existing_catalog}
+    for pid, clip_p in clip_map.items():
+        if pid in existing_map:
+            existing_map[pid]["embedding"]    = clip_p["embedding"]
+            existing_map[pid]["image_vector"] = clip_p["image_vector"]
+        else:
+            # Product not in existing catalog — add it
+            existing_map[pid] = clip_p
+
+    # Ensure all products have image_vector (fallback to embedding for un-CLIPped products)
+    merged = []
+    for p in existing_map.values():
+        if "image_vector" not in p or not p["image_vector"]:
+            p["image_vector"] = p.get("embedding", [])
+        merged.append(p)
+
+    merged.sort(key=lambda p: p.get("id", 0))
+
+    clipped = sum(1 for p in merged if p.get("image_vector") != p.get("embedding"))
+    logger.info(f"Merged catalog: {len(merged)} products | {clipped} with real CLIP image_vector")
+
     try:
-        with open(LOCAL_CATALOG_FILE, "w") as f:
-            json.dump(products, f, indent=4)
-        logger.info(f"Successfully saved local catalog cache containing {len(products)} products to {LOCAL_CATALOG_FILE}")
+        with open(LOCAL_CATALOG_FILE, "w", encoding="utf-8") as f:
+            json.dump(merged, f, indent=4)
+        logger.info(f"Saved merged catalog to {LOCAL_CATALOG_FILE}")
     except Exception as e:
-        logger.error(f"Failed to save local catalog file: {e}")
-        
-    db_ok = upload_to_supabase(products)
+        logger.error(f"Failed to save catalog: {e}")
+
+    db_ok = upload_to_supabase(merged)
     if db_ok:
-        logger.info("Catalog embedding pipeline complete (Local + Supabase SQL DB synchronized).")
+        logger.info("Catalog embedding pipeline complete (Local + Supabase synchronized).")
     else:
-        logger.info("Catalog embedding pipeline complete (Local Offline file created).")
+        logger.info("Catalog embedding pipeline complete (Local file updated only).")
 
 if __name__ == "__main__":
     main()

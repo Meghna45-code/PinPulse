@@ -1,0 +1,65 @@
+{
+  "total_catalog_size": 269,
+  "boots_count": 3,
+  "boots_list": [
+    {
+      "id": 134,
+      "name": "Leather Chelsea Ankle Boots",
+      "category": "footwear",
+      "price": 2499,
+      "tags": [
+        "casual",
+        "boots",
+        "ankle",
+        "brown",
+        "chelsea",
+        "footwear",
+        "leather",
+        "millennial"
+      ],
+      "s_vis": 0.5084,
+      "s_text": 0.5152,
+      "s_tag": 1.0,
+      "s_hybrid": 0.6087,
+      "hybrid_match_pct": 60.87,
+      "product_link": "https://www.myntra.com/boots/roadster/roadster-women-chelsea-boots/31204292/buy",
+      "rank": 1
+    },
+    {
+      "id": 1115,
+      "name": "Trendy coat and boots",
+      "category": "casual",
+      "price": 1499.0,
+      "tags": [
+        "trendy",
+        "coat",
+        "boots"
+      ],
+      "s_vis": 0.4875,
+      "s_text": 0.4809,
+      "s_tag": 0.3333,
+      "s_hybrid": 0.4547,
+      "hybrid_match_pct": 45.47,
+      "product_link": "https://www.myntra.com/boots/bxxy/bxxy-women-ankle-boots-and-block-heel/32802543/buy",
+      "rank": 49
+    },
+    {
+      "id": 1116,
+      "name": "Trendy coat and boots",
+      "category": "casual",
+      "price": 1499.0,
+      "tags": [
+        "trendy",
+        "coat",
+        "boots"
+      ],
+      "s_vis": 0.4875,
+      "s_text": 0.4809,
+      "s_tag": 0.3333,
+      "s_hybrid": 0.4547,
+      "hybrid_match_pct": 45.47,
+      "product_link": "https://www.myntra.com/coats/monte+carlo/monte-carlo-women-spread-collar-single-breasted-woollen-overcoat/31455602/buy",
+      "rank": 50
+    }
+  ]
+}

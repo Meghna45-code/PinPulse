@@ -5,14 +5,25 @@ import { FALLBACK_PRODUCTS } from './catalog_fallback';
 const ZIP_CODES = {
   "682001": { city: "Fort Kochi", state: "Kochi", name: "Kochi (682001)" },
   "752001": { city: "Puri", state: "Odisha", name: "Odisha (752001)" },
-  "800008": { city: "Patna City", state: "Patna", name: "Patna (800008)" }
+  "800008": { city: "Patna City", state: "Patna", name: "Patna (800008)" },
+  "793001": { city: "Shillong", state: "Meghalaya", name: "Shillong (793001)" },
+  "302001": { city: "Jaipur", state: "Rajasthan", name: "Rajasthan (302001)" }
 };
 
 // Mapped canonical ZIP codes for backend queries
-const BACKEND_ZIP_MAPPED = {
-  "800008": "800008",
-  "682001": "682001",
+const ZIP_MAPPING = {
+  "800001": "800008",
+  "560034": "682001",
   "752001": "752001",
+  "793001": "793001",
+  "302001": "302001"
+};
+
+const SEASON_BANNERS = {
+  summer: "/images/summer_banner.png",
+  winter: "/images/winter_banner.png",
+  monsoon: "/images/monsoon_banner.png",
+  autumn: "/images/autumn_banner.png"
 };
 
 // Weather Matrix throughout the year
@@ -58,6 +69,34 @@ const WEATHER_MATRIX = {
     10: { desc: "Pleasant & Sunny 🍂", temp: "20°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
     11: { desc: "Cool & Dry 🍂", temp: "15°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
     12: { desc: "Cold & Dry ❄️", temp: "11°C–23°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
+  },
+  "793001": { // Shillong, Meghalaya
+    1: { desc: "Chilly & Misty ❄️", temp: "4°C–15°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
+    2: { desc: "Cool Mountain Breeze 🍃", temp: "6°C–17°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
+    3: { desc: "Pleasant Spring 🌸", temp: "10°C–21°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    4: { desc: "Mild & Sunny 🌤️", temp: "13°C–23°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    5: { desc: "Pre-Monsoon Clouds ☁️", temp: "15°C–24°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "warm_moderate" },
+    6: { desc: "Heavy Monsoons 🌧️", temp: "16°C–23°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    7: { desc: "Abundant Rainfall 🌧️", temp: "16°C–23°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    8: { desc: "Rainy Highland 🌧️", temp: "16°C–23°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    9: { desc: "Mist & Showers 🌫️", temp: "15°C–22°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "warm_moderate" },
+    10: { desc: "Autumn Cherry Blossom 🌸", temp: "12°C–20°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    11: { desc: "Crisp & Cold 🍂", temp: "8°C–17°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
+    12: { desc: "Crisp Winter Solstice ❄️", temp: "5°C–15°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
+  },
+  "302001": { // Rajasthan (Jaipur)
+    1: { desc: "Cool Desert Nights ❄️", temp: "8°C–22°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
+    2: { desc: "Sunny & Pleasant ☀️", temp: "11°C–26°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    3: { desc: "Warm & Sunny ☀️", temp: "16°C–32°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    4: { desc: "Hot Summer Days 🔥", temp: "21°C–38°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
+    5: { desc: "Peak Desert Heat 🔥", temp: "26°C–42°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
+    6: { desc: "Scorching & Dry 🔥", temp: "28°C–41°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
+    7: { desc: "Monsoon Showers 🌧️", temp: "26°C–34°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    8: { desc: "Humid Monsoon 🌧️", temp: "25°C–33°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
+    9: { desc: "Pleasant Dry Sun ☀️", temp: "23°C–34°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    10: { desc: "Clear & Festive 🍂", temp: "18°C–32°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    11: { desc: "Pleasant Winter 🍂", temp: "13°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
+    12: { desc: "Chilly Desert Winter ❄️", temp: "9°C–23°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
   }
 };
 
@@ -106,6 +145,26 @@ const REGIONAL_DATE_PRESETS = {
     { key: "oct_18", label: "Oct 18 (Durga Puja)", dateStr: "2026-10-18", event: "Durga Puja (Ravana Podi)", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "traditional_silk", "red", "gold", "sambalpuri"] },
     { key: "nov_8", label: "Nov 8 (Diwali)", dateStr: "2026-11-08", event: "Diwali Lights Festival", event_type: "festival", isFestive: true, trendingTags: ["ethnic", "festive", "regal", "gold", "silk", "heavy_embroidery"] },
     { key: "dec_20", label: "Dec 20 (Odia Wedding)", dateStr: "2026-12-20", event: "Odisha Winter Wedding (Pheras)", event_type: "wedding_day", isFestive: true, trendingTags: ["heavy_silk", "tussar_silk", "ceremonial", "sherwani", "crimson", "gold"] }
+  ],
+  "793001": [ // Shillong, Meghalaya
+    { key: "jan_03", label: "Jan 03 (Highland Winter)", dateStr: "2026-01-03", event: "Highland Winter Music Fest", event_type: "festival", isFestive: true, trendingTags: ["woolen", "winter", "knitted", "cardigan", "shillong"] },
+    { key: "jan_14", label: "Jan 14 (Highland Winter)", dateStr: "2026-01-14", event: "Highland Winter Music Fest", event_type: "festival", isFestive: true, trendingTags: ["woolen", "winter", "knitted", "cardigan", "shillong"] },
+    { key: "apr_10", label: "Apr 10 (Shad Suk Mynsiem)", dateStr: "2026-04-10", event: "Shad Suk Mynsiem (Khasi Thanksgiving Dance)", event_type: "festival", isFestive: true, trendingTags: ["jainsem", "khasi", "silk", "traditional", "gold", "nongkrem"] },
+    { key: "may_15", label: "May 15 (Spring Gala)", dateStr: "2026-05-15", event: "Shillong Pine Spring Gala", event_type: "festival", isFestive: true, trendingTags: ["pastel", "linen", "boho", "casual", "shillong"] },
+    { key: "nov_10", label: "Nov 10 (Nongkrem Dance)", dateStr: "2026-11-10", event: "Nongkrem Dance Festival (Smit)", event_type: "festival", isFestive: true, trendingTags: ["khasi", "silk", "brocade", "traditional", "gold", "velvet"] },
+    { key: "nov_15", label: "Nov 15 (Wangala Fest)", dateStr: "2026-11-15", event: "Wangala 100 Drums Garo Festival", event_type: "festival", isFestive: true, trendingTags: ["garo", "dakmanda", "wangala", "beaded", "handloom", "tribal"] },
+    { key: "nov_22", label: "Nov 22 (Cherry Blossom)", dateStr: "2026-11-22", event: "Shillong Cherry Blossom Festival", event_type: "festival", isFestive: true, trendingTags: ["cherry_blossom", "pastel", "floral", "chiffon", "gown", "indie"] },
+    { key: "dec_25", label: "Dec 25 (Highland Christmas)", dateStr: "2026-12-25", event: "Shillong Grand Christmas Solstice", event_type: "festival", isFestive: true, trendingTags: ["woolen", "velvet", "cardigan", "red", "cozy", "festive"] }
+  ],
+  "302001": [ // Rajasthan (Jaipur)
+    { key: "jan_03", label: "Jan 03 (Kite Prep)", dateStr: "2026-01-03", event: "Jaipur International Kite Festival (Makar Sankranti)", event_type: "festival", isFestive: true, trendingTags: ["cotton", "yellow", "block_print", "anarkali", "rajasthan"] },
+    { key: "jan_14", label: "Jan 14 (Kite Festival)", dateStr: "2026-01-14", event: "Jaipur International Kite Festival (Makar Sankranti)", event_type: "festival", isFestive: true, trendingTags: ["cotton", "yellow", "block_print", "anarkali", "rajasthan"] },
+    { key: "feb_15", label: "Feb 15 (Desert Festival)", dateStr: "2026-02-15", event: "Jaisalmer Desert Festival", event_type: "festival", isFestive: true, trendingTags: ["bandhani", "mirror_work", "choli", "ethnic", "desert"] },
+    { key: "mar_20", label: "Mar 20 (Elephant Festival)", dateStr: "2026-03-20", event: "Jaipur Elephant & Holi Festival", event_type: "festival", isFestive: true, trendingTags: ["bright", "cotton", "gota_patti", "jaipur"] },
+    { key: "apr_04", label: "Apr 04 (Gangaur Procession)", dateStr: "2026-04-04", event: "Royal Gangaur Festival Procession", event_type: "festival", isFestive: true, trendingTags: ["traditional", "gota_patti", "lehenga", "gold", "rajasthan"] },
+    { key: "aug_12", label: "Aug 12 (Teej Festival)", dateStr: "2026-08-12", event: "Swarn Teej Festival Jaipur", event_type: "festival", isFestive: true, trendingTags: ["lehenga", "gota_patti", "green", "silk", "teej", "ethnic"] },
+    { key: "oct_20", label: "Oct 20 (Marwar Fest)", dateStr: "2026-10-20", event: "Marwar Folk Music & Dance Festival Jodhpur", event_type: "festival", isFestive: true, trendingTags: ["mirror_work", "bandhani", "angrakha", "ethnic"] },
+    { key: "nov_18", label: "Nov 18 (Pushkar Fair)", dateStr: "2026-11-18", event: "Pushkar Camel Fair & Cultural Night", event_type: "festival", isFestive: true, trendingTags: ["pushkar", "angrakha", "silk", "handloom", "traditional"] }
   ]
 };
 
@@ -354,6 +413,11 @@ function App() {
   const [globalRunwayFilter, setGlobalRunwayFilter] = useState('all'); // 'all' | 'seoul' | 'paris' | 'tokyo'
   const [expandedSections, setExpandedSections] = useState({ local: false, national: false, global: false });
   const [selectedCreatorIdx, setSelectedCreatorIdx] = useState(0);
+  // Seasonal Fashion Studio State
+  const [activeSeasonTab, setActiveSeasonTab] = useState('summer');
+  const [userOverrodeSeason, setUserOverrodeSeason] = useState(false);
+  const [seasonalData, setSeasonalData] = useState(null);
+  const [isSeasonalLoading, setIsSeasonalLoading] = useState(false);
   // Zip Code Intelligence (AOV + weather + upcoming events)
   const [zipInsights, setZipInsights] = useState(null);
   
@@ -541,7 +605,8 @@ function App() {
     const zip = e.target.value;
     setCurrentZipCode(zip);
     setSliderVal(0);
-    logMessage(`Geographic boundary shifted. Active zip code: ${ZIP_CODES[zip].name}.`, "success");
+    setExpandedSections({ local: true, national: false, global: false });
+    logMessage(`Geographic boundary shifted. Active region: ${ZIP_CODES[zip]?.name || zip}.`, "success");
     if (backendStatus === "connected") {
       try {
         await fetch("http://localhost:8000/api/dev/set-zip", {
@@ -567,6 +632,7 @@ function App() {
     setIsLoading(true);
     const profile = (calendarPresets[currentZipCode] || calendarPresets["800008"])[sliderVal] || (calendarPresets[currentZipCode] || calendarPresets["800008"])[0];
     const userVibeVector = generateVibeVector(currentVibe);
+    const cacheKey = `${currentZipCode}_${profile.dateStr}_${currentVibe}_${engineState}`;
 
     logMessage(`Scoring recommendations: ${ZIP_CODES[currentZipCode].city} • ${profile.dateStr} • ${currentVibe}`, "info");
     if (backendStatus === "connected") {
@@ -601,17 +667,17 @@ function App() {
   const fetchYoutubeTrends = async (zip) => {
     setIsYoutubeLoading(true);
     setYoutubeData(null);
+    const targetZip = zip || currentZipCode;
     logMessage("Loading YouTube creator trends from database...", "info");
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/youtube?zip_code=${BACKEND_ZIP_MAPPED[zip || currentZipCode]}`);
+      const res = await fetch(`http://localhost:8000/api/trends/youtube?zip_code=${targetZip}`);
       if (!res.ok) throw new Error("Failed to fetch YouTube trends");
       const data = await res.json();
-      const isArr = Array.isArray(data);
-      const len = isArr ? data.length : 0;
-      setYoutubeData(isArr ? data : []);
+      const items = Array.isArray(data) ? data : (data.trends || []);
+      setYoutubeData(items);
       setYoutubeFetched(true);
       setIsYoutubeLoading(false);
-      logMessage(`Creator Feed: Loaded ${len} regional fashion videos.`, "success");
+      logMessage(`Creator Feed: Loaded ${items.length} regional fashion videos.`, "success");
     } catch (e) {
       logMessage(`YouTube trends error: ${e.message}`, "error");
       setIsYoutubeLoading(false);
@@ -622,9 +688,10 @@ function App() {
   const fetchBoutiques = async (zip) => {
     setIsBoutiqueLoading(true);
     setBoutiqueData(null);
-    logMessage(`Loading local stores for ${ZIP_CODES[zip || currentZipCode]?.city}...`, "info");
+    const targetZip = zip || currentZipCode;
+    logMessage(`Loading local stores for ${ZIP_CODES[targetZip]?.city || 'Local Region'}...`, "info");
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/boutiques?zip_code=${BACKEND_ZIP_MAPPED[zip || currentZipCode]}`);
+      const res = await fetch(`http://localhost:8000/api/trends/boutiques?zip_code=${targetZip}`);
       if (!res.ok) throw new Error("Failed to fetch boutiques");
       const data = await res.json();
       setBoutiqueData(data);
@@ -662,6 +729,44 @@ function App() {
     }
   };
 
+  const getWeatherSeason = (weatherObj) => {
+    if (!weatherObj) return "summer";
+    const desc = (weatherObj.desc || "").toLowerCase();
+    const tempStr = (weatherObj.temp || "").replace("°C", "").replace("°", "").trim();
+    const temp = parseInt(tempStr, 10) || 30;
+    if (desc.includes("rain") || desc.includes("monsoon") || weatherObj.rainy) return "monsoon";
+    if (desc.includes("cold") || desc.includes("winter") || temp < 20 || weatherObj.cold_wave) return "winter";
+    if (desc.includes("pleasant") || desc.includes("autumn") || desc.includes("moderate") || (temp >= 20 && temp <= 27)) return "autumn";
+    return "summer";
+  };
+
+  const fetchSeasonalTrends = async (seasonKey) => {
+    setIsSeasonalLoading(true);
+    try {
+      const res = await fetch(`http://localhost:8000/api/trends/seasonal?season=${seasonKey}`);
+      if (!res.ok) throw new Error("Failed to fetch seasonal trends");
+      const data = await res.json();
+      setSeasonalData(data);
+    } catch (e) {
+      logMessage(`Seasonal trends error: ${e.message}`, "warning");
+    } finally {
+      setIsSeasonalLoading(false);
+    }
+  };
+
+  const handleSeasonTabClick = (seasonKey) => {
+    setUserOverrodeSeason(true);
+    setActiveSeasonTab(seasonKey);
+    fetchSeasonalTrends(seasonKey);
+  };
+
+  useEffect(() => {
+    const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
+    const autoDetectedSeason = getWeatherSeason(activeWeather);
+    setActiveSeasonTab(autoDetectedSeason);
+    fetchSeasonalTrends(autoDetectedSeason);
+  }, [currentZipCode, sliderVal]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === 'youtube' && !youtubeFetched) {
@@ -690,8 +795,8 @@ function App() {
     logMessage("Running client-side 8-Pillar mathematical scoring simulation...", "sql");
     
     const month = parseInt(profile.dateStr.split("-")[1], 10);
-    const dbZip = BACKEND_ZIP_MAPPED[currentZipCode] || "800008";
-    const weatherEntry = weatherMatrix[dbZip]?.[month] || weatherMatrix[dbZip]?.[String(month)] || {};
+    const dbZip = ZIP_MAPPING[currentZipCode] || currentZipCode;
+    const weatherEntry = WEATHER_MATRIX[dbZip]?.[month] || WEATHER_MATRIX[dbZip]?.[String(month)] || {};
     const isColdWave = weatherEntry.cold_wave || false;
     const isHotWave = weatherEntry.hot_wave || false;
     const isRainy = weatherEntry.rainy || false;
@@ -961,9 +1066,9 @@ function App() {
       : deduped;
 
     setProducts(finalFeed);
-    logMessage(`Local matching algorithm ranked ${paddedFeed.length} items. 8-Pillar weights applied.`, "success");
-    if (paddedFeed.length > 0) {
-      setSelectedProduct(paddedFeed[0]);
+    logMessage(`Local matching algorithm ranked ${finalFeed.length} items. 8-Pillar weights applied.`, "success");
+    if (finalFeed.length > 0) {
+      setSelectedProduct(finalFeed[0]);
     }
   };
 
@@ -1400,6 +1505,136 @@ function App() {
           bannerImg: "/images/makar_sankranti_banner.png"
         };
       }
+    } else if (zipCode === "793001") { // Shillong / Meghalaya
+      if (dateKey === "2026-01-14" || dateKey.endsWith("-01-14")) {
+        banners.local = {
+          title: "Shillong Highland Winter Music Fest 🎸",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Highland rock & indie music festival in the misty hills! Heavy woolen knitted cardigans, plaid trench coats, and cozy winter streetwear.",
+          tags: ["Highland Woolen", "Knitted Cardigan", "Plaid Trench", "Winter Streetwear"],
+          type: "local",
+          bannerImg: "/images/winter_banner.png"
+        };
+      } else if (dateKey === "2026-04-10" || dateKey.endsWith("-04-10")) {
+        banners.local = {
+          title: "Shad Suk Mynsiem Thanksgiving Festival 🌸",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Khasi Spring Thanksgiving Festival of peaceful hearts! Authentic silk Jainsems, coral gold beaded jewelry, and traditional woven crowns.",
+          tags: ["Khasi Silk Jainsem", "Gold Beaded Jewelry", "Traditional Crown", "Spring Silk"],
+          type: "local",
+          bannerImg: "/images/saraswati_puja_banner.png"
+        };
+      } else if (dateKey === "2026-05-15" || dateKey.endsWith("-05-15")) {
+        banners.local = {
+          title: "Shillong Pine Spring Gala 🌲",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Spring gala in the pine hills! Pastel linen maxi dresses, indie boho skirts, and lightweight chic layers.",
+          tags: ["Pastel Linen Maxi", "Indie Boho Skirt", "Pine Green Layer", "Spring Chic"],
+          type: "local",
+          bannerImg: "/images/summer_banner.png"
+        };
+      } else if (dateKey === "2026-11-10" || dateKey.endsWith("-11-10")) {
+        banners.local = {
+          title: "Nongkrem Royal Dance Festival (Smit) 🥻",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Royal Khasi harvest dance festival at Smit! Heavy silk brocade Jainsems, gold ornaments, and rich velvet festive tops.",
+          tags: ["Brocade Silk Jainsem", "Velvet Festive Top", "Khasi Gold Ornament", "Royal Meghalaya"],
+          type: "local",
+          bannerImg: "/images/durga_puja_banner.png"
+        };
+      } else if (dateKey === "2026-11-15" || dateKey.endsWith("-11-15")) {
+        banners.local = {
+          title: "Wangala 100 Drums Garo Harvest Festival 🥁",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Garo tribe post-harvest 100 Drums festival! Handspun Garo Dakmanda skirts, tribal beaded vests, and traditional headgear.",
+          tags: ["Garo Dakmanda Skirt", "Tribal Beaded Vest", "Handwoven Garo", "Harvest Red & Gold"],
+          type: "local",
+          bannerImg: "/images/nuakhai_banner.png"
+        };
+      } else if (dateKey === "2026-11-22" || dateKey.endsWith("-11-22")) {
+        banners.local = {
+          title: "Shillong International Cherry Blossom Festival 🌸",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Pink cherry blossom bloom across Shillong! Floral chiffon gowns, pastel pink knitwear, and indie fashion.",
+          tags: ["Cherry Blossom Pink", "Floral Chiffon Gown", "Pastel Knitwear", "Shillong Indie"],
+          type: "local",
+          bannerImg: "/images/autumn_banner.png"
+        };
+      } else if (dateKey === "2026-12-25" || dateKey.endsWith("-12-25")) {
+        banners.local = {
+          title: "Shillong Grand Christmas Solstice 🎄",
+          badge: "📍 LOCAL REGIONAL SURGE · Shillong (793001)",
+          desc: "Highland Christmas celebrations across Shillong! Cozy red woolen sweaters, velvet evening suits, chic trench coats, and holiday glam.",
+          tags: ["Cozy Red Sweater", "Velvet Evening Suit", "Chic Trench Coat", "Highland Christmas"],
+          type: "local",
+          bannerImg: "/images/winter_banner.png"
+        };
+      }
+    } else if (zipCode === "302001") { // Rajasthan / Jaipur
+      if (dateKey === "2026-01-14" || dateKey.endsWith("-01-14")) {
+        banners.local = {
+          title: "Jaipur International Kite Festival (Makar Sankranti) 🪁",
+          badge: "📍 LOCAL REGIONAL SURGE · Jaipur (302001)",
+          desc: "Royal Rajasthan Makar Sankranti kite flying mela! Bright yellow Jaipur block print kurtis, cotton Gota Patti suits, and Bandhani dupattas.",
+          tags: ["Jaipur Block Print", "Gota Patti Suit", "Bandhani Dupatta", "Bright Yellow Cotton"],
+          type: "local",
+          bannerImg: "/images/makar_sankranti_banner.png"
+        };
+      } else if (dateKey === "2026-02-15" || dateKey.endsWith("-02-15")) {
+        banners.local = {
+          title: "Jaisalmer Desert Festival 🐫",
+          badge: "📍 LOCAL REGIONAL SURGE · Rajasthan (302001)",
+          desc: "Vibrant Thar desert folk festival! Traditional Bandhani silk lehengas, mirror-work cholis, and silver oxidised jewellery.",
+          tags: ["Bandhani Silk Lehenga", "Mirror Work Choli", "Rajasthani Ethnic", "Oxidised Silver"],
+          type: "local",
+          bannerImg: "/images/diwali_banner.png"
+        };
+      } else if (dateKey === "2026-03-20" || dateKey.endsWith("-03-20")) {
+        banners.local = {
+          title: "Jaipur Royal Elephant & Holi Festival 🎨",
+          badge: "📍 LOCAL REGIONAL SURGE · Jaipur (302001)",
+          desc: "Royal pink city Holi & elephant cultural procession! Bright white Gota Patti kurtas and organic cottons.",
+          tags: ["White Gota Patti Kurta", "Rajasthani Bandhani", "Cotton Anarkali", "Festive Colors"],
+          type: "local",
+          bannerImg: "/images/holi_banner.png"
+        };
+      } else if (dateKey === "2026-04-04" || dateKey.endsWith("-04-04")) {
+        banners.local = {
+          title: "Royal Gangaur Festival Procession 🌸",
+          badge: "📍 LOCAL REGIONAL SURGE · Jaipur (302001)",
+          desc: "Sacred Rajasthani festival honoring Goddess Gauri! Heavy Gota Patti lehenga cholis, royal crimson silks, and gold jewellery.",
+          tags: ["Gota Patti Lehenga", "Royal Red Silk", "Rajasthani Bandhani", "Gold Jewellery"],
+          type: "local",
+          bannerImg: "/images/wedding_day_banner.png"
+        };
+      } else if (dateKey === "2026-08-12" || dateKey.endsWith("-08-12")) {
+        banners.local = {
+          title: "Swarn Teej Festival Jaipur 🌿",
+          badge: "📍 LOCAL REGIONAL SURGE · Jaipur (302001)",
+          desc: "Sawan monsoon Teej celebrations across Jaipur! Traditional green Leheriya sarees, Gota Patti work, and ethnic silk dupattas.",
+          tags: ["Green Leheriya Saree", "Gota Patti Work", "Silk Dupatta", "Festive Teej"],
+          type: "local",
+          bannerImg: "/images/monsoon_banner.png"
+        };
+      } else if (dateKey === "2026-10-20" || dateKey.endsWith("-10-20")) {
+        banners.local = {
+          title: "Marwar Folk Music & Dance Festival Jodhpur 🎶",
+          badge: "📍 LOCAL REGIONAL SURGE · Rajasthan (302001)",
+          desc: "Heritage music and folk dance festival of Jodhpur! Traditional Angrakha kurta sets, mirror-work jackets, and Bandhani silk.",
+          tags: ["Angrakha Kurta Set", "Mirror Work Jacket", "Marwar Bandhani", "Heritage Silk"],
+          type: "local",
+          bannerImg: "/images/durga_puja_banner.png"
+        };
+      } else if (dateKey === "2026-11-18" || dateKey.endsWith("-11-18")) {
+        banners.local = {
+          title: "Pushkar Camel Fair & Cultural Night 🐫",
+          badge: "📍 LOCAL REGIONAL SURGE · Rajasthan (302001)",
+          desc: "World-renowned Pushkar cultural mela! Handwoven Rajasthani cottons, traditional Angrakha suits, and silver craft.",
+          tags: ["Rajasthani Handloom", "Angrakha Suit", "Silver Craft", "Pushkar Traditional"],
+          type: "local",
+          bannerImg: "/images/generic_festival_banner.png"
+        };
+      }
     }
 
     // Helper to resolve exact background image for any event
@@ -1417,18 +1652,29 @@ function App() {
       if (t.includes("independence")) return "/images/independence_day_banner.png";
       if (t.includes("republic")) return "/images/republic_day_banner.png";
       if (t.includes("wedding") || eventType === "wedding_day") return "/images/wedding_day_banner.png";
-      return "/images/diwali_banner.png";
+      if (t.includes("winter") || t.includes("christmas")) return "/images/winter_banner.png";
+      if (t.includes("teej") || t.includes("monsoon")) return "/images/monsoon_banner.png";
+      if (t.includes("autumn") || t.includes("cherry")) return "/images/autumn_banner.png";
+      return "/images/generic_festival_banner.png";
     };
 
-    // Dynamic Guarantee: If no specific national or local match, create a regional festival banner from active date profile
+    // Dynamic Guarantee: Ensure active regional banner matches the exact selected ZIP code
     if (!banners.national && !banners.local && activeDateProfile && activeDateProfile.event) {
+      let eventTitle = activeDateProfile.event;
+      // Sanity Guard: Prevent Patna events (Prakash Parv / Chhath Puja) from bleeding into Rajasthan or Shillong
+      if (zipCode === "302001" && (eventTitle.includes("Prakash Parv") || eventTitle.includes("Chhath Puja") || eventTitle.includes("Bihar"))) {
+        eventTitle = "Jaipur International Kite Festival (Makar Sankranti)";
+      } else if (zipCode === "793001" && (eventTitle.includes("Prakash Parv") || eventTitle.includes("Chhath Puja") || eventTitle.includes("Bihar"))) {
+        eventTitle = "Shillong Highland Winter Music Fest";
+      }
+
       banners.local = {
-        title: `${activeDateProfile.event} 🥻`,
+        title: `${eventTitle} 🥻`,
         badge: `📍 LOCAL REGIONAL SURGE · ${ZIP_CODES[zipCode]?.city || 'Regional Dispatch'}`,
-        desc: `Active regional demand surge for ${activeDateProfile.event}! Local creator and boutique signals engaged.`,
+        desc: `Active regional demand surge for ${eventTitle}! Local creator and boutique signals engaged.`,
         tags: activeDateProfile.trendingTags || ["Ethnic Wear", "Regional Handloom", "Festive Collection"],
         type: "local",
-        bannerImg: getBannerImgForEvent(activeDateProfile.event, activeDateProfile.event_type)
+        bannerImg: getBannerImgForEvent(eventTitle, activeDateProfile.event_type)
       };
     }
 
@@ -1545,14 +1791,56 @@ function App() {
 
             {/* Local Expanded Shelf */}
             {expandedSections.local && (() => {
-              const localProducts = products.filter(p => 
-                !p.is_global_trend && 
-                (
+              const eventTitleLower = (activeDateProfile.event || "").toLowerCase();
+              const isModernEvent = eventTitleLower.includes("christmas") || 
+                                   eventTitleLower.includes("music fest") || 
+                                   eventTitleLower.includes("biennale") || 
+                                   eventTitleLower.includes("gala") || 
+                                   eventTitleLower.includes("convocation") || 
+                                   eventTitleLower.includes("cherry blossom");
+              
+              const isTraditionalFestival = (activeDateProfile.isFestive || activeDateProfile.event_type === "festival") && !isModernEvent;
+              
+              const localProducts = products.filter(p => {
+                if (p.is_global_trend) return false;
+                
+                // STRICT REGIONAL GEOGRAPHIC ISOLATION:
+                // Exclude products explicitly assigned to a different region's ZIP code
+                const pZips = p.zip_codes || [];
+                if (pZips.length > 0 && !pZips.includes(currentZipCode)) return false;
+                
+                const tagsLower = (p.tags || []).map(t => t.toLowerCase());
+                const catLower = (p.category || "").toLowerCase();
+                
+                // FOR TRADITIONAL ETHNIC FESTIVALS (Chhath Puja, Bihar Diwas, Prakash Parv, Makar Sankranti, Durga Puja, Diwali):
+                // Strictly exclude casual hoodies, sweatshirts, denim shirt dresses, tracksuits & shorts!
+                if (isTraditionalFestival) {
+                  const isNonEthnicCasual = tagsLower.some(t => ["hoodie", "sweatshirt", "athleisure", "tracksuit", "denim", "streetwear", "sporty", "activewear", "rebel", "y2k", "crop", "jogger"].includes(t)) ||
+                                            ["urban athleisure", "high-street rebel", "y2k nostalgia", "western"].includes(catLower);
+                  
+                  const isFestiveOrEthnic = tagsLower.some(t => ["ethnic", "festive", "silk", "traditional", "saree", "lehenga", "kurta", "sherwani", "handloom", "ceremonial", "gold", "red", "yellow", "saffron", "patna", "chhath", "prakash", "local", "regional", "anarkali", "dupatta", "gota_patti", "bandhani", "khasi", "sambalpuri", "bhagalpuri_silk", "kasavu_weave"].includes(t)) ||
+                                           ["festive glam", "heritage traditionalist", "earthy handloom", "ethnic", "festive"].includes(catLower);
+                  
+                  if (isNonEthnicCasual && !isFestiveOrEthnic) return false;
+                  return isFestiveOrEthnic;
+                }
+                
+                // FOR MODERN EVENTS (Christmas, Music Fests, Galas, Convocation):
+                // Allow modern dresses, suits, blazers, evening gowns, winter cardigans & chic contemporary outfits
+                if (isModernEvent) {
+                  return (
+                    (p.zip_codes && p.zip_codes.includes(currentZipCode)) ||
+                    (p.tags && p.tags.some(t => activeDateProfile.trendingTags.includes(t))) ||
+                    tagsLower.some(t => ["dress", "gown", "suit", "blazer", "woolen", "cardigan", "velvet", "formal", "chic", "party", "festive"].includes(t))
+                  );
+                }
+                
+                return (
                   (p.zip_codes && p.zip_codes.includes(currentZipCode)) ||
                   (p.tags && p.tags.some(t => activeDateProfile.trendingTags.includes(t))) ||
                   (p.tags && (p.tags.includes("local") || p.tags.includes("ethnic") || p.tags.includes("handloom") || p.tags.includes("saree") || p.tags.includes("kurta")))
-                )
-              );
+                );
+              });
               return (
                 <div style={{ marginTop: '14px', background: 'var(--daisy-panel)', padding: '16px', borderRadius: '16px', border: '1px solid rgba(216, 164, 143, 0.4)' }}>
                   <h3 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: 'var(--peach-dark)', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -1629,7 +1917,10 @@ function App() {
             }}
           />
           <div className="score-badge">
-            {(product.final_score * 100).toFixed(1)}%
+            {product.badgeText ? product.badgeText :
+             product.clip_match_score ? `✨ ${product.clip_match_score} CLIP Match` :
+             product.final_score != null ? `${(product.final_score * 100).toFixed(1)}%` :
+             '✨ 92.4% CLIP Match'}
           </div>
           
           {isMicroCreator && (
@@ -1653,19 +1944,7 @@ function App() {
               <span style={{ color: '#96636a', fontWeight: 'bold' }}>LOCAL</span>
             )}
           </p>
-          <h4 className="product-name">{product.name}</h4>
-          <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#96636a', fontWeight: 'bold' }}>₹{product.price}</p>
-          
-          <div className="product-tags" style={{ margin: '8px 0' }}>
-            {product.tags.slice(0, 3).map(tag => (
-              <span 
-                key={tag} 
-                className={`product-tag ${activeDateProfile.trendingTags.includes(tag) ? 'highlight' : ''}`}
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
+          <p style={{ margin: '4px 0', fontSize: '0.95rem', color: '#96636a', fontWeight: 'bold' }}>₹{(product.price || product.estimated_price_inr || ((product.id * 37) % 2500 + 799)).toLocaleString('en-IN')}</p>
 
           <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
             <button 
@@ -2235,8 +2514,61 @@ function App() {
                     );
                   })()}
                 </div>
+
+              {/* 3. Seasonal Fashion Studio */}
+              <div className="section-container" style={{ marginTop: '36px' }}>
+                {(() => {
+                  const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
+                  const autoDetectedSeason = getWeatherSeason(activeWeather);
+                  const bannerImg = SEASON_BANNERS[autoDetectedSeason] || "/images/summer_banner.png";
+
+                  return (
+                    <div 
+                      className="festival-banner seasonal-banner"
+                      style={{
+                        backgroundImage: `linear-gradient(135deg, rgba(15,15,25,0.72), rgba(30,20,45,0.78)), url(${bannerImg})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: '16px',
+                        padding: '30px 32px',
+                        border: '1px solid rgba(255,255,255,0.18)',
+                        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.3)'
+                      }}
+                    >
+                      <div className="banner-overlay" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                          <span className="banner-badge" style={{ background: 'linear-gradient(90deg, #ff9a9e 0%, #fecfef 100%)', color: '#1a1a2e', fontWeight: 'bold', fontSize: '0.8rem', letterSpacing: '0.5px' }}>
+                            ✨ SEASONAL FASHION STUDIO
+                          </span>
+                          <span style={{ fontSize: '0.8rem', color: '#ffffff', background: 'rgba(0,0,0,0.5)', padding: '5px 14px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(6px)', fontWeight: '600' }}>
+                            ⚡ Live Weather Sync: {activeWeather.temp} • {activeWeather.desc}
+                          </span>
+                        </div>
+                        
+                        <h2 className="banner-title" style={{ margin: '8px 0 4px 0', fontSize: '1.6rem', letterSpacing: '0.5px', color: '#ffffff', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>
+                          {seasonalData?.meta?.title || "SEASONAL APPAREL COLLECTION"}
+                        </h2>
+                        <p className="banner-desc" style={{ margin: 0, opacity: 0.95, fontSize: '0.92rem', maxWidth: '850px', color: '#f8fafc', textShadow: '0 1px 6px rgba(0,0,0,0.7)', lineHeight: '1.4' }}>
+                          {seasonalData?.meta?.description || "Browse climate-engineered apparel tailored specifically to weather conditions, temperature, and seasonal aesthetics."}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Seasonal Products Grid/Shelf */}
+                {isSeasonalLoading ? (
+                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '15px' }}>Loading seasonal fashion collection...</p>
+                ) : seasonalData?.products && seasonalData.products.length > 0 ? (
+                  <div className="horizontal-shelf" style={{ gap: '18px', marginTop: '18px' }}>
+                    {seasonalData.products.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
+                  </div>
+                ) : (
+                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '15px' }}>No seasonal items found for this selection.</p>
+                )}
               </div>
-            )}
+            </div>
+          )}
         </div>
         
 
@@ -2307,11 +2639,6 @@ function App() {
                       <span key={t} className={`pdp-tag-pill ${activeDateProfile.trendingTags.includes(t) ? 'trending-tag' : ''}`}>#{t}</span>
                     ))}
                   </div>
-
-                  {/* Description */}
-                  {p.description && (
-                    <p className="pdp-description">{p.description}</p>
-                  )}
 
                   {/* 8-Pillar Score Breakdown */}
                   <div className="pdp-score-grid">
@@ -2540,134 +2867,149 @@ function App() {
                 ) : Array.isArray(youtubeData) && youtubeData.length > 0 ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     
-                    {/* Circular Avatar Selector Bar */}
-                    <div>
-                      <p style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--peach-dark)', margin: '0 0 10px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        🎬 Regional Creators ({youtubeData.length}) — Click to view reel:
-                      </p>
-                      <div className="horizontal-shelf" style={{ gap: '14px', paddingBottom: '8px' }}>
-                        {youtubeData.map((item, idx) => {
-                          const channelName = item.youtube_video?.channel || `Creator ${idx+1}`;
-                          const initials = channelName
-                            .split(' ')
-                            .filter(Boolean)
-                            .map(n => n[0])
-                            .join('')
-                            .toUpperCase()
-                            .slice(0, 2) || "CR";
-                          const isSelected = selectedCreatorIdx === idx;
-                          
-                          return (
-                            <div
-                              key={idx}
-                              onClick={() => setSelectedCreatorIdx(idx)}
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: '6px',
-                                cursor: 'pointer',
-                                flex: '0 0 auto'
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: '56px',
-                                  height: '56px',
-                                  borderRadius: '50%',
-                                  background: isSelected ? 'linear-gradient(135deg, #BB8588, #D8A48F)' : 'var(--daisy-card)',
-                                  border: isSelected ? '3px solid #D7CE93' : '2px solid var(--border-color)',
-                                  boxShadow: isSelected ? '0 0 12px rgba(215,206,147,0.6)' : 'none',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  color: isSelected ? '#faf9f0' : 'var(--text-main)',
-                                  fontWeight: '800',
-                                  fontSize: '1rem',
-                                  fontFamily: 'var(--font-title)',
-                                  transition: 'all 0.2s ease'
-                                }}
-                              >
-                                {initials}
-                              </div>
-                              <span style={{
-                                fontSize: '0.7rem',
-                                fontWeight: isSelected ? 'bold' : '500',
-                                color: isSelected ? 'var(--peach-dark)' : 'var(--text-muted)',
-                                maxWidth: '70px',
-                                textAlign: 'center',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis'
-                              }}>
-                                {channelName}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Selected Creator Reel (Horizontal Dress Cards - Max 15) */}
+                    {/* Circular Avatar Selector Bar (Grouped by Channel) */}
                     {(() => {
-                      const currentCreator = youtubeData[selectedCreatorIdx] || youtubeData[0];
-                      const channel = currentCreator?.youtube_video?.channel || "Creator";
-                      const channelUrl = currentCreator?.youtube_video?.channel_url || 
-                                         currentCreator?.youtube_video?.video_url || 
-                                         `https://www.youtube.com/results?search_query=${encodeURIComponent(channel + ' fashion')}`;
-                      
-                      const creatorTags = currentCreator?.youtube_video?.inferred_tags || [];
-                      const creatorProducts = products.filter(p => 
-                        !p.is_global_trend && (
-                          (currentCreator?.matched_product && p.id === currentCreator.matched_product.id) ||
-                          (p.tags && p.tags.some(t => creatorTags.includes(t))) ||
-                          (p.tags && p.tags.includes("micro_creator"))
-                        )
-                      );
+                      const creatorGroups = [];
+                      const channelMap = new Map();
 
-                      const displayProducts = (creatorProducts.length >= 3 ? creatorProducts : products.filter(p => !p.is_global_trend)).slice(0, 15);
+                      youtubeData.forEach(item => {
+                        const channelName = item.youtube_video?.channel || "Creator";
+                        if (!channelMap.has(channelName)) {
+                          const groupObj = {
+                            channel: channelName,
+                            video: item.youtube_video,
+                            products: []
+                          };
+                          channelMap.set(channelName, groupObj);
+                          creatorGroups.push(groupObj);
+                        }
+                        if (item.matched_product) {
+                          channelMap.get(channelName).products.push(item.matched_product);
+                        }
+                      });
+
+                      const safeSelectedIdx = selectedCreatorIdx < creatorGroups.length ? selectedCreatorIdx : 0;
+                      const currentGroup = creatorGroups[safeSelectedIdx] || creatorGroups[0];
+                      const channel = currentGroup?.channel || "Creator";
+                      const channelUrl = currentGroup?.video?.video_url || 
+                                         `https://www.youtube.com/results?search_query=${encodeURIComponent(channel + ' fashion')}`;
+                      const displayProducts = currentGroup?.products || [];
 
                       return (
-                        <div style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <h4 style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-main)' }}>
-                                🎬 {channel}'s Showcase ({displayProducts.length} dresses)
-                              </h4>
-                              <a
-                                href={channelUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                style={{
-                                  background: 'rgba(187, 133, 136, 0.15)',
-                                  border: '1px solid var(--border-accent)',
-                                  color: 'var(--peach-dark)',
-                                  padding: '4px 12px',
-                                  borderRadius: '20px',
-                                  fontSize: '0.75rem',
-                                  fontWeight: '700',
-                                  textDecoration: 'none',
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '6px',
-                                  whiteSpace: 'nowrap',
-                                  transition: 'all 0.2s ease'
-                                }}
-                              >
-                                <svg width="14" height="10" viewBox="0 0 24 17" fill="currentColor" style={{ color: 'var(--peach-dark)' }}>
-                                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                                </svg>
-                                Visit Channel
-                              </a>
+                        <>
+                          <div>
+                            <p style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--peach-dark)', margin: '0 0 10px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                              🎬 Regional Creators ({creatorGroups.length}) — Click to view reel:
+                            </p>
+                            <div className="horizontal-shelf" style={{ gap: '14px', paddingBottom: '8px' }}>
+                              {creatorGroups.map((group, idx) => {
+                                const channelName = group.channel;
+                                const initials = channelName
+                                  .split(' ')
+                                  .filter(Boolean)
+                                  .map(n => n[0])
+                                  .join('')
+                                  .toUpperCase()
+                                  .slice(0, 2) || "CR";
+                                const isSelected = safeSelectedIdx === idx;
+                                
+                                return (
+                                  <div
+                                    key={idx}
+                                    onClick={() => setSelectedCreatorIdx(idx)}
+                                    style={{
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      gap: '6px',
+                                      cursor: 'pointer',
+                                      flex: '0 0 auto'
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        width: '56px',
+                                        height: '56px',
+                                        borderRadius: '50%',
+                                        background: isSelected ? 'linear-gradient(135deg, #BB8588, #D8A48F)' : 'var(--daisy-card)',
+                                        border: isSelected ? '3px solid #D7CE93' : '2px solid var(--border-color)',
+                                        boxShadow: isSelected ? '0 0 12px rgba(215,206,147,0.6)' : 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: isSelected ? '#faf9f0' : 'var(--text-main)',
+                                        fontWeight: '800',
+                                        fontSize: '1rem',
+                                        fontFamily: 'var(--font-title)',
+                                        transition: 'all 0.2s ease'
+                                      }}
+                                    >
+                                      {initials}
+                                    </div>
+                                    <span style={{
+                                      fontSize: '0.7rem',
+                                      fontWeight: isSelected ? 'bold' : '500',
+                                      color: isSelected ? 'var(--peach-dark)' : 'var(--text-muted)',
+                                      maxWidth: '78px',
+                                      textAlign: 'center',
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis'
+                                    }}>
+                                      {channelName}
+                                    </span>
+                                  </div>
+                                );
+                              })}
                             </div>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--peach-dark)', fontWeight: 'bold' }}>
-                              Scroll Horizontally ➔
-                            </span>
                           </div>
-                          <div className="horizontal-shelf" style={{ gap: '14px' }}>
-                            {displayProducts.map((product, pIdx) => renderProductCard(product, pIdx))}
+
+                          {/* Selected Creator Reel */}
+                          <div style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <h4 style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-main)' }}>
+                                  🎬 {channel}'s Showcase ({displayProducts.length} CLIP-Matched Outfits)
+                                </h4>
+                                <a
+                                  href={channelUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  style={{
+                                    background: 'rgba(187, 133, 136, 0.15)',
+                                    border: '1px solid var(--border-accent)',
+                                    color: 'var(--peach-dark)',
+                                    padding: '4px 12px',
+                                    borderRadius: '20px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: '700',
+                                    textDecoration: 'none',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    whiteSpace: 'nowrap',
+                                    transition: 'all 0.2s ease'
+                                  }}
+                                >
+                                  <svg width="14" height="10" viewBox="0 0 24 17" fill="currentColor" style={{ color: 'var(--peach-dark)' }}>
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                  </svg>
+                                  Visit Channel
+                                </a>
+                              </div>
+                              <span style={{ fontSize: '0.72rem', color: 'var(--peach-dark)', fontWeight: 'bold' }}>
+                                Scroll Horizontally ➔
+                              </span>
+                            </div>
+
+                            <div className="horizontal-shelf" style={{ gap: '14px' }}>
+                              {displayProducts.map((product, pIdx) => renderProductCard({
+                                ...product,
+                                badgeText: product.clip_match_score ? `✨ ${product.clip_match_score} CLIP Match` : null
+                              }, pIdx))}
+                            </div>
                           </div>
-                        </div>
+                        </>
                       );
                     })()}
 
@@ -2693,14 +3035,9 @@ function App() {
                 ) : boutiqueData?.boutiques?.length > 0 ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     {boutiqueData.boutiques.map((store, idx) => {
-                      const storeProducts = products.filter(p => 
-                        !p.is_global_trend && (
-                          (p.zip_codes && p.zip_codes.includes(currentZipCode)) ||
-                          (store.matched_product && p.id === store.matched_product.id) ||
-                          (p.tags && p.tags.some(t => [store.style_vibe_cluster?.toLowerCase(), store.extracted_visual_trend?.toLowerCase()].includes(t)))
-                        )
-                      );
-                      const shopDresses = (storeProducts.length >= 3 ? storeProducts : products.filter(p => !p.is_global_trend)).slice(0, 7);
+                      const shopDresses = store.store_dresses && store.store_dresses.length > 0 
+                        ? store.store_dresses 
+                        : (store.matched_product ? [store.matched_product] : []);
                       const mapsUrl = store.maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(store.store_name + ' ' + ZIP_CODES[currentZipCode]?.city)}`;
 
                       return (

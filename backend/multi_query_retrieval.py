@@ -143,12 +143,12 @@ def _load_clip():
     try:
         import torch
         from transformers import CLIPModel, CLIPProcessor
-        logger.info("[CLIP] Loading openai/clip-vit-base-patch32 (first use)…")
-        _clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-        _clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        logger.info("[Fashion-CLIP] Loading patrickjohncyh/fashion-clip (first use)…")
+        _clip_model = CLIPModel.from_pretrained("patrickjohncyh/fashion-clip")
+        _clip_processor = CLIPProcessor.from_pretrained("patrickjohncyh/fashion-clip")
         _clip_model.eval()
         _clip_backend = "torch"
-        logger.info("[CLIP] Torch model loaded — using CLIP backend.")
+        logger.info("[Fashion-CLIP] Torch model loaded — using fine-tuned Fashion-CLIP backend.")
     except ImportError:
         logger.info("[CLIP] torch not installed — switching to Gemini Vision backend.")
         _clip_backend = "gemini"
@@ -381,6 +381,46 @@ def classify_thumbnail_with_clip(video_id: str) -> Optional[dict]:
         return None
 
 
+def get_clip_thumbnail_vector(video_id: str):
+    """
+    Returns the raw 512-dim normalized CLIP image embedding for the YouTube
+    thumbnail of `video_id`. Used to store thumbnail_vector in mock_db.json
+    for later cosine matching against catalog product image_vectors.
+
+    Returns: list[float] of length 512, or [] on failure.
+    """
+    _load_clip()
+    if _clip_backend != "torch":
+        # Cannot produce a real CLIP vector without torch
+        return []
+
+    img = _fetch_thumbnail_pil(video_id)
+    if img is None:
+        logger.warning(f"[CLIP] No thumbnail for vector extraction: {video_id}")
+        return []
+
+    try:
+        import torch
+        inputs = _clip_processor(
+            images=img,
+            return_tensors="pt",
+        )
+        with torch.no_grad():
+            # Use vision_model + visual_projection for transformers v5 compatibility
+            # (get_image_features() return type changed to BaseModelOutputWithPooling in v5)
+            vision_out = _clip_model.vision_model(pixel_values=inputs["pixel_values"])
+            feat_tensor = _clip_model.visual_projection(vision_out.pooler_output)
+        feat_np = feat_tensor.detach().cpu().numpy()[0]
+        norm = float(np.linalg.norm(feat_np))
+        if norm > 0:
+            feat_np = feat_np / norm
+        logger.info(f"[CLIP] thumbnail_vector computed for {video_id} \u2713 (dim={len(feat_np.tolist())})")
+        return feat_np.tolist()
+    except Exception as e:
+        logger.error(f"[CLIP] thumbnail_vector extraction failed for {video_id}: {e}")
+        return []
+
+
 # ── Candidate list builder ─────────────────────────────────────────────────────
 
 def build_candidate_list(dress_vector: list, catalog: list, zip_code: str, top_k: int = 20):
@@ -480,6 +520,34 @@ def build_regional_prior_vector(pincode: str) -> list:
 
 # ── Main orchestrator ──────────────────────────────────────────────────────────
 
+def build_candidate_list_image(thumbnail_vector: list, catalog: list, top_k: int = 20):
+    """
+    Cosine similarity between a CLIP thumbnail_vector and each product's
+    image_vector. Used as Path 2b — direct visual matching.
+
+    Returns: list of (product_dict, cosine_score) tuples, best-first.
+    """
+    if not thumbnail_vector:
+        return []
+    scored = []
+    a = np.array(thumbnail_vector, dtype=float)
+    na = np.linalg.norm(a)
+    if na == 0:
+        return []
+    for p in catalog:
+        p_img = p.get("image_vector") or p.get("embedding", [])
+        if not p_img or len(p_img) != len(thumbnail_vector):
+            continue
+        b = np.array(p_img, dtype=float)
+        nb = np.linalg.norm(b)
+        if nb == 0:
+            continue
+        cos = float(np.dot(a, b) / (na * nb))
+        scored.append((p, cos))
+    scored.sort(key=lambda x: -x[1])
+    return scored[:top_k]
+
+
 def find_best_match_multi_query(
     video_id: str,
     transcript_dresses: list,
@@ -500,8 +568,8 @@ def find_best_match_multi_query(
         rrf_k:             RRF smoothing constant
 
     Returns:
-        (best_product, rrf_score, query_sources_used)
-        where query_sources_used is a list of strings describing which paths contributed.
+        (best_product, rrf_score, query_sources_used, thumbnail_vector)
+        where thumbnail_vector is the raw 512-dim CLIP image embedding (or [])
     """
     import sys
     sys.path.append(os.path.dirname(__file__))
@@ -521,7 +589,7 @@ def find_best_match_multi_query(
         if all_ranked_lists:
             query_sources.append("transcript_gemini")
 
-    # ── Path 2: Thumbnail → CLIP zero-shot ────────────────────────────────────
+    # ── Path 2: Thumbnail → CLIP zero-shot → tags → dress_vector ─────────────
     clip_result = classify_thumbnail_with_clip(video_id)
     if clip_result:
         from run_transcript_seeder import embed_dress
@@ -529,9 +597,22 @@ def find_best_match_multi_query(
         clip_candidates = build_candidate_list(clip_vec, catalog, zip_code, top_k=top_k)
         if clip_candidates:
             all_ranked_lists.append(clip_candidates)
-            query_sources.append("clip_thumbnail")
+            query_sources.append("clip_thumbnail_tags")
     else:
-        logger.info(f"[RRF] No CLIP signal for {video_id}, skipping Path 2.")
+        logger.info(f"[RRF] No CLIP tag signal for {video_id}, skipping Path 2.")
+
+    # ── Path 2b: Thumbnail → CLIP image_vector → direct cosine on image_vector ─
+    # This is the TRUE visual CLIP matching: raw thumbnail embedding vs catalog
+    # product image_vector (also CLIP-embedded). Independent of tag extraction.
+    thumbnail_vector = get_clip_thumbnail_vector(video_id)
+    if thumbnail_vector:
+        img_candidates = build_candidate_list_image(thumbnail_vector, catalog, top_k=top_k)
+        if img_candidates:
+            all_ranked_lists.append(img_candidates)
+            query_sources.append("clip_image_vector")
+            logger.info(f"[RRF] Path 2b (CLIP image_vector) added {len(img_candidates)} candidates for {video_id}")
+    else:
+        logger.info(f"[RRF] CLIP image_vector unavailable for {video_id} (torch not installed or no thumbnail)")
 
     # ── Path 3: Regional prior (always available as safety net) ───────────────
     prior_vec = build_regional_prior_vector(zip_code)
@@ -543,17 +624,17 @@ def find_best_match_multi_query(
     # ── No usable paths at all — shouldn't happen but guard anyway ────────────
     if not all_ranked_lists:
         logger.warning(f"[RRF] No query paths produced results for {video_id}")
-        return None, 0.0, []
+        return None, 0.0, [], []
 
     # ── Fuse with RRF ─────────────────────────────────────────────────────────
     fused = reciprocal_rank_fusion(all_ranked_lists, k=rrf_k)
 
     if not fused:
-        return None, 0.0, query_sources
+        return None, 0.0, query_sources, thumbnail_vector
 
     best_product, best_rrf_score = fused[0]
     logger.info(
         f"[RRF] {video_id} → '{best_product.get('name')}' "
         f"(rrf={best_rrf_score:.4f}, sources={query_sources})"
     )
-    return best_product, best_rrf_score, query_sources
+    return best_product, best_rrf_score, query_sources, thumbnail_vector

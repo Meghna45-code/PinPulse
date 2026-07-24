@@ -16,6 +16,8 @@ load_dotenv()
 
 app = FastAPI(title="PinPulse - Myntra Hyper-Local Tri-Layer Engine API")
 
+from fastapi.staticfiles import StaticFiles
+
 # Enable CORS for frontend integration
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +26,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static image paths
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+FRONTEND_IMAGES_DIR = os.path.abspath(os.path.join(ROOT_DIR, "frontend", "public", "images"))
+
+if os.path.exists(ROOT_DIR):
+    app.mount("/outfits", StaticFiles(directory=ROOT_DIR), name="outfits")
+if os.path.exists(FRONTEND_IMAGES_DIR):
+    app.mount("/images", StaticFiles(directory=FRONTEND_IMAGES_DIR), name="images")
 
 # File paths
 LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "local_catalog.json"))
@@ -116,9 +127,11 @@ ZIP_MAPPING = {
 # Fallback calendar data when offline
 FALLBACK_CALENDAR = {
     # Patna
-    ("800008", "2026-11-15"): {"event_name": "Chhath Puja (Sandhya Arghya)", "event_type": "festival", "attire_tags": ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath_puja"], "is_festive": True},
+    ("800008", "2026-01-03"): {"event_name": "Prakash Parv (Patna Sahib Gurudwara)", "event_type": "festival", "attire_tags": ["traditional", "white", "blue", "saffron", "patna"], "is_festive": True},
+    ("800008", "2026-01-14"): {"event_name": "Makar Sankranti Harvest Mela", "event_type": "festival", "attire_tags": ["ethnic", "casual", "cotton", "yellow", "dailywear"], "is_festive": True},
     ("800008", "2026-02-02"): {"event_name": "Saraswati Puja (Vasant Panchami)", "event_type": "festival", "attire_tags": ["saree", "kurta", "yellow", "ethnic"], "is_festive": True},
     ("800008", "2026-03-22"): {"event_name": "Bihar Diwas (Bihar Day)", "event_type": "festival", "attire_tags": ["saree", "salwar", "bhagalpuri_silk", "kurta", "dhoti", "nehru_jacket", "white", "cream", "patna"], "is_festive": True},
+    ("800008", "2026-11-15"): {"event_name": "Chhath Puja (Sandhya Arghya)", "event_type": "festival", "attire_tags": ["saree", "cotton", "traditional", "dhoti", "saffron", "yellow", "white", "patna", "chhath_puja"], "is_festive": True},
     ("800008", "2026-12-10"): {"event_name": "Patna Wedding Day (Pheras)", "event_type": "wedding_day", "attire_tags": ["heavy_silk", "traditional_embroidery", "ceremonial", "silk", "saree", "sherwani", "crimson", "gold", "maroon"], "is_festive": True},
     # Kochi
     ("682001", "2026-01-20"): {"event_name": "Kochi-Muziris Biennale Peak", "event_type": "festival", "attire_tags": ["artsy", "bohemian", "linen", "sustainable", "modern"], "is_festive": True},
@@ -130,7 +143,24 @@ FALLBACK_CALENDAR = {
     ("752001", "2026-06-14"): {"event_name": "Pahili Raja (Raja Parba)", "event_type": "festival", "attire_tags": ["traditional", "cotton", "pastel", "lightweight", "sambalpuri"], "is_festive": True},
     ("752001", "2026-06-15"): {"event_name": "Raja Sankranti Festival", "event_type": "festival", "attire_tags": ["traditional", "cotton", "pastel", "sambalpuri", "ethnic"], "is_festive": True},
     ("752001", "2026-07-16"): {"event_name": "Puri Rath Yatra Chariot Festival", "event_type": "festival", "attire_tags": ["sambalpuri", "cotton", "traditional", "yellow", "saffron", "saree", "kurta"], "is_festive": True},
+    ("752001", "2026-09-15"): {"event_name": "Nuakhai Agricultural Harvest Festival", "event_type": "festival", "attire_tags": ["sambalpuri", "handloom", "cotton", "traditional", "ethnic", "saree", "kurta", "odisha"], "is_festive": True},
     ("752001", "2026-12-20"): {"event_name": "Odisha Winter Wedding (Pheras)", "event_type": "wedding_day", "attire_tags": ["heavy_silk", "tussar_silk", "ceremonial", "sherwani", "crimson", "gold"], "is_festive": True},
+    # Rajasthan (302001)
+    ("302001", "2026-01-14"): {"event_name": "Jaipur International Kite Festival (Makar Sankranti)", "event_type": "festival", "attire_tags": ["cotton", "yellow", "block_print", "anarkali", "rajasthan"], "is_festive": True},
+    ("302001", "2026-02-15"): {"event_name": "Jaisalmer Desert Festival", "event_type": "festival", "attire_tags": ["bandhani", "mirror_work", "choli", "ethnic", "desert"], "is_festive": True},
+    ("302001", "2026-03-20"): {"event_name": "Jaipur Royal Elephant & Holi Festival", "event_type": "festival", "attire_tags": ["bright", "cotton", "gota_patti", "jaipur"], "is_festive": True},
+    ("302001", "2026-04-04"): {"event_name": "Royal Gangaur Festival Procession", "event_type": "festival", "attire_tags": ["traditional", "gota_patti", "lehenga", "gold", "rajasthan"], "is_festive": True},
+    ("302001", "2026-08-12"): {"event_name": "Swarn Teej Festival Jaipur", "event_type": "festival", "attire_tags": ["lehenga", "gota_patti", "green", "silk", "teej", "ethnic"], "is_festive": True},
+    ("302001", "2026-10-20"): {"event_name": "Marwar Folk Music & Dance Festival Jodhpur", "event_type": "festival", "attire_tags": ["mirror_work", "bandhani", "angrakha", "ethnic"], "is_festive": True},
+    ("302001", "2026-11-18"): {"event_name": "Pushkar Camel Fair & Cultural Night", "event_type": "festival", "attire_tags": ["pushkar", "angrakha", "silk", "handloom", "traditional"], "is_festive": True},
+    # Shillong (793001)
+    ("793001", "2026-01-14"): {"event_name": "Highland Winter Music Fest", "event_type": "festival", "attire_tags": ["woolen", "winter", "knitted", "cardigan", "shillong"], "is_festive": True},
+    ("793001", "2026-04-10"): {"event_name": "Shad Suk Mynsiem (Khasi Thanksgiving Dance)", "event_type": "festival", "attire_tags": ["jainsem", "khasi", "silk", "traditional", "gold", "nongkrem"], "is_festive": True},
+    ("793001", "2026-05-15"): {"event_name": "Shillong Pine Spring Gala", "event_type": "festival", "attire_tags": ["pastel", "linen", "boho", "casual", "shillong"], "is_festive": True},
+    ("793001", "2026-11-10"): {"event_name": "Nongkrem Dance Festival (Smit)", "event_type": "festival", "attire_tags": ["khasi", "silk", "brocade", "traditional", "gold", "velvet"], "is_festive": True},
+    ("793001", "2026-11-15"): {"event_name": "Wangala 100 Drums Garo Festival", "event_type": "festival", "attire_tags": ["garo", "dakmanda", "wangala", "beaded", "handloom", "tribal"], "is_festive": True},
+    ("793001", "2026-11-22"): {"event_name": "Shillong Cherry Blossom Festival", "event_type": "festival", "attire_tags": ["cherry_blossom", "pastel", "floral", "chiffon", "gown", "indie"], "is_festive": True},
+    ("793001", "2026-12-25"): {"event_name": "Shillong Grand Christmas Solstice", "event_type": "festival", "attire_tags": ["woolen", "velvet", "cardigan", "red", "cozy", "festive"], "is_festive": True}
 }
 
 # Weather Matrix throughout the year
@@ -581,6 +611,8 @@ engine = PinPulseEngine(
         "800008": {"city": "Patna", "state": "Bihar", "weather_conditions": "hot_humid", "aov": 1800},
         "682001": {"city": "Kochi", "state": "Kerala", "weather_conditions": "hot_humid", "aov": 2200},
         "752001": {"city": "Puri", "state": "Odisha", "weather_conditions": "warm_moderate", "aov": 1500},
+        "793001": {"city": "Shillong", "state": "Meghalaya", "weather_conditions": "cold", "aov": 2100},
+        "302001": {"city": "Jaipur", "state": "Rajasthan", "weather_conditions": "hot_dry", "aov": 2400},
     },
     festival_rules=FESTIVAL_RULES,
     weather_rules=WEATHER_RULES,
@@ -738,17 +770,9 @@ def get_db_products():
     cached = api_cache.get(cache_key)
     if cached is not None:
         return cached
-    sb = get_supabase_client()
-    if sb:
-        try:
-            res = sb.table("products").select("*").execute()
-            if res.data:
-                api_cache.set(cache_key, res.data)
-                return res.data
-        except Exception as e:
-            logger.error(f"Supabase products fetch failed: {e}")
-    api_cache.set(cache_key, RAW_CATALOG)
-    return RAW_CATALOG
+    catalog = load_fallback_catalog()
+    api_cache.set(cache_key, catalog)
+    return catalog
 
 def get_active_event(zip_code, date_str):
     cache_key = f"active_event_{zip_code}_{date_str}"
@@ -770,9 +794,21 @@ def get_active_event(zip_code, date_str):
     return fallback
 
 def enrich_product(p, velocity_map):
-    p_tags = p.get("tags", [])
+    p_tags = list(p.get("tags", []))
     p_id = p.get("id")
+    name_lower = (p.get("name") or "").lower()
     desc_lower = p.get("description", "").lower()
+    img_url = p.get("image_url") or ""
+
+    # Enrich Urban Athleisure tags if item is hoodie, sweatshirt, tracksuit, activewear
+    if any(k in name_lower for k in ["hooded", "sweatshirt", "hoodie", "tracksuit", "athleisure", "jogger", "sneakers", "activewear", "pullover"]):
+        ath_keywords = ["urban", "athleisure", "sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "hoodie", "sweatshirt", "gym", "jogger", "athletic"]
+        for kw in ath_keywords:
+            if kw not in p_tags:
+                p_tags.append(kw)
+        p["tags"] = p_tags
+        p["category"] = "Urban Athleisure"
+        p["nature"] = "Urban Athleisure"
     
     # 1. Determine material — prefer DB value
     material = p.get("material")
@@ -1216,6 +1252,16 @@ def get_feed(
 
     scored = engine.score_all_products(user_context)
 
+    # ── Strict Festival Mode Filter: block modern athleisure/casual items ──
+    is_festival_mode = (user_session.get("state") == "festive_season") or (active_event and active_event.get("is_festive"))
+    if is_festival_mode:
+        blocked_kw = ["hoodie", "sweatshirt", "tracksuit", "activewear", "sneakers", "crop", "miniskirt", "gym", "jogger"]
+        scored = [
+            item for item in scored 
+            if not any(k in item.get("name", "").lower() for k in blocked_kw) and 
+               not any(k in item.get("tags", []) for k in blocked_kw)
+        ]
+
     # Re-map results to match front-end UI parameters and expectations
     formatted_products = []
     for item in scored:
@@ -1269,6 +1315,16 @@ def get_feed(
             },
             "reason_labels": clean_item["reason_labels"]
         })
+
+    # ── Deduplicate products to prevent identical items or image URLs appearing twice ──
+    dedup_seen = set()
+    unique_formatted = []
+    for item in formatted_products:
+        item_key = (str(item.get("name", "")).strip().lower(), str(item.get("image_url", "")).strip())
+        if item_key not in dedup_seen:
+            dedup_seen.add(item_key)
+            unique_formatted.append(item)
+    formatted_products = unique_formatted
 
     # ── Global Trend Injection: interleave at 0-indexed positions 5 and 11 ──
     global _GLOBAL_CARD_INDEX
@@ -1444,7 +1500,7 @@ def set_zip(payload: ZipPayload):
     
     return {
         "zip_code": payload.zip_code,
-        "city": "Patna" if new_zip == "800008" else "Kochi" if new_zip == "682001" else "Odisha",
+        "city": engine.zip_data.get(new_zip, {}).get("city", "Patna"),
         "state": user_session["state"]
     }
 
@@ -1530,13 +1586,10 @@ def get_youtube_trends(zip_code: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/trends/boutiques")
-def get_boutiques_endpoint(zip_code: str):
-    cache_key = f"trends_boutiques_{zip_code}"
-    cached = api_cache.get(cache_key)
-    if cached is not None:
-        return cached
+def get_boutiques_endpoint(zip_code: str, target_dresses: int = 25):
+    cache_key = f"trends_boutiques_{zip_code}_{target_dresses}"
 
-    # Query stores data
+    # Query stores data & catalog
     mapped_zip = map_zip_code(zip_code)
     stores = get_stores_data(mapped_zip)
     velocity_map = get_velocity_map(mapped_zip)
@@ -1544,16 +1597,19 @@ def get_boutiques_endpoint(zip_code: str):
     catalog = [enrich_product(p, velocity_map) for p in raw_products]
     catalog_map = {p["id"]: p for p in catalog}
 
+    used_product_ids = set()
+    catalog_gaps = []
+    enriched_boutiques = []
+
     # 1. Try loading from mock DB first
     mock_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "pinpulse_mock_db.json"))
     if os.path.exists(mock_db_path):
         try:
             with open(mock_db_path, "r", encoding="utf-8") as f:
                 mock_records = json.load(f)
-            
+
             mock_boutiques = [r for r in mock_records if r.get("pincode") == zip_code and r.get("type") == "boutique"]
             if mock_boutiques:
-                # Group by store_name
                 boutique_groups = {}
                 for r in mock_boutiques:
                     store_name = r.get("store_name") or r.get("metadata", {}).get("store_name", "Unknown Store")
@@ -1561,7 +1617,6 @@ def get_boutiques_endpoint(zip_code: str):
                         boutique_groups[store_name] = []
                     boutique_groups[store_name].append(r)
 
-                enriched_boutiques = []
                 for idx, (name, records) in enumerate(boutique_groups.items()):
                     rating = round(4.2 + (idx % 5) * 0.1, 1)
                     review_count = 120 + (idx % 8) * 45
@@ -1571,21 +1626,30 @@ def get_boutiques_endpoint(zip_code: str):
                     encoded_query = urllib.parse.quote_plus(f"{name} {zip_code}")
                     maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
 
-                    matched_product = None
-                    mp_id = records[0].get("matched_product_id")
-                    if mp_id and mp_id in catalog_map:
-                        matched_product = catalog_map[mp_id]
-
-                    clean_product = None
-                    if matched_product:
-                        clean_product = {k: v for k, v in matched_product.items() if not k.endswith("_vector") and k != "embedding"}
-
-                    trend_tags = []
+                    store_products = []
                     for r in records:
-                        t = r.get("metadata", {}).get("aesthetic")
-                        if t:
-                            trend_tags.append(t)
+                        mp_id = r.get("matched_product_id")
+                        score = r.get("hybrid_score", 0.0)
+
+                        if not mp_id or mp_id not in catalog_map or score < 0.01:
+                            catalog_gaps.append({
+                                "store_name": name,
+                                "zip_code": zip_code,
+                                "trending_item": r.get("metadata", {}).get("item", "Boutique drape"),
+                                "reason": "No matching product in Myntra catalog meeting similarity threshold"
+                            })
+                            continue
+
+                        if mp_id not in used_product_ids and len(used_product_ids) < target_dresses:
+                            used_product_ids.add(mp_id)
+                            clean_p = {k: v for k, v in catalog_map[mp_id].items() if not k.endswith("_vector") and k != "embedding"}
+                            store_products.append(clean_p)
+
+                    trend_tags = [r.get("metadata", {}).get("aesthetic") for r in records if r.get("metadata", {}).get("aesthetic")]
                     extracted_trend = ", ".join(list(set(trend_tags))[:2]) if trend_tags else "ethnic"
+
+                    # If store_products is empty, take first available match or top catalog match
+                    matched_product = store_products[0] if store_products else None
 
                     enriched_boutiques.append({
                         "store_id": f"STR_{zip_code}_{idx}",
@@ -1600,77 +1664,99 @@ def get_boutiques_endpoint(zip_code: str):
                         "simulated_engagement": review_count * 10,
                         "extracted_visual_trend": extracted_trend,
                         "style_vibe_cluster": "Local Boutique Drapes",
-                        "matched_product": clean_product
+                        "matched_product": matched_product,
+                        "store_dresses": store_products
                     })
-                logger.info(f"Successfully loaded {len(enriched_boutiques)} boutiques from pinpulse_mock_db.json.")
-                res_val = {"zip_code": zip_code, "boutiques": enriched_boutiques}
-                api_cache.set(cache_key, res_val)
-                return res_val
         except Exception as e:
             logger.error(f"Error parsing mock DB boutiques: {e}")
 
-    # 2. Fall back to standard store lookup
-    enriched_boutiques = []
-    for idx, s in enumerate(stores):
-        name = s["name"]
-        rating = s.get("rating", 4.3)
-        review_count = s.get("review_count", 200)
-        cost = s.get("estimated_cost", 1500)
-        
-        # Address mock
-        address = f"Shop {10 + idx}, Commercial Zone, {ZIP_MAPPING.get(zip_code, 'Local District')}"
-        import urllib.parse
-        encoded_query = urllib.parse.quote_plus(f"{name} {zip_code}")
-        maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
-        
-        # Match product using cosine similarity to store vector
-        matched_product = None
-        store_vector = s.get("vector") or s.get("embedding")
-        if store_vector and catalog:
-            best_score = -1.0
-            best_p = None
-            used_product_ids = {
-                item["matched_product"]["id"] 
-                for item in enriched_boutiques 
-                if item.get("matched_product")
-            }
+    # 2. Fall back / complement with store data to hit 25 dresses overall per ZIP
+    if len(used_product_ids) < target_dresses:
+        for idx, s in enumerate(stores):
+            name = s["name"]
+            rating = s.get("rating", 4.3)
+            review_count = s.get("review_count", 200)
+            cost = s.get("estimated_cost", 1500)
+            address = f"Shop {10 + idx}, Commercial Zone, {ZIP_MAPPING.get(zip_code, 'Local District')}"
+            import urllib.parse
+            encoded_query = urllib.parse.quote_plus(f"{name} {zip_code}")
+            maps_url = f"https://www.google.com/maps/search/?api=1&query={encoded_query}"
+
+            store_vector = s.get("vector") or s.get("embedding")
+            store_products = []
+
+            # Rank catalog items by store vector similarity
+            scored_p = []
             for p in catalog:
-                p_id = p.get("id")
-                if p_id in used_product_ids:
+                pid = p.get("id")
+                if pid in used_product_ids:
                     continue
-                p_vector = p.get("aesthetic_vector") or p.get("embedding")
-                if not p_vector:
+                p_vec = p.get("embedding") or p.get("image_vector")
+                if not p_vec or not store_vector:
                     continue
-                score = cosine_similarity(store_vector, p_vector)
-                if score > best_score:
-                    best_score = score
-                    best_p = p
-            matched_product = best_p
+                score = normalize_cosine_score(cosine_similarity(store_vector, p_vec))
+                scored_p.append((score, p))
 
-        if not matched_product and catalog:
-            matched_product = catalog[idx % len(catalog)]
+            scored_p.sort(key=lambda x: -x[0])
 
-        # Strip vector fields from returned product object
-        clean_product = None
-        if matched_product:
-            clean_product = {k: v for k, v in matched_product.items() if not k.endswith("_vector") and k != "embedding"}
+            # Gather top matches for this boutique
+            for score, best_p in scored_p:
+                if len(used_product_ids) >= target_dresses or len(store_products) >= 10:
+                    break
 
-        enriched_boutiques.append({
-            "store_id": f"STR_{zip_code}_{idx}",
-            "zip_code": zip_code,
-            "store_name": name,
-            "rating": rating,
-            "review_count": review_count,
-            "estimated_cost": cost,
-            "address": address,
-            "maps_url": maps_url,
-            "social_signal_source": "Google Places",
-            "simulated_engagement": review_count * 10,
-            "extracted_visual_trend": s.get("extracted_visual_trend", "ethnic" if idx % 2 == 0 else "casual"),
-            "style_vibe_cluster": "Local Boutique Drapes",
-            "matched_product": clean_product
-        })
-    res_val = {"zip_code": zip_code, "boutiques": enriched_boutiques}
+                if score < -100.0:
+                    catalog_gaps.append({
+                        "store_name": name,
+                        "zip_code": zip_code,
+                        "extracted_visual_trend": s.get("extracted_visual_trend", "ethnic"),
+                        "reason": f"No catalog product reached minimum similarity threshold (best score: {score:.3f} < -100.0)"
+                    })
+                    break
+
+                used_product_ids.add(best_p["id"])
+                clean_p = {k: v for k, v in best_p.items() if not k.endswith("_vector") and k != "embedding"}
+                store_products.append(clean_p)
+
+            matched_product = store_products[0] if store_products else None
+
+            # Only append store card if not already added from mock DB
+            if not any(b["store_name"] == name for b in enriched_boutiques):
+                enriched_boutiques.append({
+                    "store_id": f"STR_{zip_code}_{len(enriched_boutiques)}",
+                    "zip_code": zip_code,
+                    "store_name": name,
+                    "rating": rating,
+                    "review_count": review_count,
+                    "estimated_cost": cost,
+                    "address": address,
+                    "maps_url": maps_url,
+                    "social_signal_source": "Google Places",
+                    "simulated_engagement": review_count * 10,
+                    "extracted_visual_trend": s.get("extracted_visual_trend", "ethnic" if idx % 2 == 0 else "casual"),
+                    "style_vibe_cluster": "Local Boutique Drapes",
+                    "matched_product": matched_product,
+                    "store_dresses": store_products
+                })
+
+    # Collect all unique dresses across stores
+    all_unique_dresses = []
+    seen_d_ids = set()
+    for b in enriched_boutiques:
+        for d in (b.get("store_dresses") or []):
+            if d["id"] not in seen_d_ids:
+                seen_d_ids.add(d["id"])
+                all_unique_dresses.append(d)
+        if b.get("matched_product") and b["matched_product"]["id"] not in seen_d_ids:
+            seen_d_ids.add(b["matched_product"]["id"])
+            all_unique_dresses.append(b["matched_product"])
+
+    res_val = {
+        "zip_code": zip_code,
+        "total_dresses": len(all_unique_dresses),
+        "boutiques": enriched_boutiques,
+        "dresses": all_unique_dresses,
+        "catalog_gaps": catalog_gaps
+    }
     api_cache.set(cache_key, res_val)
     return res_val
 
@@ -1838,6 +1924,99 @@ def get_look_completer(product_id: int, occasion_tag: str):
         "suggested_dress": suggested_dress_item
     }
 
+SEASON_DEFINITIONS = {
+    "summer": {
+        "title": "Summer Apparel & Resort Collection",
+        "description": "Breathable cottons, linens, pastels, short sleeves, and light ethnic wear engineered for high temperatures.",
+        "badge": "☀️ Summer Breeze",
+        "icon": "☀️",
+        "materials": ["cotton", "linen", "organza", "georgette", "rayon"],
+        "keywords": ["short", "sleeveless", "pastel", "light", "breeze", "dress", "saree", "top", "co-ord", "skirt", "kurti", "yellow", "white", "pink", "sky blue"]
+    },
+    "winter": {
+        "title": "Winter Wardrobe & Outerwear",
+        "description": "Cozy knits, velvets, denim layers, Nehru sets, hoodies, and jackets to keep you warm and stylish.",
+        "badge": "❄️ Winter Cozy",
+        "icon": "❄️",
+        "materials": ["velvet", "wool", "denim", "silk", "leather", "knit"],
+        "keywords": ["jacket", "hoodie", "sweater", "coat", "sleeve", "cardigan", "nehru", "velvet", "black", "maroon", "navy", "layer"]
+    },
+    "monsoon": {
+        "title": "Monsoon Streetwear & Quick-Dry Outfits",
+        "description": "Vibrant, comfortable, easy-to-dry casuals, cropped fits, and light layers perfect for rainy weather.",
+        "badge": "🌧️ Monsoon Rain-Ready",
+        "icon": "🌧️",
+        "materials": ["nylon", "polyester", "cotton", "denim", "synthetic"],
+        "keywords": ["casual", "streetwear", "crop", "t-shirt", "shorts", "bomber", "teal", "olive", "activewear", "quick-dry"]
+    },
+    "autumn": {
+        "title": "Autumn & Transitional Layers",
+        "description": "Lightweight jackets, woolen cardigans, trench coats, sweaters, and denim layers engineered for crisp, breezy autumn weather.",
+        "badge": "🍂 Autumn Layers",
+        "icon": "🍂",
+        "materials": ["wool", "denim", "cotton", "fleece", "leather", "knit"],
+        "keywords": ["jacket", "coat", "trench", "sweater", "cardigan", "overcoat", "hoodie", "pullover", "layered", "transitional", "layer", "knitwear"]
+    }
+}
+
+@app.get("/api/trends/seasonal")
+def get_seasonal_trends(season: str = Query("summer")):
+    """Returns curated apparel collections for the specified season ('summer', 'winter', 'monsoon', 'autumn')."""
+    season_key = str(season).lower().strip()
+    if season_key not in SEASON_DEFINITIONS:
+        season_key = "summer"
+    
+    spec = SEASON_DEFINITIONS[season_key]
+    raw_products = get_db_products()
+    
+    def score_seasonal_product(p):
+        p_tags = [str(t).lower() for t in p.get("tags", [])]
+        p_mat = str(p.get("material", "")).lower()
+        p_desc = str(p.get("description", "")).lower()
+        p_name = str(p.get("name", "")).lower()
+        
+        # Strict exclusion: for Autumn, exclude Sarees, Lehengas, Dupattas unless explicitly a transitional layer
+        if season_key == "autumn":
+            if any(k in p_name or k in p_tags for k in ["saree", "lehenga", "dupatta", "anklet", "payal", "necklace", "ring", "earring"]):
+                return 0.0
+
+        score = 0.0
+        if p_mat in spec["materials"]:
+            score += 2.0
+        for kw in spec["keywords"]:
+            if kw in p_tags or kw in p_desc or kw in p_name:
+                score += 1.5
+        return score
+
+    scored_items = []
+    for p in raw_products:
+        if p.get("is_global_trend"):
+            continue
+        sc = score_seasonal_product(p)
+        # Require positive match score >= 1.5 (zero un-matched fallback fillers)
+        if sc >= 1.5:
+            item_copy = dict(p)
+            item_copy["season_badge"] = spec["badge"]
+            item_copy["seasonal_score"] = round(sc, 2)
+            scored_items.append((sc, item_copy))
+    
+    scored_items.sort(key=lambda x: x[0], reverse=True)
+    matched_products = [item for _, item in scored_items[:30]]
+    
+    catalog_gap_note = None
+    if len(matched_products) < 30:
+        gap_count = 30 - len(matched_products)
+        catalog_gap_note = f"Found {len(matched_products)} genuine {spec['title']} matching climate criteria. Catalog gap of {gap_count} items reported (zero random fallbacks inserted)."
+
+    return {
+        "season": season_key,
+        "meta": spec,
+        "products": matched_products,
+        "total_matched": len(matched_products),
+        "catalog_gap_note": catalog_gap_note
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
+

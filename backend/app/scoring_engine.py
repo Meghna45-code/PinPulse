@@ -49,28 +49,21 @@ def normalize_cosine_score(raw_score):
 
 def calculate_aesthetic_score(product, user_aesthetic, user_aesthetic_vector):
     """
-    Pillar 1: Dual-Modal Hybrid Vector Fusion (50% Image CLIP Vector + 50% Text Vector).
-    Computes 512-dimension continuous cosine similarity dot product.
+    Pillar 1: Pure CLIP Image Vector Visual Matching (100% Image Vector).
+    Computes 512-dimension continuous cosine similarity dot product against product's visual image_vector.
     """
     if not user_aesthetic_vector:
         return 0.5
 
-    # 1. Text Vector Cosine Similarity
-    text_vector = product.get("vector") or product.get("aesthetic_vector") or product.get("embedding")
-    sim_text = 0.5
-    if text_vector:
-        raw_t = cosine_similarity(user_aesthetic_vector, text_vector)
-        sim_text = normalize_cosine_score(raw_t)
-
-    # 2. Image CLIP Visual Vector Cosine Similarity
-    image_vector = product.get("image_vector") or text_vector
+    # 1. Image CLIP Visual Vector Cosine Similarity (100% Visual Matching)
+    image_vector = product.get("image_vector") or product.get("vector") or product.get("embedding")
     sim_image = 0.5
     if image_vector:
         raw_i = cosine_similarity(user_aesthetic_vector, image_vector)
         sim_image = normalize_cosine_score(raw_i)
 
-    # 3. Dual-Modal 50/50 Hybrid Vector Fusion
-    hybrid_sim = (0.50 * sim_image) + (0.50 * sim_text)
+    # 2. Pure Visual Image Embedding Score
+    hybrid_sim = sim_image
 
     # Exact nature/category match boost
     user_key = (user_aesthetic or "").lower()
@@ -98,7 +91,7 @@ def calculate_fabric_score(product, allowable_materials, allowable_materials_vec
 def calculate_festivity_score(product, festival_active, target_color, target_nature, festive_context_vector):
     """
     Pillar 3: Spatial-Temporal Festivity Matching (S_festivity).
-    No festival = 1.0 (neutral). Festival active: exact match or cosine similarity.
+    No festival = 1.0 (neutral). Festival active: exact match or CLIP image_vector cosine similarity.
     """
     if not festival_active:
         return 1.0  # No penalty when no festival
@@ -109,7 +102,19 @@ def calculate_festivity_score(product, festival_active, target_color, target_nat
     if product_color == target_color.lower() and product_nature == target_nature.lower():
         return 1.0
     
-    product_combined_vector = product.get("event_vector", []) or product.get("vector", [])
+    # Hard penalty for casual modern items (hoodies, denim shirt dresses, tracksuits) during traditional festivals
+    tags_lower = [t.lower() for t in product.get("tags", [])]
+    cat_lower = product.get("category", "").lower()
+    is_casual = any(t in tags_lower for t in ["hoodie", "sweatshirt", "athleisure", "tracksuit", "denim", "streetwear", "sporty"]) or \
+                cat_lower in ["urban athleisure", "high-street rebel", "y2k nostalgia"]
+    
+    is_ethnic = any(t in tags_lower for t in ["ethnic", "festive", "silk", "traditional", "saree", "lehenga", "kurta", "sherwani", "handloom", "ceremonial"]) or \
+                cat_lower in ["festive glam", "heritage traditionalist", "earthy handloom"]
+    
+    if is_casual and not is_ethnic:
+        return 0.05
+
+    product_combined_vector = product.get("image_vector") or product.get("event_vector", []) or product.get("vector", [])
     if not product_combined_vector or not festive_context_vector:
         return 0.3
     raw = cosine_similarity(festive_context_vector, product_combined_vector)
@@ -117,25 +122,22 @@ def calculate_festivity_score(product, festival_active, target_color, target_nat
 
 def calculate_creator_score(product, creators, user_age_group):
     """
-    Pillar 4: Creator-based Scoring with Dual-Modal Vector Fusion.
-    Matches creator thumbnail CLIP vector + transcript vector against product vectors.
+    Pillar 4: Creator-based Scoring with 100% CLIP Image Vector Matching.
+    Matches creator thumbnail CLIP vector against product visual image_vector.
     """
     if product.get("is_evergreen", False):
         return EVERGREEN_FIXED_SCORE
     
     max_score = 0.0
-    product_vector = product.get("vector") or product.get("aesthetic_vector") or product.get("embedding")
-    product_img_vector = product.get("image_vector") or product_vector
+    product_img_vector = product.get("image_vector") or product.get("vector") or product.get("embedding")
     
     for creator in creators:
         creator_vector = creator.get("embedding", creator.get("vector", []))
-        if not creator_vector or not product_vector:
+        if not creator_vector or not product_img_vector:
             continue
         
-        # Dual-Modal Similarity (Text + Image)
-        sim_t = normalize_cosine_score(cosine_similarity(creator_vector, product_vector))
-        sim_i = normalize_cosine_score(cosine_similarity(creator_vector, product_img_vector)) if product_img_vector else sim_t
-        base_score = (0.50 * sim_i) + (0.50 * sim_t)
+        # Pure Image Vector Visual Similarity
+        base_score = normalize_cosine_score(cosine_similarity(creator_vector, product_img_vector))
         
         # Age Penalty
         product_age = product.get("age_group", "").lower()
@@ -152,26 +154,23 @@ def calculate_creator_score(product, creators, user_age_group):
 
 def calculate_boutique_score(product, stores, zip_aov):
     """
-    Pillar 5: Local Boutique Scoring with Dual-Modal Vector Fusion.
-    Matches boutique inventory aesthetic & rating against product image + text vectors.
+    Pillar 5: Local Boutique Scoring with 100% CLIP Image Vector Matching.
+    Matches boutique inventory aesthetic & rating against product visual image_vector.
     """
     if product.get("is_evergreen", False):
         return EVERGREEN_FIXED_SCORE
     
     max_score = 0.0
-    product_vector = product.get("vector") or product.get("aesthetic_vector") or product.get("embedding")
-    product_img_vector = product.get("image_vector") or product_vector
+    product_img_vector = product.get("image_vector") or product.get("vector") or product.get("embedding")
     product_category = product.get("category", "").lower()
     
     for store in stores:
         store_vector = store.get("embedding", store.get("vector", []))
-        if not store_vector or not product_vector:
+        if not store_vector or not product_img_vector:
             continue
         
-        # Dual-Modal Similarity (Text + Image)
-        sim_t = normalize_cosine_score(cosine_similarity(store_vector, product_vector))
-        sim_i = normalize_cosine_score(cosine_similarity(store_vector, product_img_vector)) if product_img_vector else sim_t
-        base_score = (0.50 * sim_i) + (0.50 * sim_t)
+        # Pure Image Vector Visual Similarity
+        base_score = normalize_cosine_score(cosine_similarity(store_vector, product_img_vector))
         
         # Stretched Rating: W_rating = max(0, (Rating - 3.0) / 2.0)
         rating = store.get("rating", 3.0)

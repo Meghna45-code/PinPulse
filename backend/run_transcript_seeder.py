@@ -522,7 +522,9 @@ def process_seeding_from_excel(excel_path):
 
         # 3. Multi-query RRF: fuse transcript + thumbnail + regional-prior ranked lists.
         #    Returns the single best catalog match and metadata about which paths fired.
-        best, rrf_score, query_sources = find_best_match_multi_query(
+        #    Also returns thumbnail_vector: raw 512-dim CLIP embedding for the video thumbnail
+        #    (used for direct image-vector cosine matching in the API layer).
+        best, rrf_score, query_sources, thumbnail_vector = find_best_match_multi_query(
             video_id=video_id,
             transcript_dresses=transcript_dresses,
             catalog=catalog,
@@ -569,6 +571,10 @@ def process_seeding_from_excel(excel_path):
                 "video_id":              video_id,
                 "metadata":              d,
                 "vector":                dress_vector,
+                # Raw 512-dim CLIP image embedding from the video thumbnail.
+                # Used for direct image-vector cosine matching in /api/trends/youtube.
+                # Empty list [] when torch is unavailable (Gemini Vision fallback used instead).
+                "thumbnail_vector":      thumbnail_vector,
                 "matched_product_id":    matched_id,
                 "matched_product_name":  matched_name,
                 # RRF score replaces the old single-query hybrid_score.

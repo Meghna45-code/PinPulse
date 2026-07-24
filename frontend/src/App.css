@@ -2251,4 +2251,20 @@ body {
   color: #fdfdc9;
 }
 
+/* ── Seasonal Fashion Studio Styles ──────────────── */
+.seasonal-banner {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.season-tab-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+.season-tab-btn.active {
+  transform: scale(1.03);
+}
+
+
 

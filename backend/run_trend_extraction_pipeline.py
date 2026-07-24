@@ -69,16 +69,16 @@ MAX_DRESSES_PER_VID  = 3
 PUBLISHED_AFTER      = (datetime.utcnow() - timedelta(days=548)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # ── CLIP Model Initialization ──────────────────────────────────────────────────
-logger.info("Attempting to load CLIP model ('openai/clip-vit-base-patch32')...")
 try:
-    import torch
+    logger.info("Attempting to load fine-tuned Fashion-CLIP model ('patrickjohncyh/fashion-clip')...")
     from transformers import CLIPModel, CLIPProcessor
-    torch.set_num_threads(2)
-    clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-    clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-    logger.info("CLIP model loaded successfully! ✅")
+    import torch
+    clip_model = CLIPModel.from_pretrained("patrickjohncyh/fashion-clip")
+    clip_processor = CLIPProcessor.from_pretrained("patrickjohncyh/fashion-clip")
+    clip_model.eval()
+    logger.info("Fashion-CLIP model loaded successfully!")
 except Exception as e:
-    logger.error(f"Failed to load CLIP model: {e}")
+    logger.warning(f"Could not load Fashion-CLIP model: {e}")
     clip_model = None
     clip_processor = None
 
@@ -130,14 +130,20 @@ def classify_thumbnail_fashion(image):
         logger.warning(f"      CLIP classification failed: {e}. Defaulting to True.")
         return True
 
+from yolo_fashion_cropper import crop_fashion_item
+
 def get_clip_image_vector(image):
     """
-    Generate normalized 512-dimension image embedding vector using CLIP.
+    Generate normalized 512-dimension image embedding vector using YOLOv8 bounding-box crop + CLIP.
     """
     if not clip_model or not clip_processor or not image:
         return [0.0] * 512
     try:
-        img_copy = image.copy()
+        # Crop background noise, text overlays, and channel banners using YOLOv8
+        img_copy = crop_fashion_item(image)
+        if img_copy is None:
+            img_copy = image.copy()
+            
         img_copy.thumbnail((224, 224))
         
         inputs = clip_processor(images=img_copy, return_tensors="pt")
