@@ -1,3 +1,2 @@
 backend/local_catalog.json filter=lfs diff=lfs merge=lfs -text
 frontend/src/catalog_fallback.js filter=lfs diff=lfs merge=lfs -text
-Myntra_Fashion_Local.csv filter=lfs diff=lfs merge=lfs -text

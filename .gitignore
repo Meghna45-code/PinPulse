@@ -30,3 +30,8 @@ Thumbs.db
 # Agent config
 .gemini/
 .agents/
+
+# Large local data files (too big for GitHub - keep locally only)
+*.csv
+*.pt
+backend/local_catalog.json
