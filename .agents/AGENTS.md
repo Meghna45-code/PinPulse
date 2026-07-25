@@ -36,4 +36,4 @@ The project utilizes two distinct database and data seeding paradigms:
   3. 512-D Text CLIP Cosine Similarity Vector
   4. Keyword & Tag Overlap Matching
   5. Hybrid Score Fusion: $S_{\text{hybrid}} = 0.5 \cdot S_{\text{visual (YOLO-cropped)}} + 0.3 \cdot S_{\text{text}} + 0.2 \cdot S_{\text{tag}}$
-- **No Composite Multipliers**: Do not apply final composite multipliers ($S_{\text{final}}$ with price AOV penalties, age demographic penalties, weather vetoes) unless explicitly requested. Report the pure **Hybrid Matching Percentage** ($S_{\text{hybrid}} \times 100\%$).
+- **No Composite Multipliers**: Do not apply final composite multipliers ($S_{\text{final}}$ with price AOV penalties, age demographic penalties) unless explicitly requested. Report the pure **Hybrid Matching Percentage** ($S_{\text{hybrid}} \times 100\%$).

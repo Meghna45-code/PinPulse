@@ -6,7 +6,6 @@ Implements the Tri-Layer scoring with 512-dimensional vectors.
 import math
 import numpy as np
 from config import (
-    WEATHER_VETO_THRESHOLD,
     EVERGREEN_FIXED_SCORE,
     RELEVANCE_ALPHA,
     MIN_CATEGORIES_TOP_10,
@@ -73,20 +72,6 @@ def calculate_aesthetic_score(product, user_aesthetic, user_aesthetic_vector):
         hybrid_sim = min(1.0, hybrid_sim + 0.20)
 
     return float(np.clip(hybrid_sim, 0.05, 1.0))
-
-def calculate_fabric_score(product, allowable_materials, allowable_materials_vector):
-    """
-    Pillar 2: Climate-Fabric Matching (S_fabric).
-    Exact material match = 1.0, otherwise cosine similarity.
-    """
-    product_material = product.get("material", "")
-    if product_material.lower() in [m.lower() for m in allowable_materials]:
-        return 1.0
-    product_fabric_vector = product.get("fabric_vector", [])
-    if not product_fabric_vector or not allowable_materials_vector:
-        return 0.5
-    raw = cosine_similarity(allowable_materials_vector, product_fabric_vector)
-    return normalize_cosine_score(raw)
 
 def calculate_festivity_score(product, festival_active, target_color, target_nature, festive_context_vector):
     """
@@ -200,26 +185,7 @@ def calculate_boutique_score(product, stores, zip_aov):
     
     return max_score
 
-def calculate_velocity_score(product):
-    """
-    Velocity scoring based on relative delta (Z-Score approach).
-    Trend triggers when velocity spikes 200% above moving average.
-    """
-    baseline = product.get("baseline_sales", 1)
-    current = product.get("current_sales", 0)
-    
-    if baseline <= 0:
-        return 0.0
-    
-    delta_ratio = current / baseline
-    
-    # Normalize: a 3x spike (200% above baseline) = 1.0
-    # Below baseline = 0.0
-    if delta_ratio <= 1.0:
-        return 0.0
-    
-    velocity = min(1.0, (delta_ratio - 1.0) / 2.0)
-    return velocity
+    return max_score
 
 def apply_category_stratification(ranked_items, min_categories=MIN_CATEGORIES_TOP_10):
     """
@@ -293,64 +259,6 @@ def get_boosted_score(product_vector, trend_vector, alpha=RELEVANCE_ALPHA):
     if similarity < alpha:
         return 0.0
     return similarity
-
-def estimate_user_age(cart_products, wishlist_products, default_age_group):
-    """
-    Estimate the user's age demographic group based on products in cart and wishlist.
-    - 'gen-z' (approx 20)
-    - 'millennial' (approx 32)
-    - 'mid-age' (approx 50)
-    """
-    total_age = 0
-    count = 0
-    
-    # Merge both item lists
-    all_items = cart_products + wishlist_products
-    if not all_items:
-        return default_age_group.lower().strip()
-        
-    for item in all_items:
-        age_str = item.get("age_group", "").lower().strip()
-        if "gen-z" in age_str or "gen z" in age_str:
-            total_age += 20
-            count += 1
-        elif "millennial" in age_str:
-            total_age += 32
-            count += 1
-        elif "mid-age" in age_str or "senior" in age_str or "mid age" in age_str:
-            total_age += 50
-            count += 1
-            
-    if count == 0:
-        return default_age_group.lower().strip()
-        
-    avg_age = total_age / count
-    if avg_age < 26:
-        return "gen-z"
-    elif avg_age < 40:
-        return "millennial"
-    else:
-        return "mid-age"
-
-def calculate_age_appropriateness_score(product_age_group, user_age_group):
-    """
-    Age Appropriateness Score:
-    Match = 1.0, Adjacent = 0.5, Mismatch = 0.1
-    """
-    p_age = product_age_group.lower().strip().replace(" ", "-")
-    u_age = user_age_group.lower().strip().replace(" ", "-")
-    
-    if p_age == u_age:
-        return 1.0
-    
-    # Adjacent check
-    if (p_age == "gen-z" and u_age == "millennial") or (p_age == "millennial" and u_age == "gen-z"):
-        return 0.5
-    if (p_age == "millennial" and u_age == "mid-age") or (p_age == "mid-age" and u_age == "millennial"):
-        return 0.5
-        
-    # Heavy mismatch
-    return 0.1
 
 def calculate_price_affinity_score(product_price, zip_aov):
     """

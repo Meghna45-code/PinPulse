@@ -11,54 +11,34 @@ PinPulse Configuration — State Machine Context Matrices & Constants
 
 CONTEXT_MATRICES = {
     "discovery": {
-        "w_aesthetic": 0.75,
-        "w_fabric": 0.10,
+        "w_aesthetic": 0.85,
         "w_festivity": 0.05,
         "w_boutique": 0.05,
         "w_creator": 0.05,
-        "w_cf": 0.0,
-        "w_intent": 0.0,
-        "w_velocity": 0.0,
     },
     "high_intent": {
-        "w_aesthetic": 0.35,
-        "w_fabric": 0.15,
-        "w_festivity": 0.0,
-        "w_boutique": 0.0,
-        "w_creator": 0.0,
-        "w_cf": 0.0,
-        "w_intent": 0.50,
-        "w_velocity": 0.0,
+        "w_aesthetic": 0.70,
+        "w_festivity": 0.10,
+        "w_boutique": 0.10,
+        "w_creator": 0.10,
     },
     "festive_season": {
-        "w_aesthetic": 0.10,
-        "w_fabric": 0.05,
+        "w_aesthetic": 0.15,
         "w_festivity": 0.75,
         "w_boutique": 0.05,
         "w_creator": 0.05,
-        "w_cf": 0.0,
-        "w_intent": 0.0,
-        "w_velocity": 0.0,
     },
     "hyper_local_boutique": {
-        "w_aesthetic": 0.20,
-        "w_fabric": 0.10,
-        "w_festivity": 0.0,
-        "w_boutique": 0.60,
-        "w_creator": 0.0,
-        "w_cf": 0.0,
-        "w_intent": 0.10,
-        "w_velocity": 0.0,
+        "w_aesthetic": 0.25,
+        "w_festivity": 0.05,
+        "w_boutique": 0.65,
+        "w_creator": 0.05,
     },
     "social_commerce": {
-        "w_aesthetic": 0.20,
-        "w_fabric": 0.10,
-        "w_festivity": 0.0,
-        "w_boutique": 0.0,
-        "w_creator": 0.60,
-        "w_cf": 0.0,
-        "w_intent": 0.10,
-        "w_velocity": 0.0,
+        "w_aesthetic": 0.25,
+        "w_festivity": 0.05,
+        "w_boutique": 0.05,
+        "w_creator": 0.65,
     },
 }
 
@@ -76,7 +56,6 @@ INTENT_DECAY_CONFIG = {
 # SCORING THRESHOLDS & CONSTANTS
 # =============================================================================
 
-WEATHER_VETO_THRESHOLD = 0.2        # Hard veto: if S_weather < 0.2, disqualify
 CONFIDENCE_THRESHOLD = 0.6          # Hallucination gate for LLM tags
 RELEVANCE_ALPHA = 0.6               # Trend noise gate
 EVERGREEN_FIXED_SCORE = 0.85        # Bypass score for evergreen items

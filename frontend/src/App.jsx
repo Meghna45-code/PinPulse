@@ -19,86 +19,16 @@ const ZIP_MAPPING = {
   "302001": "302001"
 };
 
-const SEASON_BANNERS = {
-  summer: "/images/summer_banner.png",
-  winter: "/images/winter_banner.png",
-  monsoon: "/images/monsoon_banner.png",
-  autumn: "/images/autumn_banner.png"
+// Regional Faded Background Images per PIN Code
+const CITY_BACKGROUNDS = {
+  "800008": "/images/cities/patna.png",
+  "302001": "/images/cities/jaipur.jpg",
+  "793001": "/images/cities/shillong.jpg",
+  "752001": "/images/cities/odisha.jpg",
+  "682001": "/images/cities/kochi.jpg"
 };
 
-// Weather Matrix throughout the year
-const WEATHER_MATRIX = {
-  "682001": { // Fort Kochi
-    1: { desc: "Pleasant & Breezy 🍃", temp: "23°C–31°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    2: { desc: "Breezy & Warm 🍃", temp: "24°C–32°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    3: { desc: "Warm & Sunny ☀️", temp: "25°C–33°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "hot_humid" },
-    4: { desc: "Warm & Dry ☀️", temp: "27°C–33°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
-    5: { desc: "Pre-Monsoon Showers 🌧️", temp: "27°C–31°C", cold_wave: false, hot_wave: true, rainy: true, weather_conditions: "hot_humid" },
-    6: { desc: "Cool & Rainy 🌧️", temp: "26°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    7: { desc: "Monsoon Breezes 🌧️", temp: "25°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    8: { desc: "Cloudy & Rainy 🌧️", temp: "25°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    9: { desc: "Pleasant Showers 🌧️", temp: "25°C–29°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    10: { desc: "Cool & Pleasant 🍂", temp: "25°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "hot_humid" },
-    11: { desc: "Cool & Cozy 🍃", temp: "25°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    12: { desc: "Pleasant Winter ❄️", temp: "24°C–31°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" }
-  },
-  "752001": { // Puri, Odisha
-    1: { desc: "Cool & Pleasant 🍃", temp: "18°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    2: { desc: "Pleasant & Sunny ☀️", temp: "21°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    3: { desc: "Warm & Sunny ☀️", temp: "24°C–33°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "hot_humid" },
-    4: { desc: "Hot & Humid 🔥", temp: "27°C–35°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
-    5: { desc: "Very Hot & Humid 🔥", temp: "28°C–37°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
-    6: { desc: "Monsoon Showers 🌧️", temp: "27°C–33°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    7: { desc: "Heavy Monsoons 🌧️", temp: "26°C–31°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    8: { desc: "Wet & Humid 🌧️", temp: "26°C–31°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    9: { desc: "Breezy Showers 🌧️", temp: "25°C–30°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    10: { desc: "Pleasant Autumn 🍂", temp: "23°C–31°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    11: { desc: "Cool & Dry 🍂", temp: "20°C–29°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    12: { desc: "Mild Winter ❄️", temp: "17°C–26°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" }
-  },
-  "800008": { // Patna
-    1: { desc: "Cold & Foggy ❄️", temp: "10°C–22°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
-    2: { desc: "Cool & Sunny 🌤️", temp: "12°C–26°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "cold" },
-    3: { desc: "Warming Up ☀️", temp: "17°C–33°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    4: { desc: "Hot & Dry 🔥", temp: "21°C–38°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
-    5: { desc: "Very Hot 🔥", temp: "24°C–39°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
-    6: { desc: "Hot & Humid 🌡️", temp: "25°C–35°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_humid" },
-    7: { desc: "Hot & Monsoon 🌧️", temp: "26°C–33°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    8: { desc: "Humid & Wet 🌧️", temp: "25°C–32°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    9: { desc: "Post-Monsoon Humidity 🌧️", temp: "24°C–32°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    10: { desc: "Pleasant & Sunny 🍂", temp: "20°C–30°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    11: { desc: "Cool & Dry 🍂", temp: "15°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    12: { desc: "Cold & Dry ❄️", temp: "11°C–23°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
-  },
-  "793001": { // Shillong, Meghalaya
-    1: { desc: "Chilly & Misty ❄️", temp: "4°C–15°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
-    2: { desc: "Cool Mountain Breeze 🍃", temp: "6°C–17°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
-    3: { desc: "Pleasant Spring 🌸", temp: "10°C–21°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    4: { desc: "Mild & Sunny 🌤️", temp: "13°C–23°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    5: { desc: "Pre-Monsoon Clouds ☁️", temp: "15°C–24°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "warm_moderate" },
-    6: { desc: "Heavy Monsoons 🌧️", temp: "16°C–23°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    7: { desc: "Abundant Rainfall 🌧️", temp: "16°C–23°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    8: { desc: "Rainy Highland 🌧️", temp: "16°C–23°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    9: { desc: "Mist & Showers 🌫️", temp: "15°C–22°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "warm_moderate" },
-    10: { desc: "Autumn Cherry Blossom 🌸", temp: "12°C–20°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    11: { desc: "Crisp & Cold 🍂", temp: "8°C–17°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
-    12: { desc: "Crisp Winter Solstice ❄️", temp: "5°C–15°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
-  },
-  "302001": { // Rajasthan (Jaipur)
-    1: { desc: "Cool Desert Nights ❄️", temp: "8°C–22°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" },
-    2: { desc: "Sunny & Pleasant ☀️", temp: "11°C–26°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    3: { desc: "Warm & Sunny ☀️", temp: "16°C–32°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    4: { desc: "Hot Summer Days 🔥", temp: "21°C–38°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
-    5: { desc: "Peak Desert Heat 🔥", temp: "26°C–42°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
-    6: { desc: "Scorching & Dry 🔥", temp: "28°C–41°C", cold_wave: false, hot_wave: true, rainy: false, weather_conditions: "hot_dry" },
-    7: { desc: "Monsoon Showers 🌧️", temp: "26°C–34°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    8: { desc: "Humid Monsoon 🌧️", temp: "25°C–33°C", cold_wave: false, hot_wave: false, rainy: true, weather_conditions: "hot_humid" },
-    9: { desc: "Pleasant Dry Sun ☀️", temp: "23°C–34°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    10: { desc: "Clear & Festive 🍂", temp: "18°C–32°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    11: { desc: "Pleasant Winter 🍂", temp: "13°C–27°C", cold_wave: false, hot_wave: false, rainy: false, weather_conditions: "warm_moderate" },
-    12: { desc: "Chilly Desert Winter ❄️", temp: "9°C–23°C", cold_wave: true, hot_wave: false, rainy: false, weather_conditions: "cold" }
-  }
-};
+
 
 // Regional date profile presets
 const REGIONAL_DATE_PRESETS = {
@@ -154,6 +84,7 @@ const REGIONAL_DATE_PRESETS = {
     { key: "nov_10", label: "Nov 10 (Nongkrem Dance)", dateStr: "2026-11-10", event: "Nongkrem Dance Festival (Smit)", event_type: "festival", isFestive: true, trendingTags: ["khasi", "silk", "brocade", "traditional", "gold", "velvet"] },
     { key: "nov_15", label: "Nov 15 (Wangala Fest)", dateStr: "2026-11-15", event: "Wangala 100 Drums Garo Festival", event_type: "festival", isFestive: true, trendingTags: ["garo", "dakmanda", "wangala", "beaded", "handloom", "tribal"] },
     { key: "nov_22", label: "Nov 22 (Cherry Blossom)", dateStr: "2026-11-22", event: "Shillong Cherry Blossom Festival", event_type: "festival", isFestive: true, trendingTags: ["cherry_blossom", "pastel", "floral", "chiffon", "gown", "indie"] },
+    { key: "dec_18", label: "Dec 18 (Highland Wedding)", dateStr: "2026-12-18", event: "Highland Winter Wedding (Khasi & Christian)", event_type: "wedding_day", isFestive: true, trendingTags: ["khasi", "silk", "brocade", "velvet", "gown", "traditional", "gold"] },
     { key: "dec_25", label: "Dec 25 (Highland Christmas)", dateStr: "2026-12-25", event: "Shillong Grand Christmas Solstice", event_type: "festival", isFestive: true, trendingTags: ["woolen", "velvet", "cardigan", "red", "cozy", "festive"] }
   ],
   "302001": [ // Rajasthan (Jaipur)
@@ -164,79 +95,57 @@ const REGIONAL_DATE_PRESETS = {
     { key: "apr_04", label: "Apr 04 (Gangaur Procession)", dateStr: "2026-04-04", event: "Royal Gangaur Festival Procession", event_type: "festival", isFestive: true, trendingTags: ["traditional", "gota_patti", "lehenga", "gold", "rajasthan"] },
     { key: "aug_12", label: "Aug 12 (Teej Festival)", dateStr: "2026-08-12", event: "Swarn Teej Festival Jaipur", event_type: "festival", isFestive: true, trendingTags: ["lehenga", "gota_patti", "green", "silk", "teej", "ethnic"] },
     { key: "oct_20", label: "Oct 20 (Marwar Fest)", dateStr: "2026-10-20", event: "Marwar Folk Music & Dance Festival Jodhpur", event_type: "festival", isFestive: true, trendingTags: ["mirror_work", "bandhani", "angrakha", "ethnic"] },
-    { key: "nov_18", label: "Nov 18 (Pushkar Fair)", dateStr: "2026-11-18", event: "Pushkar Camel Fair & Cultural Night", event_type: "festival", isFestive: true, trendingTags: ["pushkar", "angrakha", "silk", "handloom", "traditional"] }
+    { key: "nov_18", label: "Nov 18 (Pushkar Fair)", dateStr: "2026-11-18", event: "Pushkar Camel Fair & Cultural Night", event_type: "festival", isFestive: true, trendingTags: ["pushkar", "angrakha", "silk", "handloom", "traditional"] },
+    { key: "dec_15", label: "Dec 15 (Rajwara Wedding)", dateStr: "2026-12-15", event: "Jaipur Royal Rajwara Wedding (Dev Uthan Lagan)", event_type: "wedding_day", isFestive: true, trendingTags: ["heavy_silk", "gota_patti", "lehenga", "sherwani", "crimson", "gold", "maroon"] }
   ]
 };
 
+const LINGERIE_KEYWORDS = [
+  "bra", "bras", "panty", "panties", "briefs", "boxers", "lingerie", "innerwear",
+  "thong", "pantyhose", "stockings", "bustier", "shapewear", "nightwear", "nightdress",
+  "babydoll", "camisole", "bikini", "underwear", "swimwear", "thermal top", "thermal bottoms",
+  "night-suits", "night suits", "pajamas", "pyjamas", "lounge shorts"
+];
+
+function isLingerieItem(item) {
+  if (!item) return false;
+  const text = `${item.name || ''} ${item.description || ''} ${item.category || ''} ${(item.tags || []).join(' ')}`.toLowerCase();
+  return LINGERIE_KEYWORDS.some(kw => text.includes(kw));
+}
+
 const VIBE_DEFINITIONS = {
-  heritage_traditionalist: {
-    name: "Heritage Traditionalist",
+  universal_traditionalist: {
+    name: "The Universal Traditionalist (Classic Pan-Indian Ethnic)",
     emoji: "🥻",
-    desc: "Traditional silks, zari brocades, and classic festival sarees.",
-    tags: ["traditional", "silk", "heavy", "classic", "ethnic", "saree", "kanjeevaram", "banarasi", "zari", "gold", "temple", "mundu", "sherwani", "jainsem"]
+    desc: "A versatile,Modest, festive, evergreen ethnic aesthetic representing standard traditional wear found on Indian e-commerce.",
+    tags: ["kurta", "palazzo", "dupatta", "anarkali", "churidar", "saree", "kurti", "pyjama", "nehru-jacket", "modi-jacket", "rayon", "cotton-blend", "georgette", "chanderi", "art-silk", "chiffon", "block-print", "paisley", "yoke", "foil-print", "ikat", "mustard", "maroon", "emerald", "rani-pink", "ivory"]
   },
-  festive_glam: {
-    name: "Festive Glam",
-    emoji: "✨",
-    desc: "Bright, embellished, heavy ethnic wear, lehengas, and celebration outfits.",
-    tags: ["festive", "bright", "red", "embellished", "celebration", "lehenga", "anarkali", "ceremonial", "heavy_silk", "maroon", "gold", "brocade", "embroidery"]
+  dark_academia: {
+    name: "Dark Academia",
+    emoji: "📚",
+    desc: "A nostalgic, scholarly aesthetic inspired by literature, classic European architecture, and boarding school prep.",
+    tags: ["turtleneck", "plaid", "trousers", "trench", "button-down", "sweater-vest", "pleated-skirt", "blazer", "pinafore", "tweed", "heavy-wool", "corduroy", "linen", "leather", "houndstooth", "argyle", "herringbone", "forest-green", "charcoal", "chocolate-brown", "burgundy", "navy", "beige"]
   },
-  indie_fusion: {
-    name: "Indie Fusion (Desi Boho)",
-    emoji: "🎨",
-    desc: "Desi Boho chic with block prints, indigo dyes, and contemporary fusion kurtas.",
-    tags: ["fusion", "cotton", "prints", "oxidized", "casual-ethnic", "block-print", "indigo", "kurta", "denim", "boho", "handblock", "ethnic"]
-  },
-  high_street_rebel: {
-    name: "High-Street Rebel",
-    emoji: "👟",
-    desc: "Oversized hoodies, utility cargoes, denim jackets, and edgy modern graphic tees.",
-    tags: ["streetwear", "oversized", "edgy", "grunge", "layered", "cargo", "graphic", "hoodie", "denim", "modern", "rebel", "baggy"]
-  },
-  coastal_tropical: {
-    name: "Coastal Tropical",
-    emoji: "🏝️",
-    desc: "Light, breezy cottons, linen shirts, and floral sundresses.",
-    tags: ["breathable", "pastel", "floral", "linen", "coastal", "summer", "cotton", "light", "breezy", "sundress", "resort"]
-  },
-  winter_academia: {
-    name: "Winter Academia",
-    emoji: "🧥",
-    desc: "Smart-casual layering, cable-knit sweaters, velvet blazers, and warm woolen shawls.",
-    tags: ["winter", "layered", "preppy", "knitwear", "smart-casual", "trench", "plaid", "woolen", "jacket", "cardigan", "warm", "shawl", "velvet"]
-  },
-  y2k_nostalgia: {
-    name: "Y2K Nostalgia",
-    emoji: "📟",
-    desc: "Retro pop, Gen-Z crop tops, baggy jeans, bucket hats, and bold neon aesthetics.",
-    tags: ["y2k", "vibrant", "retro", "pop", "gen-z", "crop", "baggy", "bucket-hat", "synthetic", "colorful", "neon", "bold"]
-  },
-  minimalist_essentials: {
-    name: "Minimalist Essentials",
-    emoji: "🤍",
-    desc: "Solid neutrals, clean structures, clean lines, and timeless capsule basics.",
-    tags: ["minimal", "neutral", "solid", "clean", "basic", "white", "beige", "black", "fitted", "structured"]
-  },
-  earthy_handloom: {
-    name: "Earthy Handloom",
+  cottagecore: {
+    name: "Cottagecore",
     emoji: "🌾",
-    desc: "Organic, sustainable handlooms, khadi weaves, natural dyes, and artisanal textures.",
-    tags: ["handloom", "organic", "earthy", "comfortable", "khadi", "ochre", "olive", "sustainable", "natural", "artisanal"]
+    desc: "A romanticized interpretation of western agricultural life, focusing on nature, simplicity, and vintage rural silhouettes.",
+    tags: ["puff-sleeve", "corset", "prairie-blouse", "tiered-skirt", "maxi-skirt", "cardigan", "slip-dress", "overalls", "pinafore", "peasant-blouse", "muslin", "linen", "chiffon", "lace", "crochet", "floral", "ditsy-floral", "gingham", "botanical", "toile", "sage-green", "dusty-rose", "butter-yellow", "lavender"]
   },
-  urban_athleisure: {
-    name: "Urban Athleisure",
-    emoji: "🏃",
-    desc: "Activewear, sporty joggers, ribbed tracksuits, and premium athletic apparel.",
-    tags: ["sporty", "activewear", "comfortable", "casual", "sneakers", "tracksuit", "ribbed", "athletic", "gym", "jogger"]
+  grunge_alt: {
+    name: "Grunge / Alt",
+    emoji: "🎸",
+    desc: "Rooted in the 90s alternative rock scene, characterized by a messy, rebellious, and purposefully unkempt styling.",
+    tags: ["band-tee", "distressed-jeans", "combat-boots", "slip-dress", "tights", "long-sleeve", "cargo", "biker-jacket", "ripped-shorts", "distressed-denim", "leather", "mesh", "heavy-cotton", "stripes", "tie-dye", "crimson", "charcoal", "burgundy", "neon-green", "black"]
   }
 };
 
 const CONTEXT_MATRICES = {
-  "discovery": { "w_aesthetic": 0.35, "w_fabric": 0.15, "w_festivity": 0.05, "w_boutique": 0.05, "w_creator": 0.05, "w_cf": 0.25, "w_intent": 0.05, "w_velocity": 0.05 },
-  "high_intent": { "w_aesthetic": 0.15, "w_fabric": 0.10, "w_festivity": 0.0, "w_boutique": 0.0, "w_creator": 0.0, "w_cf": 0.15, "w_intent": 0.50, "w_velocity": 0.10 },
-  "festive_season": { "w_aesthetic": 0.20, "w_fabric": 0.10, "w_festivity": 0.40, "w_boutique": 0.05, "w_creator": 0.05, "w_cf": 0.10, "w_intent": 0.05, "w_velocity": 0.05 },
-  "hyper_local_boutique": { "w_aesthetic": 0.10, "w_fabric": 0.05, "w_festivity": 0.0, "w_boutique": 0.40, "w_creator": 0.0, "w_cf": 0.05, "w_intent": 0.10, "w_velocity": 0.30 },
-  "social_commerce": { "w_aesthetic": 0.10, "w_fabric": 0.05, "w_festivity": 0.0, "w_boutique": 0.0, "w_creator": 0.40, "w_cf": 0.05, "w_intent": 0.10, "w_velocity": 0.30 },
+  "discovery": { "w_aesthetic": 0.85, "w_festivity": 0.05, "w_boutique": 0.05, "w_creator": 0.05 },
+  "high_intent": { "w_aesthetic": 0.70, "w_festivity": 0.10, "w_boutique": 0.10, "w_creator": 0.10 },
+  "festive_season": { "w_aesthetic": 0.15, "w_festivity": 0.75, "w_boutique": 0.05, "w_creator": 0.05 },
+  "hyper_local_boutique": { "w_aesthetic": 0.25, "w_festivity": 0.05, "w_boutique": 0.65, "w_creator": 0.05 },
+  "social_commerce": { "w_aesthetic": 0.25, "w_festivity": 0.05, "w_boutique": 0.05, "w_creator": 0.65 },
 };
 
 const LOCAL_VELOCITY_CACHE = {
@@ -373,6 +282,7 @@ function App() {
     }
   };
 
+  const [activeTab, setActiveTab] = useState('Women'); // 'Men' | 'Women' | 'Kids'
   const [currentZipCode, setCurrentZipCode] = useState("800008");
   const [sliderVal, setSliderVal] = useState(0);
   const [timeTravelVisible, setTimeTravelVisible] = useState(true);
@@ -400,7 +310,6 @@ function App() {
   const [velocitySurgeData, setVelocitySurgeData] = useState(null);
   
   // Trends Panel State
-  const [activeTab, setActiveTab] = useState('youtube');
   const [youtubeData, setYoutubeData] = useState(null);
   const [isYoutubeLoading, setIsYoutubeLoading] = useState(false);
   const [boutiqueData, setBoutiqueData] = useState(null);
@@ -534,7 +443,7 @@ function App() {
       updateRecommendations();
     }, 120);
     return () => clearTimeout(debounceTimerRef.current);
-  }, [currentZipCode, sliderVal, currentVibe, backendStatus]);
+  }, [currentZipCode, sliderVal, currentVibe, activeTab, backendStatus]);
 
   // Fetch Zip Code Intelligence (AOV, weather, upcoming events)
   useEffect(() => {
@@ -1016,54 +925,7 @@ function App() {
     }).filter(Boolean);
 
     computed.sort((a, b) => b.final_score - a.final_score);
-
-    // ── Score-Gated Diversity Stratification ───────────────────────────────
-    // A category only earns a diversity "slot" if its best item meets the
-    // minimum relevance threshold. This prevents a 3.8% hoodie from jumping
-    // ahead of 57% festive kurtas just because it's a different category.
-    const DIVERSITY_MIN_SCORE = 0.20; // 20% threshold to qualify for a slot
-    const MAX_PER_CATEGORY   = 2;     // max diversity slots per category
-    const DIVERSITY_POOL_SIZE = 20;   // consider top-N items for stratification
-
-    const diversityPool = computed.slice(0, DIVERSITY_POOL_SIZE);
-    const categoryCount  = {};
-    const diversitySlots = [];   // items that earned a diversity slot
-    const remainder      = [];   // everything else in the pool
-
-    diversityPool.forEach(item => {
-      const cat   = item.category || 'other';
-      const count = categoryCount[cat] || 0;
-      // Earns a slot only if score ≥ threshold AND category not yet saturated
-      if (item.final_score >= DIVERSITY_MIN_SCORE && count < MAX_PER_CATEGORY) {
-        categoryCount[cat] = count + 1;
-        diversitySlots.push(item);
-      } else {
-        remainder.push(item);
-      }
-    });
-
-    // Merge: diversity winners + remainder + anything beyond the pool
-    const merged = [
-      ...diversitySlots,
-      ...remainder,
-      ...computed.slice(DIVERSITY_POOL_SIZE)
-    ];
-
-    // De-duplicate (in case the same item ended up in two buckets)
-    const seenIds  = new Set();
-    const deduped  = merged.filter(p => {
-      if (seenIds.has(p.id)) return false;
-      seenIds.add(p.id);
-      return true;
-    });
-
-    // ── Critical: re-sort by score so rank always mirrors the badge ─────────
-    deduped.sort((a, b) => b.final_score - a.final_score);
-
-    // Pad to at least 20 items
-    const finalFeed = deduped.length < 20
-      ? [...deduped, ...computed.filter(p => !seenIds.has(p.id))].slice(0, Math.max(20, deduped.length))
-      : deduped;
+    const finalFeed = computed;
 
     setProducts(finalFeed);
     logMessage(`Local matching algorithm ranked ${finalFeed.length} items. 8-Pillar weights applied.`, "success");
@@ -1742,7 +1604,7 @@ function App() {
                   </h3>
                   {nationalProducts.length > 0 ? (
                     <div className="horizontal-shelf">
-                      {nationalProducts.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
+                      {nationalProducts.slice(0, 15).map((product, idx) => renderProductCard(product, idx))}
                     </div>
                   ) : (
                     <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No products matching {banners.national.title} search space.</p>
@@ -1848,7 +1710,7 @@ function App() {
                   </h3>
                   {localProducts.length > 0 ? (
                     <div className="horizontal-shelf">
-                      {localProducts.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
+                      {localProducts.slice(0, 15).map((product, idx) => renderProductCard(product, idx))}
                     </div>
                   ) : (
                     <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No regional products matching {banners.local.title}.</p>
@@ -2083,6 +1945,26 @@ function App() {
 
   return (
     <div id="root">
+      {/* 🌆 Faded Regional City Background Image Layer (Swaps per PIN Code) */}
+      <div
+        className="city-faded-background"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          pointerEvents: 'none',
+          zIndex: 0,
+          backgroundImage: `linear-gradient(135deg, rgba(239, 235, 206, 0.84) 0%, rgba(250, 249, 240, 0.88) 100%), url(${CITY_BACKGROUNDS[currentZipCode] || CITY_BACKGROUNDS["800008"]})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          transition: 'background-image 0.8s ease-in-out',
+          opacity: 0.90
+        }}
+      />
+
       {/* Onboarding Modal */}
       {showOnboarding && (
         <div className="onboarding-modal-overlay">
@@ -2126,6 +2008,32 @@ function App() {
           </div>
         </div>
         
+        {/* Men, Women, Kids Tabs Navigation Bar */}
+        <nav className="tab-navigation-bar" style={{ display: 'flex', gap: '8px', margin: '0 16px' }}>
+          {['Men', 'Women', 'Kids'].map(tab => (
+            <button
+              key={tab}
+              id={`tab-btn-${tab.toLowerCase()}`}
+              className={`nav-tab-btn ${activeTab === tab ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: '8px 20px',
+                borderRadius: '20px',
+                fontWeight: '700',
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+                background: activeTab === tab ? 'linear-gradient(135deg, #c69fd5, #824265)' : 'rgba(250,249,240,0.1)',
+                color: activeTab === tab ? '#ffffff' : 'rgba(250,249,240,0.85)',
+                border: activeTab === tab ? '1px solid #c69fd5' : '1px solid rgba(250,249,240,0.2)',
+                transition: 'all 0.2s ease',
+                boxShadow: activeTab === tab ? '0 0 10px rgba(198,159,213,0.3)' : 'none'
+              }}
+            >
+              {tab === 'Men' ? '👔 Men' : tab === 'Women' ? '🥻 Women' : '🧸 Kids'}
+            </button>
+          ))}
+        </nav>
+
         {/* Selector Panel */}
         <div className="header-meta">
           <div className="meta-pill" style={{ padding: '0px 4px 0px 12px', background: 'rgba(250,249,240,0.15)', border: '1px solid rgba(250,249,240,0.30)' }}>
@@ -2164,10 +2072,10 @@ function App() {
       </header>
 
       {/* Dashboard Content Grid */}
-      <div className="dashboard-grid">
+      <div className="dashboard-grid" style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', padding: '24px', maxWidth: '1600px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
         
         {/* Left Side: Controller + Grid Feed */}
-        <div className="main-feed-panel">
+        <div className="main-feed-panel" style={{ flex: 1, minWidth: 0 }}>
           
           {/* Time-Travel Control Console */}
           <div className="control-card">
@@ -2204,8 +2112,8 @@ function App() {
               </div>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
 
-                {/* Trend intelligence buttons inline with the panel */}
-                {timeTravelVisible && (
+                {/* Local Creator & Boutique Engine: Render ONLY on 'Women' tab */}
+                {timeTravelVisible && activeTab === 'Women' && (
                   <>
                     <button
                       id="btn-creator-feed"
@@ -2444,7 +2352,7 @@ function App() {
                       {recommendedProducts.length > 0 ? (
                         <div className="horizontal-shelf">
                           {recommendedProducts
-                            .slice(0, 25)
+                            .slice(0, 15)
                             .map((product, idx) => renderProductCard(product, idx))}
                         </div>
                       ) : (
@@ -2570,8 +2478,179 @@ function App() {
             </div>
           )}
         </div>
-        
 
+        {/* ───────── RIGHT SIDE: VIBE SPACE PANEL ───────── */}
+        <aside style={{
+          width: '280px',
+          minWidth: '260px',
+          flexShrink: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          paddingTop: '0px'
+        }}>
+
+          {/* Vibe Space Header */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(187,133,136,0.18) 0%, rgba(215,206,147,0.18) 100%)',
+            border: '1px solid var(--peach-border)',
+            borderRadius: '16px',
+            padding: '18px 20px 14px 20px',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <span style={{ fontSize: '1.1rem' }}>✨</span>
+              <h3 style={{
+                margin: 0,
+                fontSize: '1rem',
+                fontWeight: '800',
+                fontFamily: 'var(--font-title)',
+                color: 'var(--peach-dark)',
+                letterSpacing: '0.3px'
+              }}>Your Vibe Space</h3>
+            </div>
+            <p style={{
+              margin: '0 0 0 0',
+              fontSize: '0.75rem',
+              color: 'var(--text-muted)',
+              lineHeight: '1.4'
+            }}>
+              Select your aesthetic to personalise your style vector.
+            </p>
+          </div>
+
+          {/* 4 Aesthetic Cards */}
+          {Object.entries(VIBE_DEFINITIONS).map(([key, def]) => {
+            const isActive = currentVibe === key;
+            const vibeGradients = {
+              universal_traditionalist: 'linear-gradient(145deg, rgba(187,133,136,0.22), rgba(215,206,147,0.22))',
+              dark_academia:            'linear-gradient(145deg, rgba(59,53,41,0.22), rgba(90,80,55,0.22))',
+              cottagecore:              'linear-gradient(145deg, rgba(163,163,128,0.22), rgba(200,210,160,0.22))',
+              grunge_alt:               'linear-gradient(145deg, rgba(120,80,80,0.22), rgba(80,60,80,0.22))',
+            };
+            const vibeBorders = {
+              universal_traditionalist: 'rgba(187,133,136,0.55)',
+              dark_academia:            'rgba(90,80,55,0.55)',
+              cottagecore:              'rgba(163,163,128,0.55)',
+              grunge_alt:               'rgba(120,80,80,0.55)',
+            };
+            const vibeActiveGlow = {
+              universal_traditionalist: '0 0 18px rgba(187,133,136,0.40)',
+              dark_academia:            '0 0 18px rgba(90,80,55,0.40)',
+              cottagecore:              '0 0 18px rgba(163,163,128,0.40)',
+              grunge_alt:               '0 0 18px rgba(120,80,80,0.40)',
+            };
+
+            return (
+              <div
+                key={key}
+                onClick={() => triggerVibeChange(key)}
+                style={{
+                  background: isActive ? vibeGradients[key] : 'var(--daisy-card)',
+                  border: `1.5px solid ${isActive ? vibeBorders[key] : 'var(--olive-border)'}`,
+                  borderRadius: '16px',
+                  padding: '16px 18px',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                  boxShadow: isActive ? vibeActiveGlow[key] : '0 2px 8px rgba(0,0,0,0.06)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+                onMouseEnter={e => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = vibeGradients[key];
+                    e.currentTarget.style.borderColor = vibeBorders[key];
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'var(--daisy-card)';
+                    e.currentTarget.style.borderColor = 'var(--olive-border)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }
+                }}
+              >
+                {/* Active indicator dot */}
+                {isActive && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: 'var(--peach-dark)',
+                    boxShadow: '0 0 6px rgba(150,99,106,0.7)',
+                    animation: 'pulse 2s infinite'
+                  }} />
+                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{def.emoji}</span>
+                  <div>
+                    <p style={{
+                      margin: 0,
+                      fontSize: '0.82rem',
+                      fontWeight: '800',
+                      color: isActive ? 'var(--peach-dark)' : 'var(--text-main)',
+                      fontFamily: 'var(--font-ui)',
+                      lineHeight: 1.2
+                    }}>{def.name}</p>
+                    {isActive && (
+                      <span style={{
+                        fontSize: '0.62rem',
+                        fontWeight: '700',
+                        color: 'var(--peach-dark)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.8px'
+                      }}>● ACTIVE</span>
+                    )}
+                  </div>
+                </div>
+                <p style={{
+                  margin: '0 0 10px 0',
+                  fontSize: '0.72rem',
+                  color: 'var(--text-muted)',
+                  lineHeight: '1.5',
+                }}>
+                  {def.desc}
+                </p>
+                {/* Tag chips – show first 4 */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                  {def.tags.slice(0, 4).map(tag => (
+                    <span key={tag} style={{
+                      fontSize: '0.62rem',
+                      fontWeight: '600',
+                      padding: '2px 7px',
+                      borderRadius: '8px',
+                      background: isActive ? 'rgba(187,133,136,0.2)' : 'var(--olive-faint)',
+                      color: isActive ? 'var(--peach-dark)' : 'var(--text-muted)',
+                      border: '1px solid var(--olive-border)',
+                    }}>#{tag}</span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Current active vibe summary box */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(215,206,147,0.25) 0%, rgba(187,133,136,0.20) 100%)',
+            border: '1px solid var(--clover-border)',
+            borderRadius: '16px',
+            padding: '14px 18px',
+          }}>
+            <p style={{ margin: '0 0 6px 0', fontSize: '0.7rem', fontWeight: '800', color: 'var(--olive-dark)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+              🎯 Active Vector
+            </p>
+            <p style={{ margin: '0 0 4px 0', fontSize: '0.85rem', fontWeight: '700', color: 'var(--peach-dark)' }}>
+              {VIBE_DEFINITIONS[currentVibe]?.emoji} {VIBE_DEFINITIONS[currentVibe]?.name}
+            </p>
+            <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+              Scoring: 60% Vibe · 20% Creator · 20% Boutique
+            </p>
+          </div>
+
+        </aside>
 
       </div>
 

@@ -12,117 +12,38 @@ from config import (
 )
 from scoring_engine import (
     calculate_aesthetic_score,
-    calculate_fabric_score,
     calculate_festivity_score,
     calculate_creator_score,
     calculate_boutique_score,
-    calculate_velocity_score,
     apply_category_stratification,
     apply_exploration_split,
-    estimate_user_age,
-    calculate_age_appropriateness_score,
     calculate_price_affinity_score,
 )
-from intent_decay import IntentDecayEngine
-from collaborative_filtering import CollaborativeFilteringEngine
 
 class PinPulseEngine:
-    def __init__(self, product_catalog, zip_data, festival_rules, weather_rules,
-                 creators, stores, cf_lookup):
+    def __init__(self, product_catalog, zip_data, festival_rules,
+                 creators, stores, cf_lookup=None):
         self.product_catalog = product_catalog
         self.zip_data = zip_data
         self.festival_rules = festival_rules
-        self.weather_rules = weather_rules
         self.creators = creators
         self.stores = stores
-        self.cf_engine = CollaborativeFilteringEngine(cf_lookup)
-        self.intent_engine = IntentDecayEngine()
-        self.cf_lookup = cf_lookup
+        self.cf_lookup = cf_lookup or {}
 
         # State Hysteresis cache
         self._cache = {}
         self._cache_timestamp = 0
 
     def get_context_matrix(self, state="discovery", user_context=None):
-        """Get the weight matrix for the current state, dynamically blending weights based on user interaction levels."""
-        if not user_context:
-            return CONTEXT_MATRICES.get(state, CONTEXT_MATRICES["discovery"])
-            
-        base_weights = CONTEXT_MATRICES["discovery"].copy()
-        
-        interactions = user_context.get("interactions", [])
-        cart = user_context.get("session_cart", [])
-        active_festival = user_context.get("active_festival")
-        
-        # Count specific action types in the interaction logs
-        creator_clicks = sum(1 for x in interactions if x.get("action_type") == "creator")
-        boutique_clicks = sum(1 for x in interactions if x.get("action_type") == "boutique")
-        wishlist_items = sum(1 for x in interactions if x.get("action_type") == "wishlist")
-
-        # Calculate blend factors (0.0 to 1.0)
-        # ~8 creator video clicks shifts you fully to social_commerce weights
-        t_creator = min(1.0, creator_clicks * 0.13)
-        # ~8 boutique views shifts you fully to hyper_local_boutique weights
-        t_boutique = min(1.0, boutique_clicks * 0.13)
-        # ~8 cart additions shifts you fully to high_intent weights
-        t_intent = min(1.0, len(cart) * 0.13)
-        # Wishlisted items apply a subtle nudge towards high_intent (10% per item, max 1.0)
-        t_wishlist = min(1.0, wishlist_items * 0.10)
-        # Festive is binary: holiday active = fully in festive_season mode
-        t_festive = 1.0 if active_festival else 0.0
-        
-        # Target matrices
-        c_discovery = CONTEXT_MATRICES["discovery"]
-        c_social = CONTEXT_MATRICES["social_commerce"]
-        c_boutique = CONTEXT_MATRICES["hyper_local_boutique"]
-        c_intent = CONTEXT_MATRICES["high_intent"]
-        c_festive = CONTEXT_MATRICES["festive_season"]
-        
-        # Blend them:
-        blended = {}
-        for key in base_weights.keys():
-            mix_val = (
-                (1.0 - t_creator) * (1.0 - t_boutique) * (1.0 - t_intent) * (1.0 - t_festive) * c_discovery[key]
-                + t_creator * c_social[key]
-                + t_boutique * c_boutique[key]
-                + (t_intent + t_wishlist * 0.5) * c_intent[key]
-                + t_festive * c_festive[key]
-            )
-            blended[key] = mix_val
-            
-        # Re-normalize to make sure they sum to exactly 1.0
-        total = sum(blended.values())
-        if total > 0:
-            for key in blended:
-                blended[key] = round(blended[key] / total, 4)
-        else:
-            return CONTEXT_MATRICES["discovery"]
-                
-        return blended
+        """Get the weight matrix for the current state."""
+        return CONTEXT_MATRICES.get(state, CONTEXT_MATRICES["discovery"])
 
     def _get_cache_key(self, zip_code, state, festival_active, aesthetic, active_date=""):
         return f"{zip_code}_{state}_{festival_active}_{aesthetic}_{active_date}"
 
     def score_all_products(self, user_context):
         """
-        Master scoring function. Runs the full PinPulse pipeline.
-        
-        user_context = {
-            "zip_code": "800008",
-            "aesthetic": "ethnic",
-            "aesthetic_vector": [...],
-            "age_group": "gen-z",
-            "state": "discovery",
-            "session_cart": [],
-            "interactions": [],
-            "time_offset_hours": 0,
-            "weather_condition": "hot_humid",  # Optional override
-            "active_festival": "chhath_puja",  # Optional override
-            "active_date": "2026-10-28",        # Current date string
-            "upcoming_events": [...]             # Calendar events in the next 7 days
-        }
-        Upcoming festival priority: events in the next 7 days get a 1.5x festivity
-        score boost vs the currently active festival (1.0x).
+        Master scoring function. Runs the PinPulse 4-pillar pipeline + price affinity multiplier.
         """
         zip_code = user_context.get("zip_code", "800008")
         state = user_context.get("state", "discovery")
@@ -131,14 +52,10 @@ class PinPulseEngine:
         user_age_group = user_context.get("age_group", "")
         session_cart = user_context.get("session_cart", [])
         interactions = user_context.get("interactions", [])
-        time_offset = user_context.get("time_offset_hours", 0)
-        # Upcoming festival context (next 7 days)
         upcoming_events = user_context.get("upcoming_events", [])
         active_date = user_context.get("active_date", "")
- 
-        # Resolve ZIP-based data
+
         zip_info = self.zip_data.get(zip_code, {})
-        weather_condition = user_context.get("weather_condition") or zip_info.get("weather_conditions", "hot_humid")
         active_festival = user_context.get("active_festival")
         if active_festival is None and "active_festival" in zip_info:
             active_festival = zip_info.get("active_festival")
@@ -147,23 +64,14 @@ class PinPulseEngine:
         cache_key = self._get_cache_key(zip_code, state, festival_active, user_aesthetic, active_date)
         
         now = time.time()
-        # Bypass cache if cart has items or interactions exist to keep UI reactive
         if (cache_key in self._cache and 
             now - self._cache_timestamp < CACHE_TTL_SECONDS and
             not session_cart and not interactions):
             return self._cache[cache_key]
 
-        # Get context-specific weights dynamically blended based on user journey
         weights = self.get_context_matrix(state, user_context)
-
         zip_aov = zip_info.get("aov", 2500)
 
-        # Get allowable materials from weather rules
-        weather_rule = self.weather_rules.get(weather_condition, {})
-        allowable_materials = weather_rule.get("allowable_materials", ["cotton", "linen"])
-        allowable_materials_vector = weather_rule.get("vector", [])
-
-        # Get festival rules
         target_color = ""
         target_nature = ""
         festive_context_vector = []
@@ -173,51 +81,11 @@ class PinPulseEngine:
             target_nature = festival_rule.get("target_nature", "")
             festive_context_vector = festival_rule.get("vector", [])
 
-        # Get creators and stores for this ZIP
         zip_creators = self.creators.get(zip_code, [])
         zip_stores = self.stores.get(zip_code, [])
 
-        # Apply time offset to interactions (for Time Warp demo)
-        adjusted_interactions = []
-        for interaction in interactions:
-            adj = interaction.copy()
-            adj["hours_elapsed"] = interaction.get("hours_elapsed", 0) + time_offset
-            adjusted_interactions.append(adj)
-
-        # Apply intent decay modifiers
-        catalog_with_intent = self.intent_engine.apply_session_modifiers(
-            [p.copy() for p in self.product_catalog],
-            adjusted_interactions,
-            self.cf_lookup,
-        )
-
-        # === Infer user's demographic age from cart + wishlist products ===
-        # Resolve full product objects for cart items
-        cart_product_objects = [
-            p for p in self.product_catalog
-            if str(p.get("id")) in [str(c) for c in session_cart]
-        ]
-        # Resolve wishlist items (interactions of type 'wishlist')
-        wishlist_ids = [
-            str(i.get("product_id")) for i in interactions
-            if i.get("action_type") == "wishlist"
-        ]
-        wishlist_product_objects = [
-            p for p in self.product_catalog
-            if str(p.get("id")) in wishlist_ids
-        ]
-        inferred_age_group = estimate_user_age(
-            cart_product_objects,
-            wishlist_product_objects,
-            default_age_group=user_age_group or "millennial",
-        )
-
-        # Score each product across all pillars
         scored_products = []
-        for product in catalog_with_intent:
-            # === STRICT GEOGRAPHIC REGIONAL ISOLATION ===
-            # If a product has explicit zip_codes assigned (e.g. ["302001"] for Rajasthan or ["682001"] for Kochi),
-            # strictly require that the active user region is included in zip_codes.
+        for product in self.product_catalog:
             p_zips = product.get("zip_codes", [])
             if p_zips and zip_code not in p_zips:
                 continue
@@ -227,41 +95,23 @@ class PinPulseEngine:
                 product, user_aesthetic, user_aesthetic_vector
             )
 
-            # === PILLAR 2: Fabric/Weather ===
-            s_fabric = calculate_fabric_score(
-                product, allowable_materials, allowable_materials_vector
-            )
-
-            # === WEATHER SOFT PENALTY (was hard veto) ===
-            # Instead of dropping products with poor fabric-weather match,
-            # apply a heavy score multiplier so they sink to the bottom.
-            if s_fabric < 0.2:
-                s_fabric = 0.05  # Very low score but still included
-
-            # === PILLAR 3: Festivity (Current vs Upcoming 7-Day Priority Boost) ===
-            # Current event: standard score (1.0x)
+            # === PILLAR 2: Festivity ===
             s_current = calculate_festivity_score(
                 product, festival_active, target_color, target_nature, festive_context_vector
             )
 
-            # Upcoming events: check if product matches any festival in next 7 days
-            # Upcoming match gets 1.5x priority over the currently active festival
             s_upcoming = 0.0
             for ev in upcoming_events:
-                # Skip if this upcoming event is the same as current active date
                 if str(ev.get("date", "")) == str(active_date):
                     continue
-                # Skip non-festive events (e.g. weddings are already scored separately)
                 if not ev.get("is_festive", True):
                     continue
 
                 ev_attire = ev.get("attire_tags", [])
                 if not ev_attire:
-                    # Try looking up festival rules by name
                     rule = self.festival_rules.get(ev.get("event_name", "").lower(), {})
                     ev_attire = [rule.get("target_color", ""), rule.get("target_nature", "")]
 
-                # Count tag overlaps between product and upcoming event attire
                 if ev_attire:
                     ev_attire_lower = [str(x).lower() for x in ev_attire if x]
                     matches = sum(
@@ -269,106 +119,43 @@ class PinPulseEngine:
                         if t.lower() in ev_attire_lower
                     )
                     if matches > 0:
-                        # Boost proportional to overlap count, capped at 1.0
                         s_upcoming = max(s_upcoming, min(1.0, 0.35 + 0.2 * matches))
 
             if s_upcoming > 0:
-                # Upcoming events get highest priority: boost up to 1.5
                 s_festivity = min(1.5, 1.0 + 0.5 * s_upcoming)
             else:
-                # Fall back to current active festival score
                 s_festivity = s_current
 
-            # === STEP 2 Creator Trend Score ===
+            # === PILLAR 3: Creator Trend Score ===
             s_creator = calculate_creator_score(product, zip_creators, user_age_group)
 
-            # === STEP 3 Boutique Score ===
+            # === PILLAR 4: Boutique Score ===
             s_boutique = calculate_boutique_score(product, zip_stores, zip_aov)
 
-            # === Velocity Score ===
-            s_velocity = calculate_velocity_score(product)
-
-            # === Intent (from decay engine) ===
-            s_intent = product.get("s_intent", 0.0)
-
-            # === CF Score (from cart) ===
-            s_cf = 0.0
-            if session_cart:
-                for cart_item_id in session_cart:
-                    # Support both string and int lookup
-                    cart_key = cart_item_id
-                    try:
-                        cart_key = int(cart_item_id)
-                    except ValueError:
-                        pass
-                    
-                    lookup_item = None
-                    if cart_key in self.cf_lookup:
-                        lookup_item = self.cf_lookup[cart_key]
-                    elif str(cart_key) in self.cf_lookup:
-                        lookup_item = self.cf_lookup[str(cart_key)]
-
-                    if lookup_item:
-                        for rec in lookup_item["recommendations"]:
-                            rec_id = rec["id"]
-                            product_id = product["id"]
-                            try:
-                                rec_id = int(rec_id)
-                            except ValueError:
-                                pass
-                            try:
-                                product_id = int(product_id)
-                            except ValueError:
-                                pass
-                                
-                            if rec_id == product_id:
-                                s_cf = max(s_cf, rec["strength"])
-
-            # === FINAL SCORE: Weighted Sum ===
+            # === FINAL SCORE: Weighted 4-Pillar Sum ===
             final_score = (
                 weights["w_aesthetic"] * s_aesthetic
-                + weights["w_fabric"] * s_fabric
                 + weights["w_festivity"] * s_festivity
                 + weights["w_boutique"] * s_boutique
                 + weights["w_creator"] * s_creator
-                + weights["w_cf"] * s_cf
-                + weights["w_intent"] * s_intent
-                + weights["w_velocity"] * s_velocity
             )
 
-            # === PILLAR A: Age Appropriateness Multiplier ===
-            # Use the *inferred* age from cart/wishlist, NOT the user-declared one.
-            # This self-corrects as the user shops.
-            product_age = product.get("age_group", product.get("age_range", "millennial"))
-            s_age = calculate_age_appropriateness_score(product_age, inferred_age_group)
-            final_score *= s_age
-
-            # === PILLAR B: ZIP Code AOV Price-Affinity Multiplier ===
-            # Products priced way above the ZIP AOV are penalised;
-            # products within budget get a clean 1.0× pass.
+            # === PRICE AFFINITY MULTIPLIER (s_price) ===
             product_price = product.get("price")
             s_price = calculate_price_affinity_score(product_price, zip_aov)
             final_score *= s_price
 
-            # Build the scored item
             scored_item = product.copy()
             scored_item.update({
                 "s_aesthetic": round(s_aesthetic, 3),
-                "s_fabric": round(s_fabric, 3),
                 "s_festivity": round(s_festivity, 3),
                 "s_creator": round(s_creator, 3),
                 "s_boutique": round(s_boutique, 3),
-                "s_velocity": round(s_velocity, 3),
-                "s_intent": round(s_intent, 3),
-                "s_cf": round(s_cf, 3),
-                "s_age": round(s_age, 3),
                 "s_price": round(s_price, 3),
-                "inferred_age_group": inferred_age_group,
                 "final_score": round(final_score, 3),
                 "state": state,
             })
 
-            # Generate "Why this is here?" labels for top items
             scored_item["reason_labels"] = self._generate_labels(
                 scored_item, active_festival, zip_code
             )
@@ -462,9 +249,6 @@ class PinPulseEngine:
         
         if item.get("s_creator", 0) > 0.7:
             labels.append("🔥 Loved by creators in your area")
-        
-        if item.get("s_fabric", 0) > 0.8:
-            labels.append("☀️ Perfect for your area's current weather")
         
         if item.get("s_boutique", 0) > 0.7:
             labels.append("🏪 Trending in local boutiques")
