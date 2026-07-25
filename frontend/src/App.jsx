@@ -666,12 +666,7 @@ function App() {
     fetchSeasonalTrends(seasonKey);
   };
 
-  useEffect(() => {
-    const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
-    const autoDetectedSeason = getWeatherSeason(activeWeather);
-    setActiveSeasonTab(autoDetectedSeason);
-    fetchSeasonalTrends(autoDetectedSeason);
-  }, [currentZipCode, sliderVal]);
+
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -2222,24 +2217,6 @@ function App() {
                 {/* Live Environmental Factors */}
                 <div className="env-factors-row">
                   <div className="factor-box">
-                    <div className="factor-title">Temperature</div>
-                    <div className="factor-value" style={{
-                      color: getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("10°") || 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("8°") || 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("9°") ? '#1e40af' : 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("39°") || 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("38°") ? '#9a3412' : 'var(--text-main)'
-                    }}>
-                      {getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp}
-                    </div>
-                  </div>
-                  <div className="factor-box">
-                    <div className="factor-title">Weather Status</div>
-                    <div className="factor-value" style={{ color: 'var(--text-main)' }}>
-                      {getPresetWeather(currentZipCode, activeDateProfile.dateStr).desc}
-                    </div>
-                  </div>
-                  <div className="factor-box">
                     <div className="factor-title">Local Calendar Event</div>
                     <div className="factor-value" style={{fontSize: '0.75rem', color: 'var(--peach-dark)', lineHeight: '1.2'}}>
                       {activeDateProfile.event}
@@ -2335,7 +2312,6 @@ function App() {
               {/* 1. Recommended For You */}
               <div className="section-container">
                 {(() => {
-                  const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
                   const recommendedProducts = products.filter(p => {
                     if (p.is_global_trend) return false;
                     return true;
@@ -2344,7 +2320,7 @@ function App() {
                   return (
                     <>
                       <h2 className="section-title">
-                        ✨ Recommended For You ({VIBE_DEFINITIONS[currentVibe]?.name || 'Personal Vibe'} · 🌡️ {activeWeather.temp} {activeWeather.desc})
+                        ✨ Recommended For You ({VIBE_DEFINITIONS[currentVibe]?.name || 'Personal Vibe'})
                       </h2>
                       {recommendedProducts.length > 0 ? (
                         <div className="horizontal-shelf">
