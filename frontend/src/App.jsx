@@ -531,7 +531,7 @@ function App() {
     }
   };
 
-  // Reset fetched state when zip code changes
+  // Reset and auto-fetch creator & boutique trends when zip code changes
   useEffect(() => {
     setYoutubeData(null);
     setBoutiqueData(null);
@@ -539,6 +539,8 @@ function App() {
     setBoutiqueFetched(false);
     setActiveSurgeTab(null);
     setVelocitySurgeData(null);
+    fetchYoutubeTrends(currentZipCode);
+    fetchBoutiques(currentZipCode);
   }, [currentZipCode]);
 
   // Re-run recommendations when key inputs change — debounced 120ms
@@ -653,14 +655,13 @@ function App() {
     if (backendStatus === "connected") {
       try {
         logMessage("Executing 8-Pillar Scoring Pipeline on FastAPI backend...", "sql");
-        const genderParam = activeTab === 'Men' ? 'men' : activeTab === 'Kids' ? 'kids' : 'women';
+        const genderParam = activeTab === 'Men' ? 'men' : 'women';
         const url = `http://localhost:8000/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}&state=${engineState}&gender=${genderParam}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error("API responded with error code");
         
         const data = await response.json();
         if (data.length > 0) {
-          recCacheRef.current[cacheKey] = data;
           setProducts(data);
           logMessage(`Scoring Engine: ${data.length} ${genderParam} products ranked for ${ZIP_CODES[currentZipCode].city}.`, "success");
           const stillExists = data.find(p => selectedProduct && p.id === selectedProduct.id);
