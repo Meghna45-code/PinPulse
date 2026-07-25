@@ -80,6 +80,7 @@ except Exception as _e:
 
 # Import recommender engine components
 import sys
+sys.path.append(os.path.dirname(__file__))
 from national_festivals import NATIONAL_FESTIVAL_DEFINITIONS
 from casual_events import CASUAL_EVENT_DEFINITIONS
 from patna_events import PATNA_EVENT_DEFINITIONS

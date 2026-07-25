@@ -2266,5 +2266,28 @@ body {
   transform: scale(1.03);
 }
 
+/* ── Onboarding Modal Overlay ──────────────── */
+.onboarding-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-modal-overlay);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
 
-
+.onboarding-modal {
+  background: var(--daisy-card);
+  border: 1px solid var(--peach-border);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 680px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}

@@ -278,3 +278,11 @@ def calculate_price_affinity_score(product_price, zip_aov):
         return round(1.0 - fraction * 0.8, 3)
     else:
         return 0.2
+
+def calculate_velocity_score(product, zip_velocity_map=None):
+    """Calculates local sales velocity score for a product."""
+    if not zip_velocity_map or not product:
+        return 0.5
+    pid = str(product.get("id") or product.get("product_id") or "")
+    return zip_velocity_map.get(pid, 0.5)
+

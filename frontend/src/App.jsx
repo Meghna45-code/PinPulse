@@ -268,19 +268,16 @@ function calculateCosineSimilarity(vecA, vecB) {
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
+const BACKEND_ZIP_MAPPED = {
+  "800008": "800008",
+  "302001": "302001",
+  "793001": "793001",
+  "752001": "752001",
+  "682001": "682001"
+};
+
 function App() {
   const [calendarPresets, setCalendarPresets] = useState(REGIONAL_DATE_PRESETS);
-  const [weatherMatrix, setWeatherMatrix] = useState(WEATHER_MATRIX);
-  
-  const getPresetWeather = (zip, dateStr) => {
-    try {
-      const month = parseInt(dateStr.split("-")[1], 10);
-      const dbZip = BACKEND_ZIP_MAPPED[zip] || "800008";
-      return weatherMatrix[dbZip]?.[month] || weatherMatrix[dbZip]?.[String(month)] || { desc: "Pleasant & Breezy 🍃", temp: "22°C", weather_conditions: "warm_moderate" };
-    } catch {
-      return { desc: "Pleasant & Breezy 🍃", temp: "22°C", weather_conditions: "warm_moderate" };
-    }
-  };
 
   const [activeTab, setActiveTab] = useState('Women'); // 'Men' | 'Women' | 'Kids'
   const [currentZipCode, setCurrentZipCode] = useState("800008");
@@ -295,7 +292,7 @@ function App() {
   const [purchasingId, setPurchasingId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [lookCompleter, setLookCompleter] = useState({ accessory: null, footwear: null });
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [tempVibe, setTempVibe] = useState("coastal_tropical");
   const [logs, setLogs] = useState([]);
   const [backendStatus, setBackendStatus] = useState("checking");
