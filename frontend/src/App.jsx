@@ -374,6 +374,17 @@ const getRegionalBoutiqueFallback = (zip) => {
   });
 };
 
+const getLocalCatalogImg = (idOrName) => {
+  const str = String(idOrName || '1');
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  const idx = (Math.abs(hash) % 60) + 1;
+  return `/catalog/catalog_${idx}.jpg`;
+};
+
 function App() {
   const [calendarPresets, setCalendarPresets] = useState(REGIONAL_DATE_PRESETS);
 
@@ -1674,7 +1685,7 @@ function App() {
             alt={product.name} 
             className="product-image"
             onError={(e) => {
-              e.target.src = `https://placehold.co/400x500/EFEBCE/A3A380?text=${encodeURIComponent(product.name)}`;
+              e.target.src = getLocalCatalogImg(product.id || product.name);
             }}
           />
           <div className="score-badge">
@@ -1806,7 +1817,7 @@ function App() {
             className="product-image"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
             onError={(e) => {
-              e.target.src = `https://placehold.co/400x500/3b3529/EFEBCE?text=${encodeURIComponent(product.name)}`;
+              e.target.src = getLocalCatalogImg(product.id || product.name);
             }}
           />
         </div>
@@ -2193,7 +2204,7 @@ function App() {
                         src={product.image_url} 
                         alt={product.name} 
                         className="product-image"
-                        onError={(e) => { e.target.src = `https://placehold.co/400x500/1a1a2e/ffffff?text=${encodeURIComponent(product.name)}`; }}
+                        onError={(e) => { e.target.src = getLocalCatalogImg(product.id || product.name); }}
                       />
                     </div>
                     <div className="product-info">
@@ -2449,7 +2460,7 @@ function App() {
                     src={p.image_url}
                     alt={p.name}
                     className="pdp-modal-img"
-                    onError={e => { e.target.src = `https://placehold.co/400x500/1a1a2e/ffffff?text=${encodeURIComponent(p.name)}`; }}
+                    onError={e => { e.target.src = getLocalCatalogImg(p.id || p.name); }}
                   />
                   <div className="pdp-modal-rank">Rank #{products.findIndex(x => x.id === p.id) + 1}</div>
                   <div className="pdp-modal-score">{(p.final_score * 100).toFixed(1)}% Match</div>
