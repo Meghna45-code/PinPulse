@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { FALLBACK_PRODUCTS } from './catalog_fallback';
+import { REGIONAL_RECOMMENDATIONS } from './recommendations_db';
 
 const ZIP_CODES = {
   "682001": { city: "Fort Kochi", state: "Kochi", name: "Kochi (682001)" },
