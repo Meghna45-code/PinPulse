@@ -1621,9 +1621,10 @@ function App() {
   };
 
   const renderProductCard = (product, idx) => {
-    const hasWeddingSurge = (activeDateProfile.event_type === "wedding_day") && product.tags.includes("ceremonial");
-    const hasFestiveSurge = activeDateProfile.isFestive && product.tags.includes("festive") && !hasWeddingSurge;
-    const isMicroCreator = product.tags.includes("micro_creator");
+    const tags = product.tags || [];
+    const hasWeddingSurge = (activeDateProfile.event_type === "wedding_day") && tags.includes("ceremonial");
+    const hasFestiveSurge = activeDateProfile.isFestive && tags.includes("festive") && !hasWeddingSurge;
+    const isMicroCreator = tags.includes("micro_creator");
     const isInCart = sessionCart.includes(product.id);
     
     return (
