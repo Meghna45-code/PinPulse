@@ -10,7 +10,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Anouk",
         "name": "anouk white  turquoise blue ethnic motifs art silk banarasi saree",
         "price": 1119.0,
-        "image_url": "/catalog/catalog_42.jpg",
+        "image_url": "/catalog/catalog_18.jpg",
         "product_url": "https://www.myntra.com/17744470",
         "scores": {
           "final_matching_pct": 96.56,
@@ -25,7 +25,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "VASTRANAND",
         "name": "vastranand green  gold coloured silk cotton printed banarasi saree",
         "price": 990.0,
-        "image_url": "/catalog/catalog_36.jpg",
+        "image_url": "/catalog/catalog_386.jpg",
         "product_url": "https://www.myntra.com/12337536",
         "scores": {
           "final_matching_pct": 96.56,
@@ -40,7 +40,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Om Shantam Sarees",
         "name": "om shantam sarees mustard yellow  gold toned silk blend embroidered banarasi saree",
         "price": 2449.0,
-        "image_url": "/catalog/catalog_39.jpg",
+        "image_url": "/catalog/catalog_452.jpg",
         "product_url": "https://www.myntra.com/12673230",
         "scores": {
           "final_matching_pct": 96.54,
@@ -55,7 +55,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Yashika",
         "name": "yashika navy blue  gold toned ethnic motifs art silk saree",
         "price": 524.0,
-        "image_url": "/catalog/catalog_9.jpg",
+        "image_url": "/catalog/catalog_333.jpg",
         "product_url": "https://www.myntra.com/18010826",
         "scores": {
           "final_matching_pct": 96.43,
@@ -70,7 +70,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "BOMBAY SELECTIONS",
         "name": "bombay selections yellow  gold toned woven design zari pure silk banarasi saree",
         "price": 10696.0,
-        "image_url": "/catalog/catalog_3.jpg",
+        "image_url": "/catalog/catalog_140.jpg",
         "product_url": "https://www.myntra.com/17640064",
         "scores": {
           "final_matching_pct": 96.41,
@@ -85,7 +85,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Shaily",
         "name": "shaily grey  gold coloured ethnic motifs zari woven design silk blend saree",
         "price": 1202.0,
-        "image_url": "/catalog/catalog_18.jpg",
+        "image_url": "/catalog/catalog_618.jpg",
         "product_url": "https://www.myntra.com/14986466",
         "scores": {
           "final_matching_pct": 96.37,
@@ -100,7 +100,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Pothys",
         "name": "pothys pink  gold toned ethnic motifs zari silk blend saree",
         "price": 2775.0,
-        "image_url": "/catalog/catalog_44.jpg",
+        "image_url": "/catalog/catalog_852.jpg",
         "product_url": "https://www.myntra.com/14718332",
         "scores": {
           "final_matching_pct": 96.34,
@@ -115,7 +115,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Anouk",
         "name": "anouk sea green  navy blue woven design ethnic motifs silk blend banarasi saree",
         "price": 1049.0,
-        "image_url": "/catalog/catalog_40.jpg",
+        "image_url": "/catalog/catalog_316.jpg",
         "product_url": "https://www.myntra.com/16945816",
         "scores": {
           "final_matching_pct": 96.32,
@@ -130,7 +130,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Saree mall",
         "name": "saree mall pink ethnic motifs zari silk blend banarasi sarees",
         "price": 2053.0,
-        "image_url": "/catalog/catalog_47.jpg",
+        "image_url": "/catalog/catalog_359.jpg",
         "product_url": "https://www.myntra.com/15536974",
         "scores": {
           "final_matching_pct": 96.31,
@@ -145,7 +145,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Anouk",
         "name": "anouk blue  maroon ethnic motifs print jute silk bhagalpuri saree",
         "price": 679.0,
-        "image_url": "/catalog/catalog_39.jpg",
+        "image_url": "/catalog/catalog_452.jpg",
         "product_url": "https://www.myntra.com/18011530",
         "scores": {
           "final_matching_pct": 96.31,
@@ -160,7 +160,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera fluorescent green  gold toned ethnic motifs zari silk cotton mysore silk saree",
         "price": 1199.0,
-        "image_url": "/catalog/catalog_47.jpg",
+        "image_url": "/catalog/catalog_359.jpg",
         "product_url": "https://www.myntra.com/17126244",
         "scores": {
           "final_matching_pct": 96.3,
@@ -175,7 +175,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "MIMOSA",
         "name": "mimosa turquoise blue  gold toned zari art silk banarasi saree",
         "price": 1637.0,
-        "image_url": "/catalog/catalog_25.jpg",
+        "image_url": "/catalog/catalog_837.jpg",
         "product_url": "https://www.myntra.com/15098236",
         "scores": {
           "final_matching_pct": 96.3,
@@ -190,7 +190,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Pothys",
         "name": "pothys green  copper toned ethnic motifs art silk banarasi saree",
         "price": 1880.0,
-        "image_url": "/catalog/catalog_46.jpg",
+        "image_url": "/catalog/catalog_88.jpg",
         "product_url": "https://www.myntra.com/17422074",
         "scores": {
           "final_matching_pct": 96.28,
@@ -205,7 +205,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "KALINI",
         "name": "kalini grey  gold ethnic motifs zari silk blend banarasi saree",
         "price": 794.0,
-        "image_url": "/catalog/catalog_25.jpg",
+        "image_url": "/catalog/catalog_837.jpg",
         "product_url": "https://www.myntra.com/17785630",
         "scores": {
           "final_matching_pct": 96.26,
@@ -220,7 +220,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "PERFECT WEAR",
         "name": "perfect wear green  blue ethnic motifs zari silk cotton banarasi saree",
         "price": 999.0,
-        "image_url": "/catalog/catalog_16.jpg",
+        "image_url": "/catalog/catalog_414.jpg",
         "product_url": "https://www.myntra.com/17897984",
         "scores": {
           "final_matching_pct": 96.25,
@@ -241,7 +241,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Chhabra 555",
         "name": "chhabra 555 pink  green bandhani gotta patti bandhani saree",
         "price": 2310.0,
-        "image_url": "/catalog/catalog_43.jpg",
+        "image_url": "/catalog/catalog_292.jpg",
         "product_url": "https://www.myntra.com/18092296",
         "scores": {
           "final_matching_pct": 93.65,
@@ -256,7 +256,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera green bandhani gotta patti bandhani saree",
         "price": 3599.0,
-        "image_url": "/catalog/catalog_58.jpg",
+        "image_url": "/catalog/catalog_149.jpg",
         "product_url": "https://www.myntra.com/15775700",
         "scores": {
           "final_matching_pct": 93.57,
@@ -271,7 +271,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "VASTRANAND",
         "name": "vastranand red  yellow bandhani gotta patti bandhani saree",
         "price": 1539.0,
-        "image_url": "/catalog/catalog_28.jpg",
+        "image_url": "/catalog/catalog_815.jpg",
         "product_url": "https://www.myntra.com/14088708",
         "scores": {
           "final_matching_pct": 93.53,
@@ -286,7 +286,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "AKISO",
         "name": "akiso grey floral print block print top",
         "price": NaN,
-        "image_url": "/catalog/catalog_42.jpg",
+        "image_url": "/catalog/catalog_18.jpg",
         "product_url": "https://www.myntra.com/17401386",
         "scores": {
           "final_matching_pct": 93.29,
@@ -301,7 +301,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Taavi",
         "name": "taavi blue sanganeri hand block print floral ethnic a line midi dress with side pocket",
         "price": NaN,
-        "image_url": "/catalog/catalog_58.jpg",
+        "image_url": "/catalog/catalog_149.jpg",
         "product_url": "https://www.myntra.com/15887652",
         "scores": {
           "final_matching_pct": 93.24,
@@ -316,7 +316,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera black  grey block print semi stitched lehenga  unstitched lehenga choli",
         "price": 1679.0,
-        "image_url": "/catalog/catalog_8.jpg",
+        "image_url": "/catalog/catalog_4.jpg",
         "product_url": "https://www.myntra.com/16291346",
         "scores": {
           "final_matching_pct": 93.19,
@@ -331,7 +331,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Geroo Jaipur",
         "name": "geroo jaipur yellow  pink gota patti hand embroidered pure georgette saree",
         "price": 6999.0,
-        "image_url": "/catalog/catalog_42.jpg",
+        "image_url": "/catalog/catalog_18.jpg",
         "product_url": "https://www.myntra.com/12708132",
         "scores": {
           "final_matching_pct": 93.16,
@@ -346,7 +346,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Taavi",
         "name": "taavi off white  green sanganeri hand block print pure cotton sustainable dupatta",
         "price": 569.0,
-        "image_url": "/catalog/catalog_49.jpg",
+        "image_url": "/catalog/catalog_76.jpg",
         "product_url": "https://www.myntra.com/14135274",
         "scores": {
           "final_matching_pct": 92.82,
@@ -361,7 +361,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "SALWAR STUDIO",
         "name": "salwar studio orange  maroon bandhani pure cotton block print saree",
         "price": 1285.0,
-        "image_url": "/catalog/catalog_54.jpg",
+        "image_url": "/catalog/catalog_779.jpg",
         "product_url": "https://www.myntra.com/18362722",
         "scores": {
           "final_matching_pct": 92.8,
@@ -376,7 +376,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Taavi",
         "name": "taavi women blue  white  sanganeri block print fit  flare dress with pocket detail",
         "price": NaN,
-        "image_url": "/catalog/catalog_1.jpg",
+        "image_url": "/catalog/catalog_516.jpg",
         "product_url": "https://www.myntra.com/15887616",
         "scores": {
           "final_matching_pct": 92.79,
@@ -391,7 +391,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Chhabra 555",
         "name": "chhabra 555 mustard yellow floral foil print gota patti made to measure ethnic maxi dress",
         "price": 1996.0,
-        "image_url": "/catalog/catalog_20.jpg",
+        "image_url": "/catalog/catalog_382.jpg",
         "product_url": "https://www.myntra.com/16408246",
         "scores": {
           "final_matching_pct": 92.67,
@@ -406,7 +406,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera green  peach coloured block print semi stitched lehenga choli",
         "price": 1749.0,
-        "image_url": "/catalog/catalog_38.jpg",
+        "image_url": "/catalog/catalog_143.jpg",
         "product_url": "https://www.myntra.com/15098894",
         "scores": {
           "final_matching_pct": 92.65,
@@ -421,7 +421,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Chhabra 555",
         "name": "chhabra 555 mustard  red bandhani gotta patti bandhani saree",
         "price": 2310.0,
-        "image_url": "/catalog/catalog_37.jpg",
+        "image_url": "/catalog/catalog_764.jpg",
         "product_url": "https://www.myntra.com/18092292",
         "scores": {
           "final_matching_pct": 92.63,
@@ -436,7 +436,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Geroo Jaipur",
         "name": "geroo jaipur red  gold toned bandhani zari silk blend bandhani saree",
         "price": 7499.0,
-        "image_url": "/catalog/catalog_10.jpg",
+        "image_url": "/catalog/catalog_266.jpg",
         "product_url": "https://www.myntra.com/15542938",
         "scores": {
           "final_matching_pct": 92.61,
@@ -451,7 +451,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Sanganeri Kurti",
         "name": "sanganeri kurti women pink bandhani printed gotta patti pure cotton kurta with sharara",
         "price": 1079.0,
-        "image_url": "/catalog/catalog_50.jpg",
+        "image_url": "/catalog/catalog_304.jpg",
         "product_url": "https://www.myntra.com/18175650",
         "scores": {
           "final_matching_pct": 92.58,
@@ -472,7 +472,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Sangria",
         "name": "sangria women blue printed pure cotton maxi dress with belt",
         "price": 624.0,
-        "image_url": "/catalog/catalog_34.jpg",
+        "image_url": "/catalog/catalog_463.jpg",
         "product_url": "https://www.myntra.com/13290206",
         "scores": {
           "final_matching_pct": 94.28,
@@ -487,7 +487,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Swishchick",
         "name": "swishchick women green  navy blue pure cotton embroidered maternity maxi dress",
         "price": NaN,
-        "image_url": "/catalog/catalog_41.jpg",
+        "image_url": "/catalog/catalog_140.jpg",
         "product_url": "https://www.myntra.com/17643800",
         "scores": {
           "final_matching_pct": 94.23,
@@ -502,7 +502,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "all about you",
         "name": "all about you blue pure cotton tiered denim solid maxi dress",
         "price": NaN,
-        "image_url": "/catalog/catalog_42.jpg",
+        "image_url": "/catalog/catalog_18.jpg",
         "product_url": "https://www.myntra.com/17133502",
         "scores": {
           "final_matching_pct": 94.18,
@@ -517,7 +517,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Revolution",
         "name": "revolution plus size grey  pink ethnic printed pure cotton maxi dress",
         "price": 2415.0,
-        "image_url": "/catalog/catalog_55.jpg",
+        "image_url": "/catalog/catalog_770.jpg",
         "product_url": "https://www.myntra.com/16121820",
         "scores": {
           "final_matching_pct": 94.04,
@@ -532,7 +532,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "STREET 9",
         "name": "street 9 lavender  maroon ethnic motifs chiffon maxi dress",
         "price": NaN,
-        "image_url": "/catalog/catalog_2.jpg",
+        "image_url": "/catalog/catalog_778.jpg",
         "product_url": "https://www.myntra.com/15310696",
         "scores": {
           "final_matching_pct": 93.97,
@@ -547,7 +547,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land beige  red ethnic motifs pure silk banarasi saree",
         "price": 1113.0,
-        "image_url": "/catalog/catalog_42.jpg",
+        "image_url": "/catalog/catalog_18.jpg",
         "product_url": "https://www.myntra.com/17932830",
         "scores": {
           "final_matching_pct": 93.93,
@@ -562,7 +562,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land pink  gold toned ethnic motifs woven design pure banarasi silk dupatta",
         "price": 738.0,
-        "image_url": "/catalog/catalog_44.jpg",
+        "image_url": "/catalog/catalog_852.jpg",
         "product_url": "https://www.myntra.com/17929948",
         "scores": {
           "final_matching_pct": 93.85,
@@ -577,7 +577,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land multicoloured floral zari pure silk kanjeevaram saree",
         "price": 2000.0,
-        "image_url": "/catalog/catalog_43.jpg",
+        "image_url": "/catalog/catalog_292.jpg",
         "product_url": "https://www.myntra.com/17638884",
         "scores": {
           "final_matching_pct": 93.8,
@@ -592,7 +592,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Aawari",
         "name": "aawari beige maxi solid maxi dress",
         "price": NaN,
-        "image_url": "/catalog/catalog_15.jpg",
+        "image_url": "/catalog/catalog_168.jpg",
         "product_url": "https://www.myntra.com/16511938",
         "scores": {
           "final_matching_pct": 93.79,
@@ -607,7 +607,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land pink  green woven design zari pure silk kanjeevaram saree",
         "price": 2000.0,
-        "image_url": "/catalog/catalog_9.jpg",
+        "image_url": "/catalog/catalog_333.jpg",
         "product_url": "https://www.myntra.com/17638794",
         "scores": {
           "final_matching_pct": 93.77,
@@ -622,7 +622,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land pink  golden ethnic motifs zari pure silk kanjeevaram saree",
         "price": 1724.0,
-        "image_url": "/catalog/catalog_4.jpg",
+        "image_url": "/catalog/catalog_540.jpg",
         "product_url": "https://www.myntra.com/17781756",
         "scores": {
           "final_matching_pct": 93.7,
@@ -637,7 +637,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "20Dresses",
         "name": "20dresses red chiffon maxi dress",
         "price": NaN,
-        "image_url": "/catalog/catalog_56.jpg",
+        "image_url": "/catalog/catalog_685.jpg",
         "product_url": "https://www.myntra.com/18072872",
         "scores": {
           "final_matching_pct": 93.68,
@@ -652,7 +652,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land orange floral zari pure silk ikat saree",
         "price": 1438.0,
-        "image_url": "/catalog/catalog_8.jpg",
+        "image_url": "/catalog/catalog_4.jpg",
         "product_url": "https://www.myntra.com/17638724",
         "scores": {
           "final_matching_pct": 93.67,
@@ -667,7 +667,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land green  pink kalamkari zari pure silk saree",
         "price": 1278.0,
-        "image_url": "/catalog/catalog_2.jpg",
+        "image_url": "/catalog/catalog_778.jpg",
         "product_url": "https://www.myntra.com/17900822",
         "scores": {
           "final_matching_pct": 93.6,
@@ -682,7 +682,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land teal green  golden floral zari pure silk banarasi saree",
         "price": 1418.0,
-        "image_url": "/catalog/catalog_21.jpg",
+        "image_url": "/catalog/catalog_993.jpg",
         "product_url": "https://www.myntra.com/17902840",
         "scores": {
           "final_matching_pct": 93.56,
@@ -703,7 +703,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land rust  blue ethnic motifs pure cotton ikat saree",
         "price": 997.0,
-        "image_url": "/catalog/catalog_19.jpg",
+        "image_url": "/catalog/catalog_942.jpg",
         "product_url": "https://www.myntra.com/17693248",
         "scores": {
           "final_matching_pct": 96.18,
@@ -718,7 +718,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land blue  golden ethnic motifs woven design zari pure silk kanjeevaram saree",
         "price": 1440.0,
-        "image_url": "/catalog/catalog_47.jpg",
+        "image_url": "/catalog/catalog_359.jpg",
         "product_url": "https://www.myntra.com/17781882",
         "scores": {
           "final_matching_pct": 96.03,
@@ -733,7 +733,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land grey  pink woven design zari pure silk banarasi saree",
         "price": 1427.0,
-        "image_url": "/catalog/catalog_55.jpg",
+        "image_url": "/catalog/catalog_770.jpg",
         "product_url": "https://www.myntra.com/17781870",
         "scores": {
           "final_matching_pct": 96.02,
@@ -748,7 +748,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land pink  golden zari pure silk banarasi saree",
         "price": 1320.0,
-        "image_url": "/catalog/catalog_50.jpg",
+        "image_url": "/catalog/catalog_304.jpg",
         "product_url": "https://www.myntra.com/17902832",
         "scores": {
           "final_matching_pct": 95.96,
@@ -763,7 +763,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land navy blue  golden ethnic motifs zari pure silk kanjeevaram saree",
         "price": 1359.0,
-        "image_url": "/catalog/catalog_20.jpg",
+        "image_url": "/catalog/catalog_382.jpg",
         "product_url": "https://www.myntra.com/17902852",
         "scores": {
           "final_matching_pct": 95.86,
@@ -778,7 +778,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land white  pink kalamkari zari pure silk saree",
         "price": 1278.0,
-        "image_url": "/catalog/catalog_33.jpg",
+        "image_url": "/catalog/catalog_467.jpg",
         "product_url": "https://www.myntra.com/17900914",
         "scores": {
           "final_matching_pct": 95.78,
@@ -793,7 +793,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Saree mall",
         "name": "saree mall navy blue  pink floral print satin bomkai silk saree",
         "price": 1155.0,
-        "image_url": "/catalog/catalog_18.jpg",
+        "image_url": "/catalog/catalog_618.jpg",
         "product_url": "https://www.myntra.com/13901340",
         "scores": {
           "final_matching_pct": 95.72,
@@ -808,7 +808,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land pink  gold toned ethnic motifs zari pure silk banarasi saree",
         "price": 1113.0,
-        "image_url": "/catalog/catalog_36.jpg",
+        "image_url": "/catalog/catalog_386.jpg",
         "product_url": "https://www.myntra.com/17932822",
         "scores": {
           "final_matching_pct": 95.66,
@@ -823,7 +823,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Kalamandir",
         "name": "kalamandir red  blue colourblocked zari pure silk ikat saree",
         "price": 522.0,
-        "image_url": "/catalog/catalog_56.jpg",
+        "image_url": "/catalog/catalog_685.jpg",
         "product_url": "https://www.myntra.com/16919938",
         "scores": {
           "final_matching_pct": 95.65,
@@ -838,7 +838,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land golden  black checked zari pure silk kanjeevaram saree",
         "price": 1440.0,
-        "image_url": "/catalog/catalog_38.jpg",
+        "image_url": "/catalog/catalog_143.jpg",
         "product_url": "https://www.myntra.com/17900816",
         "scores": {
           "final_matching_pct": 95.63,
@@ -853,7 +853,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Unnati Silks",
         "name": "unnati silks brown  blue handloom sustainable ethnic motifs zari pure silk tussar saree",
         "price": 9999.0,
-        "image_url": "/catalog/catalog_44.jpg",
+        "image_url": "/catalog/catalog_852.jpg",
         "product_url": "https://www.myntra.com/16765428",
         "scores": {
           "final_matching_pct": 95.6,
@@ -868,7 +868,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land yellow  golden zari pure silk banarasi saree",
         "price": 1320.0,
-        "image_url": "/catalog/catalog_47.jpg",
+        "image_url": "/catalog/catalog_359.jpg",
         "product_url": "https://www.myntra.com/17900834",
         "scores": {
           "final_matching_pct": 95.6,
@@ -883,7 +883,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land white  golden zari pure silk banarasi saree",
         "price": 1320.0,
-        "image_url": "/catalog/catalog_60.jpg",
+        "image_url": "/catalog/catalog_99.jpg",
         "product_url": "https://www.myntra.com/17900828",
         "scores": {
           "final_matching_pct": 95.52,
@@ -898,7 +898,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Silk Land",
         "name": "silk land blue  golden floral zari pure silk kanjeevaram saree",
         "price": 1278.0,
-        "image_url": "/catalog/catalog_35.jpg",
+        "image_url": "/catalog/catalog_359.jpg",
         "product_url": "https://www.myntra.com/17781796",
         "scores": {
           "final_matching_pct": 95.5,
@@ -913,7 +913,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Saree mall",
         "name": "saree mall off white  red ethnic motifs silk blend bomkai silk sarees",
         "price": 991.0,
-        "image_url": "/catalog/catalog_39.jpg",
+        "image_url": "/catalog/catalog_452.jpg",
         "product_url": "https://www.myntra.com/15535250",
         "scores": {
           "final_matching_pct": 95.45,
@@ -934,7 +934,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Charukriti",
         "name": "charukriti white  pink woven design pure linen saree",
         "price": 7480.0,
-        "image_url": "/catalog/catalog_58.jpg",
+        "image_url": "/catalog/catalog_149.jpg",
         "product_url": "https://www.myntra.com/18189104",
         "scores": {
           "final_matching_pct": 96.32,
@@ -949,7 +949,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Thara Sarees",
         "name": "thara sarees off white  golden handloom zari work pure cotton kasavu saree",
         "price": 1709.0,
-        "image_url": "/catalog/catalog_59.jpg",
+        "image_url": "/catalog/catalog_814.jpg",
         "product_url": "https://www.myntra.com/16408472",
         "scores": {
           "final_matching_pct": 96.27,
@@ -964,7 +964,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Arhi",
         "name": "arhi yellow  gold toned zari pure linen saree",
         "price": 4491.0,
-        "image_url": "/catalog/catalog_49.jpg",
+        "image_url": "/catalog/catalog_76.jpg",
         "product_url": "https://www.myntra.com/18307516",
         "scores": {
           "final_matching_pct": 96.1,
@@ -979,7 +979,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera black  gold ethnic motifs zari pure linen saree",
         "price": 3732.0,
-        "image_url": "/catalog/catalog_46.jpg",
+        "image_url": "/catalog/catalog_88.jpg",
         "product_url": "https://www.myntra.com/16662142",
         "scores": {
           "final_matching_pct": 96.1,
@@ -994,7 +994,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "KALINI",
         "name": "kalini white  purple zari pure cotton kasavu saree",
         "price": 699.0,
-        "image_url": "/catalog/catalog_31.jpg",
+        "image_url": "/catalog/catalog_637.jpg",
         "product_url": "https://www.myntra.com/18087546",
         "scores": {
           "final_matching_pct": 95.96,
@@ -1009,7 +1009,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Pavechas",
         "name": "pavechas off white  gold toned pure cotton kasavu saree",
         "price": 1099.0,
-        "image_url": "/catalog/catalog_26.jpg",
+        "image_url": "/catalog/catalog_877.jpg",
         "product_url": "https://www.myntra.com/7188844",
         "scores": {
           "final_matching_pct": 95.88,
@@ -1024,7 +1024,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "BharatSthali",
         "name": "bharatsthali white  brown woven design mirror work pure linen narayan peth saree ",
         "price": 6468.0,
-        "image_url": "/catalog/catalog_36.jpg",
+        "image_url": "/catalog/catalog_386.jpg",
         "product_url": "https://www.myntra.com/15706044",
         "scores": {
           "final_matching_pct": 95.82,
@@ -1039,7 +1039,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Thara Sarees",
         "name": "thara sarees off white ethnic motifs embroidered pure cotton kasavu saree",
         "price": 1169.0,
-        "image_url": "/catalog/catalog_48.jpg",
+        "image_url": "/catalog/catalog_482.jpg",
         "product_url": "https://www.myntra.com/15363994",
         "scores": {
           "final_matching_pct": 95.81,
@@ -1054,7 +1054,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Thara Sarees",
         "name": "thara sarees women off white  golden ethnic motifs zari pure cotton kasavu saree",
         "price": 1979.0,
-        "image_url": "/catalog/catalog_43.jpg",
+        "image_url": "/catalog/catalog_292.jpg",
         "product_url": "https://www.myntra.com/16635310",
         "scores": {
           "final_matching_pct": 95.76,
@@ -1069,7 +1069,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "The Chennai Silks",
         "name": "the chennai silks off white  black zari pure cotton kasavu saree",
         "price": 1124.0,
-        "image_url": "/catalog/catalog_34.jpg",
+        "image_url": "/catalog/catalog_463.jpg",
         "product_url": "https://www.myntra.com/16100674",
         "scores": {
           "final_matching_pct": 95.6,
@@ -1084,7 +1084,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "KALINI",
         "name": "kalini off white  golden checked zari pure cotton kasavu saree",
         "price": 798.0,
-        "image_url": "/catalog/catalog_59.jpg",
+        "image_url": "/catalog/catalog_814.jpg",
         "product_url": "https://www.myntra.com/18015000",
         "scores": {
           "final_matching_pct": 95.59,
@@ -1099,7 +1099,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera green  white ethnic motifs woven design pure linen saree",
         "price": 1799.0,
-        "image_url": "/catalog/catalog_37.jpg",
+        "image_url": "/catalog/catalog_764.jpg",
         "product_url": "https://www.myntra.com/17983572",
         "scores": {
           "final_matching_pct": 95.53,
@@ -1114,7 +1114,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Mitera",
         "name": "mitera white  pink floral pure linen zari digital printed saree",
         "price": 1259.0,
-        "image_url": "/catalog/catalog_23.jpg",
+        "image_url": "/catalog/catalog_239.jpg",
         "product_url": "https://www.myntra.com/17035482",
         "scores": {
           "final_matching_pct": 95.5,
@@ -1129,7 +1129,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "BEATITUDE",
         "name": "beatitude white  red zari pure linen saree",
         "price": 5829.0,
-        "image_url": "/catalog/catalog_11.jpg",
+        "image_url": "/catalog/catalog_627.jpg",
         "product_url": "https://www.myntra.com/18288218",
         "scores": {
           "final_matching_pct": 95.5,
@@ -1144,7 +1144,7 @@ export const REGIONAL_RECOMMENDATIONS = {
         "brand": "Pothys",
         "name": "pothys blue  gold toned checked zari pure linen saree",
         "price": 1000.0,
-        "image_url": "/catalog/catalog_59.jpg",
+        "image_url": "/catalog/catalog_814.jpg",
         "product_url": "https://www.myntra.com/16218394",
         "scores": {
           "final_matching_pct": 95.49,

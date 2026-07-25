@@ -381,7 +381,7 @@ const getLocalCatalogImg = (idOrName) => {
     hash = (hash << 5) - hash + str.charCodeAt(i);
     hash |= 0;
   }
-  const idx = (Math.abs(hash) % 60) + 1;
+  const idx = (Math.abs(hash) % 1000) + 1;
   return `/catalog/catalog_${idx}.jpg`;
 };
 

@@ -116,7 +116,7 @@ BOUTIQUE_DEFS = {
 }
 
 def get_image_url(pid):
-    img_num = (abs(hash(str(pid))) % 60) + 1
+    img_num = (abs(hash(str(pid))) % 1000) + 1
     return f"/catalog/catalog_{img_num}.jpg"
 
 def format_product(item, idx, zip_code):
