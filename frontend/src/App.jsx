@@ -635,16 +635,8 @@ function App() {
     }
   };
 
-  const getWeatherSeason = (weatherObj) => {
-    if (!weatherObj) return "summer";
-    const desc = (weatherObj.desc || "").toLowerCase();
-    const tempStr = (weatherObj.temp || "").replace("°C", "").replace("°", "").trim();
-    const temp = parseInt(tempStr, 10) || 30;
-    if (desc.includes("rain") || desc.includes("monsoon") || weatherObj.rainy) return "monsoon";
-    if (desc.includes("cold") || desc.includes("winter") || temp < 20 || weatherObj.cold_wave) return "winter";
-    if (desc.includes("pleasant") || desc.includes("autumn") || desc.includes("moderate") || (temp >= 20 && temp <= 27)) return "autumn";
-    return "summer";
-  };
+
+
 
   const fetchSeasonalTrends = async (seasonKey) => {
     setIsSeasonalLoading(true);
@@ -691,236 +683,41 @@ function App() {
     setTrendsPanelOpen(false);
   };
 
-  // Client-side 8-Pillar Scoring Simulation Fallback
   const runLocalRecommendationCalculator = (profile, userVibeVector) => {
-    logMessage("Running client-side 8-Pillar mathematical scoring simulation...", "sql");
-    
-    const month = parseInt(profile.dateStr.split("-")[1], 10);
-    const dbZip = ZIP_MAPPING[currentZipCode] || currentZipCode;
-    const weatherEntry = WEATHER_MATRIX[dbZip]?.[month] || WEATHER_MATRIX[dbZip]?.[String(month)] || {};
-    const isColdWave = weatherEntry.cold_wave || false;
-    const isHotWave = weatherEntry.hot_wave || false;
-    const isRainy = weatherEntry.rainy || false;
-    const isWeddingDay = (profile.event_type === "wedding_day");
-    
-    const weatherCondition = weatherEntry.weather_conditions || "hot_humid";
-    const allowableMaterials = WEATHER_RULES[weatherCondition]?.allowable_materials || ["cotton", "linen"];
-    const allowableMaterialsVector = generateVibeVector(weatherCondition);
-    
-    const isFestivalActive = profile.isFestive || manualFestival !== "None";
-    const festName = manualFestival !== "None" ? manualFestival.toLowerCase() : profile.isFestive ? "chhath_puja" : "";
-    const festivalRule = FESTIVAL_RULES[festName] || {};
-    const targetColor = festivalRule.target_color || "";
-    const targetNature = festivalRule.target_nature || "";
-    const festiveContextVector = generateVibeVector(festName || "chhath_puja");
+    logMessage("Running recommendation pipeline for active region...", "sql");
+    const zipData = REGIONAL_RECOMMENDATIONS[currentZipCode] || REGIONAL_RECOMMENDATIONS["800008"];
+    let finalFeed = [];
 
-    // Local CF Lookup mock
-    const activeCFBoosts = {};
-    sessionCart.forEach(cid => {
-      const recs = CF_LOOKUP[cid]?.recommendations || [];
-      recs.forEach(rec => {
-        if (!activeCFBoosts[rec.id] || rec.strength > activeCFBoosts[rec.id]) {
-          activeCFBoosts[rec.id] = rec.strength;
-        }
-      });
-    });
-
-    const weights = CONTEXT_MATRICES[engineState] || CONTEXT_MATRICES["discovery"];
-
-    const computed = FALLBACK_PRODUCTS.filter(product => {
-      if (product.zip_codes && product.zip_codes.length > 0) {
-        return product.zip_codes.includes(currentZipCode);
-      }
-      return true;
-    }).map(product => {
-      const id = product.id;
-      const tags = product.tags;
-      const descLower = product.description.lower || product.description.toLowerCase();
-
-      // Extract attributes dynamically
-      let material = "cotton";
-      for (let m of ["silk", "linen", "rayon", "velvet", "wool", "denim", "polyester", "chanderi", "georgette", "organza"]) {
-        if (tags.includes(m) || descLower.includes(m)) { material = m; break; }
-      }
-      let color = "multi";
-      for (let c of ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]) {
-        if (tags.includes(c) || descLower.includes(c)) { color = c; break; }
-      }
-      let nature = "casual";
-      for (let n of ["ethnic", "festive", "casual", "streetwear", "traditional", "ceremonial"]) {
-        if (tags.includes(n) || descLower.includes(n)) { nature = n; break; }
-      }
-      let category = "Ethnic";
-      for (let cat of ["Ethnic", "Western", "Accessory", "Footwear"]) {
-        if (tags.includes(cat.toLowerCase()) || descLower.includes(cat.toLowerCase())) { category = cat; break; }
-      }
-      if (category === "Ethnic" && tags.some(t => ["hoodie", "cargo", "jeans", "jacket"].includes(t))) category = "Western";
-      if (tags.some(t => ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"].includes(t))) category = "Accessory";
-      if (tags.some(t => ["boots", "mojari", "sandals", "footwear"].includes(t))) category = "Footwear";
-
-      const price = (id * 17) % 3000 + 499;
-      const stockLevel = (id * 7) % 50 + 1;
-      const isEvergreen = (id % 15 === 0);
-      const baselineSales = (id * 3) % 20 + 5;
-      const velocityEntry = LOCAL_VELOCITY_CACHE[id] || {};
-      const vScore = velocityEntry.velocity_score || 0.0;
-      const currentSales = vScore > 0 ? Math.floor(baselineSales * (1.0 + 2.0 * vScore)) : baselineSales + (id % 5);
-      const ageGroup = tags.includes("streetwear") ? "gen-z" : "millennial";
-
-      const tagKey = product.tags.join("|");
-      const embedding = embeddingCacheRef.current[tagKey]
-        || (embeddingCacheRef.current[tagKey] = generateVibeVector(tagKey));
-
-      // === Pillar 1: Aesthetic score (Dual-Modal Vector Cosine Fusion) ===
-      let productVec = product.vector || product.embedding || embedding;
-      let rawCos = calculateCosineSimilarity(userVibeVector, productVec);
-      let sAesthetic = (rawCos + 1) / 2;
-
-      const vibeDef = VIBE_DEFINITIONS[currentVibe] || VIBE_DEFINITIONS["coastal_tropical"];
-      const vibeTags = vibeDef.tags || [];
-      const tagOverlap = product.tags.filter(t => vibeTags.includes(t.toLowerCase())).length;
-      if (tagOverlap > 0) {
-        sAesthetic = Math.min(1.0, sAesthetic + 0.15 * tagOverlap);
-      }
-
-      // === Pillar 2: Fabric & Thermal Weather Score ===
-      let sFabric = 0.5;
-      if (allowableMaterials.includes(material)) {
-        sFabric = 1.0;
-      } else if (isHotWave && ["wool", "velvet", "heavy_silk", "brocade"].includes(material)) {
-        sFabric = 0.05; // Thermal Veto for hot weather
-      } else if (isColdWave && ["wool", "velvet", "heavy_silk", "layering", "cardigan", "jacket"].includes(material)) {
-        sFabric = 1.0; // Thermal Comfort boost for cold weather
-      } else {
-        sFabric = 0.6;
-      }
-
-      // WEATHER VETO
-      if (sFabric < 0.2) return null;
-
-      // === Pillar 3: Festivity score ===
-      let sFestivity = 1.0;
-      if (isFestivalActive) {
-        sFestivity = calculateCosineSimilarity(festiveContextVector, embedding);
-        if (color === targetColor && nature === targetNature) sFestivity = 1.0;
-        else sFestivity = (sFestivity + 1) / 2;
-      }
-
-      // === Pillar 4: Creator score ===
-      let sCreator = 0.5;
-      if (isEvergreen) sCreator = 0.85;
-      else {
-        const localCreators = FALLBACK_CREATORS[dbZip] || [];
-        let maxC = 0.0;
-        localCreators.forEach(c => {
-          const sim = (calculateCosineSimilarity(c.vector, embedding) + 1) / 2;
-          const penalty = ageGroup === c.demographic ? 1.0 : 0.1;
-          maxC = Math.max(maxC, sim * penalty * c.subscriber_weight);
-        });
-        sCreator = maxC;
-      }
-
-      // === Pillar 5: Boutique score ===
-      let sBoutique = 0.5;
-      if (isEvergreen) sBoutique = 0.85;
-      else {
-        const localStores = FALLBACK_STORES[dbZip] || [];
-        let maxS = 0.0;
-        localStores.forEach(s => {
-          const sim = (calculateCosineSimilarity(s.vector, embedding) + 1) / 2;
-          let wRating = Math.max(0.0, (s.rating - 3.0) / 2.0);
-          if (s.review_count < 50) wRating *= 0.5;
-          const catGate = ["ethnic", "occasion", "festive", "traditional"].includes(category.toLowerCase()) ? 1.0 : 0.2;
-          const pricePenalty = s.estimated_cost > 2500 * 2 ? 0.3 : 1.0;
-          maxS = Math.max(maxS, sim * wRating * catGate * pricePenalty);
-        });
-        sBoutique = maxS;
-      }
-
-      // === Pillar 6: Intent score ===
-      let sIntent = 0.0; // offline simple intent decay mock
-
-      // === Pillar 7: CF score ===
-      let sCf = activeCFBoosts[id] || 0.0;
-
-      // Final score formula: Primary weight given to Aesthetic Vibe match
-      let finalScore = (
-        0.65 * sAesthetic +
-        0.15 * sFabric +
-        0.10 * sFestivity +
-        0.05 * sBoutique +
-        0.05 * sCreator
-      );
-
-      // Low Stock Penalty
-      if (stockLevel < 5) finalScore *= 0.1;
-
-      // Dynamic rules overrides
-      if (currentZipCode === "800001" && isWeddingDay) {
-        if (tags.includes("heavy_silk")) finalScore += 0.50;
-        else if (tags.includes("summer") || tags.includes("casual")) finalScore -= 0.50;
-      }
-      if (currentZipCode === "560034" && isWeddingDay) {
-        if (tags.includes("kasavu_weave")) finalScore += 0.50;
-      }
-      if (currentZipCode === "752001" && isWeddingDay) {
-        if (tags.includes("sambalpuri") || tags.includes("tussar_silk")) finalScore += 0.50;
-      }
-
-      return {
-        ...product,
-        material,
-        color,
-        nature,
-        category,
-        price,
-        stock_level: stockLevel,
-        is_evergreen: isEvergreen,
-        baseline_sales: baselineSales,
-        current_sales: currentSales,
-        units_last_hour: currentSales - baselineSales,
-        is_trending: sVelocity >= 0.75,
-        vector_score: sAesthetic,
-        tag_score: sCreator,
-        boost_score: sFestivity,
-        velocity_score: sVelocity,
-        velocity_boost: sIntent,
-        final_score: finalScore,
-        overlap_tags: tags.filter(tag => profile.trendingTags.includes(tag)),
-        scoring_breakdown: {
-          layer1_personal_vibe: weights.w_aesthetic * sAesthetic,
-          layer2_creator_trend: weights.w_creator * sCreator,
-          layer3_local_boutique: weights.w_boutique * sBoutique,
-          layer4_festivity: weights.w_festivity * sFestivity,
-          layer5_weather: weights.w_fabric * sFabric,
-          layer6_velocity: weights.w_velocity * sVelocity,
-          layer7_intent: weights.w_intent * sIntent,
-          layer8_cf: weights.w_cf * sCf,
-          raw_values: {
-            personal_vibe_similarity: sAesthetic,
-            creator_trend_match: sCreator,
-            local_boutique_match: sBoutique,
-            festivity_match: sFestivity,
-            weather_match: sFabric,
-            checkout_velocity_score: sVelocity,
-            intent_score: sIntent,
-            cf_score: sCf
-          }
-        },
+    if (zipData && zipData.top_recommendations && zipData.top_recommendations.length > 0) {
+      finalFeed = zipData.top_recommendations.map(rec => ({
+        id: rec.product_id,
+        name: rec.name,
+        brand: rec.brand,
+        price: rec.price,
+        image_url: rec.image_url,
+        product_url: rec.product_url,
+        final_score: rec.scores.final_matching_pct / 100,
+        vibe_score: rec.scores.vibe_component_pct / 100,
+        creator_score: rec.scores.creator_component_pct / 100,
+        boutique_score: rec.scores.boutique_component_pct / 100,
+        tags: ["ethnic", "festive", "traditional", "silk"],
+        description: rec.name,
         reason_labels: [
-          sFestivity > 0.7 && isFestivalActive ? `✨ Trending for Festival` : null,
-          sCreator > 0.7 ? `🔥 Loved by local creators` : null,
-          sFabric > 0.8 ? `☀️ Climate-appropriate` : null,
-          sCf > 0.5 ? `👥 People also bought` : null
-        ].filter(Boolean)
-      };
-    }).filter(Boolean);
-
-    computed.sort((a, b) => b.final_score - a.final_score);
-    const finalFeed = computed;
+          "✨ Regional Cultural Match",
+          "🔥 Loved by local creators",
+          "🏬 Popular in local boutiques"
+        ]
+      }));
+    } else {
+      finalFeed = FALLBACK_PRODUCTS.map(product => ({
+        ...product,
+        final_score: 0.92,
+        reason_labels: ["✨ Recommended For You"]
+      }));
+    }
 
     setProducts(finalFeed);
-    logMessage(`Local matching algorithm ranked ${finalFeed.length} items. 8-Pillar weights applied.`, "success");
+    logMessage(`Loaded ${finalFeed.length} recommendations for ${ZIP_CODES[currentZipCode]?.city || currentZipCode}.`, "success");
     if (finalFeed.length > 0) {
       setSelectedProduct(finalFeed[0]);
     }
@@ -2064,7 +1861,7 @@ function App() {
       </header>
 
       {/* Dashboard Content Grid */}
-      <div className="dashboard-grid" style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', padding: '24px', maxWidth: '1600px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      <div className="dashboard-grid" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px 20px', width: '100%', maxWidth: '100%', margin: '0 auto', position: 'relative', zIndex: 1 }}>
         
         {/* Left Side: Controller + Grid Feed */}
         <div className="main-feed-panel" style={{ flex: 1, minWidth: 0 }}>
@@ -2174,14 +1971,8 @@ function App() {
                         }}>{boutiqueData.boutiques.length}</span>
                       )}
                     </button>
-
-                    <div style={{ width: '1px', height: '28px', background: 'var(--border-color)', margin: '0 4px' }} />
                   </>
                 )}
-
-                <button className="onboarding-btn" onClick={() => setShowOnboarding(true)}>
-                  ✨ Vibe Check
-                </button>
               </div>
             </div>
             
@@ -2334,119 +2125,6 @@ function App() {
                     </>
                   );
                 })()}
-              </div>
-
-              {/* 2. Global Trends */}
-              <div className="section-container">
-                <div 
-                  className="festival-banner" 
-                  style={{ backgroundImage: `url(/images/global_trends_banner.png)` }}
-                  onClick={() => setExpandedSections(prev => ({ ...prev, global: !prev.global }))}
-                >
-                    <div className="banner-overlay">
-                      <span className="banner-badge">🌍 GLOBAL STYLE PULSE</span>
-                      <h2 className="banner-title">GLOBAL RUNWAY TRENDS</h2>
-                      <span className="banner-cta">
-                        {expandedSections.global ? '🙈 CLICK TO COLLAPSE COLLECTION' : '✨ CLICK TO EXPLORE TRENDS'}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {expandedSections.global && (() => {
-                    let extractedGlobalTrends = [];
-                    if (globalRunwayData && globalRunwayData.cities) {
-                      Object.entries(globalRunwayData.cities).forEach(([cityKey, cityData]) => {
-                        if (cityData.trends) {
-                          cityData.trends.forEach(trend => {
-                            extractedGlobalTrends.push({
-                              id: `global_${trend.id || trend.trend_name}`,
-                              name: trend.trend_name,
-                              description: trend.description,
-                              tags: trend.vibe_tags || [],
-                              category: "Global Runway",
-                              is_global_trend: true,
-                              global_city: cityData.city || cityKey,
-                              global_country: cityData.country || "",
-                              global_flag: cityData.flag || "🌍",
-                              global_primary_color: cityData.primary_color || "#9b6cb5",
-                              global_style_archetype: cityData.style_archetype || "",
-                              global_season: cityData.season || "SS26",
-                              global_heat_score: trend.heat_score || 0.9,
-                              global_searches_weekly: trend.global_searches_weekly || 150000,
-                              global_key_pieces: trend.key_pieces || [],
-                              global_trending_colors: trend.trending_colors || []
-                            });
-                          });
-                        }
-                      });
-                    }
-                    const globalProducts = extractedGlobalTrends.length > 0 
-                      ? extractedGlobalTrends 
-                      : products.filter(p => p.is_global_trend);
-                      
-                    return globalProducts.length > 0 ? (
-                      <div className="horizontal-shelf" style={{ gap: '18px', marginTop: '15px' }}>
-                        {globalProducts
-                          .slice(0, 25)
-                          .map((product) => renderGlobalTrendCard(product))}
-                      </div>
-                    ) : (
-                      <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Global trends loading...</p>
-                    );
-                  })()}
-                </div>
-
-              {/* 3. Seasonal Fashion Studio */}
-              <div className="section-container" style={{ marginTop: '36px' }}>
-                {(() => {
-                  const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
-                  const autoDetectedSeason = getWeatherSeason(activeWeather);
-                  const bannerImg = SEASON_BANNERS[autoDetectedSeason] || "/images/summer_banner.png";
-
-                  return (
-                    <div 
-                      className="festival-banner seasonal-banner"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, rgba(15,15,25,0.72), rgba(30,20,45,0.78)), url(${bannerImg})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '16px',
-                        padding: '30px 32px',
-                        border: '1px solid rgba(255,255,255,0.18)',
-                        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.3)'
-                      }}
-                    >
-                      <div className="banner-overlay" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                          <span className="banner-badge" style={{ background: 'linear-gradient(90deg, #ff9a9e 0%, #fecfef 100%)', color: '#1a1a2e', fontWeight: 'bold', fontSize: '0.8rem', letterSpacing: '0.5px' }}>
-                            ✨ SEASONAL FASHION STUDIO
-                          </span>
-                          <span style={{ fontSize: '0.8rem', color: '#ffffff', background: 'rgba(0,0,0,0.5)', padding: '5px 14px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(6px)', fontWeight: '600' }}>
-                            ⚡ Live Weather Sync: {activeWeather.temp} • {activeWeather.desc}
-                          </span>
-                        </div>
-                        
-                        <h2 className="banner-title" style={{ margin: '8px 0 4px 0', fontSize: '1.6rem', letterSpacing: '0.5px', color: '#ffffff', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>
-                          {seasonalData?.meta?.title || "SEASONAL APPAREL COLLECTION"}
-                        </h2>
-                        <p className="banner-desc" style={{ margin: 0, opacity: 0.95, fontSize: '0.92rem', maxWidth: '850px', color: '#f8fafc', textShadow: '0 1px 6px rgba(0,0,0,0.7)', lineHeight: '1.4' }}>
-                          {seasonalData?.meta?.description || "Browse climate-engineered apparel tailored specifically to weather conditions, temperature, and seasonal aesthetics."}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Seasonal Products Grid/Shelf */}
-                {isSeasonalLoading ? (
-                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '15px' }}>Loading seasonal fashion collection...</p>
-                ) : seasonalData?.products && seasonalData.products.length > 0 ? (
-                  <div className="horizontal-shelf" style={{ gap: '18px', marginTop: '18px' }}>
-                    {seasonalData.products.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
-                  </div>
-                ) : (
-                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '15px' }}>No seasonal items found for this selection.</p>
-                )}
               </div>
             </div>
           )}
