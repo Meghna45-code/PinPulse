@@ -1614,14 +1614,13 @@ def get_boutiques_endpoint(zip_code: str = Query("800008"), target_dresses: int 
     return res_val
 
 
+GLOBAL_TRENDS_CACHE = {}
+
 @app.get("/api/trends/global")
 def get_global_trends(city: str = Query(None), top_k: int = Query(3)):
-    """Returns Global Runway trend data with top-K matched catalog products per trend.
-    Uses Jaccard tag-overlap similarity to match trends to catalog items.
-    Optionally filter by city: 'tokyo', 'paris', 'seoul'.
-    """
+    """Returns Global Runway trend data with top-K matched catalog products per trend."""
     if not GLOBAL_TRENDS_CACHE:
-        return {"error": "Global trends cache not available.", "cities": []}
+        return {"meta": {}, "cities": {}}
 
     cities_data = GLOBAL_TRENDS_CACHE.get("cities", {})
     meta = GLOBAL_TRENDS_CACHE.get("meta", {})

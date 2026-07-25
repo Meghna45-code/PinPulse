@@ -1918,9 +1918,9 @@ function App() {
           </div>
         </div>
         
-        {/* Men, Women, Kids Tabs Navigation Bar */}
+        {/* Women, Men Navigation Bar */}
         <nav className="tab-navigation-bar" style={{ display: 'flex', gap: '8px', margin: '0 16px' }}>
-          {['Men', 'Women', 'Kids'].map(tab => (
+          {['Women', 'Men'].map(tab => (
             <button
               key={tab}
               id={`tab-btn-${tab.toLowerCase()}`}
@@ -1939,7 +1939,7 @@ function App() {
                 boxShadow: activeTab === tab ? '0 0 10px rgba(198,159,213,0.3)' : 'none'
               }}
             >
-              {tab === 'Men' ? '👔 Men' : tab === 'Women' ? '🥻 Women' : '🧸 Kids'}
+              {tab === 'Women' ? '🥻 Women' : '👔 Men'}
             </button>
           ))}
         </nav>
