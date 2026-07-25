@@ -642,19 +642,21 @@ function App() {
     if (backendStatus === "connected") {
       try {
         logMessage("Executing 8-Pillar Scoring Pipeline on FastAPI backend...", "sql");
-        const url = `http://localhost:8000/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}&state=${engineState}`;
+        const genderParam = activeTab === 'Men' ? 'men' : activeTab === 'Kids' ? 'kids' : 'women';
+        const url = `http://localhost:8000/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}&state=${engineState}&gender=${genderParam}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error("API responded with error code");
         
         const data = await response.json();
-        recCacheRef.current[cacheKey] = data;  // cache backend result
-        setProducts(data);
-        logMessage(`Scoring Engine finished. Retrieved ${data.length} products sorted by composite score.`, "success");
-        
         if (data.length > 0) {
-          // Keep current selected if still in list, else pick top
+          recCacheRef.current[cacheKey] = data;
+          setProducts(data);
+          logMessage(`Scoring Engine: ${data.length} ${genderParam} products ranked for ${ZIP_CODES[currentZipCode].city}.`, "success");
           const stillExists = data.find(p => selectedProduct && p.id === selectedProduct.id);
           setSelectedProduct(stillExists || data[0]);
+        } else {
+          logMessage(`Backend returned 0 results for ${genderParam}. Using local calculator.`, "warning");
+          runLocalRecommendationCalculator(profile, userVibeVector);
         }
       } catch (err) {
         logMessage(`API call failed: ${err.message}. Falling back to local calculator.`, "warning");

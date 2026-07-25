@@ -1126,7 +1126,8 @@ def get_feed(
     zip_code: str = Query(None),
     vibe: str = Query(None),
     date: str = Query(None),
-    state: str = Query(None)
+    state: str = Query(None),
+    gender: str = Query(None)  # 'women' | 'men' | 'kids'
 ):
     """Unified feed generator executing the 7-pillar PinPulse math algorithm."""
     # Synchronize context values from parameters to user session
@@ -1147,11 +1148,31 @@ def get_feed(
     creators = get_creators_data(mapped_zip)
     stores = get_stores_data(mapped_zip)
     velocity_map = get_velocity_map(mapped_zip)
-    raw_products = get_db_products()
+    all_products = get_db_products()
+
+    # ── Gender filter: route each tab to the right apparel segment ──────────
+    gender_norm = (gender or "women").lower().strip()
+    if gender_norm in ("men", "male"):
+        allowed = {"men", "unisex"}
+    elif gender_norm in ("kids", "children", "boys", "girls", "boy", "girl"):
+        allowed = {"boys", "girls", "kids", "unisex"}
+    else:  # women (default)
+        allowed = {"women", "unisex"}
+
+    raw_products = [
+        p for p in all_products
+        if p.get("gender", "women") in allowed
+    ]
+    # Fallback: if somehow nothing matched, use full catalog
+    if not raw_products:
+        raw_products = all_products
+
     active_event = get_active_event(mapped_zip, active_date)
 
-    # Populate engine objects dynamically
-    engine.product_catalog = [enrich_product(p, velocity_map) for p in raw_products]
+    # Populate engine objects dynamically — sample 5000 per call for perf
+    import random
+    sample = raw_products if len(raw_products) <= 5000 else random.sample(raw_products, 5000)
+    engine.product_catalog = [enrich_product(p, velocity_map) for p in sample]
     engine.creators[mapped_zip] = creators
     engine.stores[mapped_zip] = stores
 
