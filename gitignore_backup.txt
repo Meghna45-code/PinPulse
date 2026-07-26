@@ -1,0 +1,41 @@
+# Environments
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent config
+.gemini/
+.agents/
+
+# Large Datasets & Model Weights
+*.csv
+*.parquet
+backend/local_catalog.json
+backend/real_local_catalog.json
+*.pt
+gemini.txt
+archive/
