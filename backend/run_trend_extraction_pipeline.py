@@ -62,7 +62,7 @@ if GEMINI_API_KEY:
 else:
     logger.error("GEMINI_API_KEY missing — LLM extraction will be skipped.")
 
-LOCAL_CATALOG_FILE   = os.path.join(os.path.dirname(__file__), "local_catalog.json")
+LOCAL_CATALOG_FILE   = os.path.join(os.path.dirname(__file__), "real_local_catalog.json")
 MAX_CREATORS         = 7
 MAX_BOUTIQUES        = 4
 MAX_DRESSES_PER_VID  = 3
@@ -70,13 +70,13 @@ PUBLISHED_AFTER      = (datetime.utcnow() - timedelta(days=548)).strftime("%Y-%m
 
 # ── CLIP Model Initialization ──────────────────────────────────────────────────
 try:
-    logger.info("Attempting to load fine-tuned Fashion-CLIP model ('patrickjohncyh/fashion-clip')...")
+    logger.info("Attempting to load CLIP model ('openai/clip-vit-base-patch32')...")
     from transformers import CLIPModel, CLIPProcessor
     import torch
-    clip_model = CLIPModel.from_pretrained("patrickjohncyh/fashion-clip")
-    clip_processor = CLIPProcessor.from_pretrained("patrickjohncyh/fashion-clip")
+    clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
     clip_model.eval()
-    logger.info("Fashion-CLIP model loaded successfully!")
+    logger.info("CLIP model loaded successfully!")
 except Exception as e:
     logger.warning(f"Could not load Fashion-CLIP model: {e}")
     clip_model = None
@@ -148,9 +148,15 @@ def get_clip_image_vector(image):
         
         inputs = clip_processor(images=img_copy, return_tensors="pt")
         with torch.no_grad():
-            features = clip_model.get_image_features(**inputs)
+            outputs = clip_model.get_image_features(**inputs)
+            if hasattr(outputs, "pooler_output"):
+                feat_tensor = outputs.pooler_output
+            elif isinstance(outputs, torch.Tensor):
+                feat_tensor = outputs
+            else:
+                feat_tensor = outputs[0]
             
-        feat_np = features.cpu().numpy()[0]
+        feat_np = feat_tensor.cpu().numpy().flatten()
         norm = np.linalg.norm(feat_np)
         if norm > 0:
             feat_np = feat_np / norm
@@ -165,7 +171,7 @@ REGIONS = {
         "locality": "Frazer Road, Patna, Bihar",
         "location": "25.5941,85.1376",
         "locationRadius": "10km",
-        "creator_query": "Patna fashion vlog OOTD OR Patna GRWM OR Patna lookbook",
+        "creator_query": "Patna GRWM college fit OR Patna GenZ fashion haul OR Patna aesthetic outfit lookbook",
         "boutique_query": "clothing store boutique tour",
         "places_query": "clothing boutique",
     },
@@ -174,7 +180,7 @@ REGIONS = {
         "locality": "MG Road, Kochi, Kerala",
         "location": "9.9312,76.2673",
         "locationRadius": "10km",
-        "creator_query": "Kochi fashion influencer OR Kochi OOTD OR Kochi styling",
+        "creator_query": "Kochi GRWM college outfit OR Kochi streetwear fashion haul OR Kochi aesthetic OOTD",
         "boutique_query": "clothing boutique fashion store tour",
         "places_query": "clothing boutique",
     },
@@ -183,7 +189,7 @@ REGIONS = {
         "locality": "Puri Jagannath Temple Area, Puri, Odisha",
         "location": "19.8135,85.8312",
         "locationRadius": "10km",
-        "creator_query": "Odisha fashion creator OR Odisha lookbook OR Odisha GRWM",
+        "creator_query": "Odisha GRWM college fit OR Bhubaneswar aesthetic fashion haul OR Odisha GenZ lookbook",
         "boutique_query": "clothing boutique fashion store tour",
         "places_query": "clothing boutique",
     },
@@ -284,27 +290,17 @@ def cosine_similarity(a, b):
 
 def embed_dress(dress_meta):
     """
-    Generate a 512-dim vector using TEXT fields only:
-      item, description, tags, aesthetic, material, fabric, color, occasion/inventory_status.
-
-    age_group and estimated_price_inr are intentionally excluded here —
-    they are compared separately via range/ratio matching.
+    Generate a 512-dim vector using the literal text description field.
     """
-    base_tags = [
-        dress_meta.get("item", ""),
-        dress_meta.get("aesthetic", ""),
-        dress_meta.get("material", ""),
-        dress_meta.get("fabric", ""),
-        dress_meta.get("color", ""),
-        dress_meta.get("occasion", dress_meta.get("inventory_status", "")),
-    ]
+    # The 'item' field is now instructed to be a LITERAL VISUAL DESCRIPTION.
+    literal_desc = dress_meta.get("item", "")
+    
+    # We can also append other tags for richness if present
     extra_tags = dress_meta.get("tags", [])
-    all_tags   = [t.lower().strip() for t in base_tags + extra_tags if t]
-
-    festive_signals = {"festive", "wedding", "ceremonial", "bridal", "traditional", "ethnic"}
-    category  = "festive" if any(t in festive_signals for t in all_tags) else "casual"
-    aesthetic = dress_meta.get("aesthetic", dress_meta.get("vibe", "casual"))
-    return get_vibe_vector(all_tags, category_str=category, aesthetic_str=aesthetic)
+    if extra_tags:
+        literal_desc += " " + " ".join(extra_tags)
+        
+    return get_vibe_vector(literal_desc)
 
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -463,18 +459,14 @@ Analyze the provided video thumbnail image and the query context: "{query_contex
 Perform these operations:
 1. Determine if this image or context features clothing, apparel, traditional Indian ethnic wear, saree hauls, or outfit shopping.
 2. Estimate if the fashion is relevant to style trends in "{city_name}".
-3. If True, extract 1 to 3 clothing items shown in the image or fitting the local context. For EACH item, fill in:
-   - item: specific garment name (e.g., "red silk Banarasi saree")
+3. If True, extract the EXACT outfit into its literal visual components. Do not use cultural names (e.g. no "Kurta"). For EACH component found, fill in:
+   - component_type: Must be one of ["Top", "Bottom", "Footwear", "Outerwear/Dress"]
+   - item: "LITERAL VISUAL DESCRIPTION (e.g. 'Women's cream-colored draped fabric with solid gold metallic borders')"
    - description: short marketing description
    - tags: list of fashion tag strings
    - aesthetic: aesthetic vibe string
-   - material: fabric material string
-   - fabric: simplified fabric type string
    - color: dominant color name
    - age_group: target age range (e.g., "25-35")
-   - estimated_price_inr: estimated retail price in INR (integer, e.g., 2500)
-   - occasion (if general creator showcase) or inventory_status (if boutique/market context)
-4. Identify if a specific boutique, mall, or market name is visually present or implied in the context.
 
 Return ONLY a valid JSON object matching this schema (no markdown, no extra text):
 {{
@@ -482,7 +474,7 @@ Return ONLY a valid JSON object matching this schema (no markdown, no extra text
   "extracted_boutique_name": "Name of shop/market" (or null if none),
   "garments": [
     {{
-      "item": "Garment Name",
+      "item": "LITERAL VISUAL DESCRIPTION (e.g. 'Women's cream-colored draped fabric with solid gold metallic borders' INSTEAD of 'Onam Saree')",
       "description": "Description details...",
       "tags": ["tag1", "tag2"],
       "aesthetic": "style vibe",
@@ -749,9 +741,17 @@ def run_pipeline():
                     logger.info(f"        └─ Matched: '{prod.get('name')}' ({prod.get('category')}) [CLIP Sim={score:.4f}]")
                     if sb and video_db_id and prod.get("id"):
                         try:
+                            # Upsert product first so foreign key constraint is satisfied
+                            sb.table("products").upsert({
+                                "id": int(prod["id"]) if str(prod["id"]).isdigit() else prod["id"],
+                                "name": prod.get("name", "Product"),
+                                "price": float(prod.get("price", 1499.0)),
+                                "category": prod.get("category", "casual"),
+                                "image_url": prod.get("image_url", "")
+                            }).execute()
                             sb.table("creator_video_products").insert({
                                 "video_id": video_db_id,
-                                "product_id": prod["id"],
+                                "product_id": int(prod["id"]) if str(prod["id"]).isdigit() else prod["id"],
                                 "confidence_score": round(score, 4),
                             }).execute()
                         except Exception as e:
@@ -835,9 +835,16 @@ def run_pipeline():
                     logger.info(f"        └─ Matched: '{prod.get('name')}' ({prod.get('category')}) [CLIP Sim={score:.4f}]")
                     if sb and video_db_id and prod.get("id"):
                         try:
+                            sb.table("products").upsert({
+                                "id": int(prod["id"]) if str(prod["id"]).isdigit() else prod["id"],
+                                "name": prod.get("name", "Product"),
+                                "price": float(prod.get("price", 1499.0)),
+                                "category": prod.get("category", "casual"),
+                                "image_url": prod.get("image_url", "")
+                            }).execute()
                             sb.table("creator_video_products").insert({
                                 "video_id": video_db_id,
-                                "product_id": prod["id"],
+                                "product_id": int(prod["id"]) if str(prod["id"]).isdigit() else prod["id"],
                                 "confidence_score": round(score, 4),
                             }).execute()
                         except Exception as e:
@@ -900,12 +907,12 @@ def run_pipeline():
                     sb.table("regional_boutique_trends").upsert({
                         "store_id":               store["store_id"],
                         "zip_code":               zip_code,
-                        "locality":               store["locality"],
-                        "store_name":             sname,
-                        "social_signal_source":   store["social_signal_source"],
+                        "locality":               store["locality"][:50],
+                        "store_name":             sname[:50],
+                        "social_signal_source":   store["social_signal_source"][:50],
                         "simulated_engagement":   store["simulated_engagement"],
                         "extracted_visual_trend": extracted_trend[:50],
-                        "style_vibe_cluster":     style_cluster[:100],
+                        "style_vibe_cluster":     style_cluster[:50],
                     }).execute()
                     logger.info(f"      regional_boutique_trends → upserted store trends ✅")
                 except Exception as e:

@@ -30,3 +30,12 @@ Thumbs.db
 # Agent config
 .gemini/
 .agents/
+
+# Large Datasets & Model Weights
+*.csv
+*.parquet
+backend/local_catalog.json
+backend/real_local_catalog.json
+*.pt
+gemini.txt
+archive/

@@ -122,8 +122,277 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--olive); }
 
 /* ═══════════════════════════════════════════════
-   HEADER
+   MYNTRA-STYLE TOP HEADER & DROPDOWN NAV
 ══════════════════════════════════════════════════ */
+.myntra-top-header {
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaec;
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.myntra-header-left {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.myntra-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.myntra-logo-icon {
+  font-size: 1.6rem;
+}
+
+.myntra-logo-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #ff3f6c, #ff527b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.myntra-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.myntra-nav-item {
+  font-family: 'Assistant', 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #282c3f;
+  cursor: pointer;
+  position: relative;
+  padding: 12px 0;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.myntra-nav-item:hover {
+  color: #ff3f6c;
+}
+
+.myntra-nav-item.active {
+  color: #ff3f6c;
+  border-bottom: 3px solid #ff3f6c;
+}
+
+.myntra-nav-item.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.myntra-nav-item.disabled:hover {
+  color: #282c3f;
+}
+
+.myntra-nav-item.dropdown {
+  position: relative;
+}
+
+.dropdown-title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: -10px;
+  background: #ffffff;
+  border: 1px solid #f0f0f4;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  min-width: 220px;
+  display: none;
+  flex-direction: column;
+  padding: 8px 0;
+  z-index: 1100;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+.myntra-nav-item.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-option {
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #3e4152;
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-option:hover {
+  background: #f5f5f6;
+  color: #ff3f6c;
+}
+
+.dropdown-option.active {
+  color: #ff3f6c;
+  font-weight: 700;
+  background: #fff0f4;
+}
+
+/* Search Bar */
+.myntra-search-bar {
+  display: flex;
+  align-items: center;
+  background: #f5f5f6;
+  border-radius: 4px;
+  padding: 8px 14px;
+  width: 320px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.myntra-search-bar:focus-within {
+  background: #ffffff;
+  border-color: #eaeaec;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.myntra-search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.82rem;
+  width: 100%;
+  color: #282c3f;
+  margin-left: 8px;
+}
+
+/* Header Right Actions */
+.myntra-header-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.myntra-region-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f5f5f6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #3e4152;
+}
+
+.myntra-region-selector select {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #ff3f6c;
+  cursor: pointer;
+}
+
+.myntra-action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  color: #282c3f;
+  transition: color 0.15s ease;
+}
+
+.myntra-action-item:hover {
+  color: #ff3f6c;
+}
+
+.action-icon {
+  font-size: 1.1rem;
+}
+
+.action-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #ff3f6c;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Carousel Arrow Control */
+.carousel-shelf-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.carousel-arrow-btn {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #ff3f6c;
+  border: 1px solid #eaeaec;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  font-size: 1.2rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.carousel-arrow-btn:hover {
+  background: #ff3f6c;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 18px rgba(255,63,108,0.4);
+}
+
+.carousel-arrow-btn.left-arrow {
+  left: -14px;
+  right: auto;
+}
+
 .app-header {
   background: linear-gradient(135deg, var(--peach) 0%, var(--peach-dark) 100%);
   border-bottom: 2px solid var(--blush-border);

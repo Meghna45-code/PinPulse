@@ -40,7 +40,7 @@ if os.path.exists(DOWNLOADED_IMAGES_DIR):
     app.mount("/downloaded_images", StaticFiles(directory=DOWNLOADED_IMAGES_DIR), name="downloaded_images")
 
 # File paths
-LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "local_catalog.json"))
+LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "real_local_catalog.json"))
 
 # ── Startup: build velocity map from pinpulse_mock_db.json ───────────────────
 # For each seeder record with hybrid_score > 0, boost the matched catalog
@@ -258,12 +258,13 @@ CF_LOOKUP = {
 }
 
 # Fallback Creators database representation
+# Fallback Creators database representation
 FALLBACK_CREATORS = {
     "800008": [
         {
             "id": 1,
             "name": "Patna Ethnic Wear Vlog",
-            "youtube_url": "https://youtube.com/patna_ethnic",
+            "youtube_url": "https://www.youtube.com/watch?v=U_nkHYPc1ww",
             "demographic": "millennial",
             "subscriber_count": 150000,
             "subscriber_weight": 1.2,
@@ -271,19 +272,19 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 101,
-                    "video_url": "https://youtube.com/watch?v=patna_wed_1",
-                    "title": "Top Patna Wedding Lehengas & Sherwanis 2026",
+                    "video_url": "https://www.youtube.com/watch?v=U_nkHYPc1ww",
+                    "title": "Fabric market in Patna | Patna market #fabricmarket",
                     "description": "Traditional pure silk Banarasi and tussar handloom sarees in festive colors.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1595777457583-95e059d581b8",
+                    "video_screenshot_url": "https://img.youtube.com/vi/U_nkHYPc1ww/hqdefault.jpg",
                     "simulated_engagement": 18000,
                     "product_ids": [1, 2]
                 },
                 {
                     "id": 102,
-                    "video_url": "https://youtube.com/watch?v=patna_mkt_2",
+                    "video_url": "https://www.youtube.com/watch?v=FqilEHTE5BA",
                     "title": "Affordable Kurtis at Patna Market Tour",
                     "description": "Exploring local street shops for festive cotton and silk kurtis.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c",
+                    "video_screenshot_url": "https://img.youtube.com/vi/FqilEHTE5BA/hqdefault.jpg",
                     "simulated_engagement": 8500,
                     "product_ids": [7, 9]
                 }
@@ -292,7 +293,7 @@ FALLBACK_CREATORS = {
         {
             "id": 2,
             "name": "Traditional Vibes",
-            "youtube_url": "https://youtube.com/trad_vibes",
+            "youtube_url": "https://www.youtube.com/watch?v=55apryEpLEs",
             "demographic": "millennial",
             "subscriber_count": 98000,
             "subscriber_weight": 1.3,
@@ -300,10 +301,10 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 103,
-                    "video_url": "https://youtube.com/watch?v=trad_vibes_1",
-                    "title": "Saraswati Puja Yellow Saree Styling Guide",
+                    "video_url": "https://www.youtube.com/watch?v=55apryEpLEs",
+                    "title": "Khetan Market Patna Festive Wear Haul",
                     "description": "Styling bright yellow georgette sarees with traditional matching anklets and light makeup.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c",
+                    "video_screenshot_url": "https://img.youtube.com/vi/55apryEpLEs/hqdefault.jpg",
                     "simulated_engagement": 12000,
                     "product_ids": [9]
                 }
@@ -312,7 +313,7 @@ FALLBACK_CREATORS = {
         {
             "id": 3,
             "name": "Patna Trending Now",
-            "youtube_url": "https://youtube.com/patna_trending",
+            "youtube_url": "https://www.youtube.com/watch?v=FqilEHTE5BA",
             "demographic": "gen-z",
             "subscriber_count": 75000,
             "subscriber_weight": 1.0,
@@ -320,10 +321,10 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 104,
-                    "video_url": "https://youtube.com/watch?v=patna_trend_1",
-                    "title": "Gen-Z Fusion Kurta Styling Tips",
+                    "video_url": "https://www.youtube.com/watch?v=FqilEHTE5BA",
+                    "title": "Gen-Z Fusion Kurta Styling Tips Patna",
                     "description": "Styling short kurtis with relaxed fit denim and sneakers for everyday comfort.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
+                    "video_screenshot_url": "https://img.youtube.com/vi/FqilEHTE5BA/hqdefault.jpg",
                     "simulated_engagement": 7500,
                     "product_ids": [9]
                 }
@@ -334,7 +335,7 @@ FALLBACK_CREATORS = {
         {
             "id": 4,
             "name": "Kochi Couture",
-            "youtube_url": "https://youtube.com/kochi_couture",
+            "youtube_url": "https://www.youtube.com/watch?v=J_F2dzbUXvg",
             "demographic": "millennial",
             "subscriber_count": 320000,
             "subscriber_weight": 1.3,
@@ -342,10 +343,10 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 105,
-                    "video_url": "https://youtube.com/watch?v=kochi_kasavu_1",
+                    "video_url": "https://www.youtube.com/watch?v=J_F2dzbUXvg",
                     "title": "Classic Kerala Kasavu Saree Draping Tutorial",
                     "description": "Step by step kasavu saree draping with matching gold jewelry.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c",
+                    "video_screenshot_url": "https://img.youtube.com/vi/J_F2dzbUXvg/hqdefault.jpg",
                     "simulated_engagement": 41600,
                     "product_ids": [16, 28]
                 }
@@ -354,7 +355,7 @@ FALLBACK_CREATORS = {
         {
             "id": 5,
             "name": "Fort Kochi Style",
-            "youtube_url": "https://youtube.com/fort_kochi",
+            "youtube_url": "https://www.youtube.com/watch?v=mZPnF5dMzcM",
             "demographic": "gen-z",
             "subscriber_count": 500000,
             "subscriber_weight": 1.5,
@@ -362,10 +363,10 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 106,
-                    "video_url": "https://youtube.com/watch?v=kochi_linen_1",
+                    "video_url": "https://www.youtube.com/watch?v=mZPnF5dMzcM",
                     "title": "Sustainable Linen Fits for Hot Kochi Summers",
                     "description": "Lookbook for Fort Kochi biennale showing off breezy sustainable linen.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b",
+                    "video_screenshot_url": "https://img.youtube.com/vi/mZPnF5dMzcM/hqdefault.jpg",
                     "simulated_engagement": 75000,
                     "product_ids": [92]
                 }
@@ -376,7 +377,7 @@ FALLBACK_CREATORS = {
         {
             "id": 6,
             "name": "Odisha Handloom Vlog",
-            "youtube_url": "https://youtube.com/odisha_handloom",
+            "youtube_url": "https://www.youtube.com/watch?v=erCRv3qln1Q",
             "demographic": "millennial",
             "subscriber_count": 95000,
             "subscriber_weight": 1.2,
@@ -384,10 +385,10 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 107,
-                    "video_url": "https://youtube.com/watch?v=puri_ikat_1",
+                    "video_url": "https://www.youtube.com/watch?v=erCRv3qln1Q",
                     "title": "Gorgeous Sambalpuri Ikat Sarees Collection",
                     "description": "Traditional Odia handloom silk and cotton sarees direct from local weavers.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b",
+                    "video_screenshot_url": "https://img.youtube.com/vi/erCRv3qln1Q/hqdefault.jpg",
                     "simulated_engagement": 11400,
                     "product_ids": [31, 37]
                 }
@@ -396,7 +397,7 @@ FALLBACK_CREATORS = {
         {
             "id": 7,
             "name": "Puri Style Hub",
-            "youtube_url": "https://youtube.com/puri_style",
+            "youtube_url": "https://www.youtube.com/watch?v=rmZXaeTxjDg",
             "demographic": "gen-z",
             "subscriber_count": 120000,
             "subscriber_weight": 1.4,
@@ -404,10 +405,10 @@ FALLBACK_CREATORS = {
             "videos": [
                 {
                     "id": 108,
-                    "video_url": "https://youtube.com/watch?v=puri_fusion_1",
+                    "video_url": "https://www.youtube.com/watch?v=rmZXaeTxjDg",
                     "title": "Odisha Temple Town Fusion Wear Styling",
                     "description": "Styling traditional block-prints and Pipli work applique in casual modern ways.",
-                    "video_screenshot_url": "https://images.unsplash.com/photo-1617137968427-85924c800a22",
+                    "video_screenshot_url": "https://img.youtube.com/vi/rmZXaeTxjDg/hqdefault.jpg",
                     "simulated_engagement": 16800,
                     "product_ids": [37]
                 }
@@ -1206,7 +1207,8 @@ def get_feed(
         "time_offset_hours": user_session["time_offset_hours"],
         "active_festival": active_event.get("event_name") if active_event and active_event.get("is_festive") else None,
         "active_date": active_date,
-        "upcoming_events": upcoming_events_data  # Next 7 days — scored at 1.5x priority
+        "upcoming_events": upcoming_events_data,
+        "location_vector": get_vibe_vector(mapped_zip + " regional style clothing")
     }
 
     scored = engine.score_all_products(user_context)

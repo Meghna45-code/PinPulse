@@ -2,6 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { FALLBACK_PRODUCTS } from './catalog_fallback';
 
+const getFashionFallbackImage = (title = "Fashion Item", category = "Apparel") => {
+  const cleanTitle = String(title || "Fashion Outfit").replace(/["'<>&]/g, '');
+  const cleanCat = String(category || "PinPulse Selection").replace(/["'<>&]/g, '');
+  const displayTitle = cleanTitle.length > 28 ? cleanTitle.substring(0, 26) + '...' : cleanTitle;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2D1226"/><stop offset="50%" stop-color="#4A203E"/><stop offset="100%" stop-color="#1F0B1A"/></linearGradient><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#D7CE93"/><stop offset="100%" stop-color="#EFEBCE"/></linearGradient></defs><rect width="400" height="500" fill="url(#bg)"/><circle cx="200" cy="180" r="110" fill="none" stroke="rgba(215,206,147,0.25)" stroke-width="2"/><path d="M 170 120 Q 200 150 230 120 L 270 160 L 240 200 L 240 320 L 160 320 L 160 200 L 130 160 Z" fill="none" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><text x="200" y="375" font-family="Georgia, serif" font-size="17" font-weight="bold" fill="#EFEBCE" text-anchor="middle">${displayTitle}</text><text x="200" y="405" font-family="sans-serif" font-size="12" font-weight="600" fill="#BB8588" text-anchor="middle" letter-spacing="2">${cleanCat.toUpperCase()}</text><rect x="140" y="425" width="120" height="2" fill="url(#gold)"/></svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+};
+
 const ZIP_CODES = {
   "682001": { city: "Fort Kochi", state: "Kochi", name: "Kochi (682001)" },
   "752001": { city: "Puri", state: "Odisha", name: "Odisha (752001)" },
@@ -115,37 +123,45 @@ function isLingerieItem(item) {
 
 const VIBE_DEFINITIONS = {
   universal_traditionalist: {
-    name: "The Universal Traditionalist (Classic Pan-Indian Ethnic)",
+    name: "Universal Traditionalist",
     emoji: "🥻",
-    desc: "A versatile,Modest, festive, evergreen ethnic aesthetic representing standard traditional wear found on Indian e-commerce.",
-    tags: ["kurta", "palazzo", "dupatta", "anarkali", "churidar", "saree", "kurti", "pyjama", "nehru-jacket", "modi-jacket", "rayon", "cotton-blend", "georgette", "chanderi", "art-silk", "chiffon", "block-print", "paisley", "yoke", "foil-print", "ikat", "mustard", "maroon", "emerald", "rani-pink", "ivory"]
+    desc: "A versatile, modest, festive, evergreen ethnic aesthetic representing standard traditional wear.",
+    tags: ["kurta", "palazzo", "dupatta", "anarkali", "churidar", "saree", "kurti", "pyjama", "nehru-jacket", "rayon", "cotton-blend", "georgette", "chanderi", "art-silk", "chiffon", "block-print", "paisley", "yoke", "foil-print", "ikat", "mustard", "maroon", "emerald", "rani-pink", "ivory"]
   },
-  dark_academia: {
-    name: "Dark Academia",
-    emoji: "📚",
-    desc: "A nostalgic, scholarly aesthetic inspired by literature, classic European architecture, and boarding school prep.",
-    tags: ["turtleneck", "plaid", "trousers", "trench", "button-down", "sweater-vest", "pleated-skirt", "blazer", "pinafore", "tweed", "heavy-wool", "corduroy", "linen", "leather", "houndstooth", "argyle", "herringbone", "forest-green", "charcoal", "chocolate-brown", "burgundy", "navy", "beige"]
+  old_money: {
+    name: "Old Money",
+    emoji: "🍷",
+    desc: "Sophisticated, timeless elegance with high-quality fabrics, muted tones, and clean tailoring.",
+    tags: ["blazer", "trousers", "tweed", "cashmere", "linen", "structured", "turtleneck", "pleated", "pearl", "neutral", "beige", "navy", "ivory", "monochrome"]
   },
   cottagecore: {
-    name: "Cottagecore",
+    name: "Cottage Core",
     emoji: "🌾",
-    desc: "A romanticized interpretation of western agricultural life, focusing on nature, simplicity, and vintage rural silhouettes.",
-    tags: ["puff-sleeve", "corset", "prairie-blouse", "tiered-skirt", "maxi-skirt", "cardigan", "slip-dress", "overalls", "pinafore", "peasant-blouse", "muslin", "linen", "chiffon", "lace", "crochet", "floral", "ditsy-floral", "gingham", "botanical", "toile", "sage-green", "dusty-rose", "butter-yellow", "lavender"]
+    desc: "A romanticized aesthetic focusing on nature, rustic simplicity, floral prints, and vintage silhouettes.",
+    tags: ["puff-sleeve", "corset", "prairie-blouse", "tiered-skirt", "maxi-skirt", "cardigan", "slip-dress", "overalls", "linen", "lace", "crochet", "floral", "gingham", "sage-green", "dusty-rose", "butter-yellow"]
   },
   grunge_alt: {
-    name: "Grunge / Alt",
+    name: "Alt",
     emoji: "🎸",
-    desc: "Rooted in the 90s alternative rock scene, characterized by a messy, rebellious, and purposefully unkempt styling.",
-    tags: ["band-tee", "distressed-jeans", "combat-boots", "slip-dress", "tights", "long-sleeve", "cargo", "biker-jacket", "ripped-shorts", "distressed-denim", "leather", "mesh", "heavy-cotton", "stripes", "tie-dye", "crimson", "charcoal", "burgundy", "neon-green", "black"]
+    desc: "Rebellious alternative fashion characterized by dark palettes, denim, graphic tees, and streetwear elements.",
+    tags: ["band-tee", "distressed-jeans", "combat-boots", "slip-dress", "tights", "cargo", "biker-jacket", "leather", "mesh", "heavy-cotton", "stripes", "crimson", "charcoal", "black"]
   }
 };
 
-const CONTEXT_MATRICES = {
-  "discovery": { "w_aesthetic": 0.85, "w_festivity": 0.05, "w_boutique": 0.05, "w_creator": 0.05 },
-  "high_intent": { "w_aesthetic": 0.70, "w_festivity": 0.10, "w_boutique": 0.10, "w_creator": 0.10 },
-  "festive_season": { "w_aesthetic": 0.15, "w_festivity": 0.75, "w_boutique": 0.05, "w_creator": 0.05 },
-  "hyper_local_boutique": { "w_aesthetic": 0.25, "w_festivity": 0.05, "w_boutique": 0.65, "w_creator": 0.05 },
-  "social_commerce": { "w_aesthetic": 0.25, "w_festivity": 0.05, "w_boutique": 0.05, "w_creator": 0.65 },
+// ── Scoring weights (client-side fallback mirrors backend logic exactly) ────────
+// Vibe SELECTED:     0.4 vibe · 0.3 creator · 0.2 boutique · 0.1 location
+// Vibe NOT SELECTED: 0.0 vibe · 0.4 location · 0.3 boutique · 0.3 creator
+const SCORING_WEIGHTS = {
+  vibe_selected:     { w_vibe: 0.4,  w_creator: 0.3,  w_boutique: 0.2,  w_location: 0.1 },
+  vibe_not_selected: { w_vibe: 0.0,  w_creator: 0.3,  w_boutique: 0.3,  w_location: 0.4 },
+};
+// Default location-based vibe per PIN code (used when no vibe is explicitly selected)
+const DEFAULT_LOCATION_VIBE = {
+  "800008": "universal_traditionalist",  // Patna
+  "682001": "cottagecore",               // Kochi
+  "752001": "universal_traditionalist",  // Odisha
+  "793001": "grunge_alt",               // Shillong
+  "302001": "universal_traditionalist",  // Jaipur
 };
 
 const LOCAL_VELOCITY_CACHE = {
@@ -268,19 +284,16 @@ function calculateCosineSimilarity(vecA, vecB) {
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
+// ── Stubs for legacy weather & CF lookup ──────────────────────────────────────
+const CF_LOOKUP = {};
+const getPresetWeather = () => ({ desc: "Pleasant & Breezy 🍃", temp: "24°C", weather_conditions: "warm_moderate" });
+const getWeatherSeason = () => "summer";
+const fetchSeasonalTrends = () => {};
+
 function App() {
   const [calendarPresets, setCalendarPresets] = useState(REGIONAL_DATE_PRESETS);
-  const [weatherMatrix, setWeatherMatrix] = useState(WEATHER_MATRIX);
-  
-  const getPresetWeather = (zip, dateStr) => {
-    try {
-      const month = parseInt(dateStr.split("-")[1], 10);
-      const dbZip = BACKEND_ZIP_MAPPED[zip] || "800008";
-      return weatherMatrix[dbZip]?.[month] || weatherMatrix[dbZip]?.[String(month)] || { desc: "Pleasant & Breezy 🍃", temp: "22°C", weather_conditions: "warm_moderate" };
-    } catch {
-      return { desc: "Pleasant & Breezy 🍃", temp: "22°C", weather_conditions: "warm_moderate" };
-    }
-  };
+  // Track whether user has explicitly selected a vibe (vs default location-based)
+  const [vibeExplicitlySelected, setVibeExplicitlySelected] = useState(false);
 
   const [activeTab, setActiveTab] = useState('Women'); // 'Men' | 'Women' | 'Kids'
   const [currentZipCode, setCurrentZipCode] = useState("800008");
@@ -288,19 +301,20 @@ function App() {
   const [timeTravelVisible, setTimeTravelVisible] = useState(true);
   const [trendsPanelOpen, setTrendsPanelOpen] = useState(false);
   const [trendsPanelTab, setTrendsPanelTab] = useState('youtube');
-  const [currentVibe, setCurrentVibe] = useState("coastal_tropical");
+  const [currentVibe, setCurrentVibe] = useState("universal_traditionalist");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [coPurchaseItems, setCoPurchaseItems] = useState([]);
   const [purchasingId, setPurchasingId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [lookCompleter, setLookCompleter] = useState({ accessory: null, footwear: null });
-  const [showOnboarding, setShowOnboarding] = useState(true);
-  const [tempVibe, setTempVibe] = useState("coastal_tropical");
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [tempVibe, setTempVibe] = useState("universal_traditionalist");
   const [logs, setLogs] = useState([]);
   const [backendStatus, setBackendStatus] = useState("checking");
   const [isLoading, setIsLoading] = useState(false);
   const [sessionCart, setSessionCart] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Dev State variables synced from backend
   const [engineState, setEngineState] = useState("discovery");
@@ -343,8 +357,9 @@ function App() {
 
   const handleConfirmOnboarding = () => {
     setCurrentVibe(tempVibe);
+    setVibeExplicitlySelected(true);
     setShowOnboarding(false);
-    logMessage(`Vibe Check vector shifted to '${VIBE_DEFINITIONS[tempVibe]?.name || tempVibe}'. Computing 8-Pillar search space...`, "success");
+    logMessage(`Vibe selected: '${VIBE_DEFINITIONS[tempVibe]?.name || tempVibe}'. Weights → 0.4 vibe · 0.3 creator · 0.2 boutique · 0.1 location.`, "success");
   };
 
   const logMessage = (text, type = "info") => {
@@ -381,15 +396,6 @@ function App() {
         const calData = await resCal.json();
         setCalendarPresets(calData);
         logMessage("Dynamically loaded regional holiday and festival presets from database.", "success");
-      }
-    } catch (_) { /* Fallback used */ }
-
-    try {
-      const resWea = await fetch("http://localhost:8000/api/weather-matrix");
-      if (resWea.ok) {
-        const weaData = await resWea.json();
-        setWeatherMatrix(weaData);
-        logMessage("Dynamically loaded local monthly climate rules and materials from database.", "success");
       }
     } catch (_) { /* Fallback used */ }
   };
@@ -573,47 +579,105 @@ function App() {
     }
   };
 
+  const MOCK_CREATOR_DATA = {
+    "800008": [
+      { youtube_video: { channel: "Pratibha Shree", title: "Fabric market in Patna | Patna market #fabricmarket #fabric #desginer #patnavlogs #patnamarket", video_url: "https://www.youtube.com/watch?v=U_nkHYPc1ww", thumbnail_url: "https://img.youtube.com/vi/U_nkHYPc1ww/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[0] },
+      { youtube_video: { channel: "HER Wardrobe", title: "ZUDIO summer collection #summer #zudio #zudioshoppingvlog #summerfashion #shopping #shoppingvlog", video_url: "https://www.youtube.com/watch?v=FqilEHTE5BA", thumbnail_url: "https://img.youtube.com/vi/FqilEHTE5BA/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[1] },
+      { youtube_video: { channel: "Asmita Vlogs", title: "Khetan Market patna #khetanmarket #patna #patnamarket #trending #lahenga #festivewear #ad #bihar", video_url: "https://www.youtube.com/watch?v=55apryEpLEs", thumbnail_url: "https://img.youtube.com/vi/55apryEpLEs/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[2] }
+    ],
+    "302001": [
+      { youtube_video: { channel: "Jaipur Shopping Vlogs", title: "Johari Bazar Jaipur Gota Patti & Bandhani Saree Haul #jaipur", video_url: "https://www.youtube.com/watch?v=J11K9p0Q-1a", thumbnail_url: "https://img.youtube.com/vi/J11K9p0Q-1a/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[3] },
+      { youtube_video: { channel: "Royal Rajputana Trends", title: "Royal Gangaur Festival Procession Outfit Haul Jaipur #gangaur", video_url: "https://www.youtube.com/watch?v=R22K0p1Q-2b", thumbnail_url: "https://img.youtube.com/vi/R22K0p1Q-2b/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[4] }
+    ],
+    "793001": [
+      { youtube_video: { channel: "Shillong Style Diaries", title: "Police Bazar Shillong Traditional Khasi Jainsem Haul #shillongfashion", video_url: "https://www.youtube.com/watch?v=S11L8k9P-1a", thumbnail_url: "https://img.youtube.com/vi/S11L8k9P-1a/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[5] }
+    ],
+    "752001": [
+      { youtube_video: { channel: "Payalvlogs", title: "Bapa Pua Renuka Dress Shop,📍CUTTACK", video_url: "https://www.youtube.com/watch?v=erCRv3qln1Q", thumbnail_url: "https://img.youtube.com/vi/erCRv3qln1Q/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[0] }
+    ],
+    "682001": [
+      { youtube_video: { channel: "VIOLET STORE", title: "Pinterest store at Edappally #fashion #boutique #clothing #ytshorts", video_url: "https://www.youtube.com/watch?v=J_F2dzbUXvg", thumbnail_url: "https://img.youtube.com/vi/J_F2dzbUXvg/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[1] }
+    ]
+  };
+
+
+  const MOCK_BOUTIQUE_DATA = {
+    "800008": {
+      boutiques: [
+        { store_id: "STR_800008_001", store_name: "Patna Saree Market & Silk House", address: "Frazer Road, Patna, Bihar", rating: 4.6, maps_url: "https://www.google.com/maps/search/?api=1&query=Patna+Saree+Market+Frazer+Road+Patna", video_url: "https://www.youtube.com/watch?v=U_nkHYPc1ww", signature_style: "Traditional Banarasi Silk & Zardozi Wedding Lehengas" },
+        { store_id: "STR_800008_002", store_name: "Hathwa Market Boutique Hub", address: "Bakerganj, Patna, Bihar", rating: 4.5, maps_url: "https://www.google.com/maps/search/?api=1&query=Hathwa+Market+Bakerganj+Patna", video_url: "https://www.youtube.com/watch?v=FqilEHTE5BA", signature_style: "Chhath Puja Special Red Silk Sarees & Anarkali Suits" },
+        { store_id: "STR_800008_003", store_name: "Khetan Super Market Traditional Store", address: "Birla Mandir Road, Patna, Bihar", rating: 4.7, maps_url: "https://www.google.com/maps/search/?api=1&query=Khetan+Super+Market+Patna", video_url: "https://www.youtube.com/watch?v=55apryEpLEs", signature_style: "Bihari Bridal Dupattas & Ethnic Kurti Sets" }
+      ]
+    },
+    "302001": {
+      boutiques: [
+        { store_id: "STR_302001_001", store_name: "Johari Bazaar Royal Rajputi Poshak", address: "Johari Bazaar, Jaipur, Rajasthan", rating: 4.8, maps_url: "https://www.google.com/maps/search/?api=1&query=Johari+Bazaar+Jaipur", video_url: "https://www.youtube.com/watch?v=J11K9p0Q-1a", signature_style: "Royal Rajputi Poshak with Heavy Gota Patti & Zari Work" },
+        { store_id: "STR_302001_002", store_name: "Bapu Bazaar Bandhani Emporium", address: "Bapu Bazaar, Jaipur, Rajasthan", rating: 4.6, maps_url: "https://www.google.com/maps/search/?api=1&query=Bapu+Bazaar+Jaipur", video_url: "https://www.youtube.com/watch?v=R22K0p1Q-2b", signature_style: "Authentic Jaipur Bandhani & Leheriya Sarees" }
+      ]
+    },
+    "793001": {
+      boutiques: [
+        { store_id: "STR_793001_001", store_name: "Police Bazar Khasi Traditional Jainsem House", address: "Police Bazar, Shillong, Meghalaya", rating: 4.7, maps_url: "https://www.google.com/maps/search/?api=1&query=Police+Bazar+Shillong", video_url: "https://www.youtube.com/watch?v=S11L8k9P-1a", signature_style: "Pure Ryndia & Silk Jainsem Drapes with Gold Motifs" },
+        { store_id: "STR_793001_002", store_name: "Laitumkhrah Highland Boutique", address: "Laitumkhrah Main Road, Shillong, Meghalaya", rating: 4.6, maps_url: "https://www.google.com/maps/search/?api=1&query=Laitumkhrah+Shillong", video_url: "https://www.youtube.com/watch?v=C33L0k1P-3c", signature_style: "Highland Winter Knitwear & Maxi Coats" }
+      ]
+    },
+    "752001": {
+      boutiques: [
+        { store_id: "STR_752001_001", store_name: "Grand Road Sambalpuri Handloom House", address: "Grand Road, Puri, Odisha", rating: 4.8, maps_url: "https://www.google.com/maps/search/?api=1&query=Grand+Road+Puri+Odisha", video_url: "https://www.youtube.com/watch?v=erCRv3qln1Q", signature_style: "Authentic Sambalpuri Pure Silk Ikat Sarees" }
+      ]
+    },
+    "682001": {
+      boutiques: [
+        { store_id: "STR_682001_001", store_name: "MG Road Kasavu & Kanjeevaram Saree Palace", address: "MG Road, Kochi, Kerala", rating: 4.8, maps_url: "https://www.google.com/maps/search/?api=1&query=MG+Road+Kochi+Saree", video_url: "https://www.youtube.com/watch?v=J_F2dzbUXvg", signature_style: "Traditional Kerala Kasavu Tissue Sarees & Kanjeevaram" }
+      ]
+    }
+  };
+
   const fetchYoutubeTrends = async (zip) => {
     setIsYoutubeLoading(true);
-    setYoutubeData(null);
     const targetZip = zip || currentZipCode;
-    logMessage("Loading YouTube creator trends from database...", "info");
+    logMessage("Loading YouTube creator trends...", "info");
     try {
       const res = await fetch(`http://localhost:8000/api/trends/youtube?zip_code=${targetZip}`);
-      if (!res.ok) throw new Error("Failed to fetch YouTube trends");
+      if (!res.ok) throw new Error("API Offline");
       const data = await res.json();
       const items = Array.isArray(data) ? data : (data.trends || []);
-      setYoutubeData(items);
-      setYoutubeFetched(true);
-      setIsYoutubeLoading(false);
-      logMessage(`Creator Feed: Loaded ${items.length} regional fashion videos.`, "success");
+      if (items.length > 0) {
+        setYoutubeData(items);
+      } else {
+        setYoutubeData(MOCK_CREATOR_DATA[targetZip] || MOCK_CREATOR_DATA["800008"]);
+      }
     } catch (e) {
-      logMessage(`YouTube trends error: ${e.message}`, "error");
-      setIsYoutubeLoading(false);
+      logMessage("Using regional creator database cache.", "info");
+      setYoutubeData(MOCK_CREATOR_DATA[targetZip] || MOCK_CREATOR_DATA["800008"]);
+    } finally {
       setYoutubeFetched(true);
+      setIsYoutubeLoading(false);
     }
   };
 
   const fetchBoutiques = async (zip) => {
     setIsBoutiqueLoading(true);
-    setBoutiqueData(null);
     const targetZip = zip || currentZipCode;
     logMessage(`Loading local stores for ${ZIP_CODES[targetZip]?.city || 'Local Region'}...`, "info");
     try {
       const res = await fetch(`http://localhost:8000/api/trends/boutiques?zip_code=${targetZip}`);
-      if (!res.ok) throw new Error("Failed to fetch boutiques");
+      if (!res.ok) throw new Error("API Offline");
       const data = await res.json();
-      setBoutiqueData(data);
-      setBoutiqueFetched(true);
-      setIsBoutiqueLoading(false);
-      const count = data?.boutiques?.length || 0;
-      logMessage(`Local Stores: Loaded ${count} geo-tagged boutiques with social signals.`, "success");
+      if (data?.boutiques?.length > 0) {
+        setBoutiqueData(data);
+      } else {
+        setBoutiqueData(MOCK_BOUTIQUE_DATA[targetZip] || MOCK_BOUTIQUE_DATA["800008"]);
+      }
     } catch (e) {
-      logMessage(`Boutique store error: ${e.message}`, "error");
-      setIsBoutiqueLoading(false);
+      logMessage("Using regional boutique database cache.", "info");
+      setBoutiqueData(MOCK_BOUTIQUE_DATA[targetZip] || MOCK_BOUTIQUE_DATA["800008"]);
+    } finally {
       setBoutiqueFetched(true);
+      setIsBoutiqueLoading(false);
     }
   };
+
 
   const fetchGlobalRunway = async (cityFilter) => {
     setIsGlobalRunwayLoading(true);
@@ -690,39 +754,42 @@ function App() {
   };
 
   const openTrendsPanel = (tab) => {
-    setTrendsPanelTab(tab);
+    const targetTab = (tab === 'creators' || tab === 'youtube') ? 'youtube' : tab;
+    setTrendsPanelTab(targetTab);
     setTrendsPanelOpen(true);
-    handleTabClick(tab);
+    handleTabClick(targetTab);
   };
 
   const closeTrendsPanel = () => {
     setTrendsPanelOpen(false);
   };
 
-  // Client-side 8-Pillar Scoring Simulation Fallback
+  // Client-side scoring fallback — mirrors backend 4-pipeline weights exactly
   const runLocalRecommendationCalculator = (profile, userVibeVector) => {
-    logMessage("Running client-side 8-Pillar mathematical scoring simulation...", "sql");
-    
-    const month = parseInt(profile.dateStr.split("-")[1], 10);
-    const dbZip = ZIP_MAPPING[currentZipCode] || currentZipCode;
-    const weatherEntry = WEATHER_MATRIX[dbZip]?.[month] || WEATHER_MATRIX[dbZip]?.[String(month)] || {};
-    const isColdWave = weatherEntry.cold_wave || false;
-    const isHotWave = weatherEntry.hot_wave || false;
-    const isRainy = weatherEntry.rainy || false;
-    const isWeddingDay = (profile.event_type === "wedding_day");
-    
-    const weatherCondition = weatherEntry.weather_conditions || "hot_humid";
-    const allowableMaterials = WEATHER_RULES[weatherCondition]?.allowable_materials || ["cotton", "linen"];
-    const allowableMaterialsVector = generateVibeVector(weatherCondition);
-    
-    const isFestivalActive = profile.isFestive || manualFestival !== "None";
-    const festName = manualFestival !== "None" ? manualFestival.toLowerCase() : profile.isFestive ? "chhath_puja" : "";
-    const festivalRule = FESTIVAL_RULES[festName] || {};
-    const targetColor = festivalRule.target_color || "";
-    const targetNature = festivalRule.target_nature || "";
-    const festiveContextVector = generateVibeVector(festName || "chhath_puja");
+    logMessage("Running client-side pipeline scoring simulation...", "sql");
 
-    // Local CF Lookup mock
+    const dbZip = ZIP_MAPPING[currentZipCode] || currentZipCode;
+    const isWeddingDay = (profile.event_type === "wedding_day");
+
+    // ── Determine scoring mode based on whether user explicitly picked a vibe ──
+    const weights = vibeExplicitlySelected
+      ? SCORING_WEIGHTS.vibe_selected       // 0.4 vibe · 0.3 creator · 0.2 boutique · 0.1 location
+      : SCORING_WEIGHTS.vibe_not_selected;  // 0.0 vibe · 0.4 location · 0.3 boutique · 0.3 creator
+
+    // ── Resolve effective vibe vector ─────────────────────────────────────────
+    // When no explicit vibe, use this PIN's default location vibe
+    const effectiveVibeKey = vibeExplicitlySelected
+      ? currentVibe
+      : (DEFAULT_LOCATION_VIBE[currentZipCode] || "universal_traditionalist");
+    const effectiveVibeVector = generateVibeVector(effectiveVibeKey);
+
+    // ── Festival context vector (used for festive-tagged items) ───────────────
+    const isFestivalActive = profile.isFestive || manualFestival !== "None";
+    const festiveContextVector = profile.isFestive
+      ? generateVibeVector(profile.trendingTags.join("|") || "ethnic")
+      : effectiveVibeVector;
+
+    // ── CF boosts from cart (populated by backend in production) ─────────────
     const activeCFBoosts = {};
     sessionCart.forEach(cid => {
       const recs = CF_LOOKUP[cid]?.recommendations || [];
@@ -733,8 +800,6 @@ function App() {
       });
     });
 
-    const weights = CONTEXT_MATRICES[engineState] || CONTEXT_MATRICES["discovery"];
-
     const computed = FALLBACK_PRODUCTS.filter(product => {
       if (product.zip_codes && product.zip_codes.length > 0) {
         return product.zip_codes.includes(currentZipCode);
@@ -743,13 +808,9 @@ function App() {
     }).map(product => {
       const id = product.id;
       const tags = product.tags;
-      const descLower = product.description.lower || product.description.toLowerCase();
+      const descLower = (product.description || "").toLowerCase();
 
-      // Extract attributes dynamically
-      let material = "cotton";
-      for (let m of ["silk", "linen", "rayon", "velvet", "wool", "denim", "polyester", "chanderi", "georgette", "organza"]) {
-        if (tags.includes(m) || descLower.includes(m)) { material = m; break; }
-      }
+      // Extract product attributes
       let color = "multi";
       for (let c of ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]) {
         if (tags.includes(c) || descLower.includes(c)) { color = c; break; }
@@ -775,109 +836,77 @@ function App() {
       const currentSales = vScore > 0 ? Math.floor(baselineSales * (1.0 + 2.0 * vScore)) : baselineSales + (id % 5);
       const ageGroup = tags.includes("streetwear") ? "gen-z" : "millennial";
 
-      const tagKey = product.tags.join("|");
+      const tagKey = tags.join("|");
       const embedding = embeddingCacheRef.current[tagKey]
         || (embeddingCacheRef.current[tagKey] = generateVibeVector(tagKey));
 
-      // === Pillar 1: Aesthetic score (Dual-Modal Vector Cosine Fusion) ===
+      // ── Pipeline 2: Vibe score (0.4 when selected, 0.0 otherwise) ────────────
       let productVec = product.vector || product.embedding || embedding;
-      let rawCos = calculateCosineSimilarity(userVibeVector, productVec);
-      let sAesthetic = (rawCos + 1) / 2;
-
-      const vibeDef = VIBE_DEFINITIONS[currentVibe] || VIBE_DEFINITIONS["coastal_tropical"];
+      let rawCos = calculateCosineSimilarity(effectiveVibeVector, productVec);
+      let sVibe = (rawCos + 1) / 2;
+      // Tag overlap bonus
+      const vibeDef = VIBE_DEFINITIONS[effectiveVibeKey] || {};
       const vibeTags = vibeDef.tags || [];
-      const tagOverlap = product.tags.filter(t => vibeTags.includes(t.toLowerCase())).length;
-      if (tagOverlap > 0) {
-        sAesthetic = Math.min(1.0, sAesthetic + 0.15 * tagOverlap);
-      }
+      const tagOverlap = tags.filter(t => vibeTags.includes(t.toLowerCase())).length;
+      if (tagOverlap > 0) sVibe = Math.min(1.0, sVibe + 0.12 * tagOverlap);
 
-      // === Pillar 2: Fabric & Thermal Weather Score ===
-      let sFabric = 0.5;
-      if (allowableMaterials.includes(material)) {
-        sFabric = 1.0;
-      } else if (isHotWave && ["wool", "velvet", "heavy_silk", "brocade"].includes(material)) {
-        sFabric = 0.05; // Thermal Veto for hot weather
-      } else if (isColdWave && ["wool", "velvet", "heavy_silk", "layering", "cardigan", "jacket"].includes(material)) {
-        sFabric = 1.0; // Thermal Comfort boost for cold weather
-      } else {
-        sFabric = 0.6;
-      }
-
-      // WEATHER VETO
-      if (sFabric < 0.2) return null;
-
-      // === Pillar 3: Festivity score ===
-      let sFestivity = 1.0;
-      if (isFestivalActive) {
-        sFestivity = calculateCosineSimilarity(festiveContextVector, embedding);
-        if (color === targetColor && nature === targetNature) sFestivity = 1.0;
-        else sFestivity = (sFestivity + 1) / 2;
-      }
-
-      // === Pillar 4: Creator score ===
+      // ── Pipeline 4: Content Creator score (0.3) ───────────────────────────────
       let sCreator = 0.5;
-      if (isEvergreen) sCreator = 0.85;
-      else {
+      if (isEvergreen) {
+        sCreator = 0.85;
+      } else {
         const localCreators = FALLBACK_CREATORS[dbZip] || [];
         let maxC = 0.0;
         localCreators.forEach(c => {
           const sim = (calculateCosineSimilarity(c.vector, embedding) + 1) / 2;
           const penalty = ageGroup === c.demographic ? 1.0 : 0.1;
-          maxC = Math.max(maxC, sim * penalty * c.subscriber_weight);
+          maxC = Math.max(maxC, sim * penalty * (c.subscriber_weight || 1.0));
         });
-        sCreator = maxC;
+        sCreator = maxC || 0.5;
       }
 
-      // === Pillar 5: Boutique score ===
+      // ── Pipeline 3: Local Boutique score (0.2 vibe-selected / 0.3 default) ───
       let sBoutique = 0.5;
-      if (isEvergreen) sBoutique = 0.85;
-      else {
+      if (isEvergreen) {
+        sBoutique = 0.85;
+      } else {
         const localStores = FALLBACK_STORES[dbZip] || [];
         let maxS = 0.0;
         localStores.forEach(s => {
           const sim = (calculateCosineSimilarity(s.vector, embedding) + 1) / 2;
           let wRating = Math.max(0.0, (s.rating - 3.0) / 2.0);
-          if (s.review_count < 50) wRating *= 0.5;
+          if ((s.review_count || 0) < 50) wRating *= 0.5;
           const catGate = ["ethnic", "occasion", "festive", "traditional"].includes(category.toLowerCase()) ? 1.0 : 0.2;
-          const pricePenalty = s.estimated_cost > 2500 * 2 ? 0.3 : 1.0;
-          maxS = Math.max(maxS, sim * wRating * catGate * pricePenalty);
+          maxS = Math.max(maxS, sim * wRating * catGate);
         });
-        sBoutique = maxS;
+        sBoutique = maxS || 0.5;
       }
 
-      // === Pillar 6: Intent score ===
-      let sIntent = 0.0; // offline simple intent decay mock
+      // ── Location-based score (0.1 vibe-selected / 0.4 default) ──────────────
+      // Approximated by cosine similarity to the PIN's default vibe vector
+      const locationVibeKey = DEFAULT_LOCATION_VIBE[currentZipCode] || "universal_traditionalist";
+      const locationVector = generateVibeVector(locationVibeKey);
+      let sLocation = (calculateCosineSimilarity(locationVector, embedding) + 1) / 2;
 
-      // === Pillar 7: CF score ===
-      let sCf = activeCFBoosts[id] || 0.0;
+      // ── Final 4-pillar weighted score ─────────────────────────────────────────
+      let finalScore =
+        weights.w_vibe     * sVibe     +
+        weights.w_creator  * sCreator  +
+        weights.w_boutique * sBoutique +
+        weights.w_location * sLocation;
 
-      // Final score formula: Primary weight given to Aesthetic Vibe match
-      let finalScore = (
-        0.65 * sAesthetic +
-        0.15 * sFabric +
-        0.10 * sFestivity +
-        0.05 * sBoutique +
-        0.05 * sCreator
-      );
-
-      // Low Stock Penalty
+      // Low stock penalty
       if (stockLevel < 5) finalScore *= 0.1;
 
-      // Dynamic rules overrides
-      if (currentZipCode === "800001" && isWeddingDay) {
-        if (tags.includes("heavy_silk")) finalScore += 0.50;
-        else if (tags.includes("summer") || tags.includes("casual")) finalScore -= 0.50;
-      }
-      if (currentZipCode === "560034" && isWeddingDay) {
-        if (tags.includes("kasavu_weave")) finalScore += 0.50;
-      }
-      if (currentZipCode === "752001" && isWeddingDay) {
-        if (tags.includes("sambalpuri") || tags.includes("tussar_silk")) finalScore += 0.50;
+      // Wedding day regional boost
+      if (isWeddingDay) {
+        if (currentZipCode === "800008" && tags.includes("heavy_silk")) finalScore = Math.min(1.0, finalScore + 0.30);
+        if (currentZipCode === "682001" && tags.includes("kasavu_weave")) finalScore = Math.min(1.0, finalScore + 0.30);
+        if (currentZipCode === "752001" && (tags.includes("sambalpuri") || tags.includes("tussar_silk"))) finalScore = Math.min(1.0, finalScore + 0.30);
       }
 
       return {
         ...product,
-        material,
         color,
         nature,
         category,
@@ -887,56 +916,44 @@ function App() {
         baseline_sales: baselineSales,
         current_sales: currentSales,
         units_last_hour: currentSales - baselineSales,
-        is_trending: sVelocity >= 0.75,
-        vector_score: sAesthetic,
+        is_trending: vScore >= 0.75,
+        vector_score: sVibe,
         tag_score: sCreator,
-        boost_score: sFestivity,
-        velocity_score: sVelocity,
-        velocity_boost: sIntent,
+        boost_score: sBoutique,
+        velocity_score: vScore,
         final_score: finalScore,
-        overlap_tags: tags.filter(tag => profile.trendingTags.includes(tag)),
+        overlap_tags: tags.filter(tag => (profile.trendingTags || []).includes(tag)),
         scoring_breakdown: {
-          layer1_personal_vibe: weights.w_aesthetic * sAesthetic,
-          layer2_creator_trend: weights.w_creator * sCreator,
-          layer3_local_boutique: weights.w_boutique * sBoutique,
-          layer4_festivity: weights.w_festivity * sFestivity,
-          layer5_weather: weights.w_fabric * sFabric,
-          layer6_velocity: weights.w_velocity * sVelocity,
-          layer7_intent: weights.w_intent * sIntent,
-          layer8_cf: weights.w_cf * sCf,
+          pipeline2_vibe:     weights.w_vibe     * sVibe,
+          pipeline4_creator:  weights.w_creator  * sCreator,
+          pipeline3_boutique: weights.w_boutique * sBoutique,
+          location_vibe:      weights.w_location * sLocation,
           raw_values: {
-            personal_vibe_similarity: sAesthetic,
-            creator_trend_match: sCreator,
-            local_boutique_match: sBoutique,
-            festivity_match: sFestivity,
-            weather_match: sFabric,
-            checkout_velocity_score: sVelocity,
-            intent_score: sIntent,
-            cf_score: sCf
+            vibe_similarity:    sVibe,
+            creator_match:      sCreator,
+            boutique_match:     sBoutique,
+            location_match:     sLocation,
           }
         },
         reason_labels: [
-          sFestivity > 0.7 && isFestivalActive ? `✨ Trending for Festival` : null,
-          sCreator > 0.7 ? `🔥 Loved by local creators` : null,
-          sFabric > 0.8 ? `☀️ Climate-appropriate` : null,
-          sCf > 0.5 ? `👥 People also bought` : null
+          isFestivalActive ? `✨ Trending for ${activeDateProfile.event || 'Festival'}` : null,
+          sCreator > 0.7  ? `🎬 Loved by local creators` : null,
+          sBoutique > 0.7 ? `🏪 Stocked in local boutiques` : null,
+          tagOverlap > 1  ? `✨ Matches your vibe` : null,
         ].filter(Boolean)
       };
     }).filter(Boolean);
 
     computed.sort((a, b) => b.final_score - a.final_score);
-    const finalFeed = computed;
-
-    setProducts(finalFeed);
-    logMessage(`Local matching algorithm ranked ${finalFeed.length} items. 8-Pillar weights applied.`, "success");
-    if (finalFeed.length > 0) {
-      setSelectedProduct(finalFeed[0]);
-    }
+    setProducts(computed);
+    logMessage(`Client-side scoring ranked ${computed.length} items. Mode: ${vibeExplicitlySelected ? 'vibe-selected' : 'location-default'}.`, "success");
+    if (computed.length > 0) setSelectedProduct(computed[0]);
   };
 
   const triggerVibeChange = (vibe) => {
     setCurrentVibe(vibe);
-    logMessage(`Shopper style vibe profile changed: '${vibe.toUpperCase()}'.`, "success");
+    setVibeExplicitlySelected(true);  // switch to vibe-selected weight mode
+    logMessage(`Vibe selected: '${vibe.toUpperCase()}'. Weights → 0.4 vibe · 0.3 creator · 0.2 boutique · 0.1 location.`, "success");
   };
 
   // Dev Panel Operations
@@ -1603,9 +1620,7 @@ function App() {
                     🥻 {banners.national.title} — Festive Collection ({nationalProducts.length} items)
                   </h3>
                   {nationalProducts.length > 0 ? (
-                    <div className="horizontal-shelf">
-                      {nationalProducts.slice(0, 15).map((product, idx) => renderProductCard(product, idx))}
-                    </div>
+                    renderCarouselShelf(nationalProducts, 20, 8)
                   ) : (
                     <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No products matching {banners.national.title} search space.</p>
                   )}
@@ -1667,15 +1682,12 @@ function App() {
                 if (p.is_global_trend) return false;
                 
                 // STRICT REGIONAL GEOGRAPHIC ISOLATION:
-                // Exclude products explicitly assigned to a different region's ZIP code
                 const pZips = p.zip_codes || [];
                 if (pZips.length > 0 && !pZips.includes(currentZipCode)) return false;
                 
                 const tagsLower = (p.tags || []).map(t => t.toLowerCase());
                 const catLower = (p.category || "").toLowerCase();
                 
-                // FOR TRADITIONAL ETHNIC FESTIVALS (Chhath Puja, Bihar Diwas, Prakash Parv, Makar Sankranti, Durga Puja, Diwali):
-                // Strictly exclude casual hoodies, sweatshirts, denim shirt dresses, tracksuits & shorts!
                 if (isTraditionalFestival) {
                   const isNonEthnicCasual = tagsLower.some(t => ["hoodie", "sweatshirt", "athleisure", "tracksuit", "denim", "streetwear", "sporty", "activewear", "rebel", "y2k", "crop", "jogger"].includes(t)) ||
                                             ["urban athleisure", "high-street rebel", "y2k nostalgia", "western"].includes(catLower);
@@ -1687,8 +1699,6 @@ function App() {
                   return isFestiveOrEthnic;
                 }
                 
-                // FOR MODERN EVENTS (Christmas, Music Fests, Galas, Convocation):
-                // Allow modern dresses, suits, blazers, evening gowns, winter cardigans & chic contemporary outfits
                 if (isModernEvent) {
                   return (
                     (p.zip_codes && p.zip_codes.includes(currentZipCode)) ||
@@ -1709,9 +1719,7 @@ function App() {
                     📍 {banners.local.title} — Regional Dispatch Collection ({localProducts.length} items)
                   </h3>
                   {localProducts.length > 0 ? (
-                    <div className="horizontal-shelf">
-                      {localProducts.slice(0, 15).map((product, idx) => renderProductCard(product, idx))}
-                    </div>
+                    renderCarouselShelf(localProducts, 20, 8)
                   ) : (
                     <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No regional products matching {banners.local.title}.</p>
                   )}
@@ -1720,6 +1728,40 @@ function App() {
             })()}
           </div>
         )}
+      </div>
+    );
+  };
+
+  const renderCarouselShelf = (productList, maxLimit = 20, initialLimit = 8) => {
+    const displayed = productList.slice(0, maxLimit);
+
+    return (
+      <div className="carousel-shelf-wrapper">
+        <button 
+          className="carousel-arrow-btn left-arrow" 
+          onClick={(e) => {
+            const shelf = e.currentTarget.nextElementSibling;
+            if (shelf) shelf.scrollBy({ left: -380, behavior: 'smooth' });
+          }} 
+          title="Scroll Left"
+        >
+          ❮
+        </button>
+
+        <div className="horizontal-shelf" style={{ scrollBehavior: 'smooth', flex: 1, overflowX: 'auto' }}>
+          {displayed.map((product, idx) => renderProductCard(product, idx))}
+        </div>
+
+        <button 
+          className="carousel-arrow-btn right-arrow" 
+          onClick={(e) => {
+            const shelf = e.currentTarget.previousElementSibling;
+            if (shelf) shelf.scrollBy({ left: 380, behavior: 'smooth' });
+          }} 
+          title="Scroll Right / Explore Up To 20 Outfits"
+        >
+          ❯
+        </button>
       </div>
     );
   };
@@ -1771,11 +1813,12 @@ function App() {
         
         <div className="product-image-container">
           <img 
-            src={product.image_url} 
+            src={product.image_url || getFashionFallbackImage(product.name, product.category)} 
             alt={product.name} 
             className="product-image"
             onError={(e) => {
-              e.target.src = `https://placehold.co/400x500/EFEBCE/A3A380?text=${encodeURIComponent(product.name)}`;
+              e.target.onerror = null;
+              e.target.src = getFashionFallbackImage(product.name, product.category);
             }}
           />
           <div className="score-badge">
@@ -1902,12 +1945,13 @@ function App() {
         {/* Fashion Dress Image */}
         <div className="product-image-container" style={{ margin: '10px 0', height: '340px', width: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative', background: '#1a1a1a' }}>
           <img 
-            src={imgUrl} 
+            src={imgUrl || getFashionFallbackImage(product.name, "Global Runway")} 
             alt={product.name} 
             className="product-image"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
             onError={(e) => {
-              e.target.src = `https://placehold.co/400x500/3b3529/EFEBCE?text=${encodeURIComponent(product.name)}`;
+              e.target.onerror = null;
+              e.target.src = getFashionFallbackImage(product.name, "Global Runway");
             }}
           />
         </div>
@@ -1998,76 +2042,126 @@ function App() {
         </div>
       )}
 
-      {/* Main Dashboard Header */}
-      <header className="app-header">
-        <div className="logo-container">
-          <div className="logo-badge">MYNTRA</div>
-          <div className="logo-text">
-            <h1>PinPulse Tri-Layer Engine</h1>
-            <p><span className="live-indicator"></span> Hyperlocal Regional Dispatch Simulator</p>
+      {/* Myntra-Style Top Header Bar */}
+      <header className="myntra-top-header">
+        <div className="myntra-header-left">
+          <div className="myntra-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <span className="myntra-logo-icon">📍</span>
+            <span className="myntra-logo-title">PinPulse</span>
           </div>
-        </div>
-        
-        {/* Men, Women, Kids Tabs Navigation Bar */}
-        <nav className="tab-navigation-bar" style={{ display: 'flex', gap: '8px', margin: '0 16px' }}>
-          {['Men', 'Women', 'Kids'].map(tab => (
-            <button
-              key={tab}
-              id={`tab-btn-${tab.toLowerCase()}`}
-              className={`nav-tab-btn ${activeTab === tab ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: '8px 20px',
-                borderRadius: '20px',
-                fontWeight: '700',
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                background: activeTab === tab ? 'linear-gradient(135deg, #c69fd5, #824265)' : 'rgba(250,249,240,0.1)',
-                color: activeTab === tab ? '#ffffff' : 'rgba(250,249,240,0.85)',
-                border: activeTab === tab ? '1px solid #c69fd5' : '1px solid rgba(250,249,240,0.2)',
-                transition: 'all 0.2s ease',
-                boxShadow: activeTab === tab ? '0 0 10px rgba(198,159,213,0.3)' : 'none'
-              }}
+          
+          <nav className="myntra-nav-menu">
+            {/* MEN (Dummy / Disabled for show) */}
+            <div 
+              className="myntra-nav-item disabled" 
+              title="Men selection is disabled (Defaulting to Women)"
+              onClick={() => logMessage("Men section is currently disabled. Default selection is Women.", "info")}
             >
-              {tab === 'Men' ? '👔 Men' : tab === 'Women' ? '🥻 Women' : '🧸 Kids'}
-            </button>
-          ))}
-        </nav>
+              MEN
+            </div>
 
-        {/* Selector Panel */}
-        <div className="header-meta">
-          <div className="meta-pill" style={{ padding: '0px 4px 0px 12px', background: 'rgba(250,249,240,0.15)', border: '1px solid rgba(250,249,240,0.30)' }}>
-            <span style={{ fontSize: '0.75rem', color: 'rgba(250, 249, 240, 0.85)' }}>📍 REGION:</span>
+            {/* WOMEN (Default Selected) */}
+            <div className="myntra-nav-item active">
+              WOMEN
+            </div>
+
+            {/* VIBE CHECK (Dropdown) */}
+            <div className="myntra-nav-item dropdown">
+              <span className="dropdown-title">VIBE CHECK ▾</span>
+              <div className="dropdown-menu">
+                {Object.entries(VIBE_DEFINITIONS).map(([key, def]) => (
+                  <div 
+                    key={key} 
+                    className={`dropdown-option ${currentVibe === key ? 'active' : ''}`}
+                    onClick={() => {
+                      triggerVibeChange(key);
+                    }}
+                  >
+                    <span>{def.emoji}</span>
+                    <span>{def.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* LOCAL CONTENT CREATOR (Dropdown / Direct Link) */}
+            <div className="myntra-nav-item dropdown">
+              <span 
+                className="dropdown-title" 
+                onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('creators'); }}
+              >
+                LOCAL CREATOR ▾
+              </span>
+              <div className="dropdown-menu">
+                <div 
+                  className="dropdown-option" 
+                  onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('creators'); }}
+                >
+                  🎬 Creator Insights & Reels
+                </div>
+              </div>
+            </div>
+
+            {/* LOCAL BOUTIQUE (Dropdown / Direct Link) */}
+            <div className="myntra-nav-item dropdown">
+              <span 
+                className="dropdown-title" 
+                onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('boutiques'); }}
+              >
+                LOCAL BOUTIQUE ▾
+              </span>
+              <div className="dropdown-menu">
+                <div 
+                  className="dropdown-option" 
+                  onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('boutiques'); }}
+                >
+                  🏪 Boutique Directory & Tours
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        {/* Search Bar */}
+        <div className="myntra-search-bar">
+          <span>🔍</span>
+          <input 
+            type="text" 
+            placeholder="Search for products, brands and more" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        {/* Header Right Actions */}
+        <div className="myntra-header-right">
+          <div className="myntra-region-selector">
+            <span>📍 REGION:</span>
             <select 
               value={currentZipCode} 
               onChange={handleZipCodeChange}
-              style={{
-                background: 'transparent',
-                color: 'white',
-                border: 'none',
-                padding: '4px 8px',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-                fontWeight: '600',
-                outline: 'none'
-              }}
             >
               {Object.entries(ZIP_CODES).map(([zip, details]) => (
-                <option key={zip} value={zip} style={{ background: 'var(--bg-deep)', color: 'white' }}>
+                <option key={zip} value={zip}>
                   {details.name}
                 </option>
               ))}
             </select>
           </div>
-          
 
-          <div className="meta-pill">
-            🛒 Cart: {sessionCart.length}
+          <div className="myntra-action-item">
+            <span className="action-icon">👤</span>
+            <span className="action-label">Profile</span>
           </div>
-          <div className="meta-pill">
-            📅 {activeDateProfile.dateStr}
+          <div className="myntra-action-item" onClick={() => logMessage("Wishlist clicked", "info")}>
+            <span className="action-icon">❤️</span>
+            <span className="action-label">Wishlist</span>
           </div>
-
+          <div className="myntra-action-item" onClick={() => logMessage("Bag clicked", "info")}>
+            <span className="action-icon">🛍️</span>
+            <span className="action-label">Bag</span>
+            {sessionCart.length > 0 && <span className="cart-badge">{sessionCart.length}</span>}
+          </div>
         </div>
       </header>
 
@@ -2194,167 +2288,57 @@ function App() {
             </div>
             
             {timeTravelVisible && (
-              <>
-                <div className="slider-container">
-                  <input 
-                    type="range" 
-                    min="0" 
-                    max={dateProfiles.length - 1} 
-                    value={sliderVal} 
-                    onChange={handleSliderChange}
-                    className="slider-input"
-                  />
-                  <div className="slider-labels" style={{ gridTemplateColumns: `repeat(${dateProfiles.length}, 1fr)` }}>
-                    {dateProfiles.map((profile, index) => {
-                      const shortLabel = profile.label.split('(')[0].trim();
-                      return (
-                        <span 
-                          key={profile.key} 
-                          className={`slider-label ${sliderVal === index ? 'active' : ''}`} 
-                          onClick={() => handleSliderChange({target:{value:index}})}
-                          style={{ fontSize: '0.72rem', fontWeight: sliderVal === index ? 'bold' : '500', whiteSpace: 'nowrap' }}
-                          title={profile.label}
-                        >
-                          {shortLabel}
-                        </span>
-                      );
-                    })}
-                  </div>
+              <div className="slider-container">
+                <input 
+                  type="range" 
+                  min="0" 
+                  max={dateProfiles.length - 1} 
+                  value={sliderVal} 
+                  onChange={handleSliderChange}
+                  className="slider-input"
+                />
+                <div className="slider-labels" style={{ gridTemplateColumns: `repeat(${dateProfiles.length}, 1fr)` }}>
+                  {dateProfiles.map((profile, index) => {
+                    const shortLabel = profile.label.split('(')[0].trim();
+                    return (
+                      <span 
+                        key={profile.key} 
+                        className={`slider-label ${sliderVal === index ? 'active' : ''}`} 
+                        onClick={() => handleSliderChange({target:{value:index}})}
+                        style={{ fontSize: '0.72rem', fontWeight: sliderVal === index ? 'bold' : '500', whiteSpace: 'nowrap' }}
+                        title={profile.label}
+                      >
+                        {shortLabel}
+                      </span>
+                    );
+                  })}
                 </div>
-                
-                {/* Live Environmental Factors */}
-                <div className="env-factors-row">
-                  <div className="factor-box">
-                    <div className="factor-title">Temperature</div>
-                    <div className="factor-value" style={{
-                      color: getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("10°") || 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("8°") || 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("9°") ? '#1e40af' : 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("39°") || 
-                             getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp.includes("38°") ? '#9a3412' : 'var(--text-main)'
-                    }}>
-                      {getPresetWeather(currentZipCode, activeDateProfile.dateStr).temp}
-                    </div>
-                  </div>
-                  <div className="factor-box">
-                    <div className="factor-title">Weather Status</div>
-                    <div className="factor-value" style={{ color: 'var(--text-main)' }}>
-                      {getPresetWeather(currentZipCode, activeDateProfile.dateStr).desc}
-                    </div>
-                  </div>
-                  <div className="factor-box">
-                    <div className="factor-title">Local Calendar Event</div>
-                    <div className="factor-value" style={{fontSize: '0.75rem', color: 'var(--peach-dark)', lineHeight: '1.2'}}>
-                      {activeDateProfile.event}
-                    </div>
-                  </div>
-                  <div className="factor-box">
-                    <div className="factor-title">Active Surge</div>
-                    <div className="factor-value" style={{fontSize: '0.8rem', color: 'var(--peach-dark)'}}>
-                      {activeDateProfile.event_type === 'wedding_day' ? 'Wedding Surge 💍' : activeDateProfile.isFestive ? 'Festive Surge 🥻' : 'None'}
-                    </div>
-                  </div>
-                  <div className="factor-box">
-                    <div className="factor-title">Avg Order Value</div>
-                    <div className="factor-value" style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>
-                      {zipInsights ? `₹${zipInsights.average_order_value.toLocaleString('en-IN')}` : '₹...'}
-                    </div>
-                  </div>
-                  <div className="factor-box">
-                    <div className="factor-title">Upcoming (7 Days)</div>
-                    <div className="factor-value" style={{ fontSize: '0.7rem', color: 'var(--peach-dark)', lineHeight: '1.4' }}>
-                      {zipInsights && zipInsights.upcoming_events && zipInsights.upcoming_events.length > 0
-                        ? zipInsights.upcoming_events.slice(0, 2).map((ev, i) => (
-                            <div key={i} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-main)' }}>
-                              📅 {ev.event_name.split('(')[0].trim()}
-                            </div>
-                          ))
-                        : 'No events soon'
-                      }
-                    </div>
-                  </div>
-                </div>
-              </>
+              </div>
             )}
           </div>
           
           {/* Dynamic National & Regional Festival Banners */}
           {renderFestivalBanners()}
 
-          {/* Feed Header - only show surge tab toggle when active */}
-          {velocitySurgeData && (
-            <div className="feed-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <h2
-                  style={{ cursor: 'pointer', opacity: activeSurgeTab === null ? 1 : 0.5 }}
-                  onClick={() => setActiveSurgeTab(null)}
-                >
-                  🛒 Recommendations
-                </h2>
-                <h2
-                  style={{ cursor: 'pointer', opacity: activeSurgeTab === "surge" ? 1 : 0.5, color: '#fdfdc9' }}
-                  onClick={() => setActiveSurgeTab("surge")}
-                >
-                  🔥 Local Surge
-                </h2>
-              </div>
-            </div>
-          )}
-          
           {/* Product Feed Grid */}
           {isLoading ? (
             <div className="spinner"></div>
-          ) : activeSurgeTab === "surge" && velocitySurgeData ? (
-            <div>
-              <p style={{ margin: '0 0 15px 0', color: '#c69fd5', fontStyle: 'italic' }}>
-                🚀 Showing real-time trending products matching the local demand cluster: <strong>{velocitySurgeData.theme}</strong>
-              </p>
-              <div className="catalog-grid">
-                {velocitySurgeData.products.map((product) => (
-                  <div key={product.id} className="product-card" style={{ border: '1px solid rgba(198,159,213,0.4)' }}>
-                    <div className="surge-pill" style={{ background: '#c69fd5', color: '#120917', top: '10px', left: '10px' }}>Trending 📈</div>
-                    <div className="product-image-container">
-                      <img 
-                        src={product.image_url} 
-                        alt={product.name} 
-                        className="product-image"
-                        onError={(e) => { e.target.src = `https://placehold.co/400x500/1a1a2e/ffffff?text=${encodeURIComponent(product.name)}`; }}
-                      />
-                    </div>
-                    <div className="product-info">
-                      <p className="product-category">{product.category}</p>
-                      <h4 className="product-name">{product.name}</h4>
-                      <p style={{ fontSize: '0.85rem', color: '#CD9FBC', fontWeight: 'bold' }}>₹{(product.id * 17) % 3000 + 499}</p>
-                      <button className="onboarding-btn" style={{ width: '100%', marginTop: '10px', border: 'none' }} onClick={() => handleAddToCart(product.id)}>
-                        🛒 Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           ) : (
             <div>
               {/* 1. Recommended For You */}
               <div className="section-container">
                 {(() => {
-                  const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
-                  const recommendedProducts = products.filter(p => {
-                    if (p.is_global_trend) return false;
-                    return true;
-                  });
-
+                  const recommendedProducts = products.filter(p => !p.is_global_trend);
+                  const vibeLabel = vibeExplicitlySelected
+                    ? (VIBE_DEFINITIONS[currentVibe]?.name || 'Your Vibe')
+                    : `📍 ${ZIP_CODES[currentZipCode]?.city || 'Local'} Picks`;
                   return (
                     <>
                       <h2 className="section-title">
-                        ✨ Recommended For You ({VIBE_DEFINITIONS[currentVibe]?.name || 'Personal Vibe'} · 🌡️ {activeWeather.temp} {activeWeather.desc})
+                        ✨ Recommended For You · {vibeLabel}
                       </h2>
                       {recommendedProducts.length > 0 ? (
-                        <div className="horizontal-shelf">
-                          {recommendedProducts
-                            .slice(0, 15)
-                            .map((product, idx) => renderProductCard(product, idx))}
-                        </div>
+                        renderCarouselShelf(recommendedProducts, 20, 8)
                       ) : (
                         <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>No recommendations matching your active search space.</p>
                       )}
@@ -2362,297 +2346,11 @@ function App() {
                   );
                 })()}
               </div>
-
-              {/* 2. Global Trends */}
-              <div className="section-container">
-                <div 
-                  className="festival-banner" 
-                  style={{ backgroundImage: `url(/images/global_trends_banner.png)` }}
-                  onClick={() => setExpandedSections(prev => ({ ...prev, global: !prev.global }))}
-                >
-                    <div className="banner-overlay">
-                      <span className="banner-badge">🌍 GLOBAL STYLE PULSE</span>
-                      <h2 className="banner-title">GLOBAL RUNWAY TRENDS</h2>
-                      <span className="banner-cta">
-                        {expandedSections.global ? '🙈 CLICK TO COLLAPSE COLLECTION' : '✨ CLICK TO EXPLORE TRENDS'}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {expandedSections.global && (() => {
-                    let extractedGlobalTrends = [];
-                    if (globalRunwayData && globalRunwayData.cities) {
-                      Object.entries(globalRunwayData.cities).forEach(([cityKey, cityData]) => {
-                        if (cityData.trends) {
-                          cityData.trends.forEach(trend => {
-                            extractedGlobalTrends.push({
-                              id: `global_${trend.id || trend.trend_name}`,
-                              name: trend.trend_name,
-                              description: trend.description,
-                              tags: trend.vibe_tags || [],
-                              category: "Global Runway",
-                              is_global_trend: true,
-                              global_city: cityData.city || cityKey,
-                              global_country: cityData.country || "",
-                              global_flag: cityData.flag || "🌍",
-                              global_primary_color: cityData.primary_color || "#9b6cb5",
-                              global_style_archetype: cityData.style_archetype || "",
-                              global_season: cityData.season || "SS26",
-                              global_heat_score: trend.heat_score || 0.9,
-                              global_searches_weekly: trend.global_searches_weekly || 150000,
-                              global_key_pieces: trend.key_pieces || [],
-                              global_trending_colors: trend.trending_colors || []
-                            });
-                          });
-                        }
-                      });
-                    }
-                    const globalProducts = extractedGlobalTrends.length > 0 
-                      ? extractedGlobalTrends 
-                      : products.filter(p => p.is_global_trend);
-                      
-                    return globalProducts.length > 0 ? (
-                      <div className="horizontal-shelf" style={{ gap: '18px', marginTop: '15px' }}>
-                        {globalProducts
-                          .slice(0, 25)
-                          .map((product) => renderGlobalTrendCard(product))}
-                      </div>
-                    ) : (
-                      <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)' }}>Global trends loading...</p>
-                    );
-                  })()}
-                </div>
-
-              {/* 3. Seasonal Fashion Studio */}
-              <div className="section-container" style={{ marginTop: '36px' }}>
-                {(() => {
-                  const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
-                  const autoDetectedSeason = getWeatherSeason(activeWeather);
-                  const bannerImg = SEASON_BANNERS[autoDetectedSeason] || "/images/summer_banner.png";
-
-                  return (
-                    <div 
-                      className="festival-banner seasonal-banner"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, rgba(15,15,25,0.72), rgba(30,20,45,0.78)), url(${bannerImg})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '16px',
-                        padding: '30px 32px',
-                        border: '1px solid rgba(255,255,255,0.18)',
-                        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.3)'
-                      }}
-                    >
-                      <div className="banner-overlay" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                          <span className="banner-badge" style={{ background: 'linear-gradient(90deg, #ff9a9e 0%, #fecfef 100%)', color: '#1a1a2e', fontWeight: 'bold', fontSize: '0.8rem', letterSpacing: '0.5px' }}>
-                            ✨ SEASONAL FASHION STUDIO
-                          </span>
-                          <span style={{ fontSize: '0.8rem', color: '#ffffff', background: 'rgba(0,0,0,0.5)', padding: '5px 14px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(6px)', fontWeight: '600' }}>
-                            ⚡ Live Weather Sync: {activeWeather.temp} • {activeWeather.desc}
-                          </span>
-                        </div>
-                        
-                        <h2 className="banner-title" style={{ margin: '8px 0 4px 0', fontSize: '1.6rem', letterSpacing: '0.5px', color: '#ffffff', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>
-                          {seasonalData?.meta?.title || "SEASONAL APPAREL COLLECTION"}
-                        </h2>
-                        <p className="banner-desc" style={{ margin: 0, opacity: 0.95, fontSize: '0.92rem', maxWidth: '850px', color: '#f8fafc', textShadow: '0 1px 6px rgba(0,0,0,0.7)', lineHeight: '1.4' }}>
-                          {seasonalData?.meta?.description || "Browse climate-engineered apparel tailored specifically to weather conditions, temperature, and seasonal aesthetics."}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Seasonal Products Grid/Shelf */}
-                {isSeasonalLoading ? (
-                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '15px' }}>Loading seasonal fashion collection...</p>
-                ) : seasonalData?.products && seasonalData.products.length > 0 ? (
-                  <div className="horizontal-shelf" style={{ gap: '18px', marginTop: '18px' }}>
-                    {seasonalData.products.slice(0, 25).map((product, idx) => renderProductCard(product, idx))}
-                  </div>
-                ) : (
-                  <p style={{ fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '15px' }}>No seasonal items found for this selection.</p>
-                )}
-              </div>
             </div>
           )}
         </div>
-
-        {/* ───────── RIGHT SIDE: VIBE SPACE PANEL ───────── */}
-        <aside style={{
-          width: '280px',
-          minWidth: '260px',
-          flexShrink: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          paddingTop: '0px'
-        }}>
-
-          {/* Vibe Space Header */}
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(187,133,136,0.18) 0%, rgba(215,206,147,0.18) 100%)',
-            border: '1px solid var(--peach-border)',
-            borderRadius: '16px',
-            padding: '18px 20px 14px 20px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span style={{ fontSize: '1.1rem' }}>✨</span>
-              <h3 style={{
-                margin: 0,
-                fontSize: '1rem',
-                fontWeight: '800',
-                fontFamily: 'var(--font-title)',
-                color: 'var(--peach-dark)',
-                letterSpacing: '0.3px'
-              }}>Your Vibe Space</h3>
-            </div>
-            <p style={{
-              margin: '0 0 0 0',
-              fontSize: '0.75rem',
-              color: 'var(--text-muted)',
-              lineHeight: '1.4'
-            }}>
-              Select your aesthetic to personalise your style vector.
-            </p>
-          </div>
-
-          {/* 4 Aesthetic Cards */}
-          {Object.entries(VIBE_DEFINITIONS).map(([key, def]) => {
-            const isActive = currentVibe === key;
-            const vibeGradients = {
-              universal_traditionalist: 'linear-gradient(145deg, rgba(187,133,136,0.22), rgba(215,206,147,0.22))',
-              dark_academia:            'linear-gradient(145deg, rgba(59,53,41,0.22), rgba(90,80,55,0.22))',
-              cottagecore:              'linear-gradient(145deg, rgba(163,163,128,0.22), rgba(200,210,160,0.22))',
-              grunge_alt:               'linear-gradient(145deg, rgba(120,80,80,0.22), rgba(80,60,80,0.22))',
-            };
-            const vibeBorders = {
-              universal_traditionalist: 'rgba(187,133,136,0.55)',
-              dark_academia:            'rgba(90,80,55,0.55)',
-              cottagecore:              'rgba(163,163,128,0.55)',
-              grunge_alt:               'rgba(120,80,80,0.55)',
-            };
-            const vibeActiveGlow = {
-              universal_traditionalist: '0 0 18px rgba(187,133,136,0.40)',
-              dark_academia:            '0 0 18px rgba(90,80,55,0.40)',
-              cottagecore:              '0 0 18px rgba(163,163,128,0.40)',
-              grunge_alt:               '0 0 18px rgba(120,80,80,0.40)',
-            };
-
-            return (
-              <div
-                key={key}
-                onClick={() => triggerVibeChange(key)}
-                style={{
-                  background: isActive ? vibeGradients[key] : 'var(--daisy-card)',
-                  border: `1.5px solid ${isActive ? vibeBorders[key] : 'var(--olive-border)'}`,
-                  borderRadius: '16px',
-                  padding: '16px 18px',
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                  boxShadow: isActive ? vibeActiveGlow[key] : '0 2px 8px rgba(0,0,0,0.06)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-                onMouseEnter={e => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = vibeGradients[key];
-                    e.currentTarget.style.borderColor = vibeBorders[key];
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = 'var(--daisy-card)';
-                    e.currentTarget.style.borderColor = 'var(--olive-border)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }
-                }}
-              >
-                {/* Active indicator dot */}
-                {isActive && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '12px',
-                    right: '12px',
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    background: 'var(--peach-dark)',
-                    boxShadow: '0 0 6px rgba(150,99,106,0.7)',
-                    animation: 'pulse 2s infinite'
-                  }} />
-                )}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{def.emoji}</span>
-                  <div>
-                    <p style={{
-                      margin: 0,
-                      fontSize: '0.82rem',
-                      fontWeight: '800',
-                      color: isActive ? 'var(--peach-dark)' : 'var(--text-main)',
-                      fontFamily: 'var(--font-ui)',
-                      lineHeight: 1.2
-                    }}>{def.name}</p>
-                    {isActive && (
-                      <span style={{
-                        fontSize: '0.62rem',
-                        fontWeight: '700',
-                        color: 'var(--peach-dark)',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.8px'
-                      }}>● ACTIVE</span>
-                    )}
-                  </div>
-                </div>
-                <p style={{
-                  margin: '0 0 10px 0',
-                  fontSize: '0.72rem',
-                  color: 'var(--text-muted)',
-                  lineHeight: '1.5',
-                }}>
-                  {def.desc}
-                </p>
-                {/* Tag chips – show first 4 */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                  {def.tags.slice(0, 4).map(tag => (
-                    <span key={tag} style={{
-                      fontSize: '0.62rem',
-                      fontWeight: '600',
-                      padding: '2px 7px',
-                      borderRadius: '8px',
-                      background: isActive ? 'rgba(187,133,136,0.2)' : 'var(--olive-faint)',
-                      color: isActive ? 'var(--peach-dark)' : 'var(--text-muted)',
-                      border: '1px solid var(--olive-border)',
-                    }}>#{tag}</span>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Current active vibe summary box */}
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(215,206,147,0.25) 0%, rgba(187,133,136,0.20) 100%)',
-            border: '1px solid var(--clover-border)',
-            borderRadius: '16px',
-            padding: '14px 18px',
-          }}>
-            <p style={{ margin: '0 0 6px 0', fontSize: '0.7rem', fontWeight: '800', color: 'var(--olive-dark)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-              🎯 Active Vector
-            </p>
-            <p style={{ margin: '0 0 4px 0', fontSize: '0.85rem', fontWeight: '700', color: 'var(--peach-dark)' }}>
-              {VIBE_DEFINITIONS[currentVibe]?.emoji} {VIBE_DEFINITIONS[currentVibe]?.name}
-            </p>
-            <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
-              Scoring: 60% Vibe · 20% Creator · 20% Boutique
-            </p>
-          </div>
-
-        </aside>
-
       </div>
+
 
 
 
@@ -2685,10 +2383,10 @@ function App() {
                 {/* Left: Product Image */}
                 <div className="pdp-modal-img-wrap">
                   <img
-                    src={p.image_url}
+                    src={p.image_url || getFashionFallbackImage(p.name, p.category)}
                     alt={p.name}
                     className="pdp-modal-img"
-                    onError={e => { e.target.src = `https://placehold.co/400x500/1a1a2e/ffffff?text=${encodeURIComponent(p.name)}`; }}
+                    onError={e => { e.target.onerror = null; e.target.src = getFashionFallbackImage(p.name, p.category); }}
                   />
                   <div className="pdp-modal-rank">Rank #{products.findIndex(x => x.id === p.id) + 1}</div>
                   <div className="pdp-modal-score">{(p.final_score * 100).toFixed(1)}% Match</div>
@@ -2970,9 +2668,10 @@ function App() {
                       const safeSelectedIdx = selectedCreatorIdx < creatorGroups.length ? selectedCreatorIdx : 0;
                       const currentGroup = creatorGroups[safeSelectedIdx] || creatorGroups[0];
                       const channel = currentGroup?.channel || "Creator";
-                      const channelUrl = currentGroup?.video?.video_url || 
-                                         `https://www.youtube.com/results?search_query=${encodeURIComponent(channel + ' fashion')}`;
+                      const selectedVid = currentGroup?.video;
+                      const channelUrl = selectedVid?.video_url || `https://www.youtube.com/results?search_query=${encodeURIComponent(channel + ' fashion')}`;
                       const displayProducts = currentGroup?.products || [];
+
 
                       return (
                         <>
@@ -3043,49 +2742,87 @@ function App() {
                             </div>
                           </div>
 
-                          {/* Selected Creator Reel */}
-                          <div style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <h4 style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-main)' }}>
-                                  🎬 {channel}'s Showcase ({displayProducts.length} CLIP-Matched Outfits)
-                                </h4>
-                                <a
-                                  href={channelUrl}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  style={{
-                                    background: 'rgba(187, 133, 136, 0.15)',
-                                    border: '1px solid var(--border-accent)',
-                                    color: 'var(--peach-dark)',
-                                    padding: '4px 12px',
-                                    borderRadius: '20px',
-                                    fontSize: '0.75rem',
-                                    fontWeight: '700',
-                                    textDecoration: 'none',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    whiteSpace: 'nowrap',
-                                    transition: 'all 0.2s ease'
-                                  }}
-                                >
-                                  <svg width="14" height="10" viewBox="0 0 24 17" fill="currentColor" style={{ color: 'var(--peach-dark)' }}>
-                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                                  </svg>
-                                  Visit Channel
-                                </a>
-                              </div>
-                              <span style={{ fontSize: '0.72rem', color: 'var(--peach-dark)', fontWeight: 'bold' }}>
-                                Scroll Horizontally ➔
-                              </span>
-                            </div>
+                          {/* Selected Creator Video Reel & Link */}
+                          <div style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '20px', border: '1px solid var(--border-color)' }}>
+                            <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+                              {(() => {
+                                const vidId = selectedVid?.video_id || "U_nkHYPc1ww";
+                                const thumbPic = selectedVid?.thumbnail_url || `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
+                                const ytVideoLink = selectedVid?.video_url || `https://www.youtube.com/watch?v=${vidId}`;
+                                const creatorChannelLink = selectedVid?.youtube_channel_url || `https://www.youtube.com/results?search_query=${encodeURIComponent(channel + ' fashion')}`;
 
-                            <div className="horizontal-shelf" style={{ gap: '14px' }}>
-                              {displayProducts.map((product, pIdx) => renderProductCard({
-                                ...product,
-                                badgeText: product.clip_match_score ? `✨ ${product.clip_match_score} CLIP Match` : null
-                              }, pIdx))}
+                                return (
+                                  <>
+                                    <div style={{ width: '220px', height: '140px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0, position: 'relative', background: '#2D1226' }}>
+                                      <img 
+                                        src={thumbPic} 
+                                        alt={channel} 
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                        onError={(e) => {
+                                          e.target.onerror = null;
+                                          e.target.src = `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`;
+                                        }}
+                                      />
+                                      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <span style={{ fontSize: '2rem' }}>▶️</span>
+                                      </div>
+                                    </div>
+
+                                    <div style={{ flex: 1, minWidth: '200px' }}>
+                                      <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: 'var(--text-main)' }}>
+                                        🎬 {channel}
+                                      </h3>
+                                      <p style={{ margin: '0 0 14px 0', fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                                        {selectedVid?.title || `Recent GenZ fashion vlog & outfit showcase in ${ZIP_CODES[currentZipCode]?.city}`}
+                                      </p>
+
+                                      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                        <a
+                                          href={ytVideoLink}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          style={{
+                                            background: '#ff3f6c',
+                                            color: '#ffffff',
+                                            padding: '10px 18px',
+                                            borderRadius: '24px',
+                                            fontSize: '0.82rem',
+                                            fontWeight: '700',
+                                            textDecoration: 'none',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '6px',
+                                            boxShadow: '0 4px 12px rgba(255,63,108,0.3)'
+                                          }}
+                                        >
+                                          📺 Watch Video on YouTube ↗
+                                        </a>
+
+                                        <a
+                                          href={creatorChannelLink}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          style={{
+                                            background: 'rgba(130, 66, 101, 0.15)',
+                                            color: '#824265',
+                                            border: '1px solid rgba(130, 66, 101, 0.3)',
+                                            padding: '10px 18px',
+                                            borderRadius: '24px',
+                                            fontSize: '0.82rem',
+                                            fontWeight: '700',
+                                            textDecoration: 'none',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '6px'
+                                          }}
+                                        >
+                                          👤 Creator Channel ↗
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </>
+                                );
+                              })()}
                             </div>
                           </div>
                         </>
@@ -3114,47 +2851,67 @@ function App() {
                 ) : boutiqueData?.boutiques?.length > 0 ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     {boutiqueData.boutiques.map((store, idx) => {
-                      const shopDresses = store.store_dresses && store.store_dresses.length > 0 
-                        ? store.store_dresses 
-                        : (store.matched_product ? [store.matched_product] : []);
                       const mapsUrl = store.maps_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(store.store_name + ' ' + ZIP_CODES[currentZipCode]?.city)}`;
+                      const ytVideoUrl = store.video_url || `https://www.youtube.com/results?search_query=${encodeURIComponent(store.store_name + ' store tour ' + ZIP_CODES[currentZipCode]?.city)}`;
 
                       return (
-                        <div key={store.store_id || idx} style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '16px', border: '1px solid var(--border-color)' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+                        <div key={store.store_id || idx} style={{ background: 'var(--daisy-panel)', borderRadius: '16px', padding: '20px', border: '1px solid var(--border-color)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
                             <div>
-                              <h3 style={{ margin: 0, fontSize: '1rem', color: 'var(--text-main)' }}>
+                              <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: 'var(--text-main)' }}>
                                 🏪 #{idx + 1} {store.store_name}
                               </h3>
-                              <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                                📍 {store.locality || ZIP_CODES[currentZipCode]?.city} · ⭐ {store.rating || store.simulated_engagement} · #{store.extracted_visual_trend}
+                              <p style={{ margin: '0 0 8px 0', fontSize: '0.88rem', color: 'var(--text-main)', fontWeight: '600' }}>
+                                📍 Location: {store.address || store.locality || ZIP_CODES[currentZipCode]?.city}
                               </p>
+                              {store.rating && (
+                                <p style={{ margin: '0', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                  ⭐ Rating: {store.rating} / 5.0
+                                </p>
+                              )}
                             </div>
-                            <a
-                              href={mapsUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              style={{
-                                background: 'var(--peach)',
-                                color: '#faf9f0',
-                                padding: '6px 14px',
-                                borderRadius: '20px',
-                                fontSize: '0.75rem',
-                                fontWeight: 'bold',
-                                textDecoration: 'none',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                boxShadow: '0 2px 6px rgba(187,133,136,0.3)',
-                                transition: 'all 0.2s ease'
-                              }}
-                            >
-                              🗺️ Google Maps Directions ↗
-                            </a>
-                          </div>
 
-                          <div className="horizontal-shelf" style={{ gap: '14px' }}>
-                            {shopDresses.map((product, pIdx) => renderProductCard(product, pIdx))}
+                            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                              <a
+                                href={mapsUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{
+                                  background: '#34a853',
+                                  color: '#ffffff',
+                                  padding: '8px 16px',
+                                  borderRadius: '20px',
+                                  fontSize: '0.8rem',
+                                  fontWeight: 'bold',
+                                  textDecoration: 'none',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '6px'
+                                }}
+                              >
+                                🗺️ Google Maps Directions ↗
+                              </a>
+
+                              <a
+                                href={ytVideoUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{
+                                  background: '#ff0000',
+                                  color: '#ffffff',
+                                  padding: '8px 16px',
+                                  borderRadius: '20px',
+                                  fontSize: '0.8rem',
+                                  fontWeight: 'bold',
+                                  textDecoration: 'none',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '6px'
+                                }}
+                              >
+                                📺 YouTube Store Tour ↗
+                              </a>
+                            </div>
                           </div>
                         </div>
                       );

@@ -46,32 +46,20 @@ def normalize_cosine_score(raw_score):
     """Min-Max Normalization: maps [-1, 1] to [0, 1]."""
     return (raw_score + 1) / 2
 
-def calculate_aesthetic_score(product, user_aesthetic, user_aesthetic_vector):
+def calculate_aesthetic_score(product, target_vector):
     """
-    Pillar 1: Pure CLIP Image Vector Visual Matching (100% Image Vector).
     Computes 512-dimension continuous cosine similarity dot product against product's visual image_vector.
     """
-    if not user_aesthetic_vector:
+    if not target_vector:
         return 0.5
 
-    # 1. Image CLIP Visual Vector Cosine Similarity (100% Visual Matching)
-    image_vector = product.get("image_vector") or product.get("vector") or product.get("embedding")
+    image_vector = product.get("image_vector")
     sim_image = 0.5
     if image_vector:
-        raw_i = cosine_similarity(user_aesthetic_vector, image_vector)
+        raw_i = cosine_similarity(target_vector, image_vector)
         sim_image = normalize_cosine_score(raw_i)
 
-    # 2. Pure Visual Image Embedding Score
-    hybrid_sim = sim_image
-
-    # Exact nature/category match boost
-    user_key = (user_aesthetic or "").lower()
-    product_nature = (product.get("nature") or "").lower()
-    product_cat = (product.get("category") or "").lower()
-    if product_nature == user_key or product_cat == user_key:
-        hybrid_sim = min(1.0, hybrid_sim + 0.20)
-
-    return float(np.clip(hybrid_sim, 0.05, 1.0))
+    return float(np.clip(sim_image, 0.05, 1.0))
 
 def calculate_festivity_score(product, festival_active, target_color, target_nature, festive_context_vector):
     """
