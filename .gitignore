@@ -1,10 +1,10 @@
-# Exclude secrets/env files to pass GitHub secret scanning push protection
+# Environment & Secrets
 .env
-.env.local
-.env.*.local
-backend/.env
-backend/.env.*
+*.env
 
-# Exclude 14k image folder as requested
+# Python Cache (Ignores all __pycache__ and .pyc files)
+__pycache__/
+*.pyc
+
+# Exclude large datasets / images if not needed in git
 archive/Images/
-archive/Images
