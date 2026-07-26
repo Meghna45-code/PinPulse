@@ -21,8 +21,8 @@ from fastapi.staticfiles import StaticFiles
 # Enable CORS for frontend integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -38,6 +38,10 @@ if os.path.exists(FRONTEND_IMAGES_DIR):
     app.mount("/images", StaticFiles(directory=FRONTEND_IMAGES_DIR), name="images")
 if os.path.exists(DOWNLOADED_IMAGES_DIR):
     app.mount("/downloaded_images", StaticFiles(directory=DOWNLOADED_IMAGES_DIR), name="downloaded_images")
+
+ARCHIVE_IMAGES_DIR = os.path.abspath(os.path.join(ROOT_DIR, "archive", "images"))
+if os.path.exists(ARCHIVE_IMAGES_DIR):
+    app.mount("/archive-images", StaticFiles(directory=ARCHIVE_IMAGES_DIR), name="archive_images")
 
 # File paths
 LOCAL_CATALOG_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "real_local_catalog.json"))
@@ -80,24 +84,23 @@ except Exception as _e:
 
 # Import recommender engine components
 import sys
-from national_festivals import NATIONAL_FESTIVAL_DEFINITIONS
-from casual_events import CASUAL_EVENT_DEFINITIONS
-from patna_events import PATNA_EVENT_DEFINITIONS
-from jaipur_events import JAIPUR_EVENT_DEFINITIONS
-from shillong_events import SHILLONG_EVENT_DEFINITIONS
-from puri_events import PURI_EVENT_DEFINITIONS
-from kochi_events import KOCHI_EVENT_DEFINITIONS
-from config import CONTEXT_MATRICES, INTENT_DECAY_CONFIG, CACHE_TTL_SECONDS
-from scoring_engine import (
+from app.national_festivals import NATIONAL_FESTIVAL_DEFINITIONS
+from app.casual_events import CASUAL_EVENT_DEFINITIONS
+from app.patna_events import PATNA_EVENT_DEFINITIONS
+from app.jaipur_events import JAIPUR_EVENT_DEFINITIONS
+from app.shillong_events import SHILLONG_EVENT_DEFINITIONS
+from app.puri_events import PURI_EVENT_DEFINITIONS
+from app.kochi_events import KOCHI_EVENT_DEFINITIONS
+from app.config import CONTEXT_MATRICES, INTENT_DECAY_CONFIG, CACHE_TTL_SECONDS
+from app.scoring_engine import (
     cosine_similarity,
     normalize_cosine_score,
     calculate_aesthetic_score,
     calculate_festivity_score,
     calculate_creator_score,
     calculate_boutique_score,
-    calculate_velocity_score,
 )
-from pinpulse_engine import PinPulseEngine
+from app.pinpulse_engine import PinPulseEngine
 
 # Mappings & Caches
 ZIP_MAPPING = {
@@ -731,7 +734,7 @@ def get_active_event(zip_code, date_str):
 
 def enrich_product(p, velocity_map):
     p_tags = list(p.get("tags", []))
-    p_id = p.get("id")
+    p_id = int(p.get("id") or 0)
     name_lower = (p.get("name") or "").lower()
     desc_lower = p.get("description", "").lower()
     img_url = p.get("image_url") or ""

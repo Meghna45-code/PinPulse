@@ -5,7 +5,7 @@ Implements the Tri-Layer scoring with 512-dimensional vectors.
 
 import math
 import numpy as np
-from config import (
+from app.config import (
     EVERGREEN_FIXED_SCORE,
     RELEVANCE_ALPHA,
     MIN_CATEGORIES_TOP_10,

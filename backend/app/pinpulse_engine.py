@@ -5,8 +5,8 @@ Combines all scoring pillars, applies vetos, stratification, and state machine r
 
 import time
 import random
-from config import CACHE_TTL_SECONDS, EVERGREEN_FIXED_SCORE
-from scoring_engine import (
+from app.config import CACHE_TTL_SECONDS, EVERGREEN_FIXED_SCORE
+from app.scoring_engine import (
     calculate_aesthetic_score,
     calculate_creator_score,
     calculate_boutique_score,

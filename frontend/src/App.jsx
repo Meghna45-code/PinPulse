@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { FALLBACK_PRODUCTS } from './catalog_fallback';
+import { REGIONAL_RECOMMENDATIONS as RECOMMENDATIONS_DB } from './recommendations_db';
+
 
 const getFashionFallbackImage = (title = "Fashion Item", category = "Apparel") => {
   const cleanTitle = String(title || "Fashion Outfit").replace(/["'<>&]/g, '');
@@ -336,11 +338,7 @@ function App() {
   const [globalRunwayFilter, setGlobalRunwayFilter] = useState('all'); // 'all' | 'seoul' | 'paris' | 'tokyo'
   const [expandedSections, setExpandedSections] = useState({ local: false, national: false, global: false });
   const [selectedCreatorIdx, setSelectedCreatorIdx] = useState(0);
-  // Seasonal Fashion Studio State
-  const [activeSeasonTab, setActiveSeasonTab] = useState('summer');
-  const [userOverrodeSeason, setUserOverrodeSeason] = useState(false);
-  const [seasonalData, setSeasonalData] = useState(null);
-  const [isSeasonalLoading, setIsSeasonalLoading] = useState(false);
+  // Seasonal pipeline removed — vibes/creator/boutique/festival only
   // Zip Code Intelligence (AOV + weather + upcoming events)
   const [zipInsights, setZipInsights] = useState(null);
   
@@ -586,17 +584,20 @@ function App() {
       { youtube_video: { channel: "Asmita Vlogs", title: "Khetan Market patna #khetanmarket #patna #patnamarket #trending #lahenga #festivewear #ad #bihar", video_url: "https://www.youtube.com/watch?v=55apryEpLEs", thumbnail_url: "https://img.youtube.com/vi/55apryEpLEs/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[2] }
     ],
     "302001": [
-      { youtube_video: { channel: "Jaipur Shopping Vlogs", title: "Johari Bazar Jaipur Gota Patti & Bandhani Saree Haul #jaipur", video_url: "https://www.youtube.com/watch?v=J11K9p0Q-1a", thumbnail_url: "https://img.youtube.com/vi/J11K9p0Q-1a/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[3] },
-      { youtube_video: { channel: "Royal Rajputana Trends", title: "Royal Gangaur Festival Procession Outfit Haul Jaipur #gangaur", video_url: "https://www.youtube.com/watch?v=R22K0p1Q-2b", thumbnail_url: "https://img.youtube.com/vi/R22K0p1Q-2b/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[4] }
+      { youtube_video: { channel: "Jaipur Shopping Vlogs", title: "Johari Bazar Jaipur Gota Patti & Bandhani Saree Haul #jaipur", video_url: "https://www.youtube.com/watch?v=J11K9p0Q-1a", thumbnail_url: "https://assets.myntassets.com/h_640,q_100,w_480/v1/assets/images/18092296/1.jpg" }, matched_product: FALLBACK_PRODUCTS[3] },
+      { youtube_video: { channel: "Royal Rajputana Trends", title: "Royal Gangaur Festival Procession Outfit Haul Jaipur #gangaur", video_url: "https://www.youtube.com/watch?v=R22K0p1Q-2b", thumbnail_url: "https://assets.myntassets.com/h_640,q_100,w_480/v1/assets/images/15542938/1.jpg" }, matched_product: FALLBACK_PRODUCTS[4] }
     ],
     "793001": [
-      { youtube_video: { channel: "Shillong Style Diaries", title: "Police Bazar Shillong Traditional Khasi Jainsem Haul #shillongfashion", video_url: "https://www.youtube.com/watch?v=S11L8k9P-1a", thumbnail_url: "https://img.youtube.com/vi/S11L8k9P-1a/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[5] }
+      { youtube_video: { channel: "Shillong Style Diaries", title: "Police Bazar Shillong Traditional Khasi Jainsem Haul #shillongfashion", video_url: "https://www.youtube.com/watch?v=S11L8k9P-1a", thumbnail_url: "https://assets.myntassets.com/h_640,q_100,w_480/v1/assets/images/13290206/1.jpg" }, matched_product: FALLBACK_PRODUCTS[5] },
+      { youtube_video: { channel: "Garo Heritage Vlogs", title: "Wangala 100 Drums Festival Traditional Garo Outfit Haul #garotraditional", video_url: "https://www.youtube.com/watch?v=G22L9k0P-2b", thumbnail_url: "https://assets.myntassets.com/h_640,q_100,w_480/v1/assets/images/17643800/1.jpg" }, matched_product: FALLBACK_PRODUCTS[5] }
     ],
     "752001": [
-      { youtube_video: { channel: "Payalvlogs", title: "Bapa Pua Renuka Dress Shop,📍CUTTACK", video_url: "https://www.youtube.com/watch?v=erCRv3qln1Q", thumbnail_url: "https://img.youtube.com/vi/erCRv3qln1Q/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[0] }
+      { youtube_video: { channel: "Payalvlogs", title: "Bapa Pua Renuka Dress Shop,📍CUTTACK", video_url: "https://www.youtube.com/watch?v=erCRv3qln1Q", thumbnail_url: "https://img.youtube.com/vi/erCRv3qln1Q/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[0] },
+      { youtube_video: { channel: "CuttackTop 10", title: "Cuttack best Kurti set shop for all sizes | #cuttacktop10", video_url: "https://www.youtube.com/watch?v=rmZXaeTxjDg", thumbnail_url: "https://img.youtube.com/vi/rmZXaeTxjDg/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[1] }
     ],
     "682001": [
-      { youtube_video: { channel: "VIOLET STORE", title: "Pinterest store at Edappally #fashion #boutique #clothing #ytshorts", video_url: "https://www.youtube.com/watch?v=J_F2dzbUXvg", thumbnail_url: "https://img.youtube.com/vi/J_F2dzbUXvg/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[1] }
+      { youtube_video: { channel: "VIOLET STORE", title: "Pinterest store at Edappally #fashion #boutique #clothing #ytshorts", video_url: "https://www.youtube.com/watch?v=J_F2dzbUXvg", thumbnail_url: "https://img.youtube.com/vi/J_F2dzbUXvg/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[1] },
+      { youtube_video: { channel: "Deals Kochi", title: "Stylish Finds at Westernish Kochi! Trendy Tops, Jeans & More", video_url: "https://www.youtube.com/watch?v=mZPnF5dMzcM", thumbnail_url: "https://img.youtube.com/vi/mZPnF5dMzcM/hqdefault.jpg" }, matched_product: FALLBACK_PRODUCTS[2] }
     ]
   };
 
@@ -702,43 +703,7 @@ function App() {
     }
   };
 
-  const getWeatherSeason = (weatherObj) => {
-    if (!weatherObj) return "summer";
-    const desc = (weatherObj.desc || "").toLowerCase();
-    const tempStr = (weatherObj.temp || "").replace("°C", "").replace("°", "").trim();
-    const temp = parseInt(tempStr, 10) || 30;
-    if (desc.includes("rain") || desc.includes("monsoon") || weatherObj.rainy) return "monsoon";
-    if (desc.includes("cold") || desc.includes("winter") || temp < 20 || weatherObj.cold_wave) return "winter";
-    if (desc.includes("pleasant") || desc.includes("autumn") || desc.includes("moderate") || (temp >= 20 && temp <= 27)) return "autumn";
-    return "summer";
-  };
-
-  const fetchSeasonalTrends = async (seasonKey) => {
-    setIsSeasonalLoading(true);
-    try {
-      const res = await fetch(`http://localhost:8000/api/trends/seasonal?season=${seasonKey}`);
-      if (!res.ok) throw new Error("Failed to fetch seasonal trends");
-      const data = await res.json();
-      setSeasonalData(data);
-    } catch (e) {
-      logMessage(`Seasonal trends error: ${e.message}`, "warning");
-    } finally {
-      setIsSeasonalLoading(false);
-    }
-  };
-
-  const handleSeasonTabClick = (seasonKey) => {
-    setUserOverrodeSeason(true);
-    setActiveSeasonTab(seasonKey);
-    fetchSeasonalTrends(seasonKey);
-  };
-
-  useEffect(() => {
-    const activeWeather = getPresetWeather(currentZipCode, activeDateProfile.dateStr);
-    const autoDetectedSeason = getWeatherSeason(activeWeather);
-    setActiveSeasonTab(autoDetectedSeason);
-    fetchSeasonalTrends(autoDetectedSeason);
-  }, [currentZipCode, sliderVal]);
+  // Seasonal pipeline removed — vibes/creator/boutique/festival only
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -764,192 +729,83 @@ function App() {
     setTrendsPanelOpen(false);
   };
 
-  // Client-side scoring fallback — mirrors backend 4-pipeline weights exactly
+  // Client-side scoring fallback — uses pre-computed RECOMMENDATIONS_DB data
   const runLocalRecommendationCalculator = (profile, userVibeVector) => {
-    logMessage("Running client-side pipeline scoring simulation...", "sql");
+    logMessage("Loading pre-computed regional pipeline scores...", "sql");
 
-    const dbZip = ZIP_MAPPING[currentZipCode] || currentZipCode;
-    const isWeddingDay = (profile.event_type === "wedding_day");
+    const dbZip = currentZipCode;
+    const dbData = RECOMMENDATIONS_DB[dbZip] || RECOMMENDATIONS_DB["800008"];
+    const recs = dbData?.top_recommendations || [];
 
-    // ── Determine scoring mode based on whether user explicitly picked a vibe ──
-    const weights = vibeExplicitlySelected
-      ? SCORING_WEIGHTS.vibe_selected       // 0.4 vibe · 0.3 creator · 0.2 boutique · 0.1 location
-      : SCORING_WEIGHTS.vibe_not_selected;  // 0.0 vibe · 0.4 location · 0.3 boutique · 0.3 creator
+    if (recs.length === 0) {
+      logMessage("No regional data found, using generic feed.", "warning");
+      setProducts([]);
+      return;
+    }
 
-    // ── Resolve effective vibe vector ─────────────────────────────────────────
-    // When no explicit vibe, use this PIN's default location vibe
-    const effectiveVibeKey = vibeExplicitlySelected
-      ? currentVibe
-      : (DEFAULT_LOCATION_VIBE[currentZipCode] || "universal_traditionalist");
-    const effectiveVibeVector = generateVibeVector(effectiveVibeKey);
-
-    // ── Festival context vector (used for festive-tagged items) ───────────────
     const isFestivalActive = profile.isFestive || manualFestival !== "None";
-    const festiveContextVector = profile.isFestive
-      ? generateVibeVector(profile.trendingTags.join("|") || "ethnic")
-      : effectiveVibeVector;
+    const cityName = ZIP_CODES[currentZipCode]?.city || "your city";
 
-    // ── CF boosts from cart (populated by backend in production) ─────────────
-    const activeCFBoosts = {};
-    sessionCart.forEach(cid => {
-      const recs = CF_LOOKUP[cid]?.recommendations || [];
-      recs.forEach(rec => {
-        if (!activeCFBoosts[rec.id] || rec.strength > activeCFBoosts[rec.id]) {
-          activeCFBoosts[rec.id] = rec.strength;
-        }
-      });
-    });
+    const computed = recs.map((rec, idx) => {
+      const pid = parseInt(rec.product_id) || (idx + 1);
+      const finalPct = rec.scores?.final_matching_pct ?? 90;
+      const vibePct  = rec.scores?.vibe_component_pct ?? 90;
+      const creatorPct = rec.scores?.creator_component_pct ?? 90;
+      const boutiquePct = rec.scores?.boutique_component_pct ?? 90;
 
-    const computed = FALLBACK_PRODUCTS.filter(product => {
-      if (product.zip_codes && product.zip_codes.length > 0) {
-        return product.zip_codes.includes(currentZipCode);
-      }
-      return true;
-    }).map(product => {
-      const id = product.id;
-      const tags = product.tags;
-      const descLower = (product.description || "").toLowerCase();
-
-      // Extract product attributes
-      let color = "multi";
-      for (let c of ["red", "maroon", "yellow", "gold", "white", "pink", "blue", "magenta", "saffron", "fuchsia", "black", "green"]) {
-        if (tags.includes(c) || descLower.includes(c)) { color = c; break; }
-      }
-      let nature = "casual";
-      for (let n of ["ethnic", "festive", "casual", "streetwear", "traditional", "ceremonial"]) {
-        if (tags.includes(n) || descLower.includes(n)) { nature = n; break; }
-      }
+      // Derive category from name/brand
+      const nameLower = (rec.name || "").toLowerCase();
       let category = "Ethnic";
-      for (let cat of ["Ethnic", "Western", "Accessory", "Footwear"]) {
-        if (tags.includes(cat.toLowerCase()) || descLower.includes(cat.toLowerCase())) { category = cat; break; }
-      }
-      if (category === "Ethnic" && tags.some(t => ["hoodie", "cargo", "jeans", "jacket"].includes(t))) category = "Western";
-      if (tags.some(t => ["earring", "necklace", "anklet", "ring", "sunglasses", "stole"].includes(t))) category = "Accessory";
-      if (tags.some(t => ["boots", "mojari", "sandals", "footwear"].includes(t))) category = "Footwear";
-
-      const price = (id * 17) % 3000 + 499;
-      const stockLevel = (id * 7) % 50 + 1;
-      const isEvergreen = (id % 15 === 0);
-      const baselineSales = (id * 3) % 20 + 5;
-      const velocityEntry = LOCAL_VELOCITY_CACHE[id] || {};
-      const vScore = velocityEntry.velocity_score || 0.0;
-      const currentSales = vScore > 0 ? Math.floor(baselineSales * (1.0 + 2.0 * vScore)) : baselineSales + (id % 5);
-      const ageGroup = tags.includes("streetwear") ? "gen-z" : "millennial";
-
-      const tagKey = tags.join("|");
-      const embedding = embeddingCacheRef.current[tagKey]
-        || (embeddingCacheRef.current[tagKey] = generateVibeVector(tagKey));
-
-      // ── Pipeline 2: Vibe score (0.4 when selected, 0.0 otherwise) ────────────
-      let productVec = product.vector || product.embedding || embedding;
-      let rawCos = calculateCosineSimilarity(effectiveVibeVector, productVec);
-      let sVibe = (rawCos + 1) / 2;
-      // Tag overlap bonus
-      const vibeDef = VIBE_DEFINITIONS[effectiveVibeKey] || {};
-      const vibeTags = vibeDef.tags || [];
-      const tagOverlap = tags.filter(t => vibeTags.includes(t.toLowerCase())).length;
-      if (tagOverlap > 0) sVibe = Math.min(1.0, sVibe + 0.12 * tagOverlap);
-
-      // ── Pipeline 4: Content Creator score (0.3) ───────────────────────────────
-      let sCreator = 0.5;
-      if (isEvergreen) {
-        sCreator = 0.85;
-      } else {
-        const localCreators = FALLBACK_CREATORS[dbZip] || [];
-        let maxC = 0.0;
-        localCreators.forEach(c => {
-          const sim = (calculateCosineSimilarity(c.vector, embedding) + 1) / 2;
-          const penalty = ageGroup === c.demographic ? 1.0 : 0.1;
-          maxC = Math.max(maxC, sim * penalty * (c.subscriber_weight || 1.0));
-        });
-        sCreator = maxC || 0.5;
-      }
-
-      // ── Pipeline 3: Local Boutique score (0.2 vibe-selected / 0.3 default) ───
-      let sBoutique = 0.5;
-      if (isEvergreen) {
-        sBoutique = 0.85;
-      } else {
-        const localStores = FALLBACK_STORES[dbZip] || [];
-        let maxS = 0.0;
-        localStores.forEach(s => {
-          const sim = (calculateCosineSimilarity(s.vector, embedding) + 1) / 2;
-          let wRating = Math.max(0.0, (s.rating - 3.0) / 2.0);
-          if ((s.review_count || 0) < 50) wRating *= 0.5;
-          const catGate = ["ethnic", "occasion", "festive", "traditional"].includes(category.toLowerCase()) ? 1.0 : 0.2;
-          maxS = Math.max(maxS, sim * wRating * catGate);
-        });
-        sBoutique = maxS || 0.5;
-      }
-
-      // ── Location-based score (0.1 vibe-selected / 0.4 default) ──────────────
-      // Approximated by cosine similarity to the PIN's default vibe vector
-      const locationVibeKey = DEFAULT_LOCATION_VIBE[currentZipCode] || "universal_traditionalist";
-      const locationVector = generateVibeVector(locationVibeKey);
-      let sLocation = (calculateCosineSimilarity(locationVector, embedding) + 1) / 2;
-
-      // ── Final 4-pillar weighted score ─────────────────────────────────────────
-      let finalScore =
-        weights.w_vibe     * sVibe     +
-        weights.w_creator  * sCreator  +
-        weights.w_boutique * sBoutique +
-        weights.w_location * sLocation;
-
-      // Low stock penalty
-      if (stockLevel < 5) finalScore *= 0.1;
-
-      // Wedding day regional boost
-      if (isWeddingDay) {
-        if (currentZipCode === "800008" && tags.includes("heavy_silk")) finalScore = Math.min(1.0, finalScore + 0.30);
-        if (currentZipCode === "682001" && tags.includes("kasavu_weave")) finalScore = Math.min(1.0, finalScore + 0.30);
-        if (currentZipCode === "752001" && (tags.includes("sambalpuri") || tags.includes("tussar_silk"))) finalScore = Math.min(1.0, finalScore + 0.30);
-      }
+      if (nameLower.includes("jeans") || nameLower.includes("top") || nameLower.includes("dress") || nameLower.includes("maxi")) category = "Western";
+      if (nameLower.includes("earring") || nameLower.includes("necklace") || nameLower.includes("dupatta") || nameLower.includes("stole")) category = "Accessory";
 
       return {
-        ...product,
-        color,
-        nature,
+        id: pid,
+        p_id: pid,
+        name: rec.name || "Fashion Item",
+        brand: rec.brand || "",
+        description: rec.name || "",
         category,
-        price,
-        stock_level: stockLevel,
-        is_evergreen: isEvergreen,
-        baseline_sales: baselineSales,
-        current_sales: currentSales,
-        units_last_hour: currentSales - baselineSales,
-        is_trending: vScore >= 0.75,
-        vector_score: sVibe,
-        tag_score: sCreator,
-        boost_score: sBoutique,
-        velocity_score: vScore,
-        final_score: finalScore,
-        overlap_tags: tags.filter(tag => (profile.trendingTags || []).includes(tag)),
+        price: rec.price && !isNaN(rec.price) ? rec.price : ((pid * 37) % 2500 + 799),
+        image_url: `http://localhost:8000/archive-images/${rec.product_id}.jpg`,
+        product_url: rec.product_url || `https://www.myntra.com/${pid}`,
+        tags: ["ethnic", "festive", "women"],
+        zip_codes: [],
+        is_trending: rec.rank <= 3,
+        is_evergreen: rec.rank === 1,
+        stock_level: 20,
+        final_score: finalPct / 100,
+        badgeText: `${finalPct.toFixed(1)}%`,
+        vector_score: vibePct / 100,
+        tag_score: creatorPct / 100,
+        boost_score: boutiquePct / 100,
+        velocity_score: rec.rank <= 3 ? 0.8 : 0.4,
         scoring_breakdown: {
-          pipeline2_vibe:     weights.w_vibe     * sVibe,
-          pipeline4_creator:  weights.w_creator  * sCreator,
-          pipeline3_boutique: weights.w_boutique * sBoutique,
-          location_vibe:      weights.w_location * sLocation,
+          pipeline2_vibe:     (vibePct / 100) * 0.4,
+          pipeline4_creator:  (creatorPct / 100) * 0.3,
+          pipeline3_boutique: (boutiquePct / 100) * 0.2,
+          location_vibe:      0.85 * 0.1,
           raw_values: {
-            vibe_similarity:    sVibe,
-            creator_match:      sCreator,
-            boutique_match:     sBoutique,
-            location_match:     sLocation,
+            vibe_similarity:  vibePct / 100,
+            creator_match:    creatorPct / 100,
+            boutique_match:   boutiquePct / 100,
+            location_match:   0.85,
           }
         },
         reason_labels: [
-          isFestivalActive ? `✨ Trending for ${activeDateProfile.event || 'Festival'}` : null,
-          sCreator > 0.7  ? `🎬 Loved by local creators` : null,
-          sBoutique > 0.7 ? `🏪 Stocked in local boutiques` : null,
-          tagOverlap > 1  ? `✨ Matches your vibe` : null,
+          isFestivalActive ? `✨ Trending for ${profile.event || "Festival"}` : `🏆 Rank #${rec.rank} in ${cityName}`,
+          creatorPct > 92 ? `🎬 Loved by local creators` : null,
+          boutiquePct > 92 ? `🏪 Stocked in local boutiques` : null,
+          vibePct > 93    ? `✨ Matches your vibe` : null,
         ].filter(Boolean)
       };
-    }).filter(Boolean);
+    });
 
     computed.sort((a, b) => b.final_score - a.final_score);
     setProducts(computed);
-    logMessage(`Client-side scoring ranked ${computed.length} items. Mode: ${vibeExplicitlySelected ? 'vibe-selected' : 'location-default'}.`, "success");
+    logMessage(`Loaded ${computed.length} pre-scored products for ${cityName}. Top score: ${(computed[0]?.final_score * 100).toFixed(1)}%.`, "success");
     if (computed.length > 0) setSelectedProduct(computed[0]);
   };
-
   const triggerVibeChange = (vibe) => {
     setCurrentVibe(vibe);
     setVibeExplicitlySelected(true);  // switch to vibe-selected weight mode
@@ -1392,7 +1248,7 @@ function App() {
           desc: "Highland rock & indie music festival in the misty hills! Heavy woolen knitted cardigans, plaid trench coats, and cozy winter streetwear.",
           tags: ["Highland Woolen", "Knitted Cardigan", "Plaid Trench", "Winter Streetwear"],
           type: "local",
-          bannerImg: "/images/winter_banner.png"
+          bannerImg: "/images/generic_festival_banner.png"
         };
       } else if (dateKey === "2026-04-10" || dateKey.endsWith("-04-10")) {
         banners.local = {
@@ -1410,7 +1266,7 @@ function App() {
           desc: "Spring gala in the pine hills! Pastel linen maxi dresses, indie boho skirts, and lightweight chic layers.",
           tags: ["Pastel Linen Maxi", "Indie Boho Skirt", "Pine Green Layer", "Spring Chic"],
           type: "local",
-          bannerImg: "/images/summer_banner.png"
+          bannerImg: "/images/makar_sankranti_banner.png"
         };
       } else if (dateKey === "2026-11-10" || dateKey.endsWith("-11-10")) {
         banners.local = {
@@ -1437,7 +1293,7 @@ function App() {
           desc: "Pink cherry blossom bloom across Shillong! Floral chiffon gowns, pastel pink knitwear, and indie fashion.",
           tags: ["Cherry Blossom Pink", "Floral Chiffon Gown", "Pastel Knitwear", "Shillong Indie"],
           type: "local",
-          bannerImg: "/images/autumn_banner.png"
+          bannerImg: "/images/durga_puja_banner.png"
         };
       } else if (dateKey === "2026-12-25" || dateKey.endsWith("-12-25")) {
         banners.local = {
@@ -1446,7 +1302,7 @@ function App() {
           desc: "Highland Christmas celebrations across Shillong! Cozy red woolen sweaters, velvet evening suits, chic trench coats, and holiday glam.",
           tags: ["Cozy Red Sweater", "Velvet Evening Suit", "Chic Trench Coat", "Highland Christmas"],
           type: "local",
-          bannerImg: "/images/winter_banner.png"
+          bannerImg: "/images/diwali_banner.png"
         };
       }
     } else if (zipCode === "302001") { // Rajasthan / Jaipur
@@ -1493,7 +1349,7 @@ function App() {
           desc: "Sawan monsoon Teej celebrations across Jaipur! Traditional green Leheriya sarees, Gota Patti work, and ethnic silk dupattas.",
           tags: ["Green Leheriya Saree", "Gota Patti Work", "Silk Dupatta", "Festive Teej"],
           type: "local",
-          bannerImg: "/images/monsoon_banner.png"
+          bannerImg: "/images/onam_vishu_banner.png"
         };
       } else if (dateKey === "2026-10-20" || dateKey.endsWith("-10-20")) {
         banners.local = {
@@ -1813,7 +1669,7 @@ function App() {
         
         <div className="product-image-container">
           <img 
-            src={product.image_url || getFashionFallbackImage(product.name, product.category)} 
+            src={product.image_url} 
             alt={product.name} 
             className="product-image"
             onError={(e) => {
@@ -2088,14 +1944,14 @@ function App() {
             <div className="myntra-nav-item dropdown">
               <span 
                 className="dropdown-title" 
-                onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('creators'); }}
+                onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('youtube'); setYoutubeFetched(false); fetchYoutubeTrends(currentZipCode); }}
               >
                 LOCAL CREATOR ▾
               </span>
               <div className="dropdown-menu">
                 <div 
                   className="dropdown-option" 
-                  onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('creators'); }}
+                  onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('youtube'); setYoutubeFetched(false); fetchYoutubeTrends(currentZipCode); }}
                 >
                   🎬 Creator Insights & Reels
                 </div>
@@ -2106,14 +1962,14 @@ function App() {
             <div className="myntra-nav-item dropdown">
               <span 
                 className="dropdown-title" 
-                onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('boutiques'); }}
+                onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('boutiques'); setBoutiqueFetched(false); fetchBoutiques(currentZipCode); }}
               >
                 LOCAL BOUTIQUE ▾
               </span>
               <div className="dropdown-menu">
                 <div 
                   className="dropdown-option" 
-                  onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('boutiques'); }}
+                  onClick={() => { setTrendsPanelOpen(true); setTrendsPanelTab('boutiques'); setBoutiqueFetched(false); fetchBoutiques(currentZipCode); }}
                 >
                   🏪 Boutique Directory & Tours
                 </div>
@@ -2760,7 +2616,8 @@ function App() {
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                                         onError={(e) => {
                                           e.target.onerror = null;
-                                          e.target.src = `https://i.ytimg.com/vi/${vidId}/hqdefault.jpg`;
+                                          // Fallback to the matched Myntra product image when YouTube thumb unavailable
+                                          e.target.src = displayProducts[0]?.image_url || `https://assets.myntassets.com/h_640,q_100,w_480/v1/assets/images/17744470/1.jpg`;
                                         }}
                                       />
                                       <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
