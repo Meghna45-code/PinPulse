@@ -7,8 +7,16 @@ logger = logging.getLogger("clip_service")
 
 class CLIPService:
     def __init__(self):
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model = None
+        self.processor = None
+        self.loaded = False
+
+    def _ensure_loaded(self):
+        if self.loaded:
+            return
+        self.loaded = True
         try:
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
             logger.info(f"Loading CLIP model on {self.device}...")
             self.model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(self.device)
             self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
@@ -19,7 +27,10 @@ class CLIPService:
             self.processor = None
 
     def get_text_embedding(self, text):
-        if not text or not self.model:
+        if not text:
+            return [0.0] * 512
+        self._ensure_loaded()
+        if not self.model:
             return [0.0] * 512
         try:
             inputs = self.processor(text=[text], return_tensors="pt", padding=True, truncation=True).to(self.device)

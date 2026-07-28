@@ -48,18 +48,21 @@ def normalize_cosine_score(raw_score):
 
 def calculate_aesthetic_score(product, target_vector):
     """
-    Computes 512-dimension continuous cosine similarity dot product against product's visual image_vector.
+    Computes 512-dimension cosine similarity between the vibe CLIP text vector
+    and the product's text_vector (text-to-text CLIP).
+    Falls back to image_vector if text_vector unavailable.
     """
     if not target_vector:
         return 0.5
 
-    image_vector = product.get("image_vector")
-    sim_image = 0.5
-    if image_vector:
-        raw_i = cosine_similarity(target_vector, image_vector)
-        sim_image = normalize_cosine_score(raw_i)
+    # Prefer text_vector for text-to-text CLIP similarity (same space as vibe query)
+    product_vector = product.get("text_vector") or product.get("image_vector")
+    sim = 0.5
+    if product_vector:
+        raw = cosine_similarity(target_vector, product_vector)
+        sim = normalize_cosine_score(raw)
 
-    return float(np.clip(sim_image, 0.05, 1.0))
+    return float(np.clip(sim, 0.05, 1.0))
 
 def calculate_festivity_score(product, festival_active, target_color, target_nature, festive_context_vector):
     """
@@ -203,12 +206,11 @@ def apply_category_stratification(ranked_items, min_categories=MIN_CATEGORIES_TO
 
     return protected_top_4 + stratified_rest + overflow
 
-def apply_exploration_split(ranked_items):
+def apply_exploration_split(ranked_items, seed_key=None):
     """
     Exploration vs Exploitation: 90% top-scored + 10% discovery items.
-    Discovery = items with high vibe but low velocity (hidden gems).
-    The discovery items are randomly injected into the top results (positions 3-15)
-    so users actually get a chance to see them.
+    Deterministic when seed_key is provided (or defaults to fixed seed 42) so results
+    do not randomly shuffle or change on every page refresh.
     """
     if len(ranked_items) < 10:
         return ranked_items
@@ -217,19 +219,18 @@ def apply_exploration_split(ranked_items):
     top_pool = list(ranked_items[:split_point])
     discovery_pool = list(ranked_items[split_point:])
     
-    # Pick random discovery items (high aesthetic but low velocity)
     import random
+    rng = random.Random(seed_key if seed_key is not None else 42)
+    
     discovery_count = max(1, int(len(ranked_items) * (1 - EXPLOITATION_RATIO)))
-    discovery_picks = random.sample(
+    discovery_picks = rng.sample(
         discovery_pool, min(discovery_count, len(discovery_pool))
     )
     
-    # Remove picked discovery items from the catalog pool to prevent duplicate entries
     remaining_discovery = [item for item in discovery_pool if item not in discovery_picks]
     
-    # Inject picks into top_pool at random positions (from index 6 to 15)
     for item in discovery_picks:
-        insert_idx = random.randint(6, min(15, len(top_pool)))
+        insert_idx = rng.randint(6, min(15, len(top_pool)))
         top_pool.insert(insert_idx, item)
         
     return top_pool + remaining_discovery

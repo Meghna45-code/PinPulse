@@ -73,4 +73,4 @@ EXPLOITATION_RATIO = 0.9            # 90% top-scored items
 EXPLORATION_RATIO = 0.1             # 10% discovery items
 
 # Cache / State Hysteresis
-CACHE_TTL_SECONDS = 60
+CACHE_TTL_SECONDS = 1800  # 30 minutes — avoids CLIP re-encoding on every request
