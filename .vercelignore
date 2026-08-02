@@ -1,5 +1,4 @@
-# Exclude non-backend directories and heavy assets from Python Serverless Function zip bundle
-frontend/
+# Exclude heavy assets and unneeded data files from Vercel deployment
 archive/
 data/
 database/
@@ -9,5 +8,4 @@ database/
 .git/
 .agents/
 .vscode/
-*.md
 pinpulse_youtube_seed.xlsx
