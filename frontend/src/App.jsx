@@ -3,6 +3,8 @@ import './App.css';
 import { FALLBACK_PRODUCTS } from './catalog_fallback';
 import { REGIONAL_RECOMMENDATIONS } from './recommendations_db';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://localhost:8000" : "");
+
 const ZIP_CODES = {
   "682001": { city: "Fort Kochi", state: "Kochi", name: "Kochi (682001)" },
   "752001": { city: "Puri", state: "Odisha", name: "Odisha (752001)" },
@@ -482,7 +484,7 @@ function App() {
 
   const loadDynamicPresets = async () => {
     try {
-      const resCal = await fetch("http://localhost:8000/api/calendar-presets");
+      const resCal = await fetch(`${API_BASE_URL}/api/calendar-presets`);
       if (resCal.ok) {
         const calData = await resCal.json();
         setCalendarPresets(calData);
@@ -491,7 +493,7 @@ function App() {
     } catch (_) { /* Fallback used */ }
 
     try {
-      const resWea = await fetch("http://localhost:8000/api/weather-matrix");
+      const resWea = await fetch(`${API_BASE_URL}/api/weather-matrix`);
       if (resWea.ok) {
         const weaData = await resWea.json();
         setWeatherMatrix(weaData);
@@ -502,7 +504,7 @@ function App() {
 
   const checkBackendConnection = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/system-state");
+      const res = await fetch(`${API_BASE_URL}/api/system-state`);
       if (res.ok) {
         setBackendStatus("connected");
         logMessage("FastAPI application server detected online at http://localhost:8000.", "success");
@@ -518,7 +520,7 @@ function App() {
 
   const syncDevState = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/dev/state");
+      const res = await fetch(`${API_BASE_URL}/api/dev/state`);
       if (res.ok) {
         const data = await res.json();
         setEngineState(data.session.state);
@@ -559,7 +561,7 @@ function App() {
       const profile = (calendarPresets[currentZipCode] || calendarPresets['800008'])[sliderVal] ||
                       (calendarPresets[currentZipCode] || calendarPresets['800008'])[0];
       try {
-        const res = await fetch(`http://localhost:8000/api/zip-insights?zip_code=${currentZipCode}&date=${profile.dateStr}`);
+        const res = await fetch(`${API_BASE_URL}/api/zip-insights?zip_code=${currentZipCode}&date=${profile.dateStr}`);
         if (res.ok) setZipInsights(await res.json());
       } catch (_) { /* backend offline — silently skip */ }
     };
@@ -577,7 +579,7 @@ function App() {
     const fetchLookCompleter = async () => {
       try {
         const occasion = activeDateProfile.event_type;
-        const res = await fetch(`http://localhost:8000/api/look-completer?product_id=${selectedProduct.id}&occasion_tag=${occasion}`);
+        const res = await fetch(`${API_BASE_URL}/api/look-completer?product_id=${selectedProduct.id}&occasion_tag=${occasion}`);
         if (res.ok) {
           const data = await res.json();
           setLookCompleter(data);
@@ -604,7 +606,7 @@ function App() {
 
     const fetchCoPurchases = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/product/${selectedProduct.id}`);
+        const res = await fetch(`${API_BASE_URL}/api/product/${selectedProduct.id}`);
         if (res.ok) {
           const data = await res.json();
           setCoPurchaseItems(data.also_bought || []);
@@ -626,7 +628,7 @@ function App() {
     logMessage(`Geographic boundary shifted. Active region: ${ZIP_CODES[zip]?.name || zip}.`, "success");
     if (backendStatus === "connected") {
       try {
-        await fetch("http://localhost:8000/api/dev/set-zip", {
+        await fetch(`${API_BASE_URL}/api/dev/set-zip`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ zip_code: zip })
@@ -656,7 +658,7 @@ function App() {
       try {
         logMessage("Executing 8-Pillar Scoring Pipeline on FastAPI backend...", "sql");
         const genderParam = activeTab === 'Men' ? 'men' : 'women';
-        const url = `http://localhost:8000/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}&state=${engineState}&gender=${genderParam}`;
+        const url = `${API_BASE_URL}/api/products?zip_code=${currentZipCode}&date=${profile.dateStr}&vibe=${currentVibe}&state=${engineState}&gender=${genderParam}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error("API responded with error code");
         
@@ -687,7 +689,7 @@ function App() {
     const targetZip = zip || currentZipCode;
     logMessage("Loading YouTube creator trends...", "info");
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/youtube?zip_code=${targetZip}`);
+      const res = await fetch(`${API_BASE_URL}/api/trends/youtube?zip_code=${targetZip}`);
       if (res.ok) {
         const data = await res.json();
         const items = Array.isArray(data) ? data : (data.trends || []);
@@ -713,7 +715,7 @@ function App() {
     const targetZip = zip || currentZipCode;
     logMessage(`Loading local boutiques for ${ZIP_CODES[targetZip]?.city || 'Local Region'}...`, "info");
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/boutiques?zip_code=${targetZip}`);
+      const res = await fetch(`${API_BASE_URL}/api/trends/boutiques?zip_code=${targetZip}`);
       if (res.ok) {
         const data = await res.json();
         if (data && data.boutiques && data.boutiques.length > 0) {
@@ -739,8 +741,8 @@ function App() {
     logMessage('Loading Global Runway trends (Tokyo / Paris / Seoul)...', 'info');
     try {
       const url = cityFilter && cityFilter !== 'all'
-        ? `http://localhost:8000/api/trends/global?city=${cityFilter}`
-        : 'http://localhost:8000/api/trends/global';
+        ? `${API_BASE_URL}/api/trends/global?city=${cityFilter}`
+        : `${API_BASE_URL}/api/trends/global`;
       const res = await fetch(url);
       if (!res.ok) throw new Error('Failed to fetch global trends');
       const data = await res.json();
@@ -762,7 +764,7 @@ function App() {
   const fetchSeasonalTrends = async (seasonKey) => {
     setIsSeasonalLoading(true);
     try {
-      const res = await fetch(`http://localhost:8000/api/trends/seasonal?season=${seasonKey}`);
+      const res = await fetch(`${API_BASE_URL}/api/trends/seasonal?season=${seasonKey}`);
       if (!res.ok) throw new Error("Failed to fetch seasonal trends");
       const data = await res.json();
       setSeasonalData(data);
@@ -856,7 +858,7 @@ function App() {
     logMessage(`[DEV] Switching State Machine weight context to: ${stateName.toUpperCase()}`, "info");
     if (backendStatus === "connected") {
       try {
-        await fetch("http://localhost:8000/api/dev/set-state", {
+        await fetch(`${API_BASE_URL}/api/dev/set-state`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ state: stateName })
@@ -876,7 +878,7 @@ function App() {
     logMessage(`[DEV] Time Warping +${hours} hours forward. Decrementing intent decay...`, "warning");
     if (backendStatus === "connected") {
       try {
-        const res = await fetch("http://localhost:8000/api/dev/time-warp", {
+        const res = await fetch(`${API_BASE_URL}/api/dev/time-warp`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ hours })
@@ -898,7 +900,7 @@ function App() {
     logMessage(`[DEV] Triggering manual festival override: ${festName || 'None'}`, "info");
     if (backendStatus === "connected") {
       try {
-        await fetch("http://localhost:8000/api/dev/set-festival", {
+        await fetch(`${API_BASE_URL}/api/dev/set-festival`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ festival: festName })
@@ -917,7 +919,7 @@ function App() {
     logMessage("[DEV] Simulating real-time local velocity checkout surge...", "warning");
     if (backendStatus === "connected") {
       try {
-        const res = await fetch("http://localhost:8000/api/dev/velocity-surge", { method: "POST" });
+        const res = await fetch(`${API_BASE_URL}/api/dev/velocity-surge`, { method: "POST" });
         if (res.ok) {
           const data = await res.json();
           setVelocitySurgeData(data);
@@ -944,7 +946,7 @@ function App() {
     logMessage("[DEV] Resetting user session parameters...", "warning");
     if (backendStatus === "connected") {
       try {
-        await fetch("http://localhost:8000/api/dev/reset", { method: "POST" });
+        await fetch(`${API_BASE_URL}/api/dev/reset`, { method: "POST" });
         syncDevState();
         updateRecommendations();
       } catch (err) {
@@ -964,7 +966,7 @@ function App() {
     logMessage(`🛒 Adding Product ID ${pid} to session cart...`, "info");
     if (backendStatus === "connected") {
       try {
-        const res = await fetch("http://localhost:8000/api/cart/add", {
+        const res = await fetch(`${API_BASE_URL}/api/cart/add`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ item_id: pid })
@@ -992,7 +994,7 @@ function App() {
     logMessage(`🛒 Removing Product ID ${pid} from session cart...`, "info");
     if (backendStatus === "connected") {
       try {
-        const res = await fetch("http://localhost:8000/api/cart/remove", {
+        const res = await fetch(`${API_BASE_URL}/api/cart/remove`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ item_id: pid })
@@ -1020,7 +1022,7 @@ function App() {
     logMessage(`❤️ Adding Product ID ${pid} to wishlist...`, "info");
     if (backendStatus === "connected") {
       try {
-        await fetch("http://localhost:8000/api/wishlist/add", {
+        await fetch(`${API_BASE_URL}/api/wishlist/add`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ item_id: pid })
@@ -1043,7 +1045,7 @@ function App() {
     setTimeout(async () => {
       if (backendStatus === "connected") {
         try {
-          const res = await fetch("http://localhost:8000/api/buy", {
+          const res = await fetch(`${API_BASE_URL}/api/buy`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ item_id: pid })
