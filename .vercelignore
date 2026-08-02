@@ -1,0 +1,13 @@
+# Exclude non-backend directories and heavy assets from Python Serverless Function zip bundle
+frontend/
+archive/
+data/
+database/
+*.csv
+*.parquet
+*.pt
+.git/
+.agents/
+.vscode/
+*.md
+pinpulse_youtube_seed.xlsx
